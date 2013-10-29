@@ -31,7 +31,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 		String informationSourceURI = informationSource.getURI();
 
-		String queryExpression = "INSERT INTO GRAPH <http://informationSourceTest> { <"
+		String queryExpression = "INSERT INTO GRAPH <"+this.parameters.getGraph()+"> { <"
 				+ informationSourceURI
 				+ "> a <"
 				+ informationSource.getType()
@@ -62,7 +62,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		InformationSource informationSource = new InformationSource();
 	
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI
-				+ "> FROM <http://informationSourceTest>");
+				+ "> FROM <"+this.parameters.getGraph()+">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, this.graph);
 
@@ -100,7 +100,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 
 		Query sparql = QueryFactory
-				.create("SELECT * FROM <http://informationSourceTest>  WHERE { { ?s ?p ?o } }");
+				.create("SELECT * FROM <"+this.parameters.getGraph()+">  WHERE { { ?s ?p ?o } }");
 
 		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
 				.create(sparql, this.graph);
@@ -134,9 +134,12 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		parameters.setGraph("http://informationSourceTest");
 		parameters.setHost("localhost");
 		parameters.setPort("1111");
+		parameters.setUser("dba");
+		parameters.setPassword("dba");
 		
 		
 		informationSourceRDFDAO.init(parameters);
+		System.out.println(".,.,.,.,jjjjjjj");
 		if (!informationSourceRDFDAO.exists(URI)) {
 			System.out.println("The information source doesn't exist");
 

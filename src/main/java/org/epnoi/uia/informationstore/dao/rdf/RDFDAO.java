@@ -15,10 +15,13 @@ import com.hp.hpl.jena.query.ResultSet;
 public class RDFDAO {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
-	private VirtuosoInformationStoreParameters parameters;
+	protected VirtuosoInformationStoreParameters parameters;
 	protected VirtGraph graph = null;
 
 	public void init(InformationStoreParameters parameters) {
+		
+		
+		System.out.println(".............................................. "+parameters);
 		this.parameters = (VirtuosoInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
