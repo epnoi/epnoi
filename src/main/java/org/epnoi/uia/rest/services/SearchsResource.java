@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import epnoi.model.Search;
 
 @Path("/searchsService")
-public class SearchsResource {
+public class SearchsResource extends UIAService {
 	public static final String MATCHER_ATTRIBUTE = "SEMANTIC_MATCHER";
 
 	@Context
@@ -42,6 +42,7 @@ public class SearchsResource {
 			
 		}
 		*/
+		//_initUIACore();
 		Search search = new Search();
 		search.setURI(URI);
 		search.setDescription("Whatever at "+ System.currentTimeMillis());
