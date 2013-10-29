@@ -12,7 +12,7 @@ public class VirtuosoInformationStoreParameters extends InformationStoreParamete
 	public String toString() {
 		return "Virtuoso Information Store [host:" + super.getHost() + " path: "
 				+ super.getPath() + "  port:" + super.getPort() + " graph: "
-				+ this.graph + "]";
+				+ this.graph + ", user: "+this.user+", password: "+this.password +"]";
 	}
 
 	public String getGraph() {
