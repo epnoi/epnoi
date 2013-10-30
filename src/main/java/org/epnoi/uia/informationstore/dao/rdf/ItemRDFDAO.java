@@ -1,6 +1,5 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
@@ -22,35 +21,40 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-import epnoi.model.InformationSource;
+import epnoi.model.Feed;
+import epnoi.model.Item;
 
-public class InformationSourceRDFDAO extends RDFDAO {
+public class ItemRDFDAO extends RDFDAO {
 
-	public void create(InformationSource informationSource) {
+	// ---------------------------------------------------------------------------------------------------
 
-		String informationSourceURI = informationSource.getURI();
+	public void create(Item item) {
+
+		String informationSourceURI = item.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <"
 				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + informationSource.getType() + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \""
-				+ informationSource.getURL() + "\"  ; " + "<"
-				+ RDFHelper.NAME_PROPERTY + ">" + " \""
-				+ informationSource.getName() + "\" " + " . }";
+				+ "> a <" + FeedRDFHelper.ITEM_CLASS + "> ; " + "<"
+				+ RDFHelper.URL_PROPERTY + ">" + " \"" + item.getLink()
+				+ "\"  ; " + "<" + RDFHelper.TITLE_PROPERTY + ">" + " \""
+				+ item.getTitle() + "\" " + " . }";
 		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();
-
 	}
 
-	public void update(InformationSource informationSource) {
+	// ---------------------------------------------------------------------------------------------------
 
+	public void update(Item item) {
+		// TODO to be done
 	}
 
-	public InformationSource read(String URI) {
-		InformationSource informationSource = new InformationSource();
-		informationSource.setURI(URI);
+	// ---------------------------------------------------------------------------------------------------
+
+	public Item read(String URI) {
+		Item item = new Item();
+		item.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -64,18 +68,18 @@ public class InformationSourceRDFDAO extends RDFDAO {
 			System.out.println(" { " + t.getSubject() + " SSS "
 					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
-			if (RDFHelper.NAME_PROPERTY.equals(predicateURI)) {
-				informationSource.setName(t.getObject().getLiteral().getValue()
-						.toString());
+
+			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
+				item.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
-				informationSource.setURL(t.getObject().getLiteral().getValue()
-						.toString());
-			} else if (RDFHelper.TYPE_PROPERTY.equals(predicateURI)) {
-				informationSource.setType(t.getObject().getURI().toString());
+				item.setLink(t.getObject().getLiteral().getValue().toString());
 			}
+
 		}
-		return informationSource;
+		return item;
 	}
+
+	// ---------------------------------------------------------------------------------------------------
 
 	public Boolean exists(String URI) {
 
@@ -84,6 +88,8 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
 	}
+
+	// ---------------------------------------------------------------------------------------------------
 
 	public void showTriplets() {
 
@@ -104,22 +110,22 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------
+
 	public static void main(String[] args) {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
-		String URI = "http://www.epnoi.org/informationSources#whatever";
-
-		InformationSource informationSource = new InformationSource();
+		String URI = "http://algo";
+		Feed informationSource = new Feed();
 
 		informationSource.setURI(URI);
-		informationSource.setName("arXiv");
+		informationSource.setTitle("arXiv");
 		informationSource
-				.setURL("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-		informationSource
-				.setType(InformationSourceRDFHelper.SOLR_INFORMATION_SOURCE_CLASS);
-		InformationSourceRDFDAO informationSourceRDFDAO = new InformationSourceRDFDAO();
+				.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
+
+		FeedRDFDAO informationSourceRDFDAO = new FeedRDFDAO();
 		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
-		parameters.setGraph("http://informationSourceTest");
+		parameters.setGraph("http://feedTest");
 		parameters.setHost("localhost");
 		parameters.setPort("1111");
 		parameters.setUser("dba");
@@ -136,12 +142,12 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		}
 
 		informationSourceRDFDAO.showTriplets();
-		VirtGraph graph = new VirtGraph("http://informationSourceTest",
-				virtuosoURL, "dba", "dba");
-		InformationSource readedInformationSource = informationSourceRDFDAO
-				.read(URI);
+		VirtGraph graph = new VirtGraph(parameters.getGraph(), virtuosoURL,
+				"dba", "dba");
+		Feed readedInformationSource = informationSourceRDFDAO.read(URI);
 		System.out.println("Readed information source -> "
 				+ readedInformationSource);
+		
 		if (informationSourceRDFDAO.exists(URI)) {
 			System.out.println("The information source now exists :) ");
 		}
