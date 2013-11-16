@@ -20,6 +20,7 @@ public class ParametersModel {
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private RSSHoarderParameters rssHoarder;
+	private RSSHarvesterParameters rssHarvester;
 	
 	
 	
@@ -63,6 +64,14 @@ public class ParametersModel {
 
 	public void setRssHoarder(RSSHoarderParameters rssHoarder) {
 		this.rssHoarder = rssHoarder;
+	}
+
+	public RSSHarvesterParameters getRssHarvester() {
+		return rssHarvester;
+	}
+
+	public void setRssHarvester(RSSHarvesterParameters rssHarvester) {
+		this.rssHarvester = rssHarvester;
 	}
 
 }

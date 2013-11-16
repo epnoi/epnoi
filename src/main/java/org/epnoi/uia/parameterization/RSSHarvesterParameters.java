@@ -1,13 +1,5 @@
 package org.epnoi.uia.parameterization;
 
-public class RSSHarvesterParameters {
-	private String path;
+public class RSSHarvesterParameters extends HarvesterParameters  {
 
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
 }

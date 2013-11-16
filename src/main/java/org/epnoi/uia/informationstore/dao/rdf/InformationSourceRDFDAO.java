@@ -1,6 +1,5 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
@@ -23,11 +22,14 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.InformationSource;
+import epnoi.model.Resource;
 
 public class InformationSourceRDFDAO extends RDFDAO {
 
-	public void create(InformationSource informationSource) {
+	// ---------------------------------------------------------------------------------------------------------------------
 
+	public void create(Resource resource) {
+		InformationSource informationSource = (InformationSource) resource;
 		String informationSourceURI = informationSource.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <"
@@ -40,13 +42,20 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
+
 		vur.exec();
 
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+
 
 	public void update(InformationSource informationSource) {
 
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+
 
 	public InformationSource read(String URI) {
 		InformationSource informationSource = new InformationSource();
@@ -73,9 +82,12 @@ public class InformationSourceRDFDAO extends RDFDAO {
 			} else if (RDFHelper.TYPE_PROPERTY.equals(predicateURI)) {
 				informationSource.setType(t.getObject().getURI().toString());
 			}
+
 		}
 		return informationSource;
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Boolean exists(String URI) {
 
@@ -85,6 +97,8 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------------
+	
 	public void showTriplets() {
 
 		Query sparql = QueryFactory.create("SELECT * FROM <"
@@ -104,6 +118,8 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------------
+	
 	public static void main(String[] args) {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 

@@ -10,7 +10,7 @@
 		<password>dba</password>
 	</virtuosoInformationStore>
 	<rssHoarder>
-		<URI>http://whatever</URI>
+		<URI>http://epnoi.org/rssHoarder</URI>
 		<path>/proofs/rsshoarder</path>
 		<feed>
 			<name>slashdot</name>
@@ -25,4 +25,8 @@
 			<interval>3</interval>
 		</feed>
 	</rssHoarder>
+	<rssHarvester>
+		<URI>http://epnoi.org/rssHarvester</URI>
+		<path>/proofs/rsshoarder</path>
+	</rssHarvester>
 </parametersModel>

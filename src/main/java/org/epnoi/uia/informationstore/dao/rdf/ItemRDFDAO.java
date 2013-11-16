@@ -23,13 +23,14 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.Feed;
 import epnoi.model.Item;
+import epnoi.model.Resource;
 
 public class ItemRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Item item) {
-
+	public void create(Resource resource) {
+		Item item= (Item)resource;
 		String informationSourceURI = item.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <"
@@ -116,11 +117,11 @@ public class ItemRDFDAO extends RDFDAO {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 		String URI = "http://algo";
-		Feed informationSource = new Feed();
+		Feed feed = new Feed();
 
-		informationSource.setURI(URI);
-		informationSource.setTitle("arXiv");
-		informationSource
+		feed.setURI(URI);
+		feed.setTitle("arXiv");
+		feed
 				.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 
 		FeedRDFDAO informationSourceRDFDAO = new FeedRDFDAO();
@@ -136,7 +137,7 @@ public class ItemRDFDAO extends RDFDAO {
 		if (!informationSourceRDFDAO.exists(URI)) {
 			System.out.println("The information source doesn't exist");
 
-			informationSourceRDFDAO.create(informationSource);
+			informationSourceRDFDAO.create(feed);
 		} else {
 			System.out.println("The information source already exists!");
 		}

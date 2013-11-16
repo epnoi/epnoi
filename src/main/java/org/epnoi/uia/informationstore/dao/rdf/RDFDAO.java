@@ -12,16 +12,20 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 
-public class RDFDAO {
+import epnoi.model.Resource;
+
+public abstract class RDFDAO {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 	protected VirtuosoInformationStoreParameters parameters;
 	protected VirtGraph graph = null;
 
+	abstract public void create(Resource resource);
+
 	public void init(InformationStoreParameters parameters) {
-		
-		
-		System.out.println(".............................................. "+parameters);
+
+		System.out.println(".............................................. "
+				+ parameters);
 		this.parameters = (VirtuosoInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
@@ -80,6 +84,21 @@ public class RDFDAO {
 		// System.out.println("--->"+new Triple(foo1,,baz1));
 		return set.contains(foo1, Node.ANY, Node.ANY);
 
+	}
+
+	public static boolean test(VirtuosoInformationStoreParameters parameters) {
+		boolean testResult;
+		try {
+			String virtuosoURL = "jdbc:virtuoso://" + parameters.getHost()
+					+ ":" + parameters.getPort();
+			VirtGraph testGraph = new VirtGraph(parameters.getGraph(),
+					virtuosoURL, parameters.getUser(), parameters.getPassword());
+			testResult = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			testResult = false;
+		}
+		return testResult;
 	}
 
 }

@@ -23,18 +23,20 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.Feed;
 import epnoi.model.Item;
+import epnoi.model.Resource;
 
 public class FeedRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Feed feed) {
+	public void create(Resource resource) {
+		Feed feed = (Feed) resource;
 
-		String informationSourceURI = feed.getURI();
+		String feedURI = feed.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + FeedRDFHelper.FEED_CLASS + "> ; " + "<"
+				+ this.parameters.getGraph() + "> { <" + feedURI + "> a <"
+				+ FeedRDFHelper.FEED_CLASS + "> ; " + "<"
 				+ RDFHelper.URL_PROPERTY + ">" + " \"" + feed.getLink()
 				+ "\"  ; " + "<" + RDFHelper.TITLE_PROPERTY + ">" + " \""
 				+ feed.getTitle() + "\" " + " . }";
@@ -45,20 +47,23 @@ public class FeedRDFDAO extends RDFDAO {
 		vur.exec();
 		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
 		itemRDFDAO.init(this.parameters);
-		Node foo1 = Node.createURI(informationSourceURI);
+		Node uriNode = Node.createURI(feedURI);
 		Node bar1 = Node.createURI(RDFOAIOREHelper.AGGREGATES_PROPERTY);
 		for (Item item : feed.getItems()) {
+			System.out.println(item.getURI());
+			if (item.getURI() != null) {
+				Node baz1 = Node.createURI(item.getURI());
 
-			Node baz1 = Node.createURI(item.getURI());
-
-			this.graph.add(new Triple(foo1, bar1, baz1));
-			itemRDFDAO.create(item);
+				this.graph.add(new Triple(uriNode, bar1, baz1));
+				itemRDFDAO.create(item);
+			}
 		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void update(Feed feed) {
+	public void update(Resource resource) {
+		Feed feed = (Feed) resource;
 		// TODO to be done
 	}
 
@@ -88,10 +93,9 @@ public class FeedRDFDAO extends RDFDAO {
 				feed.setLink(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.COMMENT_PROPERTY.equals(predicateURI)) {
 				feed.setDescription(t.getObject().getURI().toString());
-			}else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
+			} else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
 				feed.setCopyright(t.getObject().getURI().toString());
-			}
-			else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
+			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
 				feed.setLanguage(t.getObject().getURI().toString());
 			} else if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
 				System.out.println("predicateURI " + predicateURI);
