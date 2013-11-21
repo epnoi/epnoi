@@ -1,4 +1,4 @@
-package org.epnoi.uia.harvester.rss;
+package org.epnoi.uia.harvester.rss.parse;
 
 import java.io.IOException;
 import java.io.InputStream;

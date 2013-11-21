@@ -1,4 +1,4 @@
-package org.epnoi.uia.harvester.rss;
+package org.epnoi.uia.harvester.rss.parse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,8 @@ public class RSSFeedParser {
 
 	final URL url;
 
+	//-----------------------------------------------------------------------
+	
 	public RSSFeedParser(String feedUrl) {
 		try {
 			this.url = new URL(feedUrl);
@@ -36,6 +38,8 @@ public class RSSFeedParser {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	//-----------------------------------------------------------------------
 
 	public Feed readFeed() {
 		Feed feed = null;
@@ -67,6 +71,7 @@ public class RSSFeedParser {
 
 						if (isFeedHeader) {
 							isFeedHeader = false;
+							
 							feed = new Feed(title, link, description, language,
 									copyright, pubdate);
 						}
@@ -77,8 +82,11 @@ public class RSSFeedParser {
 
 					} else if (DESCRIPTION.equals(localPart)) {
 						description = getCharacterData(event, eventReader);
-					} else if (LINK.equals(localPart)) {
+					} else if (LINK.equals(event.asStartElement().getName().toString())) {
 						link = getCharacterData(event, eventReader);
+						System.out.println("LINK-----"+link+"--------->>>>>>"+event.asStartElement().getName());
+						System.out.println("TITLE> "+title);
+						
 					} else if (GUID.equals(localPart)) {
 						guid = getCharacterData(event, eventReader);
 					} else if (LANGUAGE.equals(localPart)) {
@@ -112,6 +120,8 @@ public class RSSFeedParser {
 		}
 		return feed;
 	}
+	
+	//-----------------------------------------------------------------------
 
 	private String getCharacterData(XMLEvent event, XMLEventReader eventReader)
 			throws XMLStreamException {
@@ -122,6 +132,9 @@ public class RSSFeedParser {
 		}
 		return result;
 	}
+	
+	//-----------------------------------------------------------------------
+
 
 	private InputStream read() {
 		try {

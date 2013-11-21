@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.harvester.RSSHarvester;
+import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationaccess.InformationAccess;
 import org.epnoi.uia.informationaccess.InformationAccessImplementation;
@@ -16,6 +16,7 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.RSSHoarderParameters;
+import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class Core {
@@ -49,9 +50,9 @@ public class Core {
 
 		this._informationStoresInitialization();
 		this._initInformationAccess();
-		this._hoardersInitialization();
-		this._harvestersInitialization();
-
+		/*
+		 * this._hoardersInitialization(); this._harvestersInitialization();
+		 */
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,6 +84,27 @@ public class Core {
 					InformationStoreHelper.RDF_INFORMATION_STORE);
 
 		}
+		System.out.println("---> "+parametersModel.getSolrInformationStore());
+		for (SOLRInformationStoreParameters solrInformationStoreParameters : parametersModel
+				.getSolrInformationStore()) {
+			System.out.println("-------------> "
+					+ solrInformationStoreParameters);
+			System.out.println("-- http://"
+					+ solrInformationStoreParameters.getHost() + ":"
+					+ solrInformationStoreParameters.getPort()
+					+ solrInformationStoreParameters.getPath());
+
+			InformationStore newInformationStore = InformationStoreFactory
+					.buildInformationStore(solrInformationStoreParameters,
+							parametersModel);
+
+			this.informationStores.put(solrInformationStoreParameters.getURI(),
+					newInformationStore);
+
+			_addInformationStoreByType(newInformationStore,
+					InformationStoreHelper.SOLR_INFORMATION_STORE);
+
+		}
 	}
 
 	private void _initInformationAccess() {
@@ -93,13 +115,13 @@ public class Core {
 
 	private void _addInformationStoreByType(InformationStore informationStore,
 			String type) {
-		List<InformationStore> informationsStores = this.informationStoresByType
+		List<InformationStore> informationsStoresOfType = this.informationStoresByType
 				.get(type);
-		if (informationsStores == null) {
-			informationsStores = new ArrayList<InformationStore>();
-			this.informationStoresByType.put(type, informationsStores);
+		if (informationsStoresOfType == null) {
+			informationsStoresOfType = new ArrayList<InformationStore>();
+			this.informationStoresByType.put(type, informationsStoresOfType);
 		}
-		informationsStores.add(informationStore);
+		informationsStoresOfType.add(informationStore);
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------

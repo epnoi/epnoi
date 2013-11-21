@@ -1,4 +1,4 @@
-package org.epnoi.uia.harvester;
+package org.epnoi.uia.harvester.rss;
 
 import java.awt.Toolkit;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.harvester.rss.RSSFeedParser;
+import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.epnoi.uia.parameterization.manifest.ManifestHandler;

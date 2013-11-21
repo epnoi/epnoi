@@ -31,7 +31,7 @@ public class FeedRDFDAO extends RDFDAO {
 
 	public void create(Resource resource) {
 		Feed feed = (Feed) resource;
-
+System.out.println("--------------------------------------------------------->"+feed);
 		String feedURI = feed.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <"

@@ -1,9 +1,9 @@
 package org.epnoi.uia.informationstore;
 
-import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
-import org.epnoi.uia.informationstore.dao.rdf.RDFDAOFactory;
+import org.epnoi.uia.informationstore.dao.solr.SOLRDAO;
+import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
 import epnoi.model.InformationSource;
 import epnoi.model.Resource;
@@ -13,30 +13,40 @@ public class SOLRInformationStore implements InformationStore {
 	SOLRInformationStoreParameters parameters;
 	SOLRDAOFactory datoFactory;
 
+	// ------------------------------------------------------------------------
+	
 	public void close() {
 		// TODO Auto-generated method stub
 
 	}
+	
+	// ------------------------------------------------------------------------
 
 	public void init(InformationStoreParameters parameters) {
 
-		this.parameters = (VirtuosoInformationStoreParameters) parameters;
-		this.datoFactory = new RDFDAOFactory(this.parameters);
+		this.parameters = (SOLRInformationStoreParameters) parameters;
+		this.datoFactory = new SOLRDAOFactory(this.parameters);
 
 	}
+	
+	// ------------------------------------------------------------------------
 
 	public boolean test() {
 
-		return RDFDAO.test(this.parameters);
+		return SOLRDAO.test(this.parameters);
 	}
+	
+	// ------------------------------------------------------------------------
 
 	public InformationStoreParameters getParameters() {
 		return this.parameters;
 	}
+	
+	// ------------------------------------------------------------------------
 
 	public void put(Resource resource) {
 
-		RDFDAO rdfDAO = this.datoFactory.build(resource);
+		SOLRDAO rdfDAO = this.datoFactory.build(resource);
 
 		if (!rdfDAO.exists(resource.getURI())) {
 			System.out.println("The information source doesn't exist");
@@ -48,6 +58,8 @@ public class SOLRInformationStore implements InformationStore {
 		}
 
 	}
+	
+	// ------------------------------------------------------------------------
 
 	public Resource get(String URI) {
 		return new InformationSource();
