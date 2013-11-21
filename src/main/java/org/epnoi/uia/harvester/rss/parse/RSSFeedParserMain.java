@@ -1,4 +1,4 @@
-package org.epnoi.uia.harvester.rss;
+package org.epnoi.uia.harvester.rss.parse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,12 @@ import epnoi.model.Item;
 
 
 public class RSSFeedParserMain {
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
 
 		List<String> feedChannels = new ArrayList<String>();
 		
-		feedChannels.add("file://localhost/proofs/rsshoarder/slashdot/harvests/%5B2013-10-28%5D.xml");
-		feedChannels.add("file://localhost/proofs/rsshoarder/highScalability/harvests/%5B2013-10-28%5D.xml");
+		feedChannels.add("file://localhost/proofs/rsshoarder/slashdot/harvests/[2013-11-19].xml");
+		//feedChannels.add("file://localhost/proofs/rsshoarder/highScalability/harvests/%5B2013-10-28%5D.xml");
 
 		for (String feedChannel : feedChannels) {
 

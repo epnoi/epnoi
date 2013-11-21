@@ -37,7 +37,7 @@ public class UIAResource extends UIAService {
 		uia.setTimestamp(timeStamp);
 		
 		
-			
+			System.out.println("--->>>-->> "+uiaCore.getInformationStores());
 			for (InformationStore informationStore: uiaCore.getInformationStores()){
 				org.epnoi.uia.rest.services.response.InformationStore informationStoreResponse = new org.epnoi.uia.rest.services.response.InformationStore();
 				System.out.println("----> "+informationStore);
