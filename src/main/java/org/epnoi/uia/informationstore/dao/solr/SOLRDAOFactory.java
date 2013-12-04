@@ -11,9 +11,14 @@ import epnoi.model.Resource;
 public class SOLRDAOFactory {
 	SOLRInformationStoreParameters parameters;
 
+	// --------------------------------------------------------------------------------
+
 	public SOLRDAOFactory(InformationStoreParameters parameters) {
 		this.parameters = (SOLRInformationStoreParameters) parameters;
 	}
+
+	// --------------------------------------------------------------------------------
+
 
 	public SOLRDAO build(Resource resource) throws DAONotFoundException {
 

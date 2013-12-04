@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parametersModel>
 	<virtuosoInformationStore>
-		<URI>recommenderF</URI>
+		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
 		<host>localhost</host>
 		<port>1111</port>
@@ -9,6 +9,13 @@
 		<user>dba</user>
 		<password>dba</password>
 	</virtuosoInformationStore>
+	<solrInformationStore>
+		<URI>http://solrInformationStore</URI>
+		<path>solr</path>
+		<host>localhost</host>
+		<port>8983</port>
+		<core>OAIPMH</core>
+	</solrInformationStore>
 	<rssHoarder>
 		<URI>http://epnoi.org/rssHoarder</URI>
 		<path>/proofs/rsshoarder</path>

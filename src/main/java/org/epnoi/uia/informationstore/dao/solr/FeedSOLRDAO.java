@@ -1,18 +1,15 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
-import virtuoso.jena.driver.VirtuosoQueryExecution;
-import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrInputDocument;
+import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
+import virtuoso.jena.driver.VirtGraph;
 import epnoi.model.Feed;
+import epnoi.model.Item;
 import epnoi.model.Resource;
 
 public class FeedSOLRDAO extends SOLRDAO {
@@ -21,34 +18,53 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource) {
 		Feed feed = (Feed) resource;
-/*
-		String feedURI = feed.getURI();
 
-		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + feedURI + "> a <"
-				+ FeedRDFHelper.FEED_CLASS + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \"" + feed.getLink()
-				+ "\"  ; " + "<" + RDFHelper.TITLE_PROPERTY + ">" + " \""
-				+ feed.getTitle() + "\" " + " . }";
-		System.out.println("---> " + queryExpression);
-
-		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression, this.graph);
-		vur.exec();
-		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
-		itemRDFDAO.init(this.parameters);
-		Node uriNode = Node.createURI(feedURI);
-		Node bar1 = Node.createURI(RDFOAIOREHelper.AGGREGATES_PROPERTY);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		for (Item item : feed.getItems()) {
-			System.out.println(item.getURI());
-			if (item.getURI() != null) {
-				Node baz1 = Node.createURI(item.getURI());
+			SolrInputDocument document = _indexItem(item);
 
-				this.graph.add(new Triple(uriNode, bar1, baz1));
-				itemRDFDAO.create(item);
+			try {
+				this.server.add(document);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		*/
+
+		try {
+			this.server.commit();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private SolrInputDocument _indexItem(Item item) {
+
+		SolrInputDocument newDocument = new SolrInputDocument();
+
+		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getLink());
+
+		/*
+		 * SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd");
+		 * Date date = dateFormat.parse(item.getPubDate());
+		 * 
+		 * newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
+		 * item.getDescription());
+		 */
+
+		newDocument.addField("type", "");
+
+		return newDocument;
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -61,52 +77,10 @@ public class FeedSOLRDAO extends SOLRDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public Feed read(String URI) {
-		
+
 		Feed feed = new Feed();
 		feed.setURI(URI);
-		/*
-		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
-		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
 
-		Model model = vqe.execDescribe();
-		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results:");
-		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
-			Triple t = (Triple) i.next();
-			System.out.println(" { " + t.getSubject() + " SSS "
-					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
-			String predicateURI = t.getPredicate().getURI();
-			ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
-			itemRDFDAO.init(this.parameters);
-			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
-				feed.setTitle(t.getObject().getLiteral().getValue().toString());
-			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
-				feed.setLink(t.getObject().getLiteral().getValue().toString());
-			} else if (RDFHelper.COMMENT_PROPERTY.equals(predicateURI)) {
-				feed.setDescription(t.getObject().getURI().toString());
-			} else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
-				feed.setCopyright(t.getObject().getURI().toString());
-			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
-				feed.setLanguage(t.getObject().getURI().toString());
-			} else if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
-				System.out.println("predicateURI " + predicateURI);
-				String itemURI = t.getObject().toString();
-
-				System.out.println("itemURI " + itemURI);
-				Item item = itemRDFDAO.read(itemURI);
-				System.out.println(".>>>" + item);
-				if (item != null) {
-					feed.addItem(item);
-					System.out.println("items> " + feed.getItems());
-				}
-
-				// feed.setLink(t.getObject().getLiteral().getValue().toString());
-			}
-
-		}
-		*/
 		return feed;
 	}
 
@@ -114,44 +88,24 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public Boolean exists(String URI) {
 		boolean exists = true;
-/*
-		Node foo1 = NodeFactory.createURI(URI);
-
-		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
-*/
+		/*
+		 * Node foo1 = NodeFactory.createURI(URI);
+		 * 
+		 * return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
+		 */
 		return exists;
 	}
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public void show() {
-		/*
-		System.out
-				.println("SHOWING TRIPLETS-----------------------------------------------------------------------------------------------------");
 
-		Query sparql = QueryFactory.create("SELECT * FROM <"
-				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
-
-		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
-				.create(sparql, this.graph);
-
-		ResultSet results = virtuosoQueryEngine.execSelect();
-		while (results.hasNext()) {
-			QuerySolution result = results.nextSolution();
-			RDFNode s = result.get("s");
-			RDFNode p = result.get("p");
-			RDFNode o = result.get("o");
-			System.out.println(" { " + s + " | " + p + " | " + o + " }");
-		}
-		System.out
-				.println("//-----------------------------------------------------------------------------------------------------");
-	*/
 	}
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		/*
+
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 		String feedURI = "http://feed";
@@ -165,24 +119,22 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		itemA.setURI("http://uriA");
 		itemA.setTitle("titleA");
-		itemA.setLink("http://urlA");
+		itemA.setLink("http://www.cadenaser.com");
 
 		Item itemB = new Item();
 
 		itemB.setURI("http://uriB");
 		itemB.setTitle("titleB");
-		itemB.setLink("http://urlB");
+		itemB.setLink("http://www.elpais.es");
 
 		feed.addItem(itemA);
 		feed.addItem(itemB);
 
-		FeedRDFDAO feedRDFDAO = new FeedRDFDAO();
-		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
-		parameters.setGraph("http://feedTest");
+		FeedSOLRDAO feedRDFDAO = new FeedSOLRDAO();
+		SOLRInformationStoreParameters parameters = new SOLRInformationStoreParameters();
+		parameters.setCore("proofs");
 		parameters.setHost("localhost");
 		parameters.setPort("1111");
-		parameters.setUser("dba");
-		parameters.setPassword("dba");
 
 		feedRDFDAO.init(parameters);
 		System.out.println(".,.,.,.,jjjjjjj");
@@ -194,23 +146,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 			System.out.println("The information source already exists!");
 		}
 
-		feedRDFDAO.showTriplets();
-		VirtGraph graph = new VirtGraph(parameters.getGraph(), virtuosoURL,
-				"dba", "dba");
-		Feed readedInformationSource = feedRDFDAO.read(feedURI);
+		feedRDFDAO.show();
 
-		System.out.println("Readed information source -> "
-				+ readedInformationSource);
-
-		for (Item item : readedInformationSource.getItems()) {
-			System.out.println("              ---------->" + item);
-		}
-
-		if (feedRDFDAO.exists(feedURI)) {
-			System.out.println("The information source now exists :) ");
-		}
-
-		graph.clear();
-		*/
 	}
 }

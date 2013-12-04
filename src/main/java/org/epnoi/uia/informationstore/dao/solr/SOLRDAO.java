@@ -1,5 +1,9 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
+import java.util.logging.Logger;
+
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.epnoi.uia.core.Core;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
@@ -16,13 +20,17 @@ import com.hp.hpl.jena.query.ResultSet;
 import epnoi.model.Resource;
 
 public abstract class SOLRDAO {
-	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
+	private static final Logger logger = Logger.getLogger(SOLRDAO.class.getName());
+	private String solrURL = "http://localhost:8983";
 
 	protected SOLRInformationStoreParameters parameters;
+	protected HttpSolrServer server;
 	
 
 	abstract public void create(Resource resource);
 
+	// --------------------------------------------------------------------------------
+	
 	public void init(InformationStoreParameters parameters) {
 
 		System.out.println(".............................................. "
@@ -30,40 +38,40 @@ public abstract class SOLRDAO {
 		this.parameters = (SOLRInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
-			this.virtuosoURL = "jdbc:virtuoso://" + this.parameters.getHost()
-					+ ":" + this.parameters.getPort();
-		
+			
+			this.solrURL="http://" + parameters.getHost()
+					+ ":" + parameters.getPort()+"/"+parameters.getPath();
+			this.server = new HttpSolrServer(this.solrURL);
 
 		}
 	}
 
-	// ---------------------------------------------------------------------------------------------------------------------------------------
-
-	/*
-	public ResultSet makeQuery(String query) {
-
-		 Query sparql =
-		 QueryFactory.create("select * from <Example3> where {?s ?p ?o}");
-		
-		Query sparql = QueryFactory.create(query);
-
-		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
-
-		ResultSet results = vqe.execSelect();
-		return results;
-	}
-*/
-	// ---------------------------------------------------------------------------------------------------------------------------------------
-
+	// --------------------------------------------------------------------------------
+	
 	public Boolean exists(String URI) {
 
 		return true;
 	}
 
+	// --------------------------------------------------------------------------------
+	
 	public static boolean test(InformationStoreParameters parameters) {
-		boolean testResult=true;
-		
+		SOLRInformationStoreParameters testParameters = (SOLRInformationStoreParameters)parameters;
+		boolean testResult;
+		try {
+			
+			String solrURL = "http://" + parameters.getHost()
+					+ ":" + testParameters.getPort()+"/"+testParameters.getPath()+"/"+testParameters.getCore();
+			
+			logger.info("Testing the URL "+solrURL);
+			HttpSolrServer server = new HttpSolrServer(solrURL);
+			server.commit();
+			
+			testResult = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			testResult = false;
+		}
 		return testResult;
 	}
 
