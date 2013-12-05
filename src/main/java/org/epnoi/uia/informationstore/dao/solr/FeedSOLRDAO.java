@@ -2,12 +2,17 @@ package org.epnoi.uia.informationstore.dao.solr;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
-import virtuoso.jena.driver.VirtGraph;
 import epnoi.model.Feed;
 import epnoi.model.Item;
 import epnoi.model.Resource;
@@ -51,7 +56,8 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
-		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getLink());
+		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getURI());
+		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, item.getURI());
 
 		/*
 		 * SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd");
@@ -61,7 +67,10 @@ public class FeedSOLRDAO extends SOLRDAO {
 		 * item.getDescription());
 		 */
 
-		newDocument.addField("type", "");
+		newDocument
+				.addField(
+						"description",
+						"rewrwe ewprowier  werpweoriwe rewpoirwe rpoweirpewor ewrweur ifdusfisdfoisdu w oriwue rowieu");
 
 		return newDocument;
 
@@ -87,7 +96,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public Boolean exists(String URI) {
-		boolean exists = true;
+		boolean exists = false;
 		/*
 		 * Node foo1 = NodeFactory.createURI(URI);
 		 * 
@@ -99,14 +108,39 @@ public class FeedSOLRDAO extends SOLRDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public void show() {
+		
+		this.query("uri:"+ClientUtils.escapeQueryChars("http://uriA0"));
+		//this.query("uri%3Ahttp//uriA2");
+	}
 
+	// ---------------------------------------------------------------------------------------------------
+
+	public List<String> query(String query) {
+		List<String> uris = new ArrayList<String>();
+		
+		System.out.println("-.-.-.-.-.-.-----> "+ClientUtils.escapeQueryChars(query));
+		
+		try {
+			QueryResponse queryResponse = super.makeQuery(query);
+			SolrDocumentList docs = queryResponse.getResults();
+			if (docs != null) {
+				System.out.println(docs.getNumFound() + " documents found, "
+						+ docs.size() + " returned : ");
+				for (int i = 0; i < docs.size(); i++) {
+					SolrDocument doc = docs.get(i);
+					System.out.println("\t" + doc.toString());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return uris;
 	}
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-
-		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 		String feedURI = "http://feed";
 		Feed feed = new Feed();
@@ -115,35 +149,37 @@ public class FeedSOLRDAO extends SOLRDAO {
 		feed.setTitle("arXiv");
 		feed.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 
-		Item itemA = new Item();
+		for (int i = 0; i < 1000; i++) {
+			Item itemA = new Item();
 
-		itemA.setURI("http://uriA");
-		itemA.setTitle("titleA");
-		itemA.setLink("http://www.cadenaser.com");
-
+			itemA.setURI("http://uriA" + i);
+			itemA.setTitle("titleA" + i);
+			itemA.setLink("http://www.cadenaser.com");
+			feed.addItem(itemA);
+		}
 		Item itemB = new Item();
 
 		itemB.setURI("http://uriB");
 		itemB.setTitle("titleB");
 		itemB.setLink("http://www.elpais.es");
 
-		feed.addItem(itemA);
 		feed.addItem(itemB);
 
 		FeedSOLRDAO feedRDFDAO = new FeedSOLRDAO();
 		SOLRInformationStoreParameters parameters = new SOLRInformationStoreParameters();
-		parameters.setCore("proofs");
+		parameters.setPath("solr");
+		parameters.setCore("proofsCore");
 		parameters.setHost("localhost");
-		parameters.setPort("1111");
+		parameters.setPort("8983");
 
 		feedRDFDAO.init(parameters);
-		System.out.println(".,.,.,.,jjjjjjj");
-		if (!feedRDFDAO.exists(feedURI)) {
-			System.out.println("The information source doesn't exist");
+
+		if (SOLRDAO.test(parameters)) {
+			System.out.println("Test OK!");
 
 			feedRDFDAO.create(feed);
 		} else {
-			System.out.println("The information source already exists!");
+			System.out.println("Test failed!!!");
 		}
 
 		feedRDFDAO.show();
