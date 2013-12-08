@@ -3,16 +3,17 @@ package org.epnoi.uia.informationstore.dao.solr;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
+import epnoi.model.Context;
 import epnoi.model.Feed;
 import epnoi.model.Item;
 import epnoi.model.Resource;
@@ -27,7 +28,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		for (Item item : feed.getItems()) {
-			SolrInputDocument document = _indexItem(item);
+			SolrInputDocument document = _indexItem(item, null);
 
 			try {
 				this.server.add(document);
@@ -52,7 +53,42 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	}
 
-	private SolrInputDocument _indexItem(Item item) {
+	// --------------------------------------------------------------------------------
+
+	public void create(Resource resource, Context context) {
+		Feed feed = (Feed) resource;
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		for (Item item : feed.getItems()) {
+			SolrInputDocument document = _indexItem(item, context);
+
+			try {
+				this.server.add(document);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			this.server.commit();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	// --------------------------------------------------------------------------------
+
+	private SolrInputDocument _indexItem(Item item, Context context) {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
@@ -60,20 +96,35 @@ public class FeedSOLRDAO extends SOLRDAO {
 		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, item.getURI());
 
 		/*
-		 * SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd");
-		 * Date date = dateFormat.parse(item.getPubDate());
+		 * METER LA FECHA!!!! SimpleDateFormat dateFormat = new
+		 * SimpleDateFormat( "yyyy-MM-dd"); Date date =
+		 * dateFormat.parse(item.getPubDate());
 		 * 
 		 * newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
 		 * item.getDescription());
 		 */
 
-		newDocument
-				.addField(
-						"description",
-						"rewrwe ewprowier  werpweoriwe rewpoirwe rpoweirpewor ewrweur ifdusfisdfoisdu w oriwue rowieu");
+		newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
+				item.getDescription());
+
+		if (context != null) {
+			List<String> keywords = (List<String>) context.getElements().get(
+					item.getURI());
+			newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY,
+					_concatKeywords(keywords));
+		}
 
 		return newDocument;
 
+	}
+
+	private String _concatKeywords(List<String> keywords) {
+		String listString = "";
+
+		for (String s : keywords) {
+			listString += s + "\t";
+		}
+		return listString;
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -108,27 +159,28 @@ public class FeedSOLRDAO extends SOLRDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public void show() {
-		
-		this.query("uri:"+ClientUtils.escapeQueryChars("http://uriA0"));
-		//this.query("uri%3Ahttp//uriA2");
+		this.query("uri:*");
+		// this.query(ClientUtils.escapeQueryChars("http://uriA0"));
+		// this.query("uri%3Ahttp//uriA2");
 	}
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public List<String> query(String query) {
 		List<String> uris = new ArrayList<String>();
-		
-		System.out.println("-.-.-.-.-.-.-----> "+ClientUtils.escapeQueryChars(query));
-		
+
+		System.out.println("-.-.-.-.-.-.-----> " + query);
+
 		try {
 			QueryResponse queryResponse = super.makeQuery(query);
 			SolrDocumentList docs = queryResponse.getResults();
 			if (docs != null) {
-				System.out.println(docs.getNumFound() + " documents found, "
-						+ docs.size() + " returned : ");
+				// System.out.println(docs.getNumFound() + " documents found, "
+				// + docs.size() + " returned : ");
 				for (int i = 0; i < docs.size(); i++) {
-					SolrDocument doc = docs.get(i);
-					System.out.println("\t" + doc.toString());
+					SolrDocument document = docs.get(i);
+					// System.out.println("\t" + document.toString());
+					uris.add((String) document.get(SOLRDAOHelper.URI_PROPERTY));
 				}
 			}
 
@@ -144,6 +196,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		String feedURI = "http://feed";
 		Feed feed = new Feed();
+		Context context = new Context();
 
 		feed.setURI(feedURI);
 		feed.setTitle("arXiv");
@@ -155,14 +208,21 @@ public class FeedSOLRDAO extends SOLRDAO {
 			itemA.setURI("http://uriA" + i);
 			itemA.setTitle("titleA" + i);
 			itemA.setLink("http://www.cadenaser.com");
+			itemA.setDescription("Description for item" + i);
+			List<String> kewords = Arrays.asList("mi" + i, "mama" + i,
+					"me" + i, "mima" + i);
+			context.getElements().put(itemA.getURI(), kewords);
 			feed.addItem(itemA);
 		}
+
 		Item itemB = new Item();
 
 		itemB.setURI("http://uriB");
 		itemB.setTitle("titleB");
 		itemB.setLink("http://www.elpais.es");
-
+		itemB.setDescription("bla bla bla gato blab lba lba");
+		List<String> kewords = Arrays.asList("mi", "mama", "me", "mima", "cosarara");
+		context.getElements().put(itemB.getURI(), kewords);
 		feed.addItem(itemB);
 
 		FeedSOLRDAO feedRDFDAO = new FeedSOLRDAO();
@@ -177,12 +237,17 @@ public class FeedSOLRDAO extends SOLRDAO {
 		if (SOLRDAO.test(parameters)) {
 			System.out.println("Test OK!");
 
-			feedRDFDAO.create(feed);
+			feedRDFDAO.create(feed, context);
 		} else {
-			System.out.println("Test failed!!!");
+			System.out.println("Test failed!!!, SOLR is down :( ");
 		}
 
 		feedRDFDAO.show();
+
+		List<String> queryResults = feedRDFDAO.query("content:cosarara");
+		for (String result : queryResults) {
+			System.out.println("-->" + result);
+		}
 
 	}
 }

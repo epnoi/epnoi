@@ -25,7 +25,7 @@ public abstract class SOLRDAO {
 	// --------------------------------------------------------------------------------
 
 	public void init(InformationStoreParameters parameters) {
-		
+
 		System.out.println(".............................................. "
 				+ parameters);
 		this.parameters = (SOLRInformationStoreParameters) parameters;
@@ -33,7 +33,9 @@ public abstract class SOLRDAO {
 				&& (this.parameters.getHost() != null)) {
 
 			this.solrURL = "http://" + this.parameters.getHost() + ":"
-					+ this.parameters.getPort() + "/" + this.parameters.getPath()+ "/" + this.parameters.getCore();
+					+ this.parameters.getPort() + "/"
+					+ this.parameters.getPath() + "/"
+					+ this.parameters.getCore();
 			logger.info("Initializing in the URL " + this.solrURL);
 			this.server = new HttpSolrServer(this.solrURL);
 
@@ -53,7 +55,6 @@ public abstract class SOLRDAO {
 		SOLRInformationStoreParameters testParameters = (SOLRInformationStoreParameters) parameters;
 		boolean testResult;
 		try {
-
 			String solrURL = "http://" + parameters.getHost() + ":"
 					+ testParameters.getPort() + "/" + testParameters.getPath()
 					+ "/" + testParameters.getCore();
@@ -71,18 +72,18 @@ public abstract class SOLRDAO {
 		return testResult;
 	}
 
-	
-	protected QueryResponse makeQuery(String query)
-			throws SolrServerException {
+	// --------------------------------------------------------------------------------
+
+	protected QueryResponse makeQuery(String query) throws SolrServerException {
 		ModifiableSolrParams solrParams = new ModifiableSolrParams();
-		//solrParams.set("collectionName", myCollection);
+		// solrParams.set("collectionName", myCollection);
 		solrParams.set("username", "admin");
 		solrParams.set("password", "password");
-		//solrParams.set("facet", facet);
+		// solrParams.set("facet", facet);
 		solrParams.set("q", query);
-		//solrParams.set("start", start);
-		//solrParams.set("rows", nbDocuments);
-		System.out.println("------------> "+solrParams.toString());
+		// solrParams.set("start", start);
+		// solrParams.set("rows", nbDocuments);
+		System.out.println("------------> " + solrParams.toString());
 		return server.query(solrParams);
 	}
 }

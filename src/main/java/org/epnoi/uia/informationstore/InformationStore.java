@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore;
 
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public interface InformationStore {
@@ -14,6 +15,8 @@ public interface InformationStore {
 	public Resource get(String URI);
 	
 	public void put(Resource resource);
+	
+	public void put(Resource resource, Context context);
 	
 	public InformationStoreParameters getParameters();
 }
