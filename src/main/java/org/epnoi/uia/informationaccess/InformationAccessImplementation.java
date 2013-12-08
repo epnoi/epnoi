@@ -1,13 +1,11 @@
 package org.epnoi.uia.informationaccess;
 
-import java.util.HashMap;
-
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationaccess.wrapper.InformationSourceWrapper;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
 import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
 import org.epnoi.uia.parameterization.ParametersModel;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public class InformationAccessImplementation implements InformationAccess {
@@ -25,6 +23,12 @@ public class InformationAccessImplementation implements InformationAccess {
 	public void put(Resource resource) {
 		Wrapper wrapper = this.wrapperFactory.build(resource);
 		wrapper.put(resource);
+
+	}
+	
+	public void put(Resource resource, Context context) {
+		Wrapper wrapper = this.wrapperFactory.build(resource);
+		wrapper.put(resource, context);
 
 	}
 

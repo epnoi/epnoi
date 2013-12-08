@@ -1,10 +1,16 @@
 package org.epnoi.uia.hoarder;
 
 import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,11 +28,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.parameterization.RSSFeedParameters;
 import org.epnoi.uia.parameterization.RSSHoarderParameters;
 import org.epnoi.uia.parameterization.manifest.ManifestHandler;
 import org.epnoi.uia.parameterization.manifest.RSSManifest;
 import org.w3c.dom.Document;
+
+import epnoi.model.Feed;
+import epnoi.model.Item;
 
 public class RSSHoarder {
 	private RSSHoarderParameters parameters;
@@ -36,10 +46,14 @@ public class RSSHoarder {
 	int numberFeeds;
 	HashMap<String, RSSHoardTask> hoardTasks = new HashMap<String, RSSHoarder.RSSHoardTask>();
 
+	// ----------------------------------------------------------------------------------------
+
 	public RSSHoarder(RSSHoarderParameters parameters) {
 		this.parameters = parameters;
 		this.numberFeeds = parameters.getFeed().size();
 	}
+
+	// ----------------------------------------------------------------------------------------
 
 	public synchronized void remove() {
 		numberFeeds--;
@@ -54,6 +68,8 @@ public class RSSHoarder {
 		}
 	}
 
+	// ----------------------------------------------------------------------------------------
+
 	public void start() {
 		toolkit = Toolkit.getDefaultToolkit();
 		timer = new Timer();
@@ -67,27 +83,34 @@ public class RSSHoarder {
 		}
 	}
 
+	// ----------------------------------------------------------------------------------------
+
 	public void cancelTask(String taskURI) {
 		RSSHoardTask task = this.hoardTasks.get(taskURI);
 		task.cancel();
 	}
 
+	// ----------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------
+
 	class RSSHoardTask extends TimerTask {
 		RSSFeedParameters feedParameters;
 		private int numWarningBeeps = 3;
+
+		// ----------------------------------------------------------------------------------------
 
 		public RSSHoardTask(RSSFeedParameters parameters) {
 			this.feedParameters = parameters;
 		}
 
+		// ----------------------------------------------------------------------------------------
+
 		public void _initializeHoarding() {
 			String manifestPath = parameters.getPath() + "/"
 					+ this.feedParameters.getName() + "/manifest.xml";
-		
 
 			if (!new File(manifestPath).exists()) {
-				
-				
+
 				String harvestDirectoryName = parameters.getPath() + "/"
 						+ feedParameters.getName() + "/" + "harvests";
 				System.out.println("directory -> " + harvestDirectoryName);
@@ -96,16 +119,18 @@ public class RSSHoarder {
 					boolean created = harvestDirectory.mkdirs();
 					System.out.println("Directory created? " + created);
 				}
-							
+
 				RSSManifest manifest = new RSSManifest();
 				manifest.setName(this.feedParameters.getName());
 				manifest.setURL(this.feedParameters.getURL());
 				manifest.setURI(this.feedParameters.getURI());
 				manifest.setInterval(this.feedParameters.getInterval());
-				
+
 				ManifestHandler.marshallToFile(manifest, manifestPath);
 			}
 		}
+
+		// ----------------------------------------------------------------------------------------
 
 		public void run() {
 			_initializeHoarding();
@@ -127,6 +152,8 @@ public class RSSHoarder {
 
 			}
 		}
+
+		// ----------------------------------------------------------------------------------------
 
 		public void hoard() {
 			try {
@@ -157,8 +184,6 @@ public class RSSHoarder {
 						+ "]";
 				System.out.println(baseFileName);
 
-				
-
 				System.out.println("--> crearia si no existe "
 						+ parameters.getPath() + "/"
 						+ this.feedParameters.getName() + "/harvests/"
@@ -166,17 +191,16 @@ public class RSSHoarder {
 
 				String outputFileName = parameters.getPath() + "/"
 						+ this.feedParameters.getName() + "/harvests/"
-						+ baseFileName + ".xml";
+						+ baseFileName;
 
-				
-				OutputStream outputFile = null;
+				OutputStream outputFileStream = null;
 
-				if (!new File(outputFileName).isFile()) {
+				if (!new File(outputFileName+ ".xml").isFile()) {
 					try {
 						// "/proofs/rsshoarder/slashdot/harvests/whatever.xml"
-						File ooutputFile = new File(outputFileName);
+						File ooutputFile = new File(outputFileName + ".xml");
 						// ooutputFile.createNewFile();
-						outputFile = new FileOutputStream(ooutputFile);
+						outputFileStream = new FileOutputStream(ooutputFile);
 					} catch (Exception e) {
 						// logger.severe(e.getMessage());
 						e.printStackTrace();
@@ -185,25 +209,26 @@ public class RSSHoarder {
 
 					int index = 0;
 
-					while (new File(outputFileName).isFile()) {
+					while (new File(outputFileName+".xml").isFile()) {
 						outputFileName = parameters.getPath() + "/"
 								+ this.feedParameters.getName() + "/harvests/"
-								+ baseFileName + "_v" + index + ".xml";
+								+ baseFileName + "_v" + index;
 						index++;
 
 					}
-					File ooutputFile = new File(outputFileName);
+					File outputFile = new File(outputFileName + ".xml");
 					// ooutputFile.createNewFile();
-					outputFile = new FileOutputStream(ooutputFile);
+					outputFileStream = new FileOutputStream(outputFile);
 				}
 
-				System.out.println(outputFile);
-				//StreamResult result = new StreamResult(System.out);
-				StreamResult fileResult = new StreamResult(outputFile);
-				//transformer.transform(source, result);
+				System.out.println(outputFileStream);
+				// StreamResult result = new StreamResult(System.out);
+				StreamResult fileResult = new StreamResult(outputFileStream);
+				// transformer.transform(source, result);
 				transformer.transform(source, fileResult);
 				stream.close();
-
+				outputFileStream.close();
+				retrieveFeedContent(outputFileName);
 				System.out.println("--");
 
 			} catch (Exception e) {
@@ -211,7 +236,65 @@ public class RSSHoarder {
 			}
 
 		}
+
+		// ----------------------------------------------------------------------------------------
+
+		public void retrieveFeedContent(String feedFilePath) {
+			System.out.println(" ------> " + feedFilePath);
+			String harvestDirectoryName = feedFilePath + "Content";
+			System.out.println("directory -> " + harvestDirectoryName);
+			File harvestDirectory = new File(harvestDirectoryName);
+			if (!harvestDirectory.exists()) {
+				boolean created = harvestDirectory.mkdirs();
+				System.out.println("Directory created? " + created);
+			}
+
+			RSSFeedParser parser = new RSSFeedParser("file://" + feedFilePath
+					+ ".xml");
+			Feed feed = parser.readFeed();
+			for (Item item : feed.getItems()) {
+				retrieveURLContent(item.getLink(), harvestDirectoryName + "/"
+						+ item.getURI().replaceAll("[^A-Za-z0-9]", "") + ".txt");
+			}
+		}
 	}
+
+	// ----------------------------------------------------------------------------------------
+
+	public void retrieveURLContent(String path, String filePath) {
+		URL url;
+		InputStream is = null;
+		BufferedReader br;
+		String line;
+		PrintWriter pw = null;
+
+		try {
+			url = new URL(path);
+			is = url.openStream(); // throws an IOException
+			br = new BufferedReader(new InputStreamReader(is));
+			pw = new PrintWriter(new FileWriter(filePath));
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+				pw.println(line);
+
+			}
+		} catch (MalformedURLException mue) {
+			mue.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} finally {
+			try {
+				if (is != null)
+					is.close();
+				if (pw != null)
+					pw.close();
+			} catch (IOException ioe) {
+				// nothing to see here
+			}
+		}
+	}
+
+	// ----------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 

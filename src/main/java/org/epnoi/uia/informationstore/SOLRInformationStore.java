@@ -5,6 +5,7 @@ import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
+import epnoi.model.Context;
 import epnoi.model.InformationSource;
 import epnoi.model.Resource;
 
@@ -46,17 +47,20 @@ public class SOLRInformationStore implements InformationStore {
 
 	public void put(Resource resource) {
 
-		SOLRDAO rdfDAO = this.datoFactory.build(resource);
+		SOLRDAO solrDAO = this.datoFactory.build(resource);
 
-		if (!rdfDAO.exists(resource.getURI())) {
+		if (!solrDAO.exists(resource.getURI())) {
 			System.out.println("The information source doesn't exist");
 
-			rdfDAO.create(resource);
+			solrDAO.create(resource);
 		} else {
 			System.out.println("The information source already exists!");
-			rdfDAO.create(resource);
+			solrDAO.create(resource);
 		}
 
+	}
+	public void put(Resource resource, Context context){
+		
 	}
 	
 	// ------------------------------------------------------------------------

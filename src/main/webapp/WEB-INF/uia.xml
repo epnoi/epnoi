@@ -10,11 +10,11 @@
 		<password>dba</password>
 	</virtuosoInformationStore>
 	<solrInformationStore>
-	
 		<URI>http://solrInformationStore</URI>
 		<path>solr</path>
 		<host>localhost</host>
 		<port>8983</port>
+		<core>proofsCore</core>
 	</solrInformationStore>
 	<rssHoarder>
 		<URI>http://epnoi.org/rssHoarder</URI>
