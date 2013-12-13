@@ -14,7 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import epnoi.model.Feed;
 import epnoi.model.Item;
 
-
 public class RSSFeedParser {
 	static final String TITLE = "title";
 	static final String DESCRIPTION = "description";
@@ -29,8 +28,8 @@ public class RSSFeedParser {
 
 	final URL url;
 
-	//-----------------------------------------------------------------------
-	
+	// -----------------------------------------------------------------------
+
 	public RSSFeedParser(String feedUrl) {
 		try {
 			this.url = new URL(feedUrl);
@@ -38,8 +37,8 @@ public class RSSFeedParser {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	//-----------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------
 
 	public Feed readFeed() {
 		Feed feed = null;
@@ -64,14 +63,15 @@ public class RSSFeedParser {
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
 				if (event.isStartElement()) {
-					//Start element--------------------------------------------------------------------
+					// Start
+					// element--------------------------------------------------------------------
 					String localPart = event.asStartElement().getName()
 							.getLocalPart();
 					if (ITEM.equals(localPart)) {
 
 						if (isFeedHeader) {
 							isFeedHeader = false;
-							
+
 							feed = new Feed(title, link, description, language,
 									copyright, pubdate);
 						}
@@ -82,11 +82,10 @@ public class RSSFeedParser {
 
 					} else if (DESCRIPTION.equals(localPart)) {
 						description = getCharacterData(event, eventReader);
-					} else if (LINK.equals(event.asStartElement().getName().toString())) {
+					} else if (LINK.equals(event.asStartElement().getName()
+							.toString())) {
 						link = getCharacterData(event, eventReader);
-						System.out.println("LINK-----"+link+"--------->>>>>>"+event.asStartElement().getName());
-						System.out.println("TITLE> "+title);
-						
+
 					} else if (GUID.equals(localPart)) {
 						guid = getCharacterData(event, eventReader);
 					} else if (LANGUAGE.equals(localPart)) {
@@ -100,7 +99,8 @@ public class RSSFeedParser {
 					}
 
 				} else if (event.isEndElement()) {
-					//End element--------------------------------------------------------------------
+					// End
+					// element--------------------------------------------------------------------
 					if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
 						Item message = new Item();
 						message.setAuthor(author);
@@ -121,8 +121,8 @@ public class RSSFeedParser {
 		}
 		return feed;
 	}
-	
-	//-----------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------
 
 	private String getCharacterData(XMLEvent event, XMLEventReader eventReader)
 			throws XMLStreamException {
@@ -133,9 +133,8 @@ public class RSSFeedParser {
 		}
 		return result;
 	}
-	
-	//-----------------------------------------------------------------------
 
+	// -----------------------------------------------------------------------
 
 	private InputStream read() {
 		try {
