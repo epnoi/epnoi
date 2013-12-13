@@ -1,6 +1,7 @@
 package org.epnoi.uia.parameterization;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RSSHoarderParameters extends HoarderParameters{
 	ArrayList<RSSFeedParameters> feeds = new ArrayList<RSSFeedParameters>();
@@ -11,6 +12,11 @@ public class RSSHoarderParameters extends HoarderParameters{
 
 	public void setFeed(ArrayList<RSSFeedParameters> feeds) {
 		this.feeds = feeds;
+	}
+
+	@Override
+	public String toString() {
+		return "RSSHoarderParameters [feeds=" + Arrays.toString(feeds.toArray()) + "] and "+super.toString();
 	}
 
 }
