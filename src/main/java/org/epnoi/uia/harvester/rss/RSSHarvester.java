@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.apache.tika.metadata.Metadata;
@@ -91,9 +94,10 @@ public class RSSHarvester {
 	Core core;
 	RSSHarvesterParameters parameters;
 	Toolkit toolkit;
-	Timer timer;
+	ScheduledThreadPoolExecutor timer;
 	int numberFeeds;
 	HashMap<String, RSSHarvestDirectoryTask> harvestTasks = new HashMap<String, RSSHarvester.RSSHarvestDirectoryTask>();
+	HashMap<String, ScheduledFuture> harvestTasksFutures = new HashMap<String, ScheduledFuture>();
 
 	// ----------------------------------------------------------------------------------------
 
@@ -108,7 +112,7 @@ public class RSSHarvester {
 
 	public void start() {
 		this.toolkit = Toolkit.getDefaultToolkit();
-		this.timer = new Timer();
+		timer = new ScheduledThreadPoolExecutor(numberFeeds);
 		String[] directories = scanDirectories();
 		//System.out.println(Arrays.toString(directories));
 		for (String directory : directories) {
@@ -127,7 +131,7 @@ public class RSSHarvester {
 		if (numberFeeds == 0) {
 			System.out
 					.println("------------------------------------------------------------------- Se acabo lo que se daba");
-			timer.cancel();
+			timer.shutdown();
 		} else {
 			System.out
 					.println("--------------------------------------------------------------------- Another one bites the dust "
@@ -145,6 +149,19 @@ public class RSSHarvester {
 
 			this.harvestTasks.put(manifest.getURI(), harvestTask);
 
+			ScheduledFuture hoardFuture = timer.scheduleAtFixedRate(
+					harvestTask,
+					0, // initial
+					// delay
+					harvestTask.getFeedParameters().getInterval() * 1000,
+					TimeUnit.MILLISECONDS); // subsequent
+			// rate
+			
+			
+			
+			this.hoardTasksFutures.put(hoardTask.getFeedParameters().getURI(),
+					hoardFuture);
+			
 			timer.schedule(harvestTask, 0, // initial delay
 					manifest.getInterval() * 1000); // subsequent rate
 
@@ -153,6 +170,10 @@ public class RSSHarvester {
 		}
 
 	}
+	
+	
+	
+	
 
 	// ----------------------------------------------------------------------------------------
 
@@ -360,6 +381,22 @@ public class RSSHarvester {
 	}
 
 	// ----------------------------------------------------------------------------------------
+
+	public RSSHarvesterParameters getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(RSSHarvesterParameters parameters) {
+		this.parameters = parameters;
+	}
+
+	public Core getCore() {
+		return core;
+	}
+
+	public void setCore(Core core) {
+		this.core = core;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
