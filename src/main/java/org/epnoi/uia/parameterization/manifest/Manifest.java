@@ -10,17 +10,25 @@ public class Manifest {
 	String URL;
 	Integer interval;
 
+	// ----------------------------------------------------------------------------------------
+
 	public String getURL() {
 		return URL;
 	}
+
+	// ----------------------------------------------------------------------------------------
 
 	public void setURL(String uRL) {
 		URL = uRL;
 	}
 
+	// ----------------------------------------------------------------------------------------
+
 	public String getURI() {
 		return URI;
 	}
+
+	// ----------------------------------------------------------------------------------------
 
 	public void setURI(String uri) {
 		this.URI = uri;
@@ -30,18 +38,30 @@ public class Manifest {
 		return name;
 	}
 
+	// ----------------------------------------------------------------------------------------
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	// ----------------------------------------------------------------------------------------
 
 	public Integer getInterval() {
 		return interval;
 	}
 
+	// ----------------------------------------------------------------------------------------
+
 	public void setInterval(Integer interval) {
 		this.interval = interval;
 	}
-	
 
+	// ----------------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "Manifest [URI=" + URI + ", name=" + name + ", URL=" + URL
+				+ ", interval=" + interval + "]";
+	}
 
 }
