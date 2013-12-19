@@ -21,11 +21,13 @@ public abstract class RDFDAO {
 	protected VirtGraph graph = null;
 
 	abstract public void create(Resource resource);
+	
+	abstract public void remove(String URI);
 
 	public void init(InformationStoreParameters parameters) {
 
-		System.out.println(".............................................. "
-				+ parameters);
+		// System.out.println(".............................................. "+
+		// parameters);
 		this.parameters = (VirtuosoInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
@@ -41,50 +43,17 @@ public abstract class RDFDAO {
 
 	public ResultSet makeQuery(String query) {
 
-		// Query sparql =
-		// QueryFactory.create("select * from <Example3> where {?s ?p ?o}");
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, this.graph);
 
 		ResultSet results = vqe.execSelect();
-		/*
-		 * while (results.hasNext()) { QuerySolution result =
-		 * results.nextSolution(); RDFNode graph = result.get("graph"); RDFNode
-		 * s = result.get("s"); RDFNode p = result.get("p"); RDFNode o =
-		 * result.get("o"); System.out.println(graph + " { " + s + "|||" + p +
-		 * "||| " + o + " . }"); }
-		 */
+
 		return results;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-
-	public Boolean exists(String URI) {
-
-		VirtGraph set = new VirtGraph("http://informationSourceTest",
-				virtuosoURL, "dba", "dba");
-		Node foo1 = Node.createURI(URI);
-		Node bar1 = Node.createURI(RDFHelper.TYPE_PROPERTY);
-		Node baz1 = Node
-				.createURI(InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
-
-		/*
-		 * String queryExpression = "ASK WHERE { <" + URI + "> <" +
-		 * RDFHelper.TYPE + "> <" +
-		 * InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS + "> }";
-		 * 
-		 * System.out.println("----> " + queryExpression); Query sparql =
-		 * QueryFactory.create(queryExpression); VirtuosoQueryExecution vqe =
-		 * VirtuosoQueryExecutionFactory.create( sparql, set); vqe =
-		 * VirtuosoQueryExecutionFactory.create(sparql, set);
-		 * System.out.println("->" + vqe.execAsk()); return vqe.execAsk();
-		 */
-		// System.out.println("--->"+new Triple(foo1,,baz1));
-		return set.contains(foo1, Node.ANY, Node.ANY);
-
-	}
 
 	public static boolean test(VirtuosoInformationStoreParameters parameters) {
 		boolean testResult;
@@ -101,4 +70,12 @@ public abstract class RDFDAO {
 		return testResult;
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	
+	protected String cleanOddCharacters(String text){
+		String cleanedText;
+		cleanedText=text.replace("\"", "");
+		return cleanedText;
+	}
 }

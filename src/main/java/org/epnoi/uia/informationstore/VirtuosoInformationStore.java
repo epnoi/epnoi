@@ -45,7 +45,9 @@ public class VirtuosoInformationStore implements InformationStore {
 	public void put(Resource resource) {
 
 		RDFDAO rdfDAO = this.datoFactory.build(resource);
-
+		
+		rdfDAO.create(resource);
+/*
 		if (!rdfDAO.exists(resource.getURI())) {
 			System.out.println("The information source doesn't exist");
 
@@ -54,7 +56,7 @@ public class VirtuosoInformationStore implements InformationStore {
 			System.out.println("The information source already exists!");
 			rdfDAO.create(resource);
 		}
-
+*/
 	}
 	
 	// ------------------------------------------------------------------------

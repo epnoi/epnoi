@@ -239,10 +239,14 @@ class RSSHoardTask implements Runnable {
 		}
 		this.hoarder.cancelTask(this.feedParameters.getURI());
 	}
+	
+	// ----------------------------------------------------------------------------------------
 
 	public RSSFeedParameters getFeedParameters() {
 		return feedParameters;
 	}
+	
+	// ----------------------------------------------------------------------------------------
 
 	public void setFeedParameters(RSSFeedParameters feedParameters) {
 		this.feedParameters = feedParameters;

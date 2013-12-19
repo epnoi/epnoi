@@ -101,7 +101,7 @@ public class RSSHoarder {
 		feedParameters.setName("slashdot");
 		feedParameters.setURL("http://rss.slashdot.org/Slashdot/slashdot");
 		feedParameters.setURI("http://www.epnoi.org/feeds/slashdot");
-		feedParameters.setInterval(4);
+		feedParameters.setInterval(10);
 
 		/*
 		 * <feed> <name>highScalability</name>
@@ -116,7 +116,7 @@ public class RSSHoarder {
 				.setURL("http://feeds.feedburner.com/HighScalability");
 		secondfeedParameters
 				.setURI("http://www.epnoi.org/feeds/highScalability");
-		secondfeedParameters.setInterval(20);
+		secondfeedParameters.setInterval(40);
 
 		RSSHoarderParameters parameters = new RSSHoarderParameters();
 		ArrayList<RSSFeedParameters> feeds = new ArrayList<RSSFeedParameters>();

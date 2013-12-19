@@ -57,6 +57,13 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 
+		public void remove(String URI) {
+
+		}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+
+
 	public InformationSource read(String URI) {
 		InformationSource informationSource = new InformationSource();
 		informationSource.setURI(URI);
