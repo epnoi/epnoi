@@ -3,37 +3,16 @@ package org.epnoi.uia.harvester.rss;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.epnoi.uia.parameterization.manifest.ManifestHandler;
-import org.xml.sax.ContentHandler;
-
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.recommeders.WorkflowsGroupBasedRecommender;
 
 public class RSSHarvester {
 

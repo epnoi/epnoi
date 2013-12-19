@@ -5,8 +5,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -28,6 +30,7 @@ import epnoi.model.Item;
 class RSSHarvestDirectoryTask implements Runnable {
 	private Manifest manifest;
 	private String directoryPath;
+	private String datePattern = "MM/dd/yyyy";
 
 	RSSHarvester harvester;
 	private static final String[] stopWords = { "a", "about", "above", "above",
@@ -237,9 +240,18 @@ class RSSHarvestDirectoryTask implements Runnable {
 		Feed feed = parser.readFeed();
 		// System.out.println("Feed : " + feed);
 		// System.out.println(feed);
+		feed.setPubDate(getDate(filePath));
 		return feed;
 
 		// return feed.getItems();
+	}
+
+	private String getDate(String filePath) {
+
+		int bracketOpeningPosition = filePath.indexOf("[");
+		int bracketClosingPosition = filePath.indexOf("]");
+		String filePathDatePart = filePath.substring(bracketClosingPosition);
+		return filePathDatePart;
 	}
 
 	// ----------------------------------------------------------------------------------------
