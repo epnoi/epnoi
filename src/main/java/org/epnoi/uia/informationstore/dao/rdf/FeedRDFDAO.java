@@ -155,6 +155,7 @@ public class FeedRDFDAO extends RDFDAO {
 				feed.setCopyright(t.getObject().getURI().toString());
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
 				feed.setLanguage(t.getObject().getURI().toString());
+				
 			} else if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
 				// System.out.println("predicateURI " + predicateURI);
 				String itemURI = t.getObject().toString();
@@ -173,6 +174,7 @@ public class FeedRDFDAO extends RDFDAO {
 		}
 		return feed;
 	}
+	
 
 	// ---------------------------------------------------------------------------------------------------
 
@@ -182,30 +184,6 @@ public class FeedRDFDAO extends RDFDAO {
 
 		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
-	}
-
-	// ---------------------------------------------------------------------------------------------------
-
-	public void showTriplets() {
-		System.out
-				.println("SHOWING TRIPLETS-----------------------------------------------------------------------------------------------------");
-
-		Query sparql = QueryFactory.create("SELECT * FROM <"
-				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
-
-		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
-				.create(sparql, this.graph);
-
-		ResultSet results = virtuosoQueryEngine.execSelect();
-		while (results.hasNext()) {
-			QuerySolution result = results.nextSolution();
-			RDFNode s = result.get("s");
-			RDFNode p = result.get("p");
-			RDFNode o = result.get("o");
-			System.out.println(" { " + s + " | " + p + " | " + o + " }");
-		}
-		System.out
-				.println("-----------------------------------------------------------------------------------------------------");
 	}
 
 	// ---------------------------------------------------------------------------------------------------

@@ -10,7 +10,9 @@ import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.Resource;
 
@@ -72,6 +74,29 @@ public abstract class RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
+	public void showTriplets() {
+		System.out
+				.println("SHOWING TRIPLETS-----------------------------------------------------------------------------------------------------");
+
+		Query sparql = QueryFactory.create("SELECT * FROM <"
+				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
+
+		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
+				.create(sparql, this.graph);
+
+		ResultSet results = virtuosoQueryEngine.execSelect();
+		while (results.hasNext()) {
+			QuerySolution result = results.nextSolution();
+			RDFNode s = result.get("s");
+			RDFNode p = result.get("p");
+			RDFNode o = result.get("o");
+			System.out.println(" { " + s + " | " + p + " | " + o + " }");
+		}
+		System.out
+				.println("-----------------------------------------------------------------------------------------------------");
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------------------------
 	
 	protected String cleanOddCharacters(String text){
 		String cleanedText;
