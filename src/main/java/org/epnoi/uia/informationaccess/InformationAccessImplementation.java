@@ -6,7 +6,7 @@ import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SelectExpression;
-import org.epnoi.uia.search.select.SelectResult;
+import org.epnoi.uia.search.select.SearchSelectResult;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
@@ -57,8 +57,8 @@ public class InformationAccessImplementation implements InformationAccess {
 	
 	//---------------------------------------------------------------------------
 	
-	public SelectResult query(SelectExpression queryExpression){
-		return new SelectResult();
+	public SearchSelectResult query(SelectExpression queryExpression){
+		return new SearchSelectResult(null);
 	}
 	
 	//---------------------------------------------------------------------------

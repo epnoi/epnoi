@@ -6,6 +6,6 @@ public interface FeedRDFHelper {
 	public static final String LANGUAGE_PROPERTY = "http//www.epnoi.org/ontology/epnoi#language";
 	public static final String COPYRIGHT_PROPERTY = "http//www.epnoi.org/ontology/epnoi#copyright";
 	public static final String PUB_DATE_PROPERTY = "http//www.epnoi.org/ontology/epnoi#pubDate";
-	public static final String DESCRIPTION_PROPERTY = "http//www.epnoi.org/ontology/epnoi#pubDate";
+	public static final String DESCRIPTION_PROPERTY = "http//www.epnoi.org/ontology/epnoi#description";
 
 }

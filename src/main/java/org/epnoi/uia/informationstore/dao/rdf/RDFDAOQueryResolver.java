@@ -17,18 +17,13 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
-import epnoi.model.Resource;
-
-public abstract class RDFDAO {
-
+public class RDFDAOQueryResolver {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 	protected VirtuosoInformationStoreParameters parameters;
 	protected VirtGraph graph = null;
 
-	abstract public void create(Resource resource);
-
-	abstract public void remove(String URI);
+	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public void init(InformationStoreParameters parameters) {
 
@@ -48,7 +43,7 @@ public abstract class RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	protected ResultSet makeQuery(String query) {
-		System.out.println("-------------------------------" + query);
+		
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -62,16 +57,23 @@ public abstract class RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public List<String> query(String query) {
-		List<String> result = new ArrayList<String>();
+		showTriplets();
+		ArrayList<String> resultURIs = new ArrayList<String>();
+		Query sparql = QueryFactory.create(query);
 
-		ResultSet results = this.makeQuery(query);
+		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
+				.create(sparql, this.graph);
+
+		ResultSet results = virtuosoQueryEngine.execSelect();
 		while (results.hasNext()) {
-			Binding binding = results.nextBinding();
-			System.out.println(" >" + binding);
-
+			QuerySolution result = results.nextSolution();
+			RDFNode uriNode = result.get("uri");
+			if (uriNode != null) {
+				resultURIs.add(uriNode.toString());
+			}
 		}
 
-		return result;
+		return resultURIs;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------

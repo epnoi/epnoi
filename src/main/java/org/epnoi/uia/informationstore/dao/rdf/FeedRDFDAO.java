@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -68,8 +69,9 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
-				.replace("{FEED_DESCRIPTION}", cleanOddCharacters(feed.getDescription()))
-				.replace("{FEED_PUB_DATE}", feed.getPubDate());
+				.replace("{FEED_DESCRIPTION}",
+						cleanOddCharacters(feed.getDescription()))
+				.replace("{FEED_PUB_DATE}", convertDateFormat(feed.getPubDate()));
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression2, this.graph);
@@ -155,7 +157,7 @@ public class FeedRDFDAO extends RDFDAO {
 				feed.setCopyright(t.getObject().getURI().toString());
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
 				feed.setLanguage(t.getObject().getURI().toString());
-				
+
 			} else if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
 				// System.out.println("predicateURI " + predicateURI);
 				String itemURI = t.getObject().toString();
@@ -174,7 +176,6 @@ public class FeedRDFDAO extends RDFDAO {
 		}
 		return feed;
 	}
-	
 
 	// ---------------------------------------------------------------------------------------------------
 
@@ -186,6 +187,21 @@ public class FeedRDFDAO extends RDFDAO {
 
 	}
 
+	
+	protected String convertDateFormat(String dateExpression) {
+		DateFormat formatter = new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
+		Date date = null;
+		try {
+			date = formatter.parse(dateExpression);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		return (dt1.format(date));
+
+	}
 	// ---------------------------------------------------------------------------------------------------
 
 	private static List<Feed> _generateData() {
@@ -197,7 +213,7 @@ public class FeedRDFDAO extends RDFDAO {
 		feedA.setURI(feedURI);
 		feedA.setTitle("arXiv");
 		feedA.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-		feedA.setPubDate("2013-10-10");
+		feedA.setPubDate("Mon, 12 Dec 2013 22:22:16 GMT");
 		feedA.setDescription("This is the description of feed A");
 		for (int i = 0; i < 10; i++) {
 			Item itemA = new Item();
@@ -230,7 +246,7 @@ public class FeedRDFDAO extends RDFDAO {
 		Context contextB = new Context();
 
 		feedB.setURI(feedURIB);
-		feedB.setTitle("arXiv");
+		feedB.setTitle("slashdot");
 		feedB.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 		feedB.setPubDate("Fri, 13 Dec 2013 16:57:49 +0000");
 		feedB.setDescription("This is the description of feed B");
@@ -255,7 +271,6 @@ public class FeedRDFDAO extends RDFDAO {
 		return feeds;
 	}
 
-	
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -285,10 +300,10 @@ public class FeedRDFDAO extends RDFDAO {
 		}
 
 		feedRDFDAO.showTriplets();
-
-		System.out.println("Deleting the feed " + feedURI);
-		feedRDFDAO.remove(feedURI);
-		feedRDFDAO.showTriplets();
+		/*
+		 * System.out.println("Deleting the feed " + feedURI);
+		 * feedRDFDAO.remove(feedURI); feedRDFDAO.showTriplets();
+		 */
 		// System.out.println("Lests add it again ");
 		// feedRDFDAO.create(feed);
 
@@ -305,6 +320,6 @@ public class FeedRDFDAO extends RDFDAO {
 		}
 		VirtGraph graph = new VirtGraph(parameters.getGraph(), virtuosoURL,
 				"dba", "dba");
-		graph.clear();
+		//graph.clear();
 	}
 }
