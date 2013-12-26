@@ -1,6 +1,7 @@
 package org.epnoi.uia.parameterization;
 
 public class RSSFeedParameters {
+
 	private String name;
 	private String URI;
 	private String URL;
@@ -36,6 +37,12 @@ public class RSSFeedParameters {
 
 	public void setInterval(Integer interval) {
 		this.interval = interval;
+	}
+
+	@Override
+	public String toString() {
+		return "RSSFeedParameters [name=" + name + ", URI=" + URI + ", URL="
+				+ URL + ", interval=" + interval + "]";
 	}
 
 }

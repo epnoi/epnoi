@@ -1,5 +1,8 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -7,14 +10,17 @@ import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
 import epnoi.model.Resource;
 
 public abstract class RDFDAO {
+
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 	protected VirtuosoInformationStoreParameters parameters;
@@ -22,10 +28,12 @@ public abstract class RDFDAO {
 
 	abstract public void create(Resource resource);
 
+	abstract public void remove(String URI);
+
 	public void init(InformationStoreParameters parameters) {
 
-		System.out.println(".............................................. "
-				+ parameters);
+		// System.out.println(".............................................. "+
+		// parameters);
 		this.parameters = (VirtuosoInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
@@ -39,52 +47,34 @@ public abstract class RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
-	public ResultSet makeQuery(String query) {
-
-		// Query sparql =
-		// QueryFactory.create("select * from <Example3> where {?s ?p ?o}");
+	protected ResultSet makeQuery(String query) {
+		System.out.println("-------------------------------" + query);
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, this.graph);
 
 		ResultSet results = vqe.execSelect();
-		/*
-		 * while (results.hasNext()) { QuerySolution result =
-		 * results.nextSolution(); RDFNode graph = result.get("graph"); RDFNode
-		 * s = result.get("s"); RDFNode p = result.get("p"); RDFNode o =
-		 * result.get("o"); System.out.println(graph + " { " + s + "|||" + p +
-		 * "||| " + o + " . }"); }
-		 */
+
 		return results;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
-	public Boolean exists(String URI) {
+	public List<String> query(String query) {
+		List<String> result = new ArrayList<String>();
 
-		VirtGraph set = new VirtGraph("http://informationSourceTest",
-				virtuosoURL, "dba", "dba");
-		Node foo1 = Node.createURI(URI);
-		Node bar1 = Node.createURI(RDFHelper.TYPE_PROPERTY);
-		Node baz1 = Node
-				.createURI(InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+		ResultSet results = this.makeQuery(query);
+		while (results.hasNext()) {
+			Binding binding = results.nextBinding();
+			System.out.println(" >" + binding);
 
-		/*
-		 * String queryExpression = "ASK WHERE { <" + URI + "> <" +
-		 * RDFHelper.TYPE + "> <" +
-		 * InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS + "> }";
-		 * 
-		 * System.out.println("----> " + queryExpression); Query sparql =
-		 * QueryFactory.create(queryExpression); VirtuosoQueryExecution vqe =
-		 * VirtuosoQueryExecutionFactory.create( sparql, set); vqe =
-		 * VirtuosoQueryExecutionFactory.create(sparql, set);
-		 * System.out.println("->" + vqe.execAsk()); return vqe.execAsk();
-		 */
-		// System.out.println("--->"+new Triple(foo1,,baz1));
-		return set.contains(foo1, Node.ANY, Node.ANY);
+		}
 
+		return result;
 	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public static boolean test(VirtuosoInformationStoreParameters parameters) {
 		boolean testResult;
@@ -101,4 +91,35 @@ public abstract class RDFDAO {
 		return testResult;
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	public void showTriplets() {
+		System.out
+				.println("SHOWING TRIPLETS-----------------------------------------------------------------------------------------------------");
+
+		Query sparql = QueryFactory.create("SELECT * FROM <"
+				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
+
+		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
+				.create(sparql, this.graph);
+
+		ResultSet results = virtuosoQueryEngine.execSelect();
+		while (results.hasNext()) {
+			QuerySolution result = results.nextSolution();
+			RDFNode s = result.get("s");
+			RDFNode p = result.get("p");
+			RDFNode o = result.get("o");
+			System.out.println(" { " + s + " | " + p + " | " + o + " }");
+		}
+		System.out
+				.println("-----------------------------------------------------------------------------------------------------");
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	protected String cleanOddCharacters(String text) {
+		String cleanedText;
+		cleanedText = text.replace("\"", "");
+		return cleanedText;
+	}
 }

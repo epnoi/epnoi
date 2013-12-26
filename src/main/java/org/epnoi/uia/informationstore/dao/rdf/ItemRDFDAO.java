@@ -1,6 +1,11 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -16,10 +21,7 @@ import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.Feed;
 import epnoi.model.Item;
@@ -30,16 +32,38 @@ public class ItemRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public void create(Resource resource) {
-		Item item= (Item)resource;
-		String informationSourceURI = item.getURI();
+		Item item = (Item) resource;
+		String itemURI = item.getURI();
+		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+				+ "{ <{URI}> a <{ITEM_CLASS}> ; "
+				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
+				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\" ; "
+				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
+				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
+		System.out.println("....> " + item);
+		queryExpression = queryExpression
+				.replace("{GRAPH}", this.parameters.getGraph())
+				.replace("{URI}", itemURI)
+				.replace("{ITEM_CLASS}", FeedRDFHelper.ITEM_CLASS)
+				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
+				.replace("{ITEM_LINK}", item.getLink())
+				.replace("{TITLE_PROPERTY}", RDFHelper.TITLE_PROPERTY)
+				.replace("{ITEM_TITLE}", cleanOddCharacters(item.getTitle()))
+				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
+				.replace("{DESCRIPTION_PROPERTY}",
+						FeedRDFHelper.DESCRIPTION_PROPERTY)
+				.replace("{ITEM_DESCRIPTION}", cleanOddCharacters(item.getDescription()))
+				.replace("{ITEM_PUB_DATE}",
+						convertDateFormat(item.getPubDate()));
+		/*
+		 * String queryExpression = "INSERT INTO GRAPH <" +
+		 * this.parameters.getGraph() + "> { <" + itemURI + "> a <" +
+		 * FeedRDFHelper.ITEM_CLASS + "> ; " + "<" + RDFHelper.URL_PROPERTY +
+		 * ">" + " \"" + item.getLink() + "\"  ; " + "<" +
+		 * RDFHelper.TITLE_PROPERTY + ">" + " \"" + item.getTitle() + "\" " +
+		 * " . }";
+		 */
 
-		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + FeedRDFHelper.ITEM_CLASS + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \"" + item.getLink()
-				+ "\"  ; " + "<" + RDFHelper.TITLE_PROPERTY + ">" + " \""
-				+ item.getTitle() + "\" " + " . }";
-		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();
@@ -47,8 +71,24 @@ public class ItemRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void update(Item item) {
-		// TODO to be done
+	public void remove(String URI) {
+		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
+		itemRDFDAO.init(this.parameters);
+
+		String feedURI = URI;
+
+		Query sparql = QueryFactory.create("DESCRIBE <" + feedURI + "> FROM <"
+				+ this.parameters.getGraph() + ">");
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
+				sparql, this.graph);
+
+		Model model = vqe.execDescribe();
+		Graph g = model.getGraph();
+		// System.out.println("\nDESCRIBE results:");
+		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+			Triple triple = (Triple) i.next();
+			this.graph.remove(triple);
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -63,11 +103,11 @@ public class ItemRDFDAO extends RDFDAO {
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results:");
+		// System.out.println("\nDESCRIBE results:");
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
-			System.out.println(" { " + t.getSubject() + " SSS "
-					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
+			// System.out.println(" { " + t.getSubject() + " SSS "+
+			// t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
 
 			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
@@ -92,27 +132,6 @@ public class ItemRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void showTriplets() {
-
-		Query sparql = QueryFactory.create("SELECT * FROM <"
-				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
-
-		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
-				.create(sparql, this.graph);
-
-		ResultSet results = virtuosoQueryEngine.execSelect();
-		while (results.hasNext()) {
-			QuerySolution result = results.nextSolution();
-			RDFNode s = result.get("s");
-			RDFNode p = result.get("p");
-			RDFNode o = result.get("o");
-			System.out.println(" { " + s + " | " + p + " | " + o + " }");
-		}
-
-	}
-
-	// ---------------------------------------------------------------------------------------------------
-
 	public static void main(String[] args) {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
@@ -121,8 +140,7 @@ public class ItemRDFDAO extends RDFDAO {
 
 		feed.setURI(URI);
 		feed.setTitle("arXiv");
-		feed
-				.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
+		feed.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 
 		FeedRDFDAO informationSourceRDFDAO = new FeedRDFDAO();
 		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
@@ -148,11 +166,29 @@ public class ItemRDFDAO extends RDFDAO {
 		Feed readedInformationSource = informationSourceRDFDAO.read(URI);
 		System.out.println("Readed information source -> "
 				+ readedInformationSource);
-		
+
 		if (informationSourceRDFDAO.exists(URI)) {
 			System.out.println("The information source now exists :) ");
 		}
 
 		graph.clear();
 	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	protected String convertDateFormat(String dateExpression) {
+		DateFormat formatter = new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
+		Date date = null;
+		try {
+			date = formatter.parse(dateExpression);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		return (dt1.format(date));
+
+	}
+
 }

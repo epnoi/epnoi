@@ -29,7 +29,7 @@
 			<name>highScalability</name>
 			<URI>http://www.epnoi.org/feeds/highScalability</URI>
 			<URL>http://feeds.feedburner.com/HighScalability</URL>
-			<interval>3</interval>
+			<interval>30</interval>
 		</feed>
 	</rssHoarder>
 	<rssHarvester>

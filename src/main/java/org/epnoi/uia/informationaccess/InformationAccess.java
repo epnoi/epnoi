@@ -1,7 +1,7 @@
 package org.epnoi.uia.informationaccess;
 
+import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.rest.services.response.InformationStore;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
@@ -19,4 +19,5 @@ public interface InformationAccess {
 	public void addInformationStore(InformationStore informationStore);
 
 	public void removeInformationStore(String URI);
-}
+	
+	}

@@ -8,11 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "parametersModel")
 public class ParametersModel {
 
-	// private String modelPath;
-	// private String indexPath;
-	// private String graphPath;
-
-	// Server related properties
+		// Server related properties
 	private String hostname;
 	private String port;
 	private String path;
@@ -91,5 +87,17 @@ public class ParametersModel {
 			ArrayList<SOLRInformationStoreParameters> solrInformationStores) {
 		this.solrInformationStores = solrInformationStores;
 	}
+	
+	//---------------------------------------------------------------------------------
+	
+	@Override
+	public String toString() {
+		return "ParametersModel [hostname=" + hostname + ", port=" + port
+				+ ", path=" + path + ", virtuosoInformationStores="
+				+ virtuosoInformationStores + ", solrInformationStores="
+				+ solrInformationStores + ", rssHoarder=" + rssHoarder
+				+ ", rssHarvester=" + rssHarvester + "]";
+	}
+	
 
 }
