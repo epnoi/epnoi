@@ -18,6 +18,7 @@ import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.RSSHoarderParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.uia.search.SearchHandler;
 
 public class Core {
 
@@ -32,7 +33,9 @@ public class Core {
 
 	private ParametersModel parametersModel = null;
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	private SearchHandler searchHandler = null;
+
+	// ----------------------------------------------------------------------------------------------------------
 
 	/**
 	 * The initialization method for the epnoiCore
@@ -43,19 +46,22 @@ public class Core {
 	 */
 
 	public synchronized void init(ParametersModel parametersModel) {
-		logger.info("Initializing the epnoi uia core");
+		logger.info("Initializing the epnoi uia core with the following parameters ");
+		logger.info(parametersModel.toString());
 		this.informationStores = new HashMap<String, InformationStore>();
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
 
 		this._informationStoresInitialization();
 		this._initInformationAccess();
-		/*
-		 * this._hoardersInitialization(); this._harvestersInitialization();
-		 */
+		this._initSearchHandler();
+		this._hoardersInitialization();
+		this._harvestersInitialization();
+
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
+
 	/**
 	 * Information Stores initialization
 	 */
@@ -63,14 +69,10 @@ public class Core {
 	private void _informationStoresInitialization() {
 
 		logger.info("Initializing information stores");
+		logger.info("Initializing Virtuoso information stores");
 		for (VirtuosoInformationStoreParameters virtuosoInformationStoreParameters : parametersModel
 				.getVirtuosoInformationStore()) {
-			System.out.println("-------------> "
-					+ virtuosoInformationStoreParameters);
-			System.out.println("-- http://"
-					+ virtuosoInformationStoreParameters.getHost() + ":"
-					+ virtuosoInformationStoreParameters.getPort()
-					+ virtuosoInformationStoreParameters.getPath());
+			logger.info(virtuosoInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
 					.buildInformationStore(virtuosoInformationStoreParameters,
@@ -82,17 +84,14 @@ public class Core {
 
 			_addInformationStoreByType(newInformationStore,
 					InformationStoreHelper.RDF_INFORMATION_STORE);
+			logger.info("The status of the information source is "
+					+ newInformationStore.test());
 
 		}
-		System.out.println("---> "+parametersModel.getSolrInformationStore());
+		logger.info("Initializing SOLR information stores");
 		for (SOLRInformationStoreParameters solrInformationStoreParameters : parametersModel
 				.getSolrInformationStore()) {
-			System.out.println("-------------> "
-					+ solrInformationStoreParameters);
-			System.out.println("-- http://"
-					+ solrInformationStoreParameters.getHost() + ":"
-					+ solrInformationStoreParameters.getPort()
-					+ solrInformationStoreParameters.getPath());
+			logger.info(solrInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
 					.buildInformationStore(solrInformationStoreParameters,
@@ -103,15 +102,19 @@ public class Core {
 
 			_addInformationStoreByType(newInformationStore,
 					InformationStoreHelper.SOLR_INFORMATION_STORE);
+			logger.info("The status of the information source is "
+					+ newInformationStore.test());
 
 		}
 	}
+
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initInformationAccess() {
 		this.informationAccess = new InformationAccessImplementation(this);
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _addInformationStoreByType(InformationStore informationStore,
 			String type) {
@@ -124,48 +127,70 @@ public class Core {
 		informationsStoresOfType.add(informationStore);
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _hoardersInitialization() {
 		logger.info("Initializing hoarders");
 		RSSHoarderParameters parameters = this.parametersModel.getRssHoarder();
-		this.rssHoarder = new RSSHoarder(parameters);
-		this.rssHoarder.start();
-		System.out
-				.println("------------------------------------------------------------------------------------------!!!!!!!");
+		if (parameters != null) {
+			this.rssHoarder = new RSSHoarder(parameters);
+			this.rssHoarder.start();
+		} else {
+			logger.info("There was no RSSHoarder defined in the configuration file");
+		}
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _harvestersInitialization() {
 		logger.info("Initializing harvesters");
 		RSSHarvesterParameters parameters = this.parametersModel
 				.getRssHarvester();
-		this.rssHarvester = new RSSHarvester(this, parameters);
-		this.rssHarvester.start();
-		System.out
-				.println("------------------------------------------------------------------------------------------!!!!!!!");
+		if (parameters != null) {
+			this.rssHarvester = new RSSHarvester(this, parameters);
+			this.rssHarvester.start();
+		} else {
+			logger.info("There was no RSSHarvester defined in the configuration file");
+		}
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initSearchHandler() {
+		this.searchHandler = new SearchHandler(this);
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
 
 	public Collection<InformationStore> getInformationStores() {
 		return this.informationStores.values();
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	public List<InformationStore> getInformationStoresByType(String type) {
 		return this.informationStoresByType.get(type);
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	public InformationAccess getInformationAccess() {
 		return this.informationAccess;
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
+
+	public SearchHandler getSearchHandler() {
+		return searchHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setSearchHandler(SearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
 
 	public boolean checkStatus(String informationStoreURI) {
 		InformationStore informationStore = this.informationStores
@@ -173,7 +198,7 @@ public class Core {
 		return informationStore.test();
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------
 
 	public void close() {
 		for (InformationStore dataSource : this.informationStores.values()) {
