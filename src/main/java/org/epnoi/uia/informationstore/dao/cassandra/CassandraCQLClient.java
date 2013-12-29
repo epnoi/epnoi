@@ -24,7 +24,7 @@ public class CassandraCQLClient {
 
 		CqlQuery<String, String, String> cqlQuery = new CqlQuery<String, String, String>(
 				HFactory.createKeyspace(KEYSPACE, c), se, se, se);
-		cqlQuery.setQuery("select * from User where NAME='Rafita'");
+		cqlQuery.setQuery("select * from User where NAME='Sara'");
 		QueryResult<CqlRows<String, String, String>> result = cqlQuery
 				.execute();
 		if (result != null && result.get() != null) {
@@ -39,6 +39,8 @@ public class CassandraCQLClient {
 				}
 				System.out.println("");
 			}
+		} else{
+			System.out.println("Seems that that the query didn't return anything");
 		}
 	}
 

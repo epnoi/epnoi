@@ -3,14 +3,14 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 
-import scala.Array;
+import org.epnoi.uia.informationstore.Selector;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import epnoi.model.ExternalResource;
+import epnoi.model.Resource;
 import epnoi.model.Search;
-import epnoi.model.User;
 
 public class SearchCassandraDAO extends CassandraDAO {
 
@@ -20,7 +20,8 @@ public class SearchCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(Search search) {
+	public void create(Resource resource) {
+		Search search = (Search)resource;
 		super.createRow(search.getURI(), SearchCassandraHelper.COLUMN_FAMILLY);
 
 		if (search.getTitle() != null) {
@@ -44,10 +45,18 @@ public class SearchCassandraDAO extends CassandraDAO {
 		}
 
 	}
+	
 
 	// --------------------------------------------------------------------------------
 
-	public Search read(String URI) {
+	public Resource read(Selector selector) {
+		return new ExternalResource();
+	}
+
+
+	// --------------------------------------------------------------------------------
+
+	public Resource	 read(String URI) {
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -111,6 +120,8 @@ public class SearchCassandraDAO extends CassandraDAO {
 	 * } return null; }
 	 */
 
+	// --------------------------------------------------------------------------------
+	
 	public List<Search> getSearchs() {
 		List<Search> searchs = new ArrayList<Search>();
 		List<Row<String, String, String>> result = (CassandraCQLClient
@@ -118,8 +129,8 @@ public class SearchCassandraDAO extends CassandraDAO {
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 
-				Search user = this.read((String) row.getKey());
-				searchs.add(user);
+				Search search = (Search)this.read((String) row.getKey());
+				searchs.add(search);
 
 			}
 		}

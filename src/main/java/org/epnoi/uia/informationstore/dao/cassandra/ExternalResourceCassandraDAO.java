@@ -2,7 +2,11 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
+
+import org.epnoi.uia.informationstore.Selector;
+
 import epnoi.model.ExternalResource;
+import epnoi.model.Resource;
 
 public class ExternalResourceCassandraDAO extends CassandraDAO {
 
@@ -12,7 +16,8 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(ExternalResource externalResource) {
+	public void create(Resource resource) {
+		ExternalResource externalResource = (ExternalResource)resource;
 		super.createRow(externalResource.getURI(),
 				ExternalResourceCassandraHelper.COLUMN_FAMILLY);
 		if (externalResource.getDescription() != null) {
@@ -24,10 +29,16 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		}
 
 	}
+	
+	// --------------------------------------------------------------------------------
+
+	public Resource read(Selector selector) {
+		return new ExternalResource();
+	}
 
 	// --------------------------------------------------------------------------------
 
-	public ExternalResource read(String URI) {
+	public Resource read(String URI) {
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -89,7 +100,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		externalResourceCassandraDAO.delete("http://uriproof2");
 		// externalResourceCassandraDAO.delete("http://uriproof");
 
-		ExternalResource readedExternalResource = externalResourceCassandraDAO
+		ExternalResource readedExternalResource = (ExternalResource)externalResourceCassandraDAO
 				.read("http://uriproof");
 		System.out
 				.println("readedExternalResource.> " + readedExternalResource);
