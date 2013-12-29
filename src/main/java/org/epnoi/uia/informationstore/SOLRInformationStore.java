@@ -72,6 +72,13 @@ public class SOLRInformationStore implements InformationStore {
 	public Resource get(String URI) {
 		return new InformationSource();
 	}
+	
+	// ------------------------------------------------------------------------
+	
+	public Resource get(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// ------------------------------------------------------------------------
 

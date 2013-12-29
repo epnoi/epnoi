@@ -3,11 +3,13 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.uia.informationstore.Selector;
+
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import epnoi.model.ExternalResource;
-import epnoi.model.Search;
+import epnoi.model.Resource;
 import epnoi.model.User;
 
 public class UserCassandraDAO extends CassandraDAO {
@@ -18,7 +20,8 @@ public class UserCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(User user) {
+	public void create(Resource resource) {
+		User user = (User) resource;
 		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILLY);
 
 		if (user.getName() != null) {
@@ -41,10 +44,18 @@ public class UserCassandraDAO extends CassandraDAO {
 		}
 
 	}
+	
 
 	// --------------------------------------------------------------------------------
 
-	public User read(String URI) {
+	public Resource read(Selector selector) {
+		return new ExternalResource();
+	}
+
+
+	// --------------------------------------------------------------------------------
+
+	public Resource read(String URI) {
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -106,7 +117,7 @@ public class UserCassandraDAO extends CassandraDAO {
 				.query("select * from User where NAME='" + name + "'"));
 		if ((result != null) && (result.size() > 0)) {
 			Row row = (Row) result.get(0);
-			User user = this.read((String) row.getKey());
+			User user = (User)this.read((String) row.getKey());
 			return user;
 		}
 		return null;
@@ -122,7 +133,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 
-				User user = this.read((String) row.getKey());
+				User user = (User)this.read((String) row.getKey());
 				users.add(user);
 
 			}
@@ -178,12 +189,12 @@ public class UserCassandraDAO extends CassandraDAO {
 		userCassandraDAO.create(user);
 		userCassandraDAO.create(userElOtro);
 
-		ExternalResource readedExternalResource = externalResourceCassandraDAO
+		ExternalResource readedExternalResource = (ExternalResource) externalResourceCassandraDAO
 				.read("http://externalresourceuri");
 		System.out.println("readedExternalResource> " + readedExternalResource);
 		externalResourceCassandraDAO.delete("http://externalresourceuri");
 
-		User readUser = userCassandraDAO.read("http://useruri");
+		User readUser = (User) userCassandraDAO.read("http://useruri");
 		System.out.println("readed user> " + readUser);
 
 		// userCassandraDAO.delete("http://useruri");

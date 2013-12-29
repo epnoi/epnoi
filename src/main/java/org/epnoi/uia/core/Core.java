@@ -13,6 +13,7 @@ import org.epnoi.uia.informationaccess.InformationAccessImplementation;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.RSSHoarderParameters;
@@ -106,6 +107,25 @@ public class Core {
 					+ newInformationStore.test());
 
 		}
+		logger.info("Initializing Cassandra information stores");
+		for (CassandraInformationStoreParameters cassandraInformationStoreParameters : parametersModel
+				.getCassandraInformationStore()) {
+			logger.info(cassandraInformationStoreParameters.toString());
+
+			InformationStore newInformationStore = InformationStoreFactory
+					.buildInformationStore(cassandraInformationStoreParameters,
+							parametersModel);
+
+			this.informationStores.put(cassandraInformationStoreParameters.getURI(),
+					newInformationStore);
+
+			_addInformationStoreByType(newInformationStore,
+					InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
+			logger.info("The status of the information source is "
+					+ newInformationStore.test());
+
+		}
+	
 	}
 
 	// ----------------------------------------------------------------------------------------------------------

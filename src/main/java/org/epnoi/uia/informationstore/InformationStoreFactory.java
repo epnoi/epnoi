@@ -1,6 +1,7 @@
 package org.epnoi.uia.informationstore;
 
 import org.epnoi.uia.informationstore.exception.UnknownInformationStoreException;
+import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
@@ -22,10 +23,14 @@ public class InformationStoreFactory {
 			SOLRInformationStore newInformationStore = new SOLRInformationStore();
 			newInformationStore.init(informationStoreParameters);
 			return newInformationStore;
-		} else
+		} else if (informationStoreParameters instanceof CassandraInformationStoreParameters) {
+			CassandraInformationStore newInformationStore = new CassandraInformationStore();
+			newInformationStore.init(informationStoreParameters);
+			return newInformationStore;
+		} else{
 			throw new UnknownInformationStoreException(" "
 					+ informationStoreParameters);
-
+		}
 	}
 
 }

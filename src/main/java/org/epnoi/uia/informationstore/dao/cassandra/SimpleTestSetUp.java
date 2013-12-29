@@ -47,10 +47,10 @@ public class SimpleTestSetUp {
 		pique.addSearch("http://searchF");
 		userCassandraDAO.create(pique);
 
-		User readUser = userCassandraDAO.read("http://userRafa");
+		User readUser = (User)userCassandraDAO.read("http://userRafa");
 		System.out.println("readed user> " + readUser);
 
-		User otherReadUser = userCassandraDAO.read("http://userSara");
+		User otherReadUser =(User) userCassandraDAO.read("http://userSara");
 		System.out.println("readed user> " + otherReadUser);
 		System.out.println("Exiting test");
 		// Let's create the searchs
@@ -85,7 +85,7 @@ public class SimpleTestSetUp {
 			searchCassandraDAO.create(search);
 		}
 
-		Search piqueSearch = searchCassandraDAO.read("http://searchE");
+		Search piqueSearch = (Search)searchCassandraDAO.read("http://searchE");
 		piqueSearch.addExpression("galaxy");
 	}
 }

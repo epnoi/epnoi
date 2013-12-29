@@ -77,6 +77,13 @@ public class VirtuosoInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
+	public Resource get(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// ------------------------------------------------------------------------
+
 	public List<String> query(String queryExpression) {
 
 		return this.queryResolver.query(queryExpression);

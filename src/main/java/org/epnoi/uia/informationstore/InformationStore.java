@@ -15,6 +15,8 @@ public interface InformationStore {
 	public boolean test();
 
 	public Resource get(String URI);
+	
+public Resource get(Selector selector);
 
 	public List<String> query(String queryExpression);
 
