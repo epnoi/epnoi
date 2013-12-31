@@ -2,13 +2,13 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
+import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
 import epnoi.model.User;
-
 
 public class CassandraInformationStore implements InformationStore {
 
@@ -45,10 +45,11 @@ public class CassandraInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public Resource get(Selector selector) {
-		// TODO Auto-generated method stub
-	//	CassandraDAO dao =this.daoFactory.build(selector);
-	//	Resource resource = dao.get(selector);
-		return new User();
+
+		CassandraDAO dao = this.daoFactory.build(selector);
+
+		Resource resource = dao.read(selector.getProperty(SelectorHelper.URI));
+		return resource;
 	}
 
 	// ------------------------------------------------------------------------

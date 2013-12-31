@@ -1,9 +1,16 @@
 package org.epnoi.uia.informationstore;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Selector {
 	Map<String, String> properties;
+	
+	// -------------------------------------------------------------------------------
+	
+	public Selector(){
+		this.properties = new HashMap<String, String>();
+	}
 
 	// -------------------------------------------------------------------------------
 
@@ -13,8 +20,8 @@ public class Selector {
 
 	// -------------------------------------------------------------------------------
 
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
+	public void setProperty(String property, String value) {
+		this.properties.put(property, value);
 	}
 
 	// -------------------------------------------------------------------------------
@@ -22,5 +29,5 @@ public class Selector {
 	public String getProperty(String propertyName) {
 		return this.properties.get(propertyName);
 	}
-
+	
 }

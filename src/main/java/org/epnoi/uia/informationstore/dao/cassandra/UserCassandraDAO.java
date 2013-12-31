@@ -44,14 +44,12 @@ public class UserCassandraDAO extends CassandraDAO {
 		}
 
 	}
-	
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(Selector selector) {
 		return new ExternalResource();
 	}
-
 
 	// --------------------------------------------------------------------------------
 
@@ -65,6 +63,8 @@ public class UserCassandraDAO extends CassandraDAO {
 		 * column = columnsIteratorProof.next(); System.out.println("Column   "
 		 * + column); }
 		 */
+		
+		System.out.println("------> "+URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {
@@ -117,7 +117,7 @@ public class UserCassandraDAO extends CassandraDAO {
 				.query("select * from User where NAME='" + name + "'"));
 		if ((result != null) && (result.size() > 0)) {
 			Row row = (Row) result.get(0);
-			User user = (User)this.read((String) row.getKey());
+			User user = (User) this.read((String) row.getKey());
 			return user;
 		}
 		return null;
@@ -133,7 +133,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 
-				User user = (User)this.read((String) row.getKey());
+				User user = (User) this.read((String) row.getKey());
 				users.add(user);
 
 			}
@@ -170,7 +170,7 @@ public class UserCassandraDAO extends CassandraDAO {
 					.getUserWithName("RafitaELOtro");
 			userCassandraDAO.delete(userToDelete.getURI());
 		}
-
+/*
 		User user = new User();
 		user.setURI("http://useruri");
 		user.setName("Rafita");
@@ -193,8 +193,8 @@ public class UserCassandraDAO extends CassandraDAO {
 				.read("http://externalresourceuri");
 		System.out.println("readedExternalResource> " + readedExternalResource);
 		externalResourceCassandraDAO.delete("http://externalresourceuri");
-
-		User readUser = (User) userCassandraDAO.read("http://useruri");
+*/
+		User readUser = (User) userCassandraDAO.read("http://userSara");
 		System.out.println("readed user> " + readUser);
 
 		// userCassandraDAO.delete("http://useruri");

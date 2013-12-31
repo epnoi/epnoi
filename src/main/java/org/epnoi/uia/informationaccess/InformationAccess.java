@@ -13,6 +13,8 @@ public interface InformationAccess {
 	public void put(Resource resource, Context context);
 
 	public Resource get(String URI);
+	
+	public Resource get(String URI, String resourceType);
 
 	public void init(ParametersModel parameters);
 

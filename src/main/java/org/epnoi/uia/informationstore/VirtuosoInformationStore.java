@@ -78,7 +78,7 @@ public class VirtuosoInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public Resource get(Selector selector) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

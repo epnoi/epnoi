@@ -43,7 +43,11 @@ public abstract class CassandraDAO {
 	protected static List<ColumnFamilyDefinition> columnFamilyDefinitions = null;
 	
 	public abstract Resource read(Selector selector);
+	public abstract Resource read(String URI);
+	
 	public abstract void create(Resource resource);
+	
+	
 	
 
 	public void init() {
