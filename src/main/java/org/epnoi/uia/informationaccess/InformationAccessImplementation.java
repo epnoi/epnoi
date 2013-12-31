@@ -53,7 +53,7 @@ public class InformationAccessImplementation implements InformationAccess {
 
 	public Resource get(String URI, String resourceType) {
 		// TODO Auto-generated method stub
-		Wrapper wrapper = this.wrapperFactory.build(UserRDFHelper.USER_CLASS);
+		Wrapper wrapper = this.wrapperFactory.build(resourceType);
 		return wrapper.get(URI);
 	}
 

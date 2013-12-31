@@ -3,10 +3,12 @@ package org.epnoi.uia.core;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
 
+import epnoi.model.Search;
 import epnoi.model.User;
 
 public class CoreMainUser {
@@ -53,10 +55,17 @@ public class CoreMainUser {
 
 		Core core = getUIACore();
 
-		User user = (User) core.getInformationAccess().get("http://userSara", UserRDFHelper.USER_CLASS);
+		User user = (User) core.getInformationAccess().get("http://userSara",
+				UserRDFHelper.USER_CLASS);
 		System.out.println("The readed user is " + user);
-		
-		User unknownUser = (User) core.getInformationAccess().get("http://userSara2", UserRDFHelper.USER_CLASS);
+
+		User unknownUser = (User) core.getInformationAccess().get(
+				"http://userSara2", UserRDFHelper.USER_CLASS);
 		System.out.println("The readed user is " + unknownUser);
+
+		Search readedSearch = (Search) core.getInformationAccess().get(
+				"http://searchE", SearchRDFHelper.SEARCH_CLASS);
+		
+		System.out.println("The readed search is " + readedSearch);
 	}
 }
