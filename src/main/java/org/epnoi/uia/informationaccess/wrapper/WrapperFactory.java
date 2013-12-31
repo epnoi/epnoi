@@ -3,9 +3,8 @@ package org.epnoi.uia.informationaccess.wrapper;
 import java.util.HashMap;
 
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.mortbay.jetty.security.UserRealm;
 
 import epnoi.model.Feed;
 import epnoi.model.InformationSource;
@@ -32,7 +31,8 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(UserRDFHelper.USER_CLASS, new UserWrapper(
 				this.core));
-
+		this.wrappersByType.put(SearchRDFHelper.SEARCH_CLASS, new SearchWrapper(
+				this.core));
 	}
 
 	// -------------------------------------------------------------------------------------------------------------
