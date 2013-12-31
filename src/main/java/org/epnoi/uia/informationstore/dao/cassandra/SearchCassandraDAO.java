@@ -21,7 +21,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource) {
-		Search search = (Search)resource;
+		Search search = (Search) resource;
 		super.createRow(search.getURI(), SearchCassandraHelper.COLUMN_FAMILLY);
 
 		if (search.getTitle() != null) {
@@ -45,7 +45,6 @@ public class SearchCassandraDAO extends CassandraDAO {
 		}
 
 	}
-	
 
 	// --------------------------------------------------------------------------------
 
@@ -53,10 +52,9 @@ public class SearchCassandraDAO extends CassandraDAO {
 		return new ExternalResource();
 	}
 
-
 	// --------------------------------------------------------------------------------
 
-	public Resource	 read(String URI) {
+	public Resource read(String URI) {
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -121,7 +119,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 	 */
 
 	// --------------------------------------------------------------------------------
-	
+
 	public List<Search> getSearchs() {
 		List<Search> searchs = new ArrayList<Search>();
 		List<Row<String, String, String>> result = (CassandraCQLClient
@@ -129,7 +127,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 
-				Search search = (Search)this.read((String) row.getKey());
+				Search search = (Search) this.read((String) row.getKey());
 				searchs.add(search);
 
 			}
