@@ -16,52 +16,50 @@ import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.InformationSource;
+import epnoi.model.InformationSourceSubscription;
 import epnoi.model.Resource;
 
-public class InformationSourceRDFDAO extends RDFDAO {
+public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public void create(Resource resource) {
-		InformationSource informationSource = (InformationSource) resource;
+		InformationSourceSubscription informationSource = (InformationSourceSubscription) resource;
 		String informationSourceURI = informationSource.getURI();
-/*
-		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + informationSource.getType() + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \""
-				+ informationSource.getURL() + "\"  ; " + "<"
-				+ RDFHelper.NAME_PROPERTY + ">" + " \""
-				+ informationSource.getName() + "\" " + " . }";
-		System.out.println("---> " + queryExpression);
-*/		
-//		String feedURI = feed.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
-				+ "{ <{URI}> a <{INFORMATION_SOURCE_CLASS}> ; "
-				+ "<{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ; "
-				+ "<{NAME_PROPERTY}> \"{INFORMATION_SOURCE_NAME}\" . }";
+				+ "{ <{URI}> a <{INFORMATION_SOURCE_SUBSCRIPTION_CLASS}> ; "
+				+ "<{INFORMATION_SOURCE_PROPERTY}> \"{INFORMATION_SOURCE}\". }";
 
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", informationSourceURI)
-				.replace("{INFORMATION_SOURCE_CLASS}", InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS)
-				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
-				.replace("{INFORMATION_SOURCE_URL}", informationSource.getURL())
-				.replace("{NAME_PROPERTY}", RDFHelper.NAME_PROPERTY)
-				.replace("{INFORMATION_SOURCE_NAME}", cleanOddCharacters(informationSource.getName()));
-	
-		System.out.println("........>"+queryExpression);
+				.replace(
+						"{INFORMATION_SOURCE_SUBSCRIPTION_CLASS}",
+						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS)
+				.replace(
+						"{INFORMATION_SOURCE_PROPERTY}",
+						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS)
+				.replace("{INFORMATION_SOURCE}",
+						informationSource.getInformationSource());
+		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
 		vur.exec();
+
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------
+
+	public Boolean exists(String URI) {
+
+		Node foo1 = NodeFactory.createURI(URI);
+
+		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
 	}
 
@@ -80,7 +78,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		InformationSource informationSource = new InformationSource();
+		InformationSourceSubscription informationSource = new InformationSourceSubscription();
 		informationSource.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
@@ -95,28 +93,14 @@ public class InformationSourceRDFDAO extends RDFDAO {
 			System.out.println(" { " + t.getSubject() + " SSS "
 					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
-			if (RDFHelper.NAME_PROPERTY.equals(predicateURI)) {
-				informationSource.setName(t.getObject().getLiteral().getValue()
-						.toString());
-			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
-				informationSource.setURL(t.getObject().getLiteral().getValue()
-						.toString());
-			} else if (RDFHelper.TYPE_PROPERTY.equals(predicateURI)) {
-				informationSource.setType(t.getObject().getURI().toString());
+			if (InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY
+					.equals(predicateURI)) {
+				informationSource.setInformationSource((t.getObject()
+						.getLiteral().getValue().toString()));
 			}
 
 		}
 		return informationSource;
-	}
-
-	// ---------------------------------------------------------------------------------------------------------------------
-
-	public Boolean exists(String URI) {
-
-		Node foo1 = NodeFactory.createURI(URI);
-
-		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
-
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -126,15 +110,14 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 		String URI = "http://www.epnoi.org/informationSources#whatever";
 
-		InformationSource informationSource = new InformationSource();
+		InformationSourceSubscription informationSource = new InformationSourceSubscription();
 
 		informationSource.setURI(URI);
-		informationSource.setName("arXiv");
+
 		informationSource
-				.setURL("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-		informationSource
-				.setType(InformationSourceRDFHelper.SOLR_INFORMATION_SOURCE_CLASS);
-		InformationSourceRDFDAO informationSourceRDFDAO = new InformationSourceRDFDAO();
+				.setInformationSource("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
+
+		InformationSourceSubscriptionRDFDAO informationSourceRDFDAO = new InformationSourceSubscriptionRDFDAO();
 		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
 		parameters.setGraph("http://informationSourceTest");
 		parameters.setHost("localhost");
@@ -155,7 +138,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		informationSourceRDFDAO.showTriplets();
 		VirtGraph graph = new VirtGraph("http://informationSourceTest",
 				virtuosoURL, "dba", "dba");
-		InformationSource readedInformationSource = (InformationSource) informationSourceRDFDAO
+		InformationSourceSubscription readedInformationSource = (InformationSourceSubscription) informationSourceRDFDAO
 				.read(URI);
 		System.out.println("Readed information source -> "
 				+ readedInformationSource);

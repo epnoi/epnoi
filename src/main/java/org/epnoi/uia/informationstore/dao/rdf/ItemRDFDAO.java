@@ -93,7 +93,7 @@ public class ItemRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public Item read(String URI) {
+	public Resource read(String URI) {
 		Item item = new Item();
 		item.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"

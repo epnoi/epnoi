@@ -62,7 +62,10 @@ public class CassandraInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void put(Resource resource) {
-		// TODO Auto-generated method stub
+		CassandraDAO dao = this.daoFactory.build(resource);
+System.out.println(">>"+dao);
+		 dao.create(resource);
+		
 
 	}
 
