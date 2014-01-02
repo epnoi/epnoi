@@ -9,6 +9,7 @@ import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
 import epnoi.model.Resource;
+import epnoi.model.User;
 
 public class CassandraDAOFactory {
 
@@ -23,6 +24,12 @@ public class CassandraDAOFactory {
 	// --------------------------------------------------------------------------------
 
 	public CassandraDAO build(Resource resource) throws DAONotFoundException {
+		if (resource instanceof User) {
+			UserCassandraDAO userDAO = new UserCassandraDAO();
+			userDAO.init();
+			return userDAO;
+			
+		}
 		throw new DAONotFoundException("Not implemented");
 	}
 

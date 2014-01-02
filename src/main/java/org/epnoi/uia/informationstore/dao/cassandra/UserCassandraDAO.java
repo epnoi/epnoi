@@ -21,6 +21,7 @@ public class UserCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource) {
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		User user = (User) resource;
 		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILLY);
 
@@ -42,18 +43,23 @@ public class UserCassandraDAO extends CassandraDAO {
 					UserCassandraHelper.SEARCHS,
 					UserCassandraHelper.COLUMN_FAMILLY);
 		}
+		
+		
 
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(Selector selector) {
+		System.out.println("!!-nooooooooooooo-----> " );
 		return new ExternalResource();
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
+		
+		
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -64,7 +70,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		 * + column); }
 		 */
 		
-		System.out.println("------> "+URI);
+		System.out.println("!!------> "+URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {

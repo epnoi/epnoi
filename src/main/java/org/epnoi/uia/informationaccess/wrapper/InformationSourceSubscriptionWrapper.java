@@ -5,17 +5,18 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
 import epnoi.model.dao.rdf.InformationSourceRDFHelper;
 
-public class InformationSourceWrapper implements Wrapper {
+public class InformationSourceSubscriptionWrapper implements Wrapper {
 	Core core;
 
 	// -------------------------------------------------------------------------------------------------------------
 
-	public InformationSourceWrapper(Core core) {
+	public InformationSourceSubscriptionWrapper(Core core) {
 		this.core = core;
 	}
 
@@ -25,6 +26,8 @@ public class InformationSourceWrapper implements Wrapper {
 		
 	}
 
+	// -------------------------------------------------------------------------------------------------------------
+	
 	public void put(Resource resource) {
 		//InformationSource informationSource = (InformationSource) resource;
 
@@ -42,7 +45,7 @@ public class InformationSourceWrapper implements Wrapper {
 				.get(0);
 
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+		selector.setProperty(SelectorHelper.TYPE, InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		return informationStore.get(selector);
 	}

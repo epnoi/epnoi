@@ -29,7 +29,11 @@ public abstract class RDFDAO {
 	abstract public void create(Resource resource);
 
 	abstract public void remove(String URI);
-
+	
+	abstract public Resource read(String URI);
+	
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+	
 	public void init(InformationStoreParameters parameters) {
 
 		// System.out.println(".............................................. "+
