@@ -19,14 +19,13 @@ import epnoi.model.dao.cassandra.UserCassandraDAO;
 
 @Path("/loginService")
 public class LoginResource {
-	public static final String MATCHER_ATTRIBUTE = "SEMANTIC_MATCHER";
+	
 
 	@Context
 	ServletContext context;
 
 	// --------------------------------------------------------------------------------
-	// ----------------------------------------------------------
-
+	
 	@GET
 	@Path("/login/{ID}")
 	// @Consumes(MediaType.APPLICATION_JSON)

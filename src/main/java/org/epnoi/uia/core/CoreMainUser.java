@@ -62,7 +62,7 @@ public class CoreMainUser {
 		System.out.println("The readed user is " + user);
 */
 		User unknownUser = (User) core.getInformationAccess().get(
-				"http://userSara2", UserRDFHelper.USER_CLASS);
+				"http://newUser", UserRDFHelper.USER_CLASS);
 		System.out.println("The readed user is " + unknownUser);
 		
 /*
