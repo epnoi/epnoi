@@ -5,7 +5,7 @@
 		<path></path>
 		<host>localhost</host>
 		<port>1111</port>
-		<graph>http://feedTest</graph>
+		<graph>http://informationSourceTest</graph>
 		<user>dba</user>
 		<password>dba</password>
 	</virtuosoInformationStore>
@@ -16,26 +16,17 @@
 		<port>8983</port>
 		<core>proofsCore</core>
 	</solrInformationStore>
-	<!-- 
-	<rssHoarder>
-		<URI>http://epnoi.org/rssHoarder</URI>
-		<path>/proofs/rsshoarder</path>
-		<feed>
-			<name>slashdot</name>
-			<URI>http://www.epnoi.org/feeds/slashdot</URI>
-			<URL>http://rss.slashdot.org/Slashdot/slashdot</URL>
-			<interval>3</interval>
-		</feed>
-		<feed>
-			<name>highScalability</name>
-			<URI>http://www.epnoi.org/feeds/highScalability</URI>
-			<URL>http://feeds.feedburner.com/HighScalability</URL>
-			<interval>30</interval>
-		</feed>
-	</rssHoarder>
-	<rssHarvester>
-		<URI>http://epnoi.org/rssHarvester</URI>
-		<path>/proofs/rsshoarder</path>
-	</rssHarvester>
-	 -->
+	<cassandraInformationStore>
+		<URI>http://cassandraInformationStore</URI>
+		<path>solr</path>
+		<host>localhost</host>
+		<port>8983</port>
+	</cassandraInformationStore>
+	<!-- <rssHoarder> <URI>http://epnoi.org/rssHoarder</URI> <path>/proofs/rsshoarder</path> 
+		<feed> <name>slashdot</name> <URI>http://www.epnoi.org/feeds/slashdot</URI> 
+		<URL>http://rss.slashdot.org/Slashdot/slashdot</URL> <interval>3</interval> 
+		</feed> <feed> <name>highScalability</name> <URI>http://www.epnoi.org/feeds/highScalability</URI> 
+		<URL>http://feeds.feedburner.com/HighScalability</URL> <interval>30</interval> 
+		</feed> </rssHoarder> <rssHarvester> <URI>http://epnoi.org/rssHarvester</URI> 
+		<path>/proofs/rsshoarder</path> </rssHarvester> -->
 </parametersModel>

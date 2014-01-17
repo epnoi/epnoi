@@ -19,7 +19,7 @@ public class SimpleTestSetUp {
 		System.out.println("-- " + searchCassandraDAO.getSearchs());
 		for (User user : userCassandraDAO.getUsers()) {
 			System.out.println(user.getName() + " existe!");
-			userCassandraDAO.delete(user.getURI());
+			userCassandraDAO.remove(user.getURI());
 		}
 
 		// Let's create the users
@@ -47,17 +47,17 @@ public class SimpleTestSetUp {
 		pique.addSearch("http://searchF");
 		userCassandraDAO.create(pique);
 
-		User readUser = userCassandraDAO.read("http://userRafa");
+		User readUser = (User)userCassandraDAO.read("http://userRafa");
 		System.out.println("readed user> " + readUser);
 
-		User otherReadUser = userCassandraDAO.read("http://userSara");
+		User otherReadUser =(User) userCassandraDAO.read("http://userSara");
 		System.out.println("readed user> " + otherReadUser);
 		System.out.println("Exiting test");
 		// Let's create the searchs
 
 		for (Search search : searchCassandraDAO.getSearchs()) {
 			System.out.println(search.getTitle() + "existe!");
-			searchCassandraDAO.delete(search.getURI());
+			searchCassandraDAO.remove(search.getURI());
 		}
 
 		for (String label : Arrays.asList("A", "B", "C", "D", "E", "F")) {
@@ -85,7 +85,7 @@ public class SimpleTestSetUp {
 			searchCassandraDAO.create(search);
 		}
 
-		Search piqueSearch = searchCassandraDAO.read("http://searchE");
+		Search piqueSearch = (Search)searchCassandraDAO.read("http://searchE");
 		piqueSearch.addExpression("galaxy");
 	}
 }

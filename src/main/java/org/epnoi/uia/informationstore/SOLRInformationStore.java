@@ -3,6 +3,7 @@ package org.epnoi.uia.informationstore;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAO;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
@@ -68,13 +69,22 @@ public class SOLRInformationStore implements InformationStore {
 	}
 
 	// ------------------------------------------------------------------------
-
-	public Resource get(String URI) {
-		return new InformationSource();
+	
+	public Resource get(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// ------------------------------------------------------------------------
+	
+		public void remove(Selector selector) {
+			// TODO Auto-generated method stub
+	
+		}
+	
+	// ------------------------------------------------------------------------
 
+	
 	public List<String> query(String queryExpression) {
 		return new ArrayList<String>();
 	}

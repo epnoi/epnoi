@@ -12,6 +12,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.uia.informationstore.dao.cassandra.SearchCassandraDAO;
+
 import epnoi.model.Search;
 
 @Path("/searchsService")
@@ -32,20 +34,18 @@ public class SearchsResource extends UIAService {
 			@DefaultValue("none") @QueryParam("URI") String URI) {
 		System.out.println("GET: " + URI);
 
-		/*
+		
 		SearchCassandraDAO searchCassandraDAO = new SearchCassandraDAO();
 		searchCassandraDAO.init();
 		
-		Search search = searchCassandraDAO.read(URI);
+		Search search = (Search)searchCassandraDAO.read(URI);
 		for (Search s:searchCassandraDAO.getSearchs()){
 			System.out.println(s.getTitle()+ "existe!");
 			
 		}
-		*/
+		
 		//_initUIACore();
-		Search search = new Search();
-		search.setURI(URI);
-		search.setDescription("Whatever at "+ System.currentTimeMillis());
+		
 		if (search != null) {
 			return Response.ok(search, MediaType.APPLICATION_JSON).build();
 		}

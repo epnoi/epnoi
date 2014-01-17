@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "parametersModel")
 public class ParametersModel {
 
-		// Server related properties
+	// Server related properties
 	private String hostname;
 	private String port;
 	private String path;
@@ -16,6 +16,7 @@ public class ParametersModel {
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
+	private ArrayList<CassandraInformationStoreParameters> cassandraInformationStores;
 
 	private RSSHoarderParameters rssHoarder;
 	private RSSHarvesterParameters rssHarvester;
@@ -23,6 +24,7 @@ public class ParametersModel {
 	public ParametersModel() {
 		this.virtuosoInformationStores = new ArrayList<VirtuosoInformationStoreParameters>();
 		this.solrInformationStores = new ArrayList<SOLRInformationStoreParameters>();
+		this.cassandraInformationStores = new ArrayList<CassandraInformationStoreParameters>();
 	}
 
 	public ArrayList<VirtuosoInformationStoreParameters> getVirtuosoInformationStore() {
@@ -50,46 +52,59 @@ public class ParametersModel {
 		 * }
 		 */
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public RSSHoarderParameters getRssHoarder() {
 		return rssHoarder;
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public void setRssHoarder(RSSHoarderParameters rssHoarder) {
 		this.rssHoarder = rssHoarder;
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public RSSHarvesterParameters getRssHarvester() {
 		return rssHarvester;
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public void setRssHarvester(RSSHarvesterParameters rssHarvester) {
 		this.rssHarvester = rssHarvester;
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public ArrayList<SOLRInformationStoreParameters> getSolrInformationStore() {
 		return solrInformationStores;
 	}
-	
-	//---------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------
 
 	public void setSolrInformationStore(
 			ArrayList<SOLRInformationStoreParameters> solrInformationStores) {
 		this.solrInformationStores = solrInformationStores;
 	}
-	
-	//---------------------------------------------------------------------------------
-	
+
+	// ---------------------------------------------------------------------------------
+
+	public ArrayList<CassandraInformationStoreParameters> getCassandraInformationStore() {
+		return cassandraInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setCassandraInformationStore(
+			ArrayList<CassandraInformationStoreParameters> cassandraInformationStores) {
+		this.cassandraInformationStores = cassandraInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
 		return "ParametersModel [hostname=" + hostname + ", port=" + port
@@ -98,6 +113,5 @@ public class ParametersModel {
 				+ solrInformationStores + ", rssHoarder=" + rssHoarder
 				+ ", rssHarvester=" + rssHarvester + "]";
 	}
-	
 
 }

@@ -43,22 +43,15 @@ public class FeedRDFDAO extends RDFDAO {
 
 		// System.out.println("--------------------------------------------------------->"+feed);
 		String feedURI = feed.getURI();
-		/*
-		 * String queryExpression = "INSERT INTO GRAPH <" +
-		 * this.parameters.getGraph() + "> { <" + feedURI + "> a <" +
-		 * FeedRDFHelper.FEED_CLASS + "> ; " + "<" + RDFHelper.URL_PROPERTY +
-		 * ">" + " \"" + feed.getLink() + "\"  ; " + "<" +
-		 * RDFHelper.TITLE_PROPERTY + ">" + " \"" + feed.getTitle() + "\" " +
-		 * " . }";
-		 */
-		String queryExpression2 = "INSERT INTO GRAPH <{GRAPH}>"
+
+		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{FEED_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{FEED_LINK}\" ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\" ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
 
-		queryExpression2 = queryExpression2
+		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", feedURI)
 				.replace("{FEED_CLASS}", FeedRDFHelper.FEED_CLASS)
@@ -74,7 +67,7 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{FEED_PUB_DATE}", convertDateFormat(feed.getPubDate()));
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression2, this.graph);
+				queryExpression, this.graph);
 		vur.exec();
 		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
 		itemRDFDAO.init(this.parameters);
@@ -151,8 +144,11 @@ public class FeedRDFDAO extends RDFDAO {
 				feed.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				feed.setLink(t.getObject().getLiteral().getValue().toString());
-			} else if (RDFHelper.COMMENT_PROPERTY.equals(predicateURI)) {
-				feed.setDescription(t.getObject().getURI().toString());
+			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
+				feed.setDescription(t.getObject().toString());
+			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
+				System.out.println("----------->"+t.getObject().toString());
+				feed.setPubDate(t.getObject().getLiteral().getValue().toString());
 			} else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
 				feed.setCopyright(t.getObject().getURI().toString());
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
@@ -163,7 +159,7 @@ public class FeedRDFDAO extends RDFDAO {
 				String itemURI = t.getObject().toString();
 
 				// System.out.println("itemURI " + itemURI);
-				Item item = itemRDFDAO.read(itemURI);
+				Item item = (Item)itemRDFDAO.read(itemURI);
 				// System.out.println(".>>>" + item);
 				if (item != null) {
 					feed.addItem(item);
@@ -187,6 +183,7 @@ public class FeedRDFDAO extends RDFDAO {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------
 	
 	protected String convertDateFormat(String dateExpression) {
 		DateFormat formatter = new SimpleDateFormat(
@@ -202,6 +199,7 @@ public class FeedRDFDAO extends RDFDAO {
 		return (dt1.format(date));
 
 	}
+	
 	// ---------------------------------------------------------------------------------------------------
 
 	private static List<Feed> _generateData() {

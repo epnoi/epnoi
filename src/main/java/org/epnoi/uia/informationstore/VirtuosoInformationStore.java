@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
+import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOFactory;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
@@ -71,8 +72,20 @@ public class VirtuosoInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
-	public Resource get(String URI) {
-		return new InformationSource();
+	public Resource get(Selector selector) {
+		RDFDAO dao = this.datoFactory.build(selector);
+
+		Resource resource = dao.read(selector.getProperty(SelectorHelper.URI));
+		return resource;
+	}
+	
+	// ------------------------------------------------------------------------
+
+	public void remove(Selector selector) {
+		RDFDAO dao = this.datoFactory.build(selector);
+
+		dao.remove(selector.getProperty(SelectorHelper.URI));
+		
 	}
 
 	// ------------------------------------------------------------------------

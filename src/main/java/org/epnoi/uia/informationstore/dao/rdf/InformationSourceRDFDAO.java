@@ -31,40 +31,58 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	public void create(Resource resource) {
 		InformationSource informationSource = (InformationSource) resource;
 		String informationSourceURI = informationSource.getURI();
+		/*
+		 * String queryExpression = "INSERT INTO GRAPH <" +
+		 * this.parameters.getGraph() + "> { <" + informationSourceURI + "> a <"
+		 * + informationSource.getType() + "> ; " + "<" + RDFHelper.URL_PROPERTY
+		 * + ">" + " \"" + informationSource.getURL() + "\"  ; " + "<" +
+		 * RDFHelper.NAME_PROPERTY + ">" + " \"" + informationSource.getName() +
+		 * "\" " + " . }"; System.out.println("---> " + queryExpression);
+		 */
+		// String feedURI = feed.getURI();
 
-		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + informationSource.getType() + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \""
-				+ informationSource.getURL() + "\"  ; " + "<"
-				+ RDFHelper.NAME_PROPERTY + ">" + " \""
-				+ informationSource.getName() + "\" " + " . }";
-		System.out.println("---> " + queryExpression);
+		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+				+ "{ <{URI}> a <{INFORMATION_SOURCE_CLASS}> ; "
+				+ "<{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ; "
+				+ "<{HAS_INFORMATION_UNIT_TYPE_PROPERTY}> <{INFORMATION_SOURCE_UNIT_TYPE}> ; "
+				+ "<{NAME_PROPERTY}> \"{INFORMATION_SOURCE_NAME}\" . }";
+
+		queryExpression = queryExpression
+				.replace("{GRAPH}", this.parameters.getGraph())
+				.replace("{URI}", informationSourceURI)
+				.replace("{INFORMATION_SOURCE_CLASS}",
+						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS)
+				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
+				.replace("{INFORMATION_SOURCE_URL}", informationSource.getURL())
+				.replace("{NAME_PROPERTY}", RDFHelper.NAME_PROPERTY)
+				.replace("{INFORMATION_SOURCE_NAME}",
+						cleanOddCharacters(informationSource.getName()))
+				.replace("{HAS_INFORMATION_UNIT_TYPE_PROPERTY}", InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE)
+				.replace("{INFORMATION_SOURCE_UNIT_TYPE}", informationSource.getInformationUnitType());
+
+		System.out.println("........>" + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
 		vur.exec();
 
 	}
-	
-	// ---------------------------------------------------------------------------------------------------------------------
 
+	// ---------------------------------------------------------------------------------------------------------------------
 
 	public void update(InformationSource informationSource) {
 
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------------------------
 
+	public void remove(String URI) {
 
-		public void remove(String URI) {
+	}
 
-		}
-	
 	// ---------------------------------------------------------------------------------------------------------------------
 
-
-	public InformationSource read(String URI) {
+	public Resource read(String URI) {
 		InformationSource informationSource = new InformationSource();
 		informationSource.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
@@ -88,12 +106,14 @@ public class InformationSourceRDFDAO extends RDFDAO {
 						.toString());
 			} else if (RDFHelper.TYPE_PROPERTY.equals(predicateURI)) {
 				informationSource.setType(t.getObject().getURI().toString());
+			}else if (InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE.equals(predicateURI)) {
+				informationSource.setInformationUnitType(t.getObject().getURI().toString());
 			}
 
 		}
 		return informationSource;
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Boolean exists(String URI) {
@@ -105,28 +125,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
-	
-	public void showTriplets() {
 
-		Query sparql = QueryFactory.create("SELECT * FROM <"
-				+ this.parameters.getGraph() + ">  WHERE { { ?s ?p ?o } }");
-
-		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
-				.create(sparql, this.graph);
-
-		ResultSet results = virtuosoQueryEngine.execSelect();
-		while (results.hasNext()) {
-			QuerySolution result = results.nextSolution();
-			RDFNode s = result.get("s");
-			RDFNode p = result.get("p");
-			RDFNode o = result.get("o");
-			System.out.println(" { " + s + " | " + p + " | " + o + " }");
-		}
-
-	}
-
-	// ---------------------------------------------------------------------------------------------------------------------
-	
 	public static void main(String[] args) {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
@@ -161,7 +160,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		informationSourceRDFDAO.showTriplets();
 		VirtGraph graph = new VirtGraph("http://informationSourceTest",
 				virtuosoURL, "dba", "dba");
-		InformationSource readedInformationSource = informationSourceRDFDAO
+		InformationSource readedInformationSource = (InformationSource) informationSourceRDFDAO
 				.read(URI);
 		System.out.println("Readed information source -> "
 				+ readedInformationSource);

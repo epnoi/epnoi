@@ -3,22 +3,26 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.uia.informationstore.Selector;
+
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import epnoi.model.ExternalResource;
-import epnoi.model.Search;
+import epnoi.model.Resource;
 import epnoi.model.User;
 
 public class UserCassandraDAO extends CassandraDAO {
 
-	public void delete(String URI) {
+	public void remove(String URI) {
 		super.deleteRow(URI, UserCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
 
-	public void create(User user) {
+	public void create(Resource resource) {
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		User user = (User) resource;
 		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILLY);
 
 		if (user.getName() != null) {
@@ -44,7 +48,16 @@ public class UserCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public User read(String URI) {
+	public Resource read(Selector selector) {
+		
+		return new ExternalResource();
+	}
+
+	// --------------------------------------------------------------------------------
+
+	public Resource read(String URI) {
+		
+		
 		/*
 		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
 		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
@@ -54,6 +67,8 @@ public class UserCassandraDAO extends CassandraDAO {
 		 * column = columnsIteratorProof.next(); System.out.println("Column   "
 		 * + column); }
 		 */
+		
+		System.out.println("!!------> "+URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {
@@ -106,7 +121,7 @@ public class UserCassandraDAO extends CassandraDAO {
 				.query("select * from User where NAME='" + name + "'"));
 		if ((result != null) && (result.size() > 0)) {
 			Row row = (Row) result.get(0);
-			User user = this.read((String) row.getKey());
+			User user = (User) this.read((String) row.getKey());
 			return user;
 		}
 		return null;
@@ -122,7 +137,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 
-				User user = this.read((String) row.getKey());
+				User user = (User) this.read((String) row.getKey());
 				users.add(user);
 
 			}
@@ -149,7 +164,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		if (userCassandraDAO.existsUserWithName("Rafita")) {
 			System.out.println("Rafita existe!");
 			User userToDelete = userCassandraDAO.getUserWithName("Rafita");
-			userCassandraDAO.delete(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getURI());
 
 		}
 
@@ -157,9 +172,9 @@ public class UserCassandraDAO extends CassandraDAO {
 			System.out.println("RafitaElOtro existe!");
 			User userToDelete = userCassandraDAO
 					.getUserWithName("RafitaELOtro");
-			userCassandraDAO.delete(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getURI());
 		}
-
+/*
 		User user = new User();
 		user.setURI("http://useruri");
 		user.setName("Rafita");
@@ -178,12 +193,12 @@ public class UserCassandraDAO extends CassandraDAO {
 		userCassandraDAO.create(user);
 		userCassandraDAO.create(userElOtro);
 
-		ExternalResource readedExternalResource = externalResourceCassandraDAO
+		ExternalResource readedExternalResource = (ExternalResource) externalResourceCassandraDAO
 				.read("http://externalresourceuri");
 		System.out.println("readedExternalResource> " + readedExternalResource);
 		externalResourceCassandraDAO.delete("http://externalresourceuri");
-
-		User readUser = userCassandraDAO.read("http://useruri");
+*/
+		User readUser = (User) userCassandraDAO.read("http://userSara");
 		System.out.println("readed user> " + readUser);
 
 		// userCassandraDAO.delete("http://useruri");

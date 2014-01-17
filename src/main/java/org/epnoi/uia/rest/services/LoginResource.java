@@ -13,20 +13,20 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.uia.informationstore.dao.cassandra.UserCassandraDAO;
+
 import epnoi.model.Login;
 import epnoi.model.User;
-import epnoi.model.dao.cassandra.UserCassandraDAO;
 
 @Path("/loginService")
 public class LoginResource {
-	public static final String MATCHER_ATTRIBUTE = "SEMANTIC_MATCHER";
+	
 
 	@Context
 	ServletContext context;
 
 	// --------------------------------------------------------------------------------
-	// ----------------------------------------------------------
-
+	
 	@GET
 	@Path("/login/{ID}")
 	// @Consumes(MediaType.APPLICATION_JSON)

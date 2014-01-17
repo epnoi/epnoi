@@ -7,5 +7,6 @@ public interface UserCassandraHelper  {
 	public static final String NAME = "NAME";
 	public static final String PASSWORD="PASSWORD";
 	public static final String SEARCHS="SEARCHS";
+	public static final String INFORMATION_SOURCE_SUBSCRIPTIONS="INFORMATION_SOURCE_SUBSCRIPTIONS";
 
 }

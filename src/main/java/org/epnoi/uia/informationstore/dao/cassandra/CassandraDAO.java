@@ -25,7 +25,12 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.SliceQuery;
 
-public class CassandraDAO {
+import org.epnoi.uia.informationstore.Selector;
+
+import epnoi.model.ExternalResource;
+import epnoi.model.Resource;
+
+public abstract class CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
 
@@ -36,6 +41,15 @@ public class CassandraDAO {
 
 	protected static Map<String, ColumnFamilyTemplate<String, String>> columnFamilyTemplates = null;
 	protected static List<ColumnFamilyDefinition> columnFamilyDefinitions = null;
+	
+	public abstract Resource read(Selector selector);
+	public abstract Resource read(String URI);
+	
+	
+	public abstract void create(Resource resource);
+	
+	public abstract void remove(String URI);
+	
 
 	public void init() {
 
@@ -222,7 +236,7 @@ public class CassandraDAO {
 	public static void main(String[] args) {
 		String USER_CF = "USER_CF";
 
-		CassandraDAO cassandraDAO = new CassandraDAO();
+		CassandraDAO cassandraDAO = new UserCassandraDAO();
 		cassandraDAO.init();
 		cassandraDAO.updateColumn("http://whatever", "pepito", "grillo",
 				USER_CF);
