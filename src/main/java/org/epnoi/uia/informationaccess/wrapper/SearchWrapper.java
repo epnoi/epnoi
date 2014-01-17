@@ -65,6 +65,21 @@ public class SearchWrapper implements Wrapper {
 		return informationStore.get(selector);
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+		public void remove(String URI) {
+			InformationStore informationStore = this.core
+					.getInformationStoresByType(
+							InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+					.get(0);
+
+			Selector selector = new Selector();
+			selector.setProperty(SelectorHelper.TYPE, SearchRDFHelper.SEARCH_CLASS);
+			selector.setProperty(SelectorHelper.URI, URI);
+			informationStore.remove(selector);
+
+		}
 
 	// -------------------------------------------------------------------------------------
 

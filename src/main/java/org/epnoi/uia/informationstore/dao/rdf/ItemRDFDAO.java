@@ -39,6 +39,7 @@ public class ItemRDFDAO extends RDFDAO {
 				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\" ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
+				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
 		System.out.println("....> " + item);
 		queryExpression = queryExpression
@@ -52,9 +53,12 @@ public class ItemRDFDAO extends RDFDAO {
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
-				.replace("{ITEM_DESCRIPTION}", cleanOddCharacters(item.getDescription()))
+				.replace("{ITEM_DESCRIPTION}",
+						cleanOddCharacters(item.getDescription()))
 				.replace("{ITEM_PUB_DATE}",
-						convertDateFormat(item.getPubDate()));
+						convertDateFormat(item.getPubDate()))
+				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
+				.replace("{ITEM_AUTHOR}", item.getAuthor());
 		/*
 		 * String queryExpression = "INSERT INTO GRAPH <" +
 		 * this.parameters.getGraph() + "> { <" + itemURI + "> a <" +
@@ -114,8 +118,20 @@ public class ItemRDFDAO extends RDFDAO {
 				item.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				item.setLink(t.getObject().getLiteral().getValue().toString());
-			}
 
+			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
+				item.setDescription(t.getObject().getLiteral().getValue()
+						.toString());
+
+			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
+				item.setPubDate(t.getObject().getLiteral().getValue()
+						.toString());
+			} else if (FeedRDFHelper.AUTHOR_PROPERTY.equals(predicateURI)) {
+				item.setAuthor(t.getObject().getLiteral().getValue().toString());
+			} else if (FeedRDFHelper.GUID_PROPERTY.equals(predicateURI)) {
+				item.setGuid(t.getObject().getLiteral().getValue().toString());
+
+			}
 		}
 		return item;
 	}

@@ -10,7 +10,7 @@ import epnoi.model.Resource;
 
 public class ExternalResourceCassandraDAO extends CassandraDAO {
 
-	public void delete(String URI) {
+	public void remove(String URI) {
 		super.deleteRow(URI, ExternalResourceCassandraHelper.COLUMN_FAMILLY);
 	}
 
@@ -97,7 +97,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		externalResourceCassandraDAO.create(externalResource);
 
 		externalResourceCassandraDAO.create(externalResource2);
-		externalResourceCassandraDAO.delete("http://uriproof2");
+		externalResourceCassandraDAO.remove("http://uriproof2");
 		// externalResourceCassandraDAO.delete("http://uriproof");
 
 		ExternalResource readedExternalResource = (ExternalResource)externalResourceCassandraDAO
@@ -105,7 +105,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		System.out
 				.println("readedExternalResource.> " + readedExternalResource);
 
-		externalResourceCassandraDAO.delete("http://uriproof");
+		externalResourceCassandraDAO.remove("http://uriproof");
 		System.out.println("Exiting test");
 
 	}

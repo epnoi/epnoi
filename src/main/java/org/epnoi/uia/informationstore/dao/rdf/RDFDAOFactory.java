@@ -8,6 +8,8 @@ import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import epnoi.model.Feed;
 import epnoi.model.InformationSource;
+import epnoi.model.InformationSourceSubscription;
+import epnoi.model.Item;
 import epnoi.model.Resource;
 import epnoi.model.User;
 
@@ -29,8 +31,17 @@ public class RDFDAOFactory {
 			dao.init(this.parameters);
 
 			return dao;
+		} else if (resource instanceof InformationSourceSubscription) {
+			RDFDAO dao = new InformationSourceSubscriptionRDFDAO();
+			dao.init(this.parameters);
+
+			return dao;
 		} else if (resource instanceof Feed) {
 			RDFDAO dao = new FeedRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof Item) {
+			RDFDAO dao = new ItemRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 		} else if (resource instanceof User) {
@@ -56,12 +67,28 @@ public class RDFDAOFactory {
 			informationSourceDAO.init(this.parameters);
 			return informationSourceDAO;
 
-		}else if (typeSelector
-				.equals(UserRDFHelper.USER_CLASS)) {
+		} else if (typeSelector
+				.equals(InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS)) {
 
-			UserRDFDAO informationSourceDAO = new UserRDFDAO ();
+			InformationSourceSubscriptionRDFDAO informationSourceSubscriptionDAO = new InformationSourceSubscriptionRDFDAO();
+			informationSourceSubscriptionDAO.init(this.parameters);
+			return informationSourceSubscriptionDAO;
+
+		} else if (typeSelector.equals(UserRDFHelper.USER_CLASS)) {
+
+			UserRDFDAO informationSourceDAO = new UserRDFDAO();
 			informationSourceDAO.init(this.parameters);
 			return informationSourceDAO;
+		} else if (typeSelector.equals(FeedRDFHelper.FEED_CLASS)) {
+
+			FeedRDFDAO feedDAO = new FeedRDFDAO();
+			feedDAO.init(this.parameters);
+			return feedDAO;
+		} else if (typeSelector.equals(FeedRDFHelper.ITEM_CLASS)) {
+
+			ItemRDFDAO itemDAO = new ItemRDFDAO();
+			itemDAO.init(this.parameters);
+			return itemDAO;
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

@@ -14,7 +14,7 @@ import epnoi.model.User;
 
 public class UserCassandraDAO extends CassandraDAO {
 
-	public void delete(String URI) {
+	public void remove(String URI) {
 		super.deleteRow(URI, UserCassandraHelper.COLUMN_FAMILLY);
 	}
 
@@ -43,15 +43,13 @@ public class UserCassandraDAO extends CassandraDAO {
 					UserCassandraHelper.SEARCHS,
 					UserCassandraHelper.COLUMN_FAMILLY);
 		}
-		
-		
 
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(Selector selector) {
-		System.out.println("!!-nooooooooooooo-----> " );
+		
 		return new ExternalResource();
 	}
 
@@ -166,7 +164,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		if (userCassandraDAO.existsUserWithName("Rafita")) {
 			System.out.println("Rafita existe!");
 			User userToDelete = userCassandraDAO.getUserWithName("Rafita");
-			userCassandraDAO.delete(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getURI());
 
 		}
 
@@ -174,7 +172,7 @@ public class UserCassandraDAO extends CassandraDAO {
 			System.out.println("RafitaElOtro existe!");
 			User userToDelete = userCassandraDAO
 					.getUserWithName("RafitaELOtro");
-			userCassandraDAO.delete(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getURI());
 		}
 /*
 		User user = new User();

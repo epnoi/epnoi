@@ -10,6 +10,8 @@ import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationaccess.InformationAccess;
 import org.epnoi.uia.informationaccess.InformationAccessImplementation;
+import org.epnoi.uia.informationsource.InformationSourcesHandler;
+import org.epnoi.uia.informationsource.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
@@ -31,6 +33,7 @@ public class Core {
 	private RSSHoarder rssHoarder;
 	private RSSHarvester rssHarvester;
 	private InformationAccess informationAccess;
+	private InformationSourcesHandler informationSourcesHandler = null;
 
 	private ParametersModel parametersModel = null;
 
@@ -55,6 +58,7 @@ public class Core {
 
 		this._informationStoresInitialization();
 		this._initInformationAccess();
+		this._initInformationSourcesHandler();
 		this._initSearchHandler();
 		this._hoardersInitialization();
 		this._harvestersInitialization();
@@ -116,7 +120,8 @@ public class Core {
 					.buildInformationStore(cassandraInformationStoreParameters,
 							parametersModel);
 
-			this.informationStores.put(cassandraInformationStoreParameters.getURI(),
+			this.informationStores.put(
+					cassandraInformationStoreParameters.getURI(),
 					newInformationStore);
 
 			_addInformationStoreByType(newInformationStore,
@@ -125,13 +130,19 @@ public class Core {
 					+ newInformationStore.test());
 
 		}
-	
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initInformationAccess() {
 		this.informationAccess = new InformationAccessImplementation(this);
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initInformationSourcesHandler() {
+		this.informationSourcesHandler = new InformationSourcesHandlerImpl(this);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -199,6 +210,15 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	public InformationSourcesHandler getInformationSourcesHandler() {
+		return informationSourcesHandler;
+	}
+
+	public void setInformationSourcesHandler(
+			InformationSourcesHandler informationSourcesHandler) {
+		this.informationSourcesHandler = informationSourcesHandler;
+	}
 
 	public SearchHandler getSearchHandler() {
 		return searchHandler;

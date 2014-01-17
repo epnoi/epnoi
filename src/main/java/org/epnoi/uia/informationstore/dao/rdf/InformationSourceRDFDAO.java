@@ -31,33 +31,36 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	public void create(Resource resource) {
 		InformationSource informationSource = (InformationSource) resource;
 		String informationSourceURI = informationSource.getURI();
-/*
-		String queryExpression = "INSERT INTO GRAPH <"
-				+ this.parameters.getGraph() + "> { <" + informationSourceURI
-				+ "> a <" + informationSource.getType() + "> ; " + "<"
-				+ RDFHelper.URL_PROPERTY + ">" + " \""
-				+ informationSource.getURL() + "\"  ; " + "<"
-				+ RDFHelper.NAME_PROPERTY + ">" + " \""
-				+ informationSource.getName() + "\" " + " . }";
-		System.out.println("---> " + queryExpression);
-*/		
-//		String feedURI = feed.getURI();
+		/*
+		 * String queryExpression = "INSERT INTO GRAPH <" +
+		 * this.parameters.getGraph() + "> { <" + informationSourceURI + "> a <"
+		 * + informationSource.getType() + "> ; " + "<" + RDFHelper.URL_PROPERTY
+		 * + ">" + " \"" + informationSource.getURL() + "\"  ; " + "<" +
+		 * RDFHelper.NAME_PROPERTY + ">" + " \"" + informationSource.getName() +
+		 * "\" " + " . }"; System.out.println("---> " + queryExpression);
+		 */
+		// String feedURI = feed.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{INFORMATION_SOURCE_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ; "
+				+ "<{HAS_INFORMATION_UNIT_TYPE_PROPERTY}> <{INFORMATION_SOURCE_UNIT_TYPE}> ; "
 				+ "<{NAME_PROPERTY}> \"{INFORMATION_SOURCE_NAME}\" . }";
 
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", informationSourceURI)
-				.replace("{INFORMATION_SOURCE_CLASS}", InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS)
+				.replace("{INFORMATION_SOURCE_CLASS}",
+						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS)
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{INFORMATION_SOURCE_URL}", informationSource.getURL())
 				.replace("{NAME_PROPERTY}", RDFHelper.NAME_PROPERTY)
-				.replace("{INFORMATION_SOURCE_NAME}", cleanOddCharacters(informationSource.getName()));
-	
-		System.out.println("........>"+queryExpression);
+				.replace("{INFORMATION_SOURCE_NAME}",
+						cleanOddCharacters(informationSource.getName()))
+				.replace("{HAS_INFORMATION_UNIT_TYPE_PROPERTY}", InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE)
+				.replace("{INFORMATION_SOURCE_UNIT_TYPE}", informationSource.getInformationUnitType());
+
+		System.out.println("........>" + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
@@ -103,6 +106,8 @@ public class InformationSourceRDFDAO extends RDFDAO {
 						.toString());
 			} else if (RDFHelper.TYPE_PROPERTY.equals(predicateURI)) {
 				informationSource.setType(t.getObject().getURI().toString());
+			}else if (InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE.equals(predicateURI)) {
+				informationSource.setInformationUnitType(t.getObject().getURI().toString());
 			}
 
 		}

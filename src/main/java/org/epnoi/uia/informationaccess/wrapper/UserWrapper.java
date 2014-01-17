@@ -28,6 +28,21 @@ public class UserWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------
 
+	public void remove(String URI) {
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, UserRDFHelper.USER_CLASS);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore.remove(selector);
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		informationStore.remove(selector);
+	}
+
+	// -------------------------------------------------------------------------------------
+
 	public void put(Resource resource, Context context) {
 
 		InformationStore informationStore = this.core

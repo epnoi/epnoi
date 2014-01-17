@@ -54,6 +54,18 @@ public class CassandraInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
+	public void remove(Selector selector) {
+
+		CassandraDAO dao = this.daoFactory.build(selector);
+
+		dao.remove(selector.getProperty(SelectorHelper.URI));
+	
+	}
+
+	// ------------------------------------------------------------------------
+
+	
+	
 	public List<String> query(String queryExpression) {
 		// TODO Auto-generated method stub
 		return null;
@@ -63,9 +75,8 @@ public class CassandraInformationStore implements InformationStore {
 
 	public void put(Resource resource) {
 		CassandraDAO dao = this.daoFactory.build(resource);
-System.out.println(">>"+dao);
-		 dao.create(resource);
-		
+		System.out.println(">>" + dao);
+		dao.create(resource);
 
 	}
 

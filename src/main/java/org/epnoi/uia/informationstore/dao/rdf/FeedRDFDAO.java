@@ -144,8 +144,11 @@ public class FeedRDFDAO extends RDFDAO {
 				feed.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				feed.setLink(t.getObject().getLiteral().getValue().toString());
-			} else if (RDFHelper.COMMENT_PROPERTY.equals(predicateURI)) {
-				feed.setDescription(t.getObject().getURI().toString());
+			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
+				feed.setDescription(t.getObject().toString());
+			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
+				System.out.println("----------->"+t.getObject().toString());
+				feed.setPubDate(t.getObject().getLiteral().getValue().toString());
 			} else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
 				feed.setCopyright(t.getObject().getURI().toString());
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
@@ -180,6 +183,7 @@ public class FeedRDFDAO extends RDFDAO {
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------
 	
 	protected String convertDateFormat(String dateExpression) {
 		DateFormat formatter = new SimpleDateFormat(
@@ -195,6 +199,7 @@ public class FeedRDFDAO extends RDFDAO {
 		return (dt1.format(date));
 
 	}
+	
 	// ---------------------------------------------------------------------------------------------------
 
 	private static List<Feed> _generateData() {
