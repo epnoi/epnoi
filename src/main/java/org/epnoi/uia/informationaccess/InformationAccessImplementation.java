@@ -4,7 +4,6 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
 import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
 import org.epnoi.uia.informationstore.InformationStore;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
@@ -52,10 +51,24 @@ public class InformationAccessImplementation implements InformationAccess {
 	// ---------------------------------------------------------------------------
 
 	public Resource get(String URI, String resourceType) {
-		// TODO Auto-generated method stub
 		Wrapper wrapper = this.wrapperFactory.build(resourceType);
 		return wrapper.get(URI);
 	}
+	
+	// ---------------------------------------------------------------------------
+
+	public void remove(String URI, String resourceType) {
+		Wrapper wrapper = this.wrapperFactory.build(resourceType);
+		wrapper.remove(URI);
+	}
+	
+	// ---------------------------------------------------------------------------
+
+		public void remove(Resource resource) {
+			Wrapper wrapper = this.wrapperFactory.build(resource);
+			wrapper.remove(resource.getURI());
+
+		}
 
 	// ---------------------------------------------------------------------------
 

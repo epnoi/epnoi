@@ -14,7 +14,7 @@ import epnoi.model.Search;
 
 public class SearchCassandraDAO extends CassandraDAO {
 
-	public void delete(String URI) {
+	public void remove(String URI) {
 		super.deleteRow(URI, SearchCassandraHelper.COLUMN_FAMILLY);
 	}
 

@@ -9,7 +9,6 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
-import epnoi.model.dao.rdf.InformationSourceRDFHelper;
 
 public class InformationSourceSubscriptionWrapper implements Wrapper {
 	Core core;
@@ -49,5 +48,21 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		return informationStore.get(selector);
 	}
+
+	// -------------------------------------------------------------------------------------------------------------
+
+	
+	public void remove(String URI) {
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE)
+				.get(0);
+
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore.remove(selector);
+	}
+
 
 }

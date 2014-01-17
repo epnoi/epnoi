@@ -45,9 +45,10 @@ public abstract class CassandraDAO {
 	public abstract Resource read(Selector selector);
 	public abstract Resource read(String URI);
 	
+	
 	public abstract void create(Resource resource);
 	
-	
+	public abstract void remove(String URI);
 	
 
 	public void init() {

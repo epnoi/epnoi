@@ -5,7 +5,7 @@
 	<artifactId>epnoiUIA</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>epnoiUIA Maven Webapp</name>
+	<name>epnoiUIA Maven</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -80,7 +80,9 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.10</version>
 				<configuration>
+				<!-- 
 					<scanIntervalSeconds>10</scanIntervalSeconds>
+					 -->
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 							<port>8081</port>

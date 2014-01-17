@@ -5,7 +5,7 @@
 		<path></path>
 		<host>localhost</host>
 		<port>1111</port>
-		<graph>http://feedTest</graph>
+		<graph>http://informationSourceTest</graph>
 		<user>dba</user>
 		<password>dba</password>
 	</virtuosoInformationStore>

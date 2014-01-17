@@ -42,7 +42,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS)
 				.replace(
 						"{INFORMATION_SOURCE_PROPERTY}",
-						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS)
+						InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY)
 				.replace("{INFORMATION_SOURCE}",
 						informationSource.getInformationSource());
 		System.out.println("---> " + queryExpression);
@@ -73,11 +73,26 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 	public void remove(String URI) {
 
+		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
+				+ this.parameters.getGraph() + ">");
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
+				sparql, this.graph);
+
+		Model model = vqe.execDescribe();
+		Graph g = model.getGraph();
+		// System.out.println("\nDESCRIBE results:");
+		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+			Triple triple = (Triple) i.next();
+
+			this.graph.remove(triple);
+
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
+		System.out.println("INFO SOURCE SUBS ----------> "+URI);
 		InformationSourceSubscription informationSource = new InformationSourceSubscription();
 		informationSource.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
@@ -87,7 +102,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results:");
+		System.out.println("\nDESCRIBE results: "+URI);
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
 			System.out.println(" { " + t.getSubject() + " SSS "

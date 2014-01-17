@@ -95,6 +95,20 @@ public class UserRDFDAO extends RDFDAO {
 
 	public void remove(String URI) {
 
+		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
+				+ this.parameters.getGraph() + ">");
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
+				sparql, this.graph);
+
+		Model model = vqe.execDescribe();
+		Graph g = model.getGraph();
+		// System.out.println("\nDESCRIBE results:");
+		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+			Triple triple = (Triple) i.next();
+
+			this.graph.remove(triple);
+
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -102,8 +116,11 @@ public class UserRDFDAO extends RDFDAO {
 	public Resource read(String URI) {
 		User user = new User();
 		user.setURI(URI);
-		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
+		String queryExpression = "DESCRIBE <" + URI + "> FROM <"
+				+ this.parameters.getGraph() + ">";
+		System.out.println("----------------------------->>>>>>> "
+				+ queryExpression);
+		Query sparql = QueryFactory.create(queryExpression);
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, this.graph);
 
@@ -114,6 +131,7 @@ public class UserRDFDAO extends RDFDAO {
 			Triple t = (Triple) i.next();
 
 			String predicateURI = t.getPredicate().getURI();
+			
 			if (UserRDFHelper.IS_SUBSCRIBED_PROPERTY.equals(predicateURI)) {
 				user.addInformationSourceSubscription((t.getObject().getURI()
 						.toString()));
@@ -154,7 +172,7 @@ public class UserRDFDAO extends RDFDAO {
 		parameters.setPassword("dba");
 
 		userRDFDAO.init(parameters);
-		
+
 		if (!userRDFDAO.exists(URI)) {
 			System.out.println("The user doesn't exist");
 
@@ -166,10 +184,8 @@ public class UserRDFDAO extends RDFDAO {
 		userRDFDAO.showTriplets();
 		VirtGraph graph = new VirtGraph("http://informationSourceTest",
 				virtuosoURL, "dba", "dba");
-		User readedUser = (User) userRDFDAO
-				.read(URI);
-		System.out.println("Readed user -> "
-				+ readedUser);
+		User readedUser = (User) userRDFDAO.read(URI);
+		System.out.println("Readed user -> " + readedUser);
 		if (userRDFDAO.exists(URI)) {
 			System.out.println("The user source now exists :) ");
 		}

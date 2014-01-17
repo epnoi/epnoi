@@ -19,7 +19,7 @@ public class SimpleTestSetUp {
 		System.out.println("-- " + searchCassandraDAO.getSearchs());
 		for (User user : userCassandraDAO.getUsers()) {
 			System.out.println(user.getName() + " existe!");
-			userCassandraDAO.delete(user.getURI());
+			userCassandraDAO.remove(user.getURI());
 		}
 
 		// Let's create the users
@@ -57,7 +57,7 @@ public class SimpleTestSetUp {
 
 		for (Search search : searchCassandraDAO.getSearchs()) {
 			System.out.println(search.getTitle() + "existe!");
-			searchCassandraDAO.delete(search.getURI());
+			searchCassandraDAO.remove(search.getURI());
 		}
 
 		for (String label : Arrays.asList("A", "B", "C", "D", "E", "F")) {

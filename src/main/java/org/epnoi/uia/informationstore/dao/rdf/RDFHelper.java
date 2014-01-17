@@ -10,7 +10,7 @@ public class RDFHelper {
 	public static final String COMMENT_PROPERTY ="http://www.w3.org/1999/02/22-rdf-syntax-ns#comment";
 	
 	public static final String CLASS_CLASS ="http://www.w3.org/2000/01/rdf-schema#Class";
-	public static final String URL_PROPERTY = "http//www.epnoi.org/ontology/epnoi#URL";
-	public static final String NAME_PROPERTY = "http//www.epnoi.org/ontology/epnoi#name";
-	public static final String TITLE_PROPERTY = "http//www.epnoi.org/ontology/epnoi#title";	
+	public static final String URL_PROPERTY = "http://www.epnoi.org/ontology/epnoi#URL";
+	public static final String NAME_PROPERTY = "http://www.epnoi.org/ontology/epnoi#name";
+	public static final String TITLE_PROPERTY = "http://www.epnoi.org/ontology/epnoi#title";	
 }

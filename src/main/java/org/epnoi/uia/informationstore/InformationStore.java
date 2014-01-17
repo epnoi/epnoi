@@ -14,8 +14,6 @@ public interface InformationStore {
 
 	public boolean test();
 
-	public Resource get(String URI);
-
 	public Resource get(Selector selector);
 
 	public List<String> query(String queryExpression);
@@ -23,6 +21,8 @@ public interface InformationStore {
 	public void put(Resource resource);
 
 	public void put(Resource resource, Context context);
+	
+	public void remove(Selector selector);
 
 	public InformationStoreParameters getParameters();
 }
