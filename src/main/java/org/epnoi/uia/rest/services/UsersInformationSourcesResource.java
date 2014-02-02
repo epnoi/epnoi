@@ -21,6 +21,8 @@ import epnoi.model.User;
 
 @Path("/users/{USER_ID}/subscriptions/informationSources")
 public class UsersInformationSourcesResource extends UIAService {
+
+	// ---------------------------------------------------------------------------------------
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("")
@@ -62,6 +64,8 @@ public class UsersInformationSourcesResource extends UIAService {
 
 	}
 
+	// ---------------------------------------------------------------------------------------
+
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{INFORMATION_SOURCE_ID}")
@@ -94,13 +98,13 @@ public class UsersInformationSourcesResource extends UIAService {
 		if (user.getInformationSourceSubscriptions().contains(
 				informationSourceSubscriptionURI)) {
 
-			InformationSourceSubscription informationSourceSubcription = (InformationSourceSubscription)core
+			InformationSourceSubscription informationSourceSubcription = (InformationSourceSubscription) core
 					.getInformationAccess()
 					.get(informationSourceSubscriptionURI,
 							InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
-			return Response.ok(informationSourceSubcription, MediaType.APPLICATION_JSON)
-					.build();
+			return Response.ok(informationSourceSubcription,
+					MediaType.APPLICATION_JSON).build();
 
 		}
 		return Response.status(404).build();

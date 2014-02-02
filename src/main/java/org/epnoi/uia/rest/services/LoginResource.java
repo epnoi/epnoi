@@ -13,13 +13,15 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.dao.cassandra.UserCassandraDAO;
+import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 import epnoi.model.Login;
 import epnoi.model.User;
 
 @Path("/loginService")
-public class LoginResource {
+public class LoginResource extends UIAService{
 	
 
 	@Context
@@ -53,8 +55,21 @@ public class LoginResource {
 
 		if (userCassandraDAO.existsUserWithName(login.getUser())) {
 			System.out.println("The user exists and it was " + login.getUser());
-			User user = userCassandraDAO.getUserWithName(login.getUser());
-			return Response.ok(user, MediaType.APPLICATION_JSON).build();
+		
+			User cassandraUser = userCassandraDAO.getUserWithName(login.getUser());
+			System.out.println("The user exists and it was uried " + cassandraUser.getURI());
+		
+			Core core = getUIACore();
+			User user = (User) core.getInformationAccess().get(cassandraUser.getURI(),
+					UserRDFHelper.USER_CLASS);
+			if (user == null) {
+				return Response.status(404).build();
+			}
+			
+			return Response.ok(user,
+					MediaType.APPLICATION_JSON).build();
+			
+			
 		} else
 			System.out.println("User does not exist");
 			return Response.status(404).build();

@@ -104,7 +104,7 @@ public class CoreMainUser {
 		User testUser = new User();
 
 		testUser.setURI("http://www.epnoi.org/users/testUser");
-		testUser.setName("User for tests");
+		testUser.setName("testUser");
 
 		for (int i = 0; i < 10; i++)
 			testUser.addKnowledgeObject("http://knowledgeObject" + i);
