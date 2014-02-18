@@ -33,7 +33,7 @@ public class RSSHarvester {
 	public RSSHarvester(Core core, RSSHarvesterParameters parameters) {
 		this.core = core;
 		this.parameters = parameters;
-		this.numberFeeds = 2;
+		this.numberFeeds = 50;
 
 	}
 

@@ -50,6 +50,8 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 				queryExpression, this.graph);
 
 		vur.exec();
+		
+		
 
 	}
 
@@ -92,7 +94,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		System.out.println("INFO SOURCE SUBS ----------> "+URI);
+		System.out.println("INFO SOURCE SUBS ----------> g: "+this.parameters);
 		InformationSourceSubscription informationSource = new InformationSourceSubscription();
 		informationSource.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"

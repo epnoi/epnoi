@@ -23,30 +23,38 @@ public abstract class RDFDAO {
 
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
-	protected VirtuosoInformationStoreParameters parameters;
-	protected VirtGraph graph = null;
+	protected static VirtuosoInformationStoreParameters parameters;
+	protected static VirtGraph graph = null;
 
 	abstract public void create(Resource resource);
 
 	abstract public void remove(String URI);
-	
+
 	abstract public Resource read(String URI);
-	
+
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-	
-	public void init(InformationStoreParameters parameters) {
 
-		// System.out.println(".............................................. "+
-		// parameters);
-		this.parameters = (VirtuosoInformationStoreParameters) parameters;
-		if ((this.parameters.getPort() != null)
-				&& (this.parameters.getHost() != null)) {
-			this.virtuosoURL = "jdbc:virtuoso://" + this.parameters.getHost()
-					+ ":" + this.parameters.getPort();
-			graph = new VirtGraph(this.parameters.getGraph(), virtuosoURL,
-					this.parameters.getUser(), this.parameters.getPassword());
+	public synchronized void init(InformationStoreParameters parameters) {
 
+		 System.out.println(".............................................. "+
+		 parameters);
+		if (graph == null) {
+			System.out.println(">>-----------------------> initialized");
+			this.parameters = (VirtuosoInformationStoreParameters) parameters;
+			if ((this.parameters.getPort() != null)
+					&& (this.parameters.getHost() != null)) {
+				this.virtuosoURL = "jdbc:virtuoso://"
+						+ this.parameters.getHost() + ":"
+						+ this.parameters.getPort();
+				graph = new VirtGraph(this.parameters.getGraph(), virtuosoURL,
+						this.parameters.getUser(),
+						this.parameters.getPassword());
+
+			}
+		}else{
+			System.out.println(">>----------------------->"+this.graph);
 		}
+		System.out.println("El result es "+ this.graph);
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------

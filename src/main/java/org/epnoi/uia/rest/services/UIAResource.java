@@ -1,5 +1,8 @@
 package org.epnoi.uia.rest.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -18,6 +21,8 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.rest.services.response.UIA;
 
+import epnoi.model.InformationSourceNotification;
+import epnoi.model.InformationSourceNotificationsSet;
 import epnoi.model.Resource;
 
 @Path("/UIA")
@@ -36,12 +41,12 @@ public class UIAResource extends UIAService {
 		System.out.println("GET: UIA");
 
 		UIA uia = new UIA();
-		Core uiaCore = this.getUIACore();
+		this.core= this.getUIACore();
 		String timeStamp = Long.toString(System.currentTimeMillis());
 		uia.setTimestamp(timeStamp);
 
-		System.out.println("--->>>-->> " + uiaCore.getInformationStores());
-		for (InformationStore informationStore : uiaCore.getInformationStores()) {
+		System.out.println("--->>>-->> " + this.core.getInformationStores());
+		for (InformationStore informationStore : this.core.getInformationStores()) {
 			org.epnoi.uia.rest.services.response.InformationStore informationStoreResponse = new org.epnoi.uia.rest.services.response.InformationStore();
 			System.out.println("----> " + informationStore);
 			informationStoreResponse
@@ -69,9 +74,9 @@ public class UIAResource extends UIAService {
 			@DefaultValue("none") @PathParam("RESOURCE_TYPE") String resourceType) {
 		System.out.println("GET: UIA");
 
-		Core uiaCore = this.getUIACore();
+		this.core = this.getUIACore();
 
-		Resource resource = uiaCore.getInformationAccess().get(URI,
+		Resource resource = this.core.getInformationAccess().get(URI,
 				_translateResourceType(resourceType));
 
 		if (resource != null) {
@@ -79,6 +84,40 @@ public class UIAResource extends UIAService {
 		}
 		return Response.status(404).build();
 	}
+	
+	
+	// --------------------------------------------------------------------------------
+
+		@GET
+		@Produces({ MediaType.APPLICATION_JSON })
+		@Path("/notifications")
+		// @Consumes(MediaType.APPLICATION_JSON)
+		public Response getResource(
+				@DefaultValue("none") @QueryParam("URI") String URI) {
+			System.out.println("GET: UIA");
+			System.out.println("....entra");
+
+			this.core = this.getUIACore();
+
+			List<InformationSourceNotification> notifications = new ArrayList<InformationSourceNotification>();
+		
+
+				for (InformationSourceNotification notification : core
+						.getInformationSourcesHandler().retrieveNotifications(URI)) {
+
+					notifications.add(notification);
+				}
+			
+			
+			InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
+			
+			notificationsSet.setNotifications(notifications);
+			notificationsSet.setURI(URI);
+			
+			
+			return Response.ok(notificationsSet, MediaType.APPLICATION_JSON).build();
+		}
+
 
 	// --------------------------------------------------------------------------------
 	
