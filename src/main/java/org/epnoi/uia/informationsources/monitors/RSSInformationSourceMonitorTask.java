@@ -58,6 +58,7 @@ class RSSInformationSourceMonitorTask implements Runnable {
 			InformationSourceNotificationsSet informationSourceNotificationSet = new InformationSourceNotificationsSet();
 			informationSourceNotificationSet.setURI(informationSourceSubscriptionURI);
 			informationSourceNotificationSet.setNotifications(notifications);
+		
 			Date date = new Date(System.currentTimeMillis());
 			informationSourceNotificationSet.setTimestamp(date.toString());
 			JSONSerializer serializer = new JSONSerializer();
