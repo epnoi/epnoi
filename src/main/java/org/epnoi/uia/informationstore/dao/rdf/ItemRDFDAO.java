@@ -41,7 +41,7 @@ public class ItemRDFDAO extends RDFDAO {
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
 				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
-		System.out.println("....> " + item);
+		//System.out.println("....> " + item);
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", itemURI)
@@ -120,8 +120,8 @@ public class ItemRDFDAO extends RDFDAO {
 				item.setLink(t.getObject().getLiteral().getValue().toString());
 
 			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
-				item.setDescription(t.getObject().getLiteral().getValue()
-						.toString());
+				item.setDescription(clean(t.getObject().getLiteral().getValue()
+						.toString()));
 
 			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
 				item.setPubDate(t.getObject().getLiteral().getValue()
@@ -135,6 +135,12 @@ public class ItemRDFDAO extends RDFDAO {
 		}
 		return item;
 	}
+	
+	
+ private String clean(String expression){
+	 return expression.replaceAll("[^a-zA-Z0-9]"," ");
+ }
+	
 
 	// ---------------------------------------------------------------------------------------------------
 

@@ -36,10 +36,9 @@ public abstract class RDFDAO {
 
 	public synchronized void init(InformationStoreParameters parameters) {
 
-		 System.out.println(".............................................. "+
-		 parameters);
+		 //System.out.println(".............................................. "+parameters);
 		if (graph == null) {
-			System.out.println(">>-----------------------> initialized");
+			//System.out.println(">>-----------------------> initialized");
 			this.parameters = (VirtuosoInformationStoreParameters) parameters;
 			if ((this.parameters.getPort() != null)
 					&& (this.parameters.getHost() != null)) {
@@ -52,15 +51,15 @@ public abstract class RDFDAO {
 
 			}
 		}else{
-			System.out.println(">>----------------------->"+this.graph);
+			//System.out.println(">>----------------------->"+this.graph);
 		}
-		System.out.println("El result es "+ this.graph);
+		//System.out.println("El result es "+ this.graph);
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	protected ResultSet makeQuery(String query) {
-		System.out.println("-------------------------------" + query);
+		//System.out.println("-------------------------------" + query);
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -131,7 +130,7 @@ public abstract class RDFDAO {
 
 	protected String cleanOddCharacters(String text) {
 		String cleanedText;
-		cleanedText = text.replace("\"", "");
+		cleanedText = text.replaceAll("[^a-zA-Z0-9]"," ");
 		return cleanedText;
 	}
 }

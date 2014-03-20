@@ -93,6 +93,7 @@ public class RSSFeedParser {
 					} else if (AUTHOR.equals(localPart)) {
 						author = getCharacterData(event, eventReader);
 					} else if (PUB_DATE.equals(localPart)) {
+						
 						pubdate = getCharacterData(event, eventReader);
 					} else if (COPYRIGHT.equals(localPart)) {
 						copyright = getCharacterData(event, eventReader);
@@ -109,6 +110,7 @@ public class RSSFeedParser {
 						message.setLink(link);
 						message.setURI(link);
 						message.setTitle(title);
+						
 						message.setPubDate(pubdate);
 						feed.getItems().add(message);
 						event = eventReader.nextEvent();
