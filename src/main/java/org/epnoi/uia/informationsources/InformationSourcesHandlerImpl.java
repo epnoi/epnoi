@@ -39,22 +39,24 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 				.get(informationSourceSubscriptionURI,
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
-		//System.out.println("ISS> " + informationSourceSubscription);
+		// System.out.println("ISS> " + informationSourceSubscription);
 
 		InformationSource informationSource = (InformationSource) this.core
 				.getInformationAccess().get(
 						informationSourceSubscription.getInformationSource(),
 						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
-		
 
-		
-
-		//System.out.println("IS> " + informationSource);
+		// System.out.println("IS> " + informationSource);
+		/*
+		 * String queryExpression = "SELECT ?uri FROM <{GRAPH}> WHERE " +
+		 * "{ ?feedURI <{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ." +
+		 * " ?feedURI a <{FEED_CLASS}> ." +
+		 * " ?feedURI <{AGGREGATES_PROPERTY}> ?uri . }";
+		 */
 
 		String queryExpression = "SELECT ?uri FROM <{GRAPH}> WHERE "
-				+ "{ ?feedURI <{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ."
-				+ " ?feedURI a <{FEED_CLASS}> ."
-				+ " ?feedURI <{AGGREGATES_PROPERTY}> ?uri . }";
+				+ "{<{INFORMATION_SOURCE_URI}> a <{FEED_CLASS}> ."
+				+ "<{INFORMATION_SOURCE_URI}> <{AGGREGATES_PROPERTY}> ?uri . }";
 
 		queryExpression = queryExpression
 				.replace("{GRAPH}", parameters.getGraph())
@@ -62,15 +64,20 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{AGGREGATES_PROPERTY}",
 						RDFOAIOREHelper.AGGREGATES_PROPERTY)
-				.replace("{INFORMATION_SOURCE_URL}", informationSource.getURL());
+				.replace("{INFORMATION_SOURCE_URI}", informationSource.getURI());
 
-		Date date= new java.util.Date();
-		
-		for (String informationUnitURI : informationStore.query(queryExpression)) {
+		// .replace("{INFORMATION_SOURCE_URL}", informationSource.getURL());
+
+		Date date = new java.util.Date();
+
+		for (String informationUnitURI : informationStore
+				.query(queryExpression)) {
 
 			InformationSourceNotification informationSourceNotification = new InformationSourceNotification();
 			informationSourceNotification.setURI(informationUnitURI);
-			Resource resource = this.core.getInformationAccess().get(informationUnitURI, informationSource.getInformationUnitType());
+			Resource resource = this.core.getInformationAccess().get(
+					informationUnitURI,
+					informationSource.getInformationUnitType());
 			informationSourceNotification.setResource(resource);
 			informationSourceNotification.setTimestamp(date.toString());
 			notifications.add(informationSourceNotification);

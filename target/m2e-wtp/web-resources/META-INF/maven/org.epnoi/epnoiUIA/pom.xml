@@ -154,6 +154,11 @@
 					<webApp>
 						<contextPath>/epnoiUIA</contextPath>
 					</webApp>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8081</port>
+						</connector>
+					</connectors>
 					<!-- <jettyXml>src/main/resources/jetty.xml</jettyXml> <scanIntervalSeconds>10</scanIntervalSeconds> -->
 				</configuration>
 

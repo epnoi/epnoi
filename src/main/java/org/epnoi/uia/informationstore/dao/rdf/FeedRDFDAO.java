@@ -24,10 +24,7 @@ import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import epnoi.model.Context;
 import epnoi.model.Feed;
@@ -51,6 +48,9 @@ public class FeedRDFDAO extends RDFDAO {
 				+ "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
 
+		System.out.println("pubDate ----------------------->"
+				+ feed.getPubDate());
+
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", feedURI)
@@ -64,7 +64,8 @@ public class FeedRDFDAO extends RDFDAO {
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
 				.replace("{FEED_DESCRIPTION}",
 						cleanOddCharacters(feed.getDescription()))
-				.replace("{FEED_PUB_DATE}", convertDateFormat(feed.getPubDate()));
+				.replace("{FEED_PUB_DATE}",
+						convertDateFormat(feed.getPubDate()));
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
@@ -147,8 +148,9 @@ public class FeedRDFDAO extends RDFDAO {
 			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
 				feed.setDescription(t.getObject().toString());
 			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
-				System.out.println("----------->"+t.getObject().toString());
-				feed.setPubDate(t.getObject().getLiteral().getValue().toString());
+				System.out.println("----------->" + t.getObject().toString());
+				feed.setPubDate(t.getObject().getLiteral().getValue()
+						.toString());
 			} else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
 				feed.setCopyright(t.getObject().getURI().toString());
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
@@ -159,7 +161,7 @@ public class FeedRDFDAO extends RDFDAO {
 				String itemURI = t.getObject().toString();
 
 				// System.out.println("itemURI " + itemURI);
-				Item item = (Item)itemRDFDAO.read(itemURI);
+				Item item = (Item) itemRDFDAO.read(itemURI);
 				// System.out.println(".>>>" + item);
 				if (item != null) {
 					feed.addItem(item);
@@ -184,22 +186,30 @@ public class FeedRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------
-	
+
 	protected String convertDateFormat(String dateExpression) {
-		DateFormat formatter = new SimpleDateFormat(
-				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
-		Date date = null;
-		try {
-			date = formatter.parse(dateExpression);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
+		knownPatterns.add(new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
+
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd"));
+
+		for (SimpleDateFormat pattern : knownPatterns) {
+			try {
+				// Take a try
+				Date parsedDate = pattern.parse(dateExpression);
+				SimpleDateFormat dt1 = new SimpleDateFormat(
+						"yyyy-MM-dd'T'HH:mm:ssZ");
+				return (dt1.format(parsedDate));
+			} catch (ParseException pe) {
+				// Loop on
+			}
 		}
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		return (dt1.format(date));
+		System.err.println("No known Date format found: " + dateExpression);
+		return null;
 
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------
 
 	private static List<Feed> _generateData() {
@@ -318,6 +328,6 @@ public class FeedRDFDAO extends RDFDAO {
 		}
 		VirtGraph graph = new VirtGraph(parameters.getGraph(), virtuosoURL,
 				"dba", "dba");
-		//graph.clear();
+		// graph.clear();
 	}
 }

@@ -161,11 +161,12 @@ public class CoreMainUser {
 		core.getInformationAccess().put(informationSourceSubscriptionHigh);
 
 		core.getInformationAccess().put(informationSourceSubscription);
+		/*
 		List<Feed> feeds = _generateFeedsData();
 		for (Feed feed : feeds) {
 			core.getInformationAccess().put(feed);
 		}
-
+*/
 		System.out.println("information source handler");
 
 		for (String subscription : testUser.getInformationSourceSubscriptions()) {
