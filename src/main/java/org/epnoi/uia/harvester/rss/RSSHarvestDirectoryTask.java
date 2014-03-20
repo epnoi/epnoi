@@ -5,12 +5,15 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -179,7 +182,9 @@ class RSSHarvestDirectoryTask implements Runnable {
 			// System.out.println("..........> "
 			// + Arrays.toString(filesToHarvest));
 			for (String fileToHarvest : filesToHarvest) {
-				System.out.println(">Harvesting :" + fileToHarvest);
+				System.out.println(">Harvesting :"
+						+ harvestDirectoy.getAbsolutePath() + "/"
+						+ fileToHarvest);
 
 				Feed feed = _harvestFile(directoryToHarvest + "/"
 						+ fileToHarvest);
@@ -203,6 +208,10 @@ class RSSHarvestDirectoryTask implements Runnable {
 				} else {
 
 					System.out.println("Result: Feed> " + feed);
+					for (Item item : feed.getItems()) {
+						System.out.println("		 Item> " + item);
+					}
+
 					System.out.println("Result: Context> " + feedContext);
 				}
 
@@ -232,6 +241,21 @@ class RSSHarvestDirectoryTask implements Runnable {
 		return filesToHarvest;
 	}
 
+	protected String convertDateFormat(String dateExpression) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date=null;
+		try {
+			date = dateFormat.parse(dateExpression);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		return (dt1.format(date));
+
+	}
+
 	// ----------------------------------------------------------------------------------------
 
 	public Feed _harvestFile(String filePath) {
@@ -240,17 +264,30 @@ class RSSHarvestDirectoryTask implements Runnable {
 		Feed feed = parser.readFeed();
 		// System.out.println("Feed : " + feed);
 		// System.out.println(feed);
-		feed.setPubDate(getDate(filePath));
+
+		if (feed.getPubDate() == "") {
+
+			String date = convertDateFormat(getDate(filePath));
+			System.out.println("date---> "+date);
+			feed.setPubDate(date);
+		}
+		
+		feed.setURI(manifest.getURI());
+		
+		
 		return feed;
 
 		// return feed.getItems();
 	}
 
-	private String getDate(String filePath) {
+	// ----------------------------------------------------------------------------------------
 
+	private String getDate(String filePath) {
+		System.out.println("filePath> " + filePath);
 		int bracketOpeningPosition = filePath.indexOf("[");
 		int bracketClosingPosition = filePath.indexOf("]");
-		String filePathDatePart = filePath.substring(bracketClosingPosition);
+		String filePathDatePart = filePath.substring(
+				bracketOpeningPosition + 1, bracketClosingPosition);
 		return filePathDatePart;
 	}
 
