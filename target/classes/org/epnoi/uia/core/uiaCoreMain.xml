@@ -22,24 +22,26 @@
 		<host>localhost</host>
 		<port>8983</port>
 	</cassandraInformationStore>
-	<rssHoarder>
-		<URI>http://epnoi.org/rssHoarder</URI>
+	<!-- 
+<rssHoarder>
+		<URI>http://epnoi.org/rssHoarder2</URI>
 		<path>/proofs/rsshoarder2</path>
 		<feed>
 			<name>slashdot</name>
-			<URI>http://www.epnoi.org/feeds/slashdot</URI>
+			<URI>http://www.epnoi.org/informationSources/slashdot</URI>
 			<URL>http://rss.slashdot.org/Slashdot/slashdot</URL>
 			<interval>3</interval>
 		</feed>
 		<feed>
 			<name>highScalability</name>
-			<URI>http://www.epnoi.org/feeds/highScalability</URI>
+			<URI>http://www.epnoi.org/informationSources/highScalability</URI>
 			<URL>http://feeds.feedburner.com/HighScalability</URL>
 			<interval>30</interval>
 		</feed>
 	</rssHoarder>
+	 -->
 	<rssHarvester>
 		<URI>http://epnoi.org/rssHarvester</URI>
-		<path>/proofs/rsshoarder</path>
+		<path>/proofs/rsshoarder2</path>
 	</rssHarvester>
 </parametersModel>

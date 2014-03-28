@@ -46,30 +46,27 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 						informationSourceSubscription.getInformationSource(),
 						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 
-		// System.out.println("IS> " + informationSource);
+		InformationSourceQueryGenerator informationSourceQueryGenerator = new RSSInformationSourceQueryGenerator();
+
 		/*
-		 * String queryExpression = "SELECT ?uri FROM <{GRAPH}> WHERE " +
-		 * "{ ?feedURI <{URL_PROPERTY}> \"{INFORMATION_SOURCE_URL}\" ." +
-		 * " ?feedURI a <{FEED_CLASS}> ." +
-		 * " ?feedURI <{AGGREGATES_PROPERTY}> ?uri . }";
+		 * OLD QUERY WHEN WE DIDN'T HAVE THE QUERY GENERATOR String
+		 * queryExpression = "SELECT ?uri FROM <{GRAPH}> WHERE " +
+		 * "{<{INFORMATION_SOURCE_URI}> a <{FEED_CLASS}> ." +
+		 * "<{INFORMATION_SOURCE_URI}> <{AGGREGATES_PROPERTY}> ?uri . }";
+		 * 
+		 * queryExpression = queryExpression .replace("{GRAPH}",
+		 * parameters.getGraph()) .replace("{FEED_CLASS}",
+		 * FeedRDFHelper.FEED_CLASS) .replace("{URL_PROPERTY}",
+		 * RDFHelper.URL_PROPERTY) .replace("{AGGREGATES_PROPERTY}",
+		 * RDFOAIOREHelper.AGGREGATES_PROPERTY)
+		 * .replace("{INFORMATION_SOURCE_URI}", informationSource.getURI());
 		 */
-
-		String queryExpression = "SELECT ?uri FROM <{GRAPH}> WHERE "
-				+ "{<{INFORMATION_SOURCE_URI}> a <{FEED_CLASS}> ."
-				+ "<{INFORMATION_SOURCE_URI}> <{AGGREGATES_PROPERTY}> ?uri . }";
-
-		queryExpression = queryExpression
-				.replace("{GRAPH}", parameters.getGraph())
-				.replace("{FEED_CLASS}", FeedRDFHelper.FEED_CLASS)
-				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
-				.replace("{AGGREGATES_PROPERTY}",
-						RDFOAIOREHelper.AGGREGATES_PROPERTY)
-				.replace("{INFORMATION_SOURCE_URI}", informationSource.getURI());
-
 		// .replace("{INFORMATION_SOURCE_URL}", informationSource.getURL());
 
 		Date date = new java.util.Date();
-
+		String queryExpression = informationSourceQueryGenerator.generateQuery(
+				informationSourceSubscription, parameters);
+		System.out.println("QueryExpression> " + queryExpression);
 		for (String informationUnitURI : informationStore
 				.query(queryExpression)) {
 

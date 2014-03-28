@@ -25,7 +25,7 @@
 	<!-- 
 <rssHoarder>
 		<URI>http://epnoi.org/rssHoarder</URI>
-		<path>/proofs/rsshoarder</path>
+		<path>/proofs/rsshoarder2</path>
 		<feed>
 			<name>slashdot</name>
 			<URI>http://www.epnoi.org/informationSources/slashdot</URI>
@@ -42,7 +42,7 @@
 
 	<rssHarvester>
 		<URI>http://epnoi.org/rssHarvester</URI>
-		<path>/proofs/rsshoarder</path>
+		<path>/proofs/rsshoarder2</path>
 	</rssHarvester>
-	 	-->
+	--> 	
 </parametersModel>
