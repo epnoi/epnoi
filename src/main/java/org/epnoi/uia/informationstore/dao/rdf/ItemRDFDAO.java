@@ -37,7 +37,7 @@ public class ItemRDFDAO extends RDFDAO {
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{ITEM_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
-				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\" ; "
+				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\"^^xsd:date ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
 				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
@@ -59,14 +59,7 @@ public class ItemRDFDAO extends RDFDAO {
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
 				.replace("{ITEM_AUTHOR}", item.getAuthor());
-		/*
-		 * String queryExpression = "INSERT INTO GRAPH <" +
-		 * this.parameters.getGraph() + "> { <" + itemURI + "> a <" +
-		 * FeedRDFHelper.ITEM_CLASS + "> ; " + "<" + RDFHelper.URL_PROPERTY +
-		 * ">" + " \"" + item.getLink() + "\"  ; " + "<" +
-		 * RDFHelper.TITLE_PROPERTY + ">" + " \"" + item.getTitle() + "\" " +
-		 * " . }";
-		 */
+		
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
@@ -208,7 +201,7 @@ public class ItemRDFDAO extends RDFDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
 		return (dt1.format(date));
 
 	}

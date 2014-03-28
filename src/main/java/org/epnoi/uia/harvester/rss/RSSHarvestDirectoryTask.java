@@ -241,6 +241,8 @@ class RSSHarvestDirectoryTask implements Runnable {
 		return filesToHarvest;
 	}
 
+	// ----------------------------------------------------------------------------------------
+	
 	protected String convertDateFormat(String dateExpression) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date=null;
@@ -251,8 +253,8 @@ class RSSHarvestDirectoryTask implements Runnable {
 			e.printStackTrace();
 		}
 
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		return (dt1.format(date));
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+		return (dt1.format(date)+"^^xsd:date");
 
 	}
 
