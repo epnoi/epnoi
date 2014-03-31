@@ -269,7 +269,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 
 		if (feed.getPubDate() == "") {
 
-			String date = convertDateFormat(getDate(filePath));
+			String date = getDate(filePath);
 			System.out.println("date---> "+date);
 			feed.setPubDate(date);
 		}
