@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.uia.informationsources.generators.RSSInformationSourceRandomGenerator;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
@@ -109,8 +110,16 @@ public class CoreMainUser {
 		for (int i = 0; i < 10; i++)
 			testUser.addKnowledgeObject("http://knowledgeObject" + i);
 
-		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
-		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
+		/*
+		 * QUITO LAS OTRAS FUENTES DE DATOS
+		 * testUser.addInformationSourceSubscription(
+		 * "http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability"
+		 * ); testUser.addInformationSourceSubscription(
+		 * "http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot"
+		 * );
+		 */
+
+		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 		/*
 		 * User newUserReaded2 = (User) core.getInformationAccess().get(
 		 * testUser.getURI(), UserRDFHelper.USER_CLASS);
@@ -140,6 +149,17 @@ public class CoreMainUser {
 		highScalabilityInformationSource
 				.setInformationUnitType(FeedRDFHelper.ITEM_CLASS);
 
+		InformationSource randomInformationSource = new InformationSource();
+		randomInformationSource
+				.setURI("http://www.epnoi.org/informationSources/randomInformationSource");
+		randomInformationSource.setName("randomInformationSource");
+		randomInformationSource
+				.setURL("http://www.epnoi.org/informationSources/randomInformationSource");
+		randomInformationSource
+				.setType(InformationSourceRDFHelper.RSS_INFORMATION_SOURCE_CLASS);
+		randomInformationSource
+				.setInformationUnitType(FeedRDFHelper.ITEM_CLASS);
+
 		InformationSourceSubscription informationSourceSubscription = new InformationSourceSubscription();
 
 		informationSourceSubscription
@@ -154,6 +174,13 @@ public class CoreMainUser {
 		informationSourceSubscriptionHigh
 				.setInformationSource("http://www.epnoi.org/informationSources/highScalability");
 
+		InformationSourceSubscription informationSourceSubscriptionRandom = new InformationSourceSubscription();
+
+		informationSourceSubscriptionRandom
+				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
+		informationSourceSubscriptionRandom
+				.setInformationSource("http://www.epnoi.org/informationSources/randomInformationSource");
+
 		core.getInformationAccess().put(slashdotInformationSource);
 
 		core.getInformationAccess().put(highScalabilityInformationSource);
@@ -161,12 +188,18 @@ public class CoreMainUser {
 		core.getInformationAccess().put(informationSourceSubscriptionHigh);
 
 		core.getInformationAccess().put(informationSourceSubscription);
+
+		core.getInformationAccess().put(randomInformationSource);
+
+		core.getInformationAccess().put(informationSourceSubscriptionRandom);
 		/*
-		List<Feed> feeds = _generateFeedsData();
-		for (Feed feed : feeds) {
-			core.getInformationAccess().put(feed);
-		}
-*/
+		 * List<Feed> feeds = _generateFeedsData(); for (Feed feed : feeds) {
+		 * core.getInformationAccess().put(feed); }
+		 */
+
+		RSSInformationSourceRandomGenerator generator = new RSSInformationSourceRandomGenerator();
+		generator.generate(core);
+
 		System.out.println("information source handler");
 
 		for (String subscription : testUser.getInformationSourceSubscriptions()) {

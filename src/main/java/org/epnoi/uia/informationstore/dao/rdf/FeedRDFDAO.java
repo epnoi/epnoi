@@ -41,10 +41,10 @@ public class FeedRDFDAO extends RDFDAO {
 		// System.out.println("--------------------------------------------------------->"+feed);
 		String feedURI = feed.getURI();
 
-		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{FEED_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{FEED_LINK}\" ; "
-				+ "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\" ; "
+				+ "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
 
@@ -187,19 +187,21 @@ public class FeedRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	protected String convertDateFormat(String dateExpression) {
+
+	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
 
-		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd"));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH));
 
 		for (SimpleDateFormat pattern : knownPatterns) {
 			try {
 				// Take a try
 				Date parsedDate = pattern.parse(dateExpression);
-				SimpleDateFormat dt1 = new SimpleDateFormat(
-						"yyyy-MM-dd'T'HH:mm:ssZ");
+				SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
 				return (dt1.format(parsedDate));
 			} catch (ParseException pe) {
 				// Loop on

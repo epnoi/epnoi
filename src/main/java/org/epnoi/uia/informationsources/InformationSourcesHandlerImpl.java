@@ -7,11 +7,8 @@ import java.util.List;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFOAIOREHelper;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import epnoi.model.InformationSource;
@@ -46,7 +43,7 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 						informationSourceSubscription.getInformationSource(),
 						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 
-		InformationSourceQueryGenerator informationSourceQueryGenerator = new RSSInformationSourceQueryGenerator();
+		InformationSourceQueryBuilder informationSourceQueryGenerator = new RSSInformationSourceQueryBuilder();
 
 		/*
 		 * OLD QUERY WHEN WE DIDN'T HAVE THE QUERY GENERATOR String

@@ -27,8 +27,8 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public void create(Resource resource) {
-		InformationSourceSubscription informationSource = (InformationSourceSubscription) resource;
-		String informationSourceURI = informationSource.getURI();
+		InformationSourceSubscription informationSourceSubscription = (InformationSourceSubscription) resource;
+		String informationSourceURI = informationSourceSubscription.getURI();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{INFORMATION_SOURCE_SUBSCRIPTION_CLASS}> ; "
@@ -44,7 +44,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 						"{INFORMATION_SOURCE_PROPERTY}",
 						InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY)
 				.replace("{INFORMATION_SOURCE}",
-						informationSource.getInformationSource());
+						informationSourceSubscription.getInformationSource());
 		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);

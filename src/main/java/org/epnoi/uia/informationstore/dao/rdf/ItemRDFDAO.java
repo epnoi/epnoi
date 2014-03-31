@@ -34,10 +34,10 @@ public class ItemRDFDAO extends RDFDAO {
 	public void create(Resource resource) {
 		Item item = (Item) resource;
 		String itemURI = item.getURI();
-		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{ITEM_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
-				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\"^^xsd:date ; "
+				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
 				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
@@ -59,7 +59,7 @@ public class ItemRDFDAO extends RDFDAO {
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
 				.replace("{ITEM_AUTHOR}", item.getAuthor());
-		
+		System.out.println("expression ....> " + queryExpression);
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
@@ -201,7 +201,9 @@ public class ItemRDFDAO extends RDFDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+		// "2005-02-28T00:00:00Z"^^xsd:dateTime
+		// "2013-12-16T23:44:00+0100"^^xsd:dateTime
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
 		return (dt1.format(date));
 
 	}
