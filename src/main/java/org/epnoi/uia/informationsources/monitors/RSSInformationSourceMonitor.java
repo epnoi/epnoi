@@ -46,7 +46,7 @@ public class RSSInformationSourceMonitor {
 	public synchronized void remove() {
 		numberFeeds--;
 		if (numberFeeds == 0) {
-			logger.info("Stopping the RSSHarvester since there are no active directories");
+			logger.info("Stopping the RSSInformationSourceMonitor since there are no active directories");
 			executor.shutdown();
 		} else {
 			logger.info("One directory has been removed, " + numberFeeds
