@@ -51,7 +51,7 @@ public class RSSInformationSourceRandomGenerator {
 
 		feed.setPubDate(pubDate);
 		feed.setDescription("This is the description the random feed");
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 2; i++) {
 			Item item = new Item();
 			Date itemCurrentDate = new Date();
 

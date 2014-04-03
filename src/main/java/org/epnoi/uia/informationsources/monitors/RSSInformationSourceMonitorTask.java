@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.atmosphere.cpr.Broadcaster;
+import org.epnoi.uia.informationsources.generators.RSSInformationSourceRandomGenerator;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 
+import epnoi.model.Feed;
 import epnoi.model.InformationSourceNotification;
 import epnoi.model.InformationSourceNotificationsSet;
 import flexjson.JSONSerializer;
@@ -16,6 +18,7 @@ class RSSInformationSourceMonitorTask implements Runnable {
 	private Broadcaster broadcaster;
 	private RSSInformationSourceMonitor monitor;
 	private String informationSourceSubscriptionURI;
+	private RSSInformationSourceRandomGenerator generator;
 
 	private static final Logger logger = Logger
 			.getLogger(RSSInformationSourceMonitorTask.class.getName());
@@ -27,6 +30,7 @@ class RSSInformationSourceMonitorTask implements Runnable {
 		this.broadcaster = broadcaster;
 		this.monitor = monitor;
 		this.informationSourceSubscriptionURI=informationSourceSubscriptionURI;
+		this.generator= new RSSInformationSourceRandomGenerator();
 
 	}
 
@@ -43,6 +47,7 @@ class RSSInformationSourceMonitorTask implements Runnable {
 
 	public void watch(String informationSourceSubscriptionURI,
 			Broadcaster broadcaster) {
+		logger.info("Starting a watch fucntion ------------------------------------------------------------------");
 		List<InformationSourceNotification> notifications;
 		try {
 			if (this.monitor.getCore() != null) {
@@ -50,6 +55,8 @@ class RSSInformationSourceMonitorTask implements Runnable {
 						.getCore()
 						.getInformationSourcesHandler()
 						.retrieveNotifications(informationSourceSubscriptionURI);
+				generator.generate(this.monitor
+						.getCore());
 
 			} else {
 				notifications = new ArrayList<InformationSourceNotification>();
@@ -61,6 +68,8 @@ class RSSInformationSourceMonitorTask implements Runnable {
 		
 			Date date = new Date(System.currentTimeMillis());
 			informationSourceNotificationSet.setTimestamp(date.toString());
+			
+			//The JSON serialization is made here
 			JSONSerializer serializer = new JSONSerializer();
 			String serializaedInformationSourceNotificationSet = serializer.include("notifications").serialize(
 					informationSourceNotificationSet);
