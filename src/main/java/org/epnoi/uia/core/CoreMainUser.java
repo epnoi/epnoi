@@ -110,14 +110,8 @@ public class CoreMainUser {
 		for (int i = 0; i < 10; i++)
 			testUser.addKnowledgeObject("http://knowledgeObject" + i);
 
-		/*
-		 * QUITO LAS OTRAS FUENTES DE DATOS
-		 * testUser.addInformationSourceSubscription(
-		 * "http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability"
-		 * ); testUser.addInformationSourceSubscription(
-		 * "http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot"
-		 * );
-		 */
+		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
+		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
 
 		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 		/*

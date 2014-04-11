@@ -55,9 +55,8 @@ class RSSInformationSourceMonitorTask implements Runnable {
 						.getCore()
 						.getInformationSourcesHandler()
 						.retrieveNotifications(informationSourceSubscriptionURI);
-				generator.generate(this.monitor
-						.getCore());
-
+				
+				
 			} else {
 				notifications = new ArrayList<InformationSourceNotification>();
 			}
