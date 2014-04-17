@@ -145,6 +145,12 @@ public class UserRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
+	
+		public void update(Resource resource) {
+			
+		}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		String virtuosoURL = "jdbc:virtuoso://localhost:1111";

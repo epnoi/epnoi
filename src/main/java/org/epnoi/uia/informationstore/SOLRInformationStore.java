@@ -69,23 +69,29 @@ public class SOLRInformationStore implements InformationStore {
 	}
 
 	// ------------------------------------------------------------------------
-	
+
 	public Resource get(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	// ------------------------------------------------------------------------
-	
-		public void remove(Selector selector) {
-			// TODO Auto-generated method stub
-	
-		}
-	
+
+	public void remove(Selector selector) {
+		// TODO Auto-generated method stub
+
+	}
+
 	// ------------------------------------------------------------------------
 
-	
 	public List<String> query(String queryExpression) {
 		return new ArrayList<String>();
 	}
+
+	// ------------------------------------------------------------------------
+
+	public void update(Resource resource) {
+		// TODO Auto-generated method stub
+	}
+
 }

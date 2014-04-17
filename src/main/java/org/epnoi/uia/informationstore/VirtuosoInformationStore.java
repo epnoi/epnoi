@@ -78,14 +78,14 @@ public class VirtuosoInformationStore implements InformationStore {
 		Resource resource = dao.read(selector.getProperty(SelectorHelper.URI));
 		return resource;
 	}
-	
+
 	// ------------------------------------------------------------------------
 
 	public void remove(Selector selector) {
 		RDFDAO dao = this.datoFactory.build(selector);
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
-		
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -94,4 +94,13 @@ public class VirtuosoInformationStore implements InformationStore {
 
 		return this.queryResolver.query(queryExpression);
 	}
+
+	// ------------------------------------------------------------------------
+
+	public void update(Resource resource) {
+		RDFDAO rdfDAO = this.datoFactory.build(resource);
+
+		rdfDAO.update(resource);
+	}
+
 }

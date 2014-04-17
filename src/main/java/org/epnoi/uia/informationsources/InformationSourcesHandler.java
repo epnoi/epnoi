@@ -6,5 +6,5 @@ import epnoi.model.InformationSourceNotification;
 
 public interface InformationSourcesHandler {
 	public List<InformationSourceNotification> retrieveNotifications(String informationSourceSubscription);
-
+	
 }

@@ -41,7 +41,7 @@ public class ItemRDFDAO extends RDFDAO {
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
 				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
-		//System.out.println("....> " + item);
+		
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", itemURI)
@@ -59,7 +59,7 @@ public class ItemRDFDAO extends RDFDAO {
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
 				.replace("{ITEM_AUTHOR}", item.getAuthor());
-		System.out.println("expression ....> " + queryExpression);
+		
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
@@ -128,12 +128,16 @@ public class ItemRDFDAO extends RDFDAO {
 		}
 		return item;
 	}
-	
-	
- private String clean(String expression){
-	 return expression.replaceAll("[^a-zA-Z0-9]"," ");
- }
-	
+
+	// ---------------------------------------------------------------------------------------------------------------------
+
+	public void update(Resource resource) {
+
+	}
+
+	private String clean(String expression) {
+		return expression.replaceAll("[^a-zA-Z0-9]", " ");
+	}
 
 	// ---------------------------------------------------------------------------------------------------
 
@@ -189,6 +193,7 @@ public class ItemRDFDAO extends RDFDAO {
 		graph.clear();
 	}
 
+
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	protected String convertDateFormat(String dateExpression) {
@@ -203,7 +208,8 @@ public class ItemRDFDAO extends RDFDAO {
 		}
 		// "2005-02-28T00:00:00Z"^^xsd:dateTime
 		// "2013-12-16T23:44:00+0100"^^xsd:dateTime
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				Locale.ENGLISH);
 		return (dt1.format(date));
 
 	}

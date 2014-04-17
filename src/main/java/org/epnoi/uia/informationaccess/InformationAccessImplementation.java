@@ -1,6 +1,10 @@
 package org.epnoi.uia.informationaccess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.epnoi.uia.core.Core;
+import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
 import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
 import org.epnoi.uia.informationstore.InformationStore;
@@ -17,11 +21,14 @@ public class InformationAccessImplementation implements InformationAccess {
 
 	private WrapperFactory wrapperFactory;
 
+	private List<InformationAccessListener> listeners;
+
 	// ---------------------------------------------------------------------------
 
 	public InformationAccessImplementation(Core core) {
 		this.core = core;
 		this.wrapperFactory = new WrapperFactory(core);
+		this.listeners = new ArrayList<InformationAccessListener>();
 
 	}
 
@@ -30,6 +37,14 @@ public class InformationAccessImplementation implements InformationAccess {
 	public void put(Resource resource) {
 		Wrapper wrapper = this.wrapperFactory.build(resource);
 		wrapper.put(resource);
+
+	}
+
+	// ---------------------------------------------------------------------------
+
+	public void update(Resource resource) {
+		Wrapper wrapper = this.wrapperFactory.build(resource);
+		wrapper.update(resource);
 
 	}
 
@@ -54,21 +69,21 @@ public class InformationAccessImplementation implements InformationAccess {
 		Wrapper wrapper = this.wrapperFactory.build(resourceType);
 		return wrapper.get(URI);
 	}
-	
+
 	// ---------------------------------------------------------------------------
 
 	public void remove(String URI, String resourceType) {
 		Wrapper wrapper = this.wrapperFactory.build(resourceType);
 		wrapper.remove(URI);
 	}
-	
+
 	// ---------------------------------------------------------------------------
 
-		public void remove(Resource resource) {
-			Wrapper wrapper = this.wrapperFactory.build(resource);
-			wrapper.remove(resource.getURI());
+	public void remove(Resource resource) {
+		Wrapper wrapper = this.wrapperFactory.build(resource);
+		wrapper.remove(resource.getURI());
 
-		}
+	}
 
 	// ---------------------------------------------------------------------------
 
@@ -95,6 +110,21 @@ public class InformationAccessImplementation implements InformationAccess {
 	public void removeInformationStore(String URI) {
 		// TODO Auto-generated method stub
 
+	}
+
+	// ---------------------------------------------------------------------------
+
+	public synchronized void publish(String eventType, Resource source) {
+		for (InformationAccessListener listener : this.listeners) {
+			listener.notify(eventType, source);
+		}
+	}
+
+	// ---------------------------------------------------------------------------
+
+	public synchronized void subscribe(InformationAccessListener listener,
+			String subscriptionExpression) {
+		this.listeners.add(listener);
 	}
 
 }

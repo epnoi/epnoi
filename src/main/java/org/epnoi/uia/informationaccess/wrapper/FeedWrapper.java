@@ -31,6 +31,9 @@ public class FeedWrapper implements Wrapper {
 		informationStore.put(resource, context);
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
 
 	public void put(Resource resource) {
 
@@ -51,10 +54,24 @@ public class FeedWrapper implements Wrapper {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// -------------------------------------------------------------------------------------
+
 
 	public void remove(String URI) {
 		// TODO Auto-generated method stub
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+		@Override
+		public void update(Resource resource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		// -------------------------------------------------------------------------------------
+
 
 }

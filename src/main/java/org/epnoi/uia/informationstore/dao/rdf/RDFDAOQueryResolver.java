@@ -58,7 +58,7 @@ public class RDFDAOQueryResolver {
 
 	public List<String> query(String query) {
 		//showTriplets();
-		System.out.println("...> "+query);
+		
 		ArrayList<String> resultURIs = new ArrayList<String>();
 		Query sparql = QueryFactory.create(query);
 

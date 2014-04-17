@@ -142,6 +142,7 @@ public class CoreMainUser {
 				.setType(InformationSourceRDFHelper.RSS_INFORMATION_SOURCE_CLASS);
 		highScalabilityInformationSource
 				.setInformationUnitType(FeedRDFHelper.ITEM_CLASS);
+		
 
 		InformationSource randomInformationSource = new InformationSource();
 		randomInformationSource
@@ -160,6 +161,7 @@ public class CoreMainUser {
 				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
 		informationSourceSubscription
 				.setInformationSource("http://www.epnoi.org/informationSources/slashdot");
+		informationSourceSubscription.setNumberOfItems(6);
 
 		InformationSourceSubscription informationSourceSubscriptionHigh = new InformationSourceSubscription();
 
@@ -167,6 +169,7 @@ public class CoreMainUser {
 				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
 		informationSourceSubscriptionHigh
 				.setInformationSource("http://www.epnoi.org/informationSources/highScalability");
+		informationSourceSubscriptionHigh.setNumberOfItems(4);
 
 		InformationSourceSubscription informationSourceSubscriptionRandom = new InformationSourceSubscription();
 
@@ -174,7 +177,7 @@ public class CoreMainUser {
 				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 		informationSourceSubscriptionRandom
 				.setInformationSource("http://www.epnoi.org/informationSources/randomInformationSource");
-
+		informationSourceSubscriptionRandom.setNumberOfItems(2);
 		core.getInformationAccess().put(slashdotInformationSource);
 
 		core.getInformationAccess().put(highScalabilityInformationSource);

@@ -110,7 +110,18 @@ public class UserWrapper implements Wrapper {
 		return combinedUser;
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void update(Resource resource) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	// -------------------------------------------------------------------------------------
 
+	
+	
+	
 }
