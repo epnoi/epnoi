@@ -31,6 +31,8 @@ public abstract class RDFDAO {
 	abstract public void remove(String URI);
 
 	abstract public Resource read(String URI);
+	
+	abstract public void update(Resource resource);
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 

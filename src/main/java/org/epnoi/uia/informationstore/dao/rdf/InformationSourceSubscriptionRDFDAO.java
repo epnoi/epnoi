@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore.dao.rdf;
 
 import java.util.Iterator;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import virtuoso.jena.driver.VirtGraph;
@@ -18,7 +19,6 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import epnoi.model.InformationSource;
 import epnoi.model.InformationSourceSubscription;
 import epnoi.model.Resource;
 
@@ -32,6 +32,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{INFORMATION_SOURCE_SUBSCRIPTION_CLASS}> ; "
+				+ "<{MAX_NUMBER_OF_ITEMS_PROPERTY}> {INFORMATION_SOURCE_NUMBER_OF_ITEMS} ;"
 				+ "<{INFORMATION_SOURCE_PROPERTY}> \"{INFORMATION_SOURCE}\". }";
 
 		queryExpression = queryExpression
@@ -44,14 +45,20 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 						"{INFORMATION_SOURCE_PROPERTY}",
 						InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY)
 				.replace("{INFORMATION_SOURCE}",
-						informationSourceSubscription.getInformationSource());
+						informationSourceSubscription.getInformationSource())
+				.replace(
+						"{MAX_NUMBER_OF_ITEMS_PROPERTY}",
+						InformationSourceSubscriptionRDFHelper.MAX_NUMBER_OF_ITEMS_PROPERTY)
+				.replace(
+						"{INFORMATION_SOURCE_NUMBER_OF_ITEMS}",
+						informationSourceSubscription.getNumberOfItems()
+								.toString());
+
 		System.out.println("---> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
 		vur.exec();
-		
-		
 
 	}
 
@@ -67,8 +74,58 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
-	public void update(InformationSource informationSource) {
+	public void update(Resource resource) {
+		InformationSourceSubscription informationSource = (InformationSourceSubscription) resource;
+		
+		
+		//System.out.println("q--> "+sparql.toString());
+		Query sparql = QueryFactory.create("DESCRIBE <" + informationSource.getURI()
+				+ "> FROM <" + this.parameters.getGraph() + ">");
+		
+		
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
+				sparql, this.graph);
 
+		Model model = vqe.execDescribe();
+		Graph g = model.getGraph();
+		System.out.println("\nDESCRIBE results: " + informationSource.getURI());
+		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+			Triple t = (Triple) i.next();
+
+			System.out.println(" { " + t.getSubject() + " SSS "
+					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
+			String predicateURI = t.getPredicate().getURI();
+			if (InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY
+					.equals(predicateURI)) {
+				String storedInformationSource = (t.getObject().getLiteral()
+						.getValue().toString());
+				if (!informationSource.getInformationSource().equals(
+						storedInformationSource)) {
+					Node objectNode = NodeFactory.createURI(informationSource
+							.getInformationSource());
+					Triple updatedTriple = new Triple(t.getSubject(),
+							t.getPredicate(), objectNode);
+					this.graph.remove(t);
+					this.graph.add(updatedTriple);
+
+				}
+			} else if (InformationSourceSubscriptionRDFHelper.MAX_NUMBER_OF_ITEMS_PROPERTY
+					.equals(predicateURI)) {
+				String maxNumber = t.getObject().getLiteral().getValue()
+						.toString();
+				System.out.println("--> maxnumber: "+maxNumber);
+				if (!informationSource.getInformationSource().equals(maxNumber)) {
+					Node objectNode = NodeFactory.createLiteral(informationSource.getNumberOfItems().toString());
+					Triple updatedTriple = new Triple(t.getSubject(),
+							t.getPredicate(), objectNode);
+					System.out.println("Updating from "+t+" to "+updatedTriple);
+					this.graph.remove(t);
+					this.graph.add(updatedTriple);
+				}
+
+			}
+
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -94,7 +151,8 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		System.out.println("INFO SOURCE SUBS ----------> g: "+this.parameters);
+		System.out
+				.println("INFO SOURCE SUBS ----------> g: " + this.parameters);
 		InformationSourceSubscription informationSource = new InformationSourceSubscription();
 		informationSource.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
@@ -104,7 +162,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results: "+URI);
+		System.out.println("\nDESCRIBE results: " + URI);
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
 			System.out.println(" { " + t.getSubject() + " SSS "
@@ -113,6 +171,10 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 			if (InformationSourceSubscriptionRDFHelper.HAS_INFORMATION_SOURCE_PROPERTY
 					.equals(predicateURI)) {
 				informationSource.setInformationSource((t.getObject()
+						.getLiteral().getValue().toString()));
+			} else if (InformationSourceSubscriptionRDFHelper.MAX_NUMBER_OF_ITEMS_PROPERTY
+					.equals(predicateURI)) {
+				informationSource.setNumberOfItems(new Integer(t.getObject()
 						.getLiteral().getValue().toString()));
 			}
 

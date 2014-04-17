@@ -26,8 +26,8 @@ public class RSSInformationSourceQueryBuilder implements
 		Date endDate = null;
 		try {
 			startDate = f.parse("2013-12-16");
-			endDate= f.parse("2014-03-17");
-			
+			endDate = f.parse("2014-03-17");
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,10 +38,12 @@ public class RSSInformationSourceQueryBuilder implements
 				+ "{<{INFORMATION_SOURCE_URI}> a <{FEED_CLASS}> . "
 				+ "?uri <{PUBDATE_PROPERTY}> ?pubDate ."
 				+ "<{INFORMATION_SOURCE_URI}> <{AGGREGATES_PROPERTY}> ?uri . "
-			//	 + "FILTER (?pubDate >=\""+
-			//	f.format(startDate)+"\"^^xsd:dateTime && ?pubDate <=\""+f.format(endDate)+"\"^^xsd:dateTime)"
-				+ "} " + " ORDER BY ?pubDate";
+				// + "FILTER (?pubDate >=\""+
+				// f.format(startDate)+"\"^^xsd:dateTime && ?pubDate <=\""+f.format(endDate)+"\"^^xsd:dateTime)"
+				+ "} " + " ORDER BY ?pubDate LIMIT {NUMBER_OF_RESULTS}";
 
+		
+		
 		queryExpression = queryExpression
 				.replace("{GRAPH}", rdfParameters.getGraph())
 				.replace("{FEED_CLASS}", FeedRDFHelper.FEED_CLASS)
@@ -50,19 +52,23 @@ public class RSSInformationSourceQueryBuilder implements
 						RDFOAIOREHelper.AGGREGATES_PROPERTY)
 				.replace("{PUBDATE_PROPERTY}", RDFHelper.PUBDATE_PROPERTY)
 				.replace("{INFORMATION_SOURCE_URI}",
-						informationSourceSubscription.getInformationSource());
+						informationSourceSubscription.getInformationSource())
+				.replace("{NUMBER_OF_RESULTS}",
+						informationSourceSubscription.getNumberOfItems().toString());
 
 		return queryExpression;
 	}
-	
-	 String convertDateFormat(String dateExpression) {
+
+	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
 
 		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
-		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH));
-		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
+				Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+				Locale.ENGLISH));
 
 		for (SimpleDateFormat pattern : knownPatterns) {
 			try {

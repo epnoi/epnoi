@@ -31,15 +31,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 	public void create(Resource resource) {
 		InformationSource informationSource = (InformationSource) resource;
 		String informationSourceURI = informationSource.getURI();
-		/*
-		 * String queryExpression = "INSERT INTO GRAPH <" +
-		 * this.parameters.getGraph() + "> { <" + informationSourceURI + "> a <"
-		 * + informationSource.getType() + "> ; " + "<" + RDFHelper.URL_PROPERTY
-		 * + ">" + " \"" + informationSource.getURL() + "\"  ; " + "<" +
-		 * RDFHelper.NAME_PROPERTY + ">" + " \"" + informationSource.getName() +
-		 * "\" " + " . }"; System.out.println("---> " + queryExpression);
-		 */
-		// String feedURI = feed.getURI();
+		
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{INFORMATION_SOURCE_CLASS}> ; "
@@ -60,7 +52,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 				.replace("{HAS_INFORMATION_UNIT_TYPE_PROPERTY}", InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE)
 				.replace("{INFORMATION_SOURCE_UNIT_TYPE}", informationSource.getInformationUnitType());
 
-		System.out.println("........>" + queryExpression);
+		
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
@@ -95,8 +87,10 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		System.out.println("\nDESCRIBE results:");
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
+			/*
 			System.out.println(" { " + t.getSubject() + " SSS "
 					+ t.getPredicate().getURI() + " " + t.getObject() + " . }");
+			*/
 			String predicateURI = t.getPredicate().getURI();
 			if (RDFHelper.NAME_PROPERTY.equals(predicateURI)) {
 				informationSource.setName(t.getObject().getLiteral().getValue()
@@ -122,6 +116,12 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+	
+	public void update(Resource resource) {
+		
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------

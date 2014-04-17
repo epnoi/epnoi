@@ -23,6 +23,8 @@ public interface InformationStore {
 	public void put(Resource resource, Context context);
 	
 	public void remove(Selector selector);
+	
+	public void update(Resource resource);
 
 	public InformationStoreParameters getParameters();
 }

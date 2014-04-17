@@ -93,5 +93,11 @@ public class CassandraInformationStore implements InformationStore {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// ------------------------------------------------------------------------
+	
+	public void update(Resource resource){
+		// TODO Auto-generated method stub
+	}
 
 }
