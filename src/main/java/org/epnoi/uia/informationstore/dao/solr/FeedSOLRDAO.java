@@ -24,9 +24,11 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource) {
 		Feed feed = (Feed) resource;
-
+		System.out
+				.println("]------------------------------------------------------------");
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 		for (Item item : feed.getItems()) {
 			SolrInputDocument document = _indexItem(item, null);
 
@@ -57,7 +59,8 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
-
+		System.out
+				.println("]------------------------------------------------------------");
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		for (Item item : feed.getItems()) {
@@ -106,12 +109,15 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
 				item.getDescription());
-
+		System.out
+				.println("]------------------------------------------------------------");
 		if (context != null) {
 			List<String> keywords = (List<String>) context.getElements().get(
 					item.getURI());
 			newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY,
 					_concatKeywords(keywords));
+			System.out.println("]" + item.getURI() + " _scanKeywords:> "
+					+ _concatKeywords(keywords));
 		}
 
 		return newDocument;
@@ -193,38 +199,32 @@ public class FeedSOLRDAO extends SOLRDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-
-		String feedURI = "http://feed";
-		Feed feed = new Feed();
-		Context context = new Context();
-
-		feed.setURI(feedURI);
-		feed.setTitle("arXiv");
-		feed.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-
-		for (int i = 0; i < 1000; i++) {
-			Item itemA = new Item();
-
-			itemA.setURI("http://uriA" + i);
-			itemA.setTitle("titleA" + i);
-			itemA.setLink("http://www.cadenaser.com");
-			itemA.setDescription("Description for item" + i);
-			List<String> kewords = Arrays.asList("mi" + i, "mama" + i,
-					"me" + i, "mima" + i);
-			context.getElements().put(itemA.getURI(), kewords);
-			feed.addItem(itemA);
-		}
-
-		Item itemB = new Item();
-
-		itemB.setURI("http://uriB");
-		itemB.setTitle("titleB");
-		itemB.setLink("http://www.elpais.es");
-		itemB.setDescription("bla bla bla gato blab lba lba");
-		List<String> kewords = Arrays.asList("mi", "mama", "me", "mima", "cosarara");
-		context.getElements().put(itemB.getURI(), kewords);
-		feed.addItem(itemB);
-
+		/*
+		 * String feedURI = "http://feed"; Feed feed = new Feed(); Context
+		 * context = new Context();
+		 * 
+		 * feed.setURI(feedURI); feed.setTitle("arXiv"); feed.setLink(
+		 * "http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date"
+		 * );
+		 * 
+		 * for (int i = 0; i < 1000; i++) { Item itemA = new Item();
+		 * 
+		 * itemA.setURI("http://uriA" + i); itemA.setTitle("titleA" + i);
+		 * itemA.setLink("http://www.cadenaser.com");
+		 * itemA.setDescription("Description for item" + i); List<String>
+		 * kewords = Arrays.asList("mi" + i, "mama" + i, "me" + i, "mima" + i);
+		 * context.getElements().put(itemA.getURI(), kewords);
+		 * feed.addItem(itemA); }
+		 * 
+		 * Item itemB = new Item();
+		 * 
+		 * itemB.setURI("http://uriB"); itemB.setTitle("titleB");
+		 * itemB.setLink("http://www.elpais.es");
+		 * itemB.setDescription("bla bla bla gato blab lba lba"); List<String>
+		 * kewords = Arrays.asList("mi", "mama", "me", "mima", "cosarara");
+		 * context.getElements().put(itemB.getURI(), kewords);
+		 * feed.addItem(itemB);
+		 */
 		FeedSOLRDAO feedRDFDAO = new FeedSOLRDAO();
 		SOLRInformationStoreParameters parameters = new SOLRInformationStoreParameters();
 		parameters.setPath("solr");
@@ -233,18 +233,15 @@ public class FeedSOLRDAO extends SOLRDAO {
 		parameters.setPort("8983");
 
 		feedRDFDAO.init(parameters);
-
-		if (SOLRDAO.test(parameters)) {
-			System.out.println("Test OK!");
-
-			feedRDFDAO.create(feed, context);
-		} else {
-			System.out.println("Test failed!!!, SOLR is down :( ");
-		}
-
-		feedRDFDAO.show();
-
-		List<String> queryResults = feedRDFDAO.query("content:cosarara");
+		/*
+		 * if (SOLRDAO.test(parameters)) { System.out.println("Test OK!");
+		 * 
+		 * feedRDFDAO.create(feed, context); } else {
+		 * System.out.println("Test failed!!!, SOLR is down :( "); }
+		 * 
+		 * feedRDFDAO.show();
+		 */
+		List<String> queryResults = feedRDFDAO.query("content:Cyrus");
 		for (String result : queryResults) {
 			System.out.println("-->" + result);
 		}

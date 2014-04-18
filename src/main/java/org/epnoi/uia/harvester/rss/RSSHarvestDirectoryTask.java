@@ -198,6 +198,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 							+ item.getURI().replaceAll("[^A-Za-z0-9]", "")
 							+ ".txt";
 					ArrayList<String> itemKeywords = _scanKeywords(itemContetFileName);
+					
 					feedContext.getElements().put(item.getURI(), itemKeywords);
 
 				}
