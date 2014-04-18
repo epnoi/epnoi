@@ -6,10 +6,10 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
-import org.apache.solr.common.params.SolrParams;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public abstract class SOLRDAO {
@@ -21,6 +21,8 @@ public abstract class SOLRDAO {
 	protected HttpSolrServer server;
 
 	abstract public void create(Resource resource);
+	
+	abstract public void create(Resource resource, Context context);
 
 	// --------------------------------------------------------------------------------
 
