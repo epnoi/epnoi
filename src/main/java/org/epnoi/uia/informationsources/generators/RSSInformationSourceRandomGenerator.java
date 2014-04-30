@@ -13,13 +13,14 @@ import epnoi.model.Feed;
 import epnoi.model.Item;
 
 public class RSSInformationSourceRandomGenerator {
+	Context emptyContext = new Context();
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public void generate(Core core) {
 		Feed feed = _generateFeed();
 
-		core.getInformationAccess().put(feed);
+		core.getInformationAccess().put(feed, emptyContext);
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -32,7 +33,7 @@ public class RSSInformationSourceRandomGenerator {
 				Locale.ENGLISH);
 		SimpleDateFormat uriDateFormat = new SimpleDateFormat(uriFormat,
 				Locale.ENGLISH);
-		
+
 		System.out
 				.println("pubDate -> " + outputDateFormat.format(currentDate));
 
@@ -58,7 +59,8 @@ public class RSSInformationSourceRandomGenerator {
 			String itemPubDate = outputDateFormat.format(itemCurrentDate);
 
 			item.setPubDate(itemPubDate);
-			item.setURI(feedURI + "/item" + i+"/"+uriDateFormat.format(currentDate));
+			item.setURI(feedURI + "/item" + i + "/"
+					+ uriDateFormat.format(currentDate));
 			item.setTitle("Feed" + i + " Title at " + itemPubDate);
 			item.setLink(feedURI + "/item" + i);
 			item.setDescription("Description for item " + i);

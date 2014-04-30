@@ -5,6 +5,7 @@ import java.util.List;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.search.SearchContext;
 
 public class SearchSelector {
 	
@@ -18,12 +19,20 @@ public class SearchSelector {
 	
 	// -------------------------------------------------------------------------------------------------
 	
-	public SearchSelectResult select(SelectExpression selectExpression) {
-		
+	public SearchSelectResult select(SelectExpression selectExpression, SearchContext searchContext) {
+		/*
 		InformationStore informationStore=core.getInformationStoresByType(InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		List<String> queryResult = informationStore.query(selectExpression.getSparqlExpression());
+		*/
 		
-		return new SearchSelectResult(queryResult);
+		
+		InformationStore informationStore=core.getInformationStoresByType(InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
+		SearchSelectResult searchSelectResult =informationStore.query(selectExpression, searchContext);
+
+		
+		//System.out.println("SSR -> "+searchSelectResult);
+		
+		return searchSelectResult;
 	
 	}
 }

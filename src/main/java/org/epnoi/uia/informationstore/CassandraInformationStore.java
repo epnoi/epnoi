@@ -5,13 +5,16 @@ import java.util.List;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SelectExpression;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
 import epnoi.model.User;
 
 public class CassandraInformationStore implements InformationStore {
-
+InformationStoreParameters parameters;
 	CassandraDAOFactory daoFactory;
 
 	// ---------------------------------------------------------------------
@@ -24,7 +27,7 @@ public class CassandraInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void init(InformationStoreParameters parameters) {
-		// TODO Auto-generated method stub
+		this.parameters=parameters;
 		this.daoFactory = new CassandraDAOFactory(parameters);
 	}
 
@@ -59,13 +62,11 @@ public class CassandraInformationStore implements InformationStore {
 		CassandraDAO dao = this.daoFactory.build(selector);
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
-	
+
 	}
 
 	// ------------------------------------------------------------------------
 
-	
-	
 	public List<String> query(String queryExpression) {
 		// TODO Auto-generated method stub
 		return null;
@@ -73,30 +74,32 @@ public class CassandraInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
-	public void put(Resource resource) {
+	@Override
+	public SearchSelectResult query(SelectExpression selectionExpression,
+			SearchContext searchContext) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public void put(Resource resource, Context context) {
 		CassandraDAO dao = this.daoFactory.build(resource);
-		System.out.println(">>" + dao);
+
 		dao.create(resource);
 
 	}
 
 	// ------------------------------------------------------------------------
 
-	public void put(Resource resource, Context context) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// ------------------------------------------------------------------------
-
 	public InformationStoreParameters getParameters() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.parameters;
 	}
-	
+
 	// ------------------------------------------------------------------------
-	
-	public void update(Resource resource){
+
+	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 	}
 

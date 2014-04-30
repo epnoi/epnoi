@@ -25,7 +25,7 @@ public class FeedWrapper implements Wrapper {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		System.out.println("]------------------------------------------------------------"+informationStore);
@@ -33,21 +33,7 @@ public class FeedWrapper implements Wrapper {
 
 	}
 	
-	// -------------------------------------------------------------------------------------
-
-
-	public void put(Resource resource) {
-
-		System.out
-				.println("--------------------------------------------->  "
-						+ this.core
-								.getInformationStoresByType(InformationStoreHelper.RDF_INFORMATION_STORE));
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		// System.out.println("--------------------------------------------->  "+informationStore);
-		informationStore.put(resource);
-	}
+	// ------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------------
 

@@ -18,8 +18,8 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
+import epnoi.model.Context;
 import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceSubscription;
 import epnoi.model.Resource;
 import epnoi.model.User;
 
@@ -27,7 +27,7 @@ public class UserRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		User user = (User) resource;
 		String userURI = user.getURI();
 
@@ -39,7 +39,7 @@ public class UserRDFDAO extends RDFDAO {
 				.replace("{URI}", userURI)
 				.replace("{USER_CLASS}", UserRDFHelper.USER_CLASS);
 
-		System.out.println("---> " + queryExpression);
+		System.out.println("AQUI MELON---------------------------------> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
@@ -151,51 +151,5 @@ public class UserRDFDAO extends RDFDAO {
 		}
 	
 	// ---------------------------------------------------------------------------------------------------------------------
-
-	public static void main(String[] args) {
-		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
-
-		String URI = "http://www.epnoi.org/informationSources#whatever";
-
-		User informationSource = new User();
-
-		informationSource.setURI(URI);
-
-		for (int i = 0; i < 10; i++)
-			informationSource
-					.addInformationSourceSubscription("http://informationSourceSubscription"
-							+ i);
-
-		for (int i = 0; i < 10; i++)
-			informationSource.addKnowledgeObject("http://knowledgeObject" + i);
-
-		UserRDFDAO userRDFDAO = new UserRDFDAO();
-		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
-		parameters.setGraph("http://informationSourceTest");
-		parameters.setHost("localhost");
-		parameters.setPort("1111");
-		parameters.setUser("dba");
-		parameters.setPassword("dba");
-
-		userRDFDAO.init(parameters);
-
-		if (!userRDFDAO.exists(URI)) {
-			System.out.println("The user doesn't exist");
-
-			userRDFDAO.create(informationSource);
-		} else {
-			System.out.println("The user already exists!");
-		}
-
-		userRDFDAO.showTriplets();
-		VirtGraph graph = new VirtGraph("http://informationSourceTest",
-				virtuosoURL, "dba", "dba");
-		User readedUser = (User) userRDFDAO.read(URI);
-		System.out.println("Readed user -> " + readedUser);
-		if (userRDFDAO.exists(URI)) {
-			System.out.println("The user source now exists :) ");
-		}
-
-		graph.clear();
-	}
+	
 }

@@ -9,7 +9,6 @@ import epnoi.model.Resource;
 
 public interface InformationAccess {
 
-	public void put(Resource resource);
 
 	public void put(Resource resource, Context context);
 

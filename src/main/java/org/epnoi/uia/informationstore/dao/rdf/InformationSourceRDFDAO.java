@@ -16,11 +16,9 @@ import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
+import epnoi.model.Context;
 import epnoi.model.InformationSource;
 import epnoi.model.Resource;
 
@@ -28,7 +26,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		InformationSource informationSource = (InformationSource) resource;
 		String informationSourceURI = informationSource.getURI();
 		
@@ -124,50 +122,4 @@ public class InformationSourceRDFDAO extends RDFDAO {
 		
 	}
 
-	// ---------------------------------------------------------------------------------------------------------------------
-
-	public static void main(String[] args) {
-		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
-
-		String URI = "http://www.epnoi.org/informationSources#whatever";
-
-		InformationSource informationSource = new InformationSource();
-
-		informationSource.setURI(URI);
-		informationSource.setName("arXiv");
-		informationSource
-				.setURL("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-		informationSource
-				.setType(InformationSourceRDFHelper.SOLR_INFORMATION_SOURCE_CLASS);
-		InformationSourceRDFDAO informationSourceRDFDAO = new InformationSourceRDFDAO();
-		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
-		parameters.setGraph("http://informationSourceTest");
-		parameters.setHost("localhost");
-		parameters.setPort("1111");
-		parameters.setUser("dba");
-		parameters.setPassword("dba");
-
-		informationSourceRDFDAO.init(parameters);
-		System.out.println(".,.,.,.,jjjjjjj");
-		if (!informationSourceRDFDAO.exists(URI)) {
-			System.out.println("The information source doesn't exist");
-
-			informationSourceRDFDAO.create(informationSource);
-		} else {
-			System.out.println("The information source already exists!");
-		}
-
-		informationSourceRDFDAO.showTriplets();
-		VirtGraph graph = new VirtGraph("http://informationSourceTest",
-				virtuosoURL, "dba", "dba");
-		InformationSource readedInformationSource = (InformationSource) informationSourceRDFDAO
-				.read(URI);
-		System.out.println("Readed information source -> "
-				+ readedInformationSource);
-		if (informationSourceRDFDAO.exists(URI)) {
-			System.out.println("The information source now exists :) ");
-		}
-
-		graph.clear();
-	}
 }

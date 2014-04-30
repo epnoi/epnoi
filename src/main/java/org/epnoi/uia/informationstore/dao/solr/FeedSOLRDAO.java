@@ -14,6 +14,9 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.rest.services.JsonUtils;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelector;
+import org.epnoi.uia.search.select.SelectExpression;
 
 import epnoi.model.Context;
 import epnoi.model.Feed;
@@ -63,6 +66,9 @@ public class FeedSOLRDAO extends SOLRDAO {
 		Feed feed = (Feed) resource;
 		System.out
 				.println("]------------------------------------------------------------");
+		
+	
+		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		for (Item item : feed.getItems()) {
@@ -99,8 +105,9 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getURI());
 		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, item.getURI());
-		
-		/*1995-12-31T23:59:59Z
+
+		/*
+		 * 1995-12-31T23:59:59Z
 		 * 
 		 * 
 		 * METER LA FECHA!!!! SimpleDateFormat dateFormat = new
@@ -123,11 +130,12 @@ public class FeedSOLRDAO extends SOLRDAO {
 			System.out.println("]" + item.getURI() + " _scanKeywords:> "
 					+ _concatKeywords(keywords));
 		}
-		
-		
-		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY, convertDateFormat(item.getPubDate()));
-		
 
+		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,
+				convertDateFormat(item.getPubDate()));
+		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY, context
+				.getParameters().get(Context.INFORMATION_SOURCE_NAME));
+		
 		return newDocument;
 
 	}
@@ -171,60 +179,47 @@ public class FeedSOLRDAO extends SOLRDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------
-
-	public void show() {
-		this.query("uri:*");
-		// this.query(ClientUtils.escapeQueryChars("http://uriA0"));
-		// this.query("uri%3Ahttp//uriA2");
-	}
-
-	// ---------------------------------------------------------------------------------------------------
-
-	public List<String> query(String query) {
-		List<String> uris = new ArrayList<String>();
-
-		System.out.println("-.-.-.-.-.-.-----> " + query);
-
-		try {
-			QueryResponse queryResponse = super.makeQuery(query);
-			
-			List<FacetField> facetFields = queryResponse.getFacetFields();
-			System.out.println(" sixe--> "+facetFields.size()); 
-			for (int i = 0; i <facetFields.size(); i++) {
-				
-			    FacetField facetField = facetFields.get(i);
-			    System.out.println("facet:>"+facetField.getName());
-			    List<Count> facetInfo = facetField.getValues();
-			    for (FacetField.Count facetInstance : facetInfo) {
-			        System.out.println(facetInstance.getName() + " : " + facetInstance.getCount() + " [drilldown qry:" + facetInstance.getAsFilterQuery());
-			    }
-			}
-			
-			
-			
-			
-			String json = JsonUtils.toJson(queryResponse);
-			System.out.println("jsonresult "+json);
-			SolrDocumentList docs = queryResponse.getResults();
-			if (docs != null) {
-				// System.out.println(docs.getNumFound() + " documents found, "
-				// + docs.size() + " returned : ");
-				for (int i = 0; i < docs.size(); i++) {
-					SolrDocument document = docs.get(i);
-				
-					// System.out.println("\t" + document.toString());
-					uris.add((String) document.get(SOLRDAOHelper.URI_PROPERTY));
-				}
-			}
-			System.out.println(" ----> "+JsonUtils.toJson(queryResponse.getResponse()));
-			
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return uris;
-	}
-
+	/*
+	 * public void show() { this.query("uri:*"); }
+	 * 
+	 * / //
+	 * ----------------------------------------------------------------------
+	 * ----------------------------- /* public List<String> query(String query)
+	 * { List<String> uris = new ArrayList<String>();
+	 * 
+	 * System.out.println("-.-.-.-.-.-.-----> " + query);
+	 * 
+	 * try { QueryResponse queryResponse = super.makeQuery(query);
+	 * 
+	 * List<FacetField> facetFields = queryResponse.getFacetFields();
+	 * System.out.println(" sixe--> "+facetFields.size()); for (int i = 0; i
+	 * <facetFields.size(); i++) {
+	 * 
+	 * FacetField facetField = facetFields.get(i);
+	 * System.out.println("facet:>"+facetField.getName()); List<Count> facetInfo
+	 * = facetField.getValues(); for (FacetField.Count facetInstance :
+	 * facetInfo) { System.out.println(facetInstance.getName() + " : " +
+	 * facetInstance.getCount() + " [drilldown qry:" +
+	 * facetInstance.getAsFilterQuery()); } }
+	 * 
+	 * 
+	 * 
+	 * 
+	 * String json = JsonUtils.toJson(queryResponse);
+	 * System.out.println("jsonresult "+json); SolrDocumentList docs =
+	 * queryResponse.getResults(); if (docs != null) {
+	 * 
+	 * for (int i = 0; i < docs.size(); i++) { SolrDocument document =
+	 * docs.get(i);
+	 * 
+	 * 
+	 * uris.add((String) document.get(SOLRDAOHelper.URI_PROPERTY)); } }
+	 * System.out
+	 * .println(" ----> "+JsonUtils.toJson(queryResponse.getResponse()));
+	 * 
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); } return uris; }
+	 */
 	// ---------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -262,6 +257,18 @@ public class FeedSOLRDAO extends SOLRDAO {
 		parameters.setPort("8983");
 
 		feedRDFDAO.init(parameters);
+		SOLRDAOQueryResolver queryResolver = new SOLRDAOQueryResolver();
+		queryResolver.init(parameters);
+
+		SelectExpression selectExpression = new SelectExpression();
+		selectExpression.setSolrExpression("content:scalability");
+
+		SearchContext searchContext = new SearchContext();
+		searchContext.getFacets().add("date");
+
+		System.out.println("------> QR "
+				+ queryResolver.query(selectExpression, searchContext));
+
 		/*
 		 * if (SOLRDAO.test(parameters)) { System.out.println("Test OK!");
 		 * 
@@ -270,14 +277,11 @@ public class FeedSOLRDAO extends SOLRDAO {
 		 * 
 		 * feedRDFDAO.show();
 		 */
-		List<String> queryResults = feedRDFDAO.query("content:scalability");
-		for (String result : queryResults) {
-			System.out.println("-->" + result);
-		}
-		
-
-		
-		
+		/*
+		 * ESTO ES LO QUE ESTABAS USANDO List<String> queryResults =
+		 * feedRDFDAO.query("content:scalability"); for (String result :
+		 * queryResults) { System.out.println("-->" + result); }
+		 */
 
 	}
 }

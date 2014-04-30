@@ -45,9 +45,9 @@ public class LoginResource extends UIAService{
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateMatchingSpaceInJSON(Login login) {
-		System.out.println("POST: matcher/matchingsSpace");
+		System.out.println("POST: login");
 		System.out
-				.println("loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooging!!!!!!: "
+				.println("loging: "
 						+ login.getUser() + "|" + login.getPassword());
 
 		UserCassandraDAO userCassandraDAO = new UserCassandraDAO();

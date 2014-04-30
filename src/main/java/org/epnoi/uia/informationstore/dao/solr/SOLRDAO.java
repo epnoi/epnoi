@@ -14,6 +14,10 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SearchSelector;
+import org.epnoi.uia.search.select.SelectExpression;
 
 import epnoi.model.Context;
 import epnoi.model.Resource;
@@ -82,26 +86,6 @@ public abstract class SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	protected QueryResponse makeQuery(String query) throws SolrServerException {
-		ModifiableSolrParams solrParams = new ModifiableSolrParams();
-		// solrParams.set("collectionName", myCollection);
-		solrParams.set("username", "admin");
-		solrParams.set("password", "password");
-		// solrParams.set("facet", facet);
-		solrParams.set("q", query);
-		// solrParams.set("start", start);
-		// solrParams.set("rows", nbDocuments);
-		System.out.println("------------> " + solrParams.toString());
-
-		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery(query).setParam("password", "password").setParam("username", "admin").setFacet(true).addFacetField("date").setFacetMinCount(1)
-				.setFacetLimit(15).addFilterQuery("date:\"2013-11-29T18:11:16Z\"");
-
-		return server.query(solrQuery);
-	}
-
-	// --------------------------------------------------------------------------------
-
 	protected String convertDateFormat(String dateExpression) {
 		DateFormat formatter = new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
@@ -123,4 +107,6 @@ public abstract class SOLRDAO {
 		return (dt1.format(date));
 
 	}
+
+	
 }

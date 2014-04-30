@@ -17,6 +17,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public abstract class RDFDAO {
@@ -26,7 +27,7 @@ public abstract class RDFDAO {
 	protected static VirtuosoInformationStoreParameters parameters;
 	protected static VirtGraph graph = null;
 
-	abstract public void create(Resource resource);
+	abstract public void create(Resource resource, Context context);
 
 	abstract public void remove(String URI);
 
