@@ -21,16 +21,13 @@ public class InformationSourceWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------------------------------
 
+
 	public void put(Resource resource, Context context) {
-
-	}
-
-	public void put(Resource resource) {
 		// InformationSource informationSource = (InformationSource) resource;
 
 		InformationStore informationStore = core.getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

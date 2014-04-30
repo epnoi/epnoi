@@ -20,20 +20,15 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 		this.core = core;
 	}
 
-	// -------------------------------------------------------------------------------------------------------------
-
-	public void put(Resource resource, Context context) {
-
-	}
 
 	// -------------------------------------------------------------------------------------------------------------
 
-	public void put(Resource resource) {
+	public void put(Resource resource, Context context){
 		// InformationSource informationSource = (InformationSource) resource;
 
 		InformationStore informationStore = core.getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

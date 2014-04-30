@@ -39,9 +39,10 @@
 			<interval>30</interval>
 		</feed>
 	</rssHoarder>
-	 -->
+	
 	<rssHarvester>
 		<URI>http://epnoi.org/rssHarvester</URI>
 		<path>/proofs/rsshoarder2</path>
 	</rssHarvester>
+	 -->
 </parametersModel>

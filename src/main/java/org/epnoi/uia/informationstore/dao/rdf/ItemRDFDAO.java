@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
-
-import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -23,7 +20,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import epnoi.model.Feed;
+import epnoi.model.Context;
 import epnoi.model.Item;
 import epnoi.model.Resource;
 
@@ -31,7 +28,7 @@ public class ItemRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		Item item = (Item) resource;
 		String itemURI = item.getURI();
 		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
@@ -40,6 +37,7 @@ public class ItemRDFDAO extends RDFDAO {
 				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
 				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
+				+ "<{IS_AGGREGATED_BY_PROPERTY}> <{INFORMATION_SOURCE_URI}> ; "
 				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
 		
 		queryExpression = queryExpression
@@ -58,7 +56,9 @@ public class ItemRDFDAO extends RDFDAO {
 				.replace("{ITEM_PUB_DATE}",
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
-				.replace("{ITEM_AUTHOR}", item.getAuthor());
+				.replace("{ITEM_AUTHOR}", item.getAuthor())
+				.replace("{IS_AGGREGATED_BY_PROPERTY}", RDFOAIOREHelper.IS_AGGREGATED_BY_PROPERTY)
+				.replace("{INFORMATION_SOURCE_URI}", context.getParameters().get(Context.INFORMATION_SOURCE_URI));
 		
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
@@ -148,51 +148,6 @@ public class ItemRDFDAO extends RDFDAO {
 		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
 	}
-
-	// ---------------------------------------------------------------------------------------------------
-
-	public static void main(String[] args) {
-		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
-
-		String URI = "http://algo";
-		Feed feed = new Feed();
-
-		feed.setURI(URI);
-		feed.setTitle("arXiv");
-		feed.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
-
-		FeedRDFDAO informationSourceRDFDAO = new FeedRDFDAO();
-		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
-		parameters.setGraph("http://feedTest");
-		parameters.setHost("localhost");
-		parameters.setPort("1111");
-		parameters.setUser("dba");
-		parameters.setPassword("dba");
-
-		informationSourceRDFDAO.init(parameters);
-		System.out.println(".,.,.,.,jjjjjjj");
-		if (!informationSourceRDFDAO.exists(URI)) {
-			System.out.println("The information source doesn't exist");
-
-			informationSourceRDFDAO.create(feed);
-		} else {
-			System.out.println("The information source already exists!");
-		}
-
-		informationSourceRDFDAO.showTriplets();
-		VirtGraph graph = new VirtGraph(parameters.getGraph(), virtuosoURL,
-				"dba", "dba");
-		Feed readedInformationSource = informationSourceRDFDAO.read(URI);
-		System.out.println("Readed information source -> "
-				+ readedInformationSource);
-
-		if (informationSourceRDFDAO.exists(URI)) {
-			System.out.println("The information source now exists :) ");
-		}
-
-		graph.clear();
-	}
-
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
