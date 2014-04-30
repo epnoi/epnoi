@@ -8,6 +8,7 @@ import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
 import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
 import org.epnoi.uia.informationstore.InformationStore;
+import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
@@ -32,13 +33,7 @@ public class InformationAccessImplementation implements InformationAccess {
 
 	}
 
-	// ---------------------------------------------------------------------------
-
-	public void put(Resource resource) {
-		Wrapper wrapper = this.wrapperFactory.build(resource);
-		wrapper.put(resource);
-
-	}
+	
 
 	// ---------------------------------------------------------------------------
 
@@ -59,8 +54,15 @@ public class InformationAccessImplementation implements InformationAccess {
 	// ---------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO: As it is now it just delivers items/feeds
+		Resource resource;
+		Wrapper wrapper = this.wrapperFactory.build(FeedRDFHelper.ITEM_CLASS);
+		resource = wrapper.get(URI);
+		if (resource == null) {
+			wrapper = this.wrapperFactory.build(FeedRDFHelper.FEED_CLASS);
+			resource = wrapper.get(URI);
+		}
+		return resource;
 	}
 
 	// ---------------------------------------------------------------------------

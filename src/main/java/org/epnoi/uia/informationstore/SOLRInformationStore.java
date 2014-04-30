@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAO;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
+import org.epnoi.uia.informationstore.dao.solr.SOLRDAOQueryResolver;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SelectExpression;
 
 import epnoi.model.Context;
 import epnoi.model.InformationSource;
@@ -17,6 +22,7 @@ public class SOLRInformationStore implements InformationStore {
 
 	SOLRInformationStoreParameters parameters;
 	SOLRDAOFactory datoFactory;
+	SOLRDAOQueryResolver queryResolver;
 
 	// ------------------------------------------------------------------------
 
@@ -31,7 +37,8 @@ public class SOLRInformationStore implements InformationStore {
 
 		this.parameters = (SOLRInformationStoreParameters) parameters;
 		this.datoFactory = new SOLRDAOFactory(this.parameters);
-
+		this.queryResolver = new SOLRDAOQueryResolver();
+		this.queryResolver.init(this.parameters);
 	}
 
 	// ------------------------------------------------------------------------
@@ -63,9 +70,8 @@ public class SOLRInformationStore implements InformationStore {
 		}
 
 	}
-	
-	// ------------------------------------------------------------------------
 
+	// ------------------------------------------------------------------------
 
 	public void put(Resource resource, Context context) {
 		SOLRDAO solrDAO = this.datoFactory.build(resource);
@@ -104,6 +110,14 @@ public class SOLRInformationStore implements InformationStore {
 
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
+	}
+	
+	// ------------------------------------------------------------------------
+
+	@Override
+	public SearchSelectResult query(SelectExpression selectionExpression,
+			SearchContext searchContext) {
+		return this.queryResolver.query(selectionExpression, searchContext);
 	}
 
 }

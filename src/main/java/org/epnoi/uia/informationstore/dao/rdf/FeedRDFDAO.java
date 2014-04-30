@@ -1,6 +1,5 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class FeedRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
 
 		// System.out.println("--------------------------------------------------------->"+feed);
@@ -46,6 +45,7 @@ public class FeedRDFDAO extends RDFDAO {
 				+ "<{URL_PROPERTY}> \"{FEED_LINK}\" ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
+				
 				+ "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
 
 		System.out.println("pubDate ----------------------->"
@@ -60,13 +60,15 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{TITLE_PROPERTY}", RDFHelper.TITLE_PROPERTY)
 				.replace("{FEED_TITLE}", cleanOddCharacters(feed.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
+				
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
 				.replace("{FEED_DESCRIPTION}",
 						cleanOddCharacters(feed.getDescription()))
 				.replace("{FEED_PUB_DATE}",
 						convertDateFormat(feed.getPubDate()));
-
+		System.out.println("queryExpression ----------------------->"
+				+ queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();
@@ -83,7 +85,7 @@ public class FeedRDFDAO extends RDFDAO {
 				this.graph.add(new Triple(uriNode, aggregatesProperty,
 						objectItem));
 
-				itemRDFDAO.create(item);
+				itemRDFDAO.create(item, context);
 			}
 		}
 	}
@@ -302,6 +304,9 @@ public class FeedRDFDAO extends RDFDAO {
 		parameters.setUser("dba");
 		parameters.setPassword("dba");
 
+		Context context = new Context();
+		context.getParameters().put(Context.INFORMATION_SOURCE_URI, "http://informationsourceURI");
+		
 		feedRDFDAO.init(parameters);
 
 		if (!feedRDFDAO.exists(feedURI)) {
@@ -309,7 +314,7 @@ public class FeedRDFDAO extends RDFDAO {
 
 			for (Feed feed : feeds) {
 				System.out.println("---> " + feed);
-				feedRDFDAO.create(feed);
+				feedRDFDAO.create(feed, context);
 			}
 		} else {
 			System.out.println("The information source already exists!");

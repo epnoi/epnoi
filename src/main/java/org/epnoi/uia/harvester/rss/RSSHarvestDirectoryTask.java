@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -23,11 +21,13 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
 
 import epnoi.model.Context;
 import epnoi.model.Feed;
+import epnoi.model.InformationSource;
 import epnoi.model.Item;
 
 class RSSHarvestDirectoryTask implements Runnable {
@@ -129,10 +129,6 @@ class RSSHarvestDirectoryTask implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		/*
-		 * String[] tokens = handler.toString().split(delims); for (String token
-		 * : tokens) { System.out.println(">>> " + token); }
-		 */
 
 		StringTokenizer stringTokenizer = new StringTokenizer(
 				handler.toString());
@@ -142,8 +138,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 		while (stringTokenizer.hasMoreTokens()) {
 
 			String token = stringTokenizer.nextToken();
-			// token = token.replace(".", "");
-			// token = token.replace(",", "");
+
 			token = token.replaceAll("[^a-zA-Z 0-9]+", "");
 
 			if (!stopWordsList.contains(token.toLowerCase())) {
@@ -151,8 +146,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 				if (token.matches("[\\w]*[a-zA-Z]+[\\w]*")
 						&& token.length() > MIN_TOKEN_LENGTH
 						&& token.length() < MAX_TOKEN_LENGTH) {
-					// System.out.println("Este si!!");
-					// System.out.println("---> " + token);
+
 					if (!candidateKeywords.contains(token))
 						candidateKeywords.add(token);
 				}
@@ -198,12 +192,22 @@ class RSSHarvestDirectoryTask implements Runnable {
 							+ item.getURI().replaceAll("[^A-Za-z0-9]", "")
 							+ ".txt";
 					ArrayList<String> itemKeywords = _scanKeywords(itemContetFileName);
-					
+
 					feedContext.getElements().put(item.getURI(), itemKeywords);
 
 				}
 
 				if (this.harvester.getCore() != null) {
+					
+					InformationSource informationSource = (InformationSource) this.harvester
+							.getCore().getInformationAccess()
+							.get(this.manifest.getURI(), InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+					feedContext.getParameters().put(
+							Context.INFORMATION_SOURCE_NAME,
+							informationSource.getName());
+					feedContext.getParameters().put(
+							Context.INFORMATION_SOURCE_URI, manifest.getURI());
+
 					this.harvester.getCore().getInformationAccess()
 							.put(feed, feedContext);
 				} else {
@@ -243,10 +247,10 @@ class RSSHarvestDirectoryTask implements Runnable {
 	}
 
 	// ----------------------------------------------------------------------------------------
-	
+
 	protected String convertDateFormat(String dateExpression) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date=null;
+		Date date = null;
 		try {
 			date = dateFormat.parse(dateExpression);
 		} catch (ParseException e) {
@@ -255,7 +259,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 		}
 
 		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
-		return (dt1.format(date)+"^^xsd:date");
+		return (dt1.format(date) + "^^xsd:date");
 
 	}
 
@@ -271,13 +275,12 @@ class RSSHarvestDirectoryTask implements Runnable {
 		if (feed.getPubDate() == "") {
 
 			String date = getDate(filePath);
-			System.out.println("date---> "+date);
+			System.out.println("date---> " + date);
 			feed.setPubDate(date);
 		}
-		
+
 		feed.setURI(manifest.getURI());
-		
-		
+
 		return feed;
 
 		// return feed.getItems();
