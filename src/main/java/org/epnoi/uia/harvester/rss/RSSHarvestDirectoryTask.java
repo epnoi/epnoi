@@ -159,6 +159,37 @@ class RSSHarvestDirectoryTask implements Runnable {
 
 	// ----------------------------------------------------------------------------------------
 
+	private String _scanContent(String resourceURI) {
+		Metadata metadata = new Metadata();
+		metadata.set(Metadata.RESOURCE_NAME_KEY, resourceURI);
+		InputStream is = null;
+		ContentHandler handler = null;
+		try {
+			is = new URL(resourceURI).openStream();
+
+			Parser parser = new AutoDetectParser();
+			handler = new BodyContentHandler(-1);
+
+			ParseContext context = new ParseContext();
+			context.set(Parser.class, parser);
+
+			parser.parse(is, handler, metadata, new ParseContext());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return handler.toString();
+	}
+
+	// ----------------------------------------------------------------------------------------
+
 	public void run() {
 		logger.info("Starting a harversting task " + this.manifest);
 		harvest(this.directoryPath);
@@ -191,17 +222,19 @@ class RSSHarvestDirectoryTask implements Runnable {
 							+ contentDirectoryPath + "/"
 							+ item.getURI().replaceAll("[^A-Za-z0-9]", "")
 							+ ".txt";
-					ArrayList<String> itemKeywords = _scanKeywords(itemContetFileName);
+					String  content = _scanContent(itemContetFileName);
 
-					feedContext.getElements().put(item.getURI(), itemKeywords);
+					feedContext.getElements().put(item.getURI(), content);
 
 				}
 
 				if (this.harvester.getCore() != null) {
-					
+
 					InformationSource informationSource = (InformationSource) this.harvester
-							.getCore().getInformationAccess()
-							.get(this.manifest.getURI(), InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+							.getCore()
+							.getInformationAccess()
+							.get(this.manifest.getURI(),
+									InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 					feedContext.getParameters().put(
 							Context.INFORMATION_SOURCE_NAME,
 							informationSource.getName());

@@ -123,12 +123,14 @@ public class FeedSOLRDAO extends SOLRDAO {
 		System.out
 				.println("]------------------------------------------------------------");
 		if (context != null) {
-			List<String> keywords = (List<String>) context.getElements().get(
+			String content= (String) context.getElements().get(
 					item.getURI());
 			newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY,
-					_concatKeywords(keywords));
+					content);
+			/*
 			System.out.println("]" + item.getURI() + " _scanKeywords:> "
 					+ _concatKeywords(keywords));
+					*/
 		}
 
 		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,

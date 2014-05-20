@@ -6,9 +6,9 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 
 import epnoi.model.Context;
+import epnoi.model.Item;
 import epnoi.model.Resource;
 
 public class ItemWrapper implements Wrapper {
@@ -39,25 +39,30 @@ public class ItemWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
+		Item joinItem = new Item();
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, FeedRDFHelper.ITEM_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
-		return informationStore.get(selector);
+		joinItem = (Item) informationStore.get(selector);
 
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+
+		Item cassandraItem = (Item) informationStore.get(selector);
+		joinItem.setContent(cassandraItem.getContent());
+		return joinItem;
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, FeedRDFHelper.ITEM_CLASS);
@@ -68,13 +73,12 @@ public class ItemWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------
 
-		@Override
-		public void update(Resource resource) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void update(Resource resource) {
+		// TODO Auto-generated method stub
 
-		// -------------------------------------------------------------------------------------
+	}
 
+	// -------------------------------------------------------------------------------------
 
 }

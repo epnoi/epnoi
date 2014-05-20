@@ -5,6 +5,7 @@ import me.prettyprint.hector.api.beans.HColumn;
 
 import org.epnoi.uia.informationstore.Selector;
 
+import epnoi.model.Context;
 import epnoi.model.ExternalResource;
 import epnoi.model.Resource;
 
@@ -16,7 +17,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		ExternalResource externalResource = (ExternalResource)resource;
 		super.createRow(externalResource.getURI(),
 				ExternalResourceCassandraHelper.COLUMN_FAMILLY);
@@ -94,9 +95,11 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		externalResource2.setURI("http://uriproof2");
 		externalResource2.setDescription("description proof2");
 
-		externalResourceCassandraDAO.create(externalResource);
+		Context context = new Context();
+		
+		externalResourceCassandraDAO.create(externalResource, context);
 
-		externalResourceCassandraDAO.create(externalResource2);
+		externalResourceCassandraDAO.create(externalResource2, context);
 		externalResourceCassandraDAO.remove("http://uriproof2");
 		// externalResourceCassandraDAO.delete("http://uriproof");
 
