@@ -86,7 +86,7 @@ InformationStoreParameters parameters;
 	public void put(Resource resource, Context context) {
 		CassandraDAO dao = this.daoFactory.build(resource);
 
-		dao.create(resource);
+		dao.create(resource, context);
 
 	}
 

@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import java.util.Arrays;
 
+import epnoi.model.Context;
 import epnoi.model.Search;
 import epnoi.model.User;
 
@@ -21,6 +22,8 @@ public class SimpleTestSetUp {
 			System.out.println(user.getName() + " existe!");
 			userCassandraDAO.remove(user.getURI());
 		}
+		Context context = new Context();
+		
 
 		// Let's create the users
 		User user = new User();
@@ -29,7 +32,7 @@ public class SimpleTestSetUp {
 		user.setPassword("PasswordDeRafa");
 		user.addSearch("http://searchA");
 		user.addSearch("http://searchB");
-		userCassandraDAO.create(user);
+		userCassandraDAO.create(user, context);
 
 		User userElOtro = new User();
 		userElOtro.setURI("http://userSara");
@@ -37,7 +40,7 @@ public class SimpleTestSetUp {
 		userElOtro.setPassword("PasswordDeSara");
 		userElOtro.addSearch("http://searchC");
 		userElOtro.addSearch("http://searchD");
-		userCassandraDAO.create(userElOtro);
+		userCassandraDAO.create(userElOtro, context);
 
 		User pique = new User();
 		pique.setURI("http://userPique");
@@ -45,7 +48,7 @@ public class SimpleTestSetUp {
 		pique.setPassword("PasswordDePique");
 		pique.addSearch("http://searchE");
 		pique.addSearch("http://searchF");
-		userCassandraDAO.create(pique);
+		userCassandraDAO.create(pique, context);
 
 		User readUser = (User)userCassandraDAO.read("http://userRafa");
 		System.out.println("readed user> " + readUser);
@@ -82,7 +85,7 @@ public class SimpleTestSetUp {
 				}
 
 			}
-			searchCassandraDAO.create(search);
+			searchCassandraDAO.create(search, context);
 		}
 
 		Search piqueSearch = (Search)searchCassandraDAO.read("http://searchE");
