@@ -8,6 +8,7 @@ import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
+import epnoi.model.Feed;
 import epnoi.model.Resource;
 import epnoi.model.User;
 
@@ -26,6 +27,13 @@ public class CassandraDAOFactory {
 	public CassandraDAO build(Resource resource) throws DAONotFoundException {
 		if (resource instanceof User) {
 			UserCassandraDAO userDAO = new UserCassandraDAO();
+			userDAO.init();
+			return userDAO;
+			
+		}
+		
+		if (resource instanceof Feed) {
+			FeedCassandraDAO userDAO = new FeedCassandraDAO();
 			userDAO.init();
 			return userDAO;
 			

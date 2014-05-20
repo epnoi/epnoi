@@ -3,11 +3,13 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.epnoi.uia.informationstore.Selector;
-
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
+
+import org.epnoi.uia.informationstore.Selector;
+
+import epnoi.model.Context;
 import epnoi.model.ExternalResource;
 import epnoi.model.Resource;
 import epnoi.model.User;
@@ -20,7 +22,7 @@ public class UserCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(Resource resource) {
+	public void create(Resource resource, Context context) {
 		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		User user = (User) resource;
 		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILLY);

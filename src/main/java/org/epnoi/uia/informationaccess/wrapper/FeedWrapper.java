@@ -28,11 +28,22 @@ public class FeedWrapper implements Wrapper {
 		informationStore.put(resource, context);
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
-		System.out.println("]------------------------------------------------------------"+informationStore);
+		System.out
+				.println("]------------------------------------------------------------"
+						+ informationStore);
+		informationStore.put(resource, context);
+		
+		//-----------------
+		
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		System.out
+				.println("]------------------------------------------------------------"
+						+ informationStore);
 		informationStore.put(resource, context);
 
 	}
-	
+
 	// ------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------------
@@ -41,24 +52,22 @@ public class FeedWrapper implements Wrapper {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	// -------------------------------------------------------------------------------------
 
+	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
-		@Override
-		public void update(Resource resource) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void update(Resource resource) {
+		// TODO Auto-generated method stub
 
-		// -------------------------------------------------------------------------------------
+	}
 
+	// -------------------------------------------------------------------------------------
 
 }
