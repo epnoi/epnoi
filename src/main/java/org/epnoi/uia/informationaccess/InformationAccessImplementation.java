@@ -128,5 +128,8 @@ public class InformationAccessImplementation implements InformationAccess {
 			String subscriptionExpression) {
 		this.listeners.add(listener);
 	}
+	
+	// ---------------------------------------------------------------------------
+	
 
 }
