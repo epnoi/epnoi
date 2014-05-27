@@ -141,6 +141,11 @@
 			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.5.3</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>epnoiUIA</finalName>

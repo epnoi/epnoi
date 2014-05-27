@@ -13,6 +13,7 @@ import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
 
+import epnoi.model.ContentSummary;
 import epnoi.model.Context;
 import epnoi.model.Resource;
 
@@ -32,8 +33,6 @@ public class InformationAccessImplementation implements InformationAccess {
 		this.listeners = new ArrayList<InformationAccessListener>();
 
 	}
-
-	
 
 	// ---------------------------------------------------------------------------
 
@@ -128,8 +127,13 @@ public class InformationAccessImplementation implements InformationAccess {
 			String subscriptionExpression) {
 		this.listeners.add(listener);
 	}
-	
+
 	// ---------------------------------------------------------------------------
-	
+
+	@Override
+	public ContentSummary getContentSummary(String URI) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
