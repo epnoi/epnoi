@@ -1,15 +1,25 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Logger;
 
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
-import org.apache.solr.common.params.SolrParams;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SearchSelector;
+import org.epnoi.uia.search.select.SelectExpression;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public abstract class SOLRDAO {
@@ -21,6 +31,8 @@ public abstract class SOLRDAO {
 	protected HttpSolrServer server;
 
 	abstract public void create(Resource resource);
+
+	abstract public void create(Resource resource, Context context);
 
 	// --------------------------------------------------------------------------------
 
@@ -74,16 +86,27 @@ public abstract class SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	protected QueryResponse makeQuery(String query) throws SolrServerException {
-		ModifiableSolrParams solrParams = new ModifiableSolrParams();
-		// solrParams.set("collectionName", myCollection);
-		solrParams.set("username", "admin");
-		solrParams.set("password", "password");
-		// solrParams.set("facet", facet);
-		solrParams.set("q", query);
-		// solrParams.set("start", start);
-		// solrParams.set("rows", nbDocuments);
-		System.out.println("------------> " + solrParams.toString());
-		return server.query(solrParams);
+	protected String convertDateFormat(String dateExpression) {
+		DateFormat formatter = new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
+		Date date = null;
+		try {
+			date = formatter.parse(dateExpression);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// "2005-02-28T00:00:00Z"^^xsd:dateTime
+		// "2013-12-16T23:44:00+0100"^^xsd:dateTime
+		/*
+		 * SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+		 * "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		 */
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				Locale.ENGLISH);
+		return (dt1.format(date));
+
 	}
+
+	
 }

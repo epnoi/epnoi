@@ -15,6 +15,7 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 import epnoi.model.InformationSourceNotification;
+import epnoi.model.InformationSourceNotificationsSet;
 import epnoi.model.User;
 
 @Path("/users/{USER_ID}/notifications/informationSources")
@@ -29,6 +30,10 @@ public class UserNotificationsResource extends UIAService {
 		System.out.println("GET: " + USER_ID);
 
 		String URI = "http://www.epnoi.org/users/" + USER_ID;
+		
+		String informationSourceSubscriptionURI = "http://www.epnoi.org/users/"
+				+ USER_ID + "/subscriptions/informationSources";
+		
 		System.out.println("---> " + URI);
 
 		if (URI == null) {
@@ -56,10 +61,19 @@ public class UserNotificationsResource extends UIAService {
 				notifications.add(notification);
 			}
 		}
-		return Response.ok(notifications, MediaType.APPLICATION_JSON).build();
+		
+		InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
+		
+		notificationsSet.setNotifications(notifications);
+		notificationsSet.setURI(informationSourceSubscriptionURI);
+		
+		
+		return Response.ok(notificationsSet, MediaType.APPLICATION_JSON).build();
 
 	}
 
+	//---------------------------------------------------------------------------------------
+	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{INFORMATION_SOURCE_ID}")
@@ -96,7 +110,12 @@ public class UserNotificationsResource extends UIAService {
 					.getInformationSourcesHandler().retrieveNotifications(
 							informationSourceSubscriptionURI);
 
-			return Response.ok(notifications, MediaType.APPLICATION_JSON)
+			InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
+			notificationsSet.setNotifications(notifications);
+			notificationsSet.setURI(informationSourceSubscriptionURI);
+			
+			
+			return Response.ok(notificationsSet, MediaType.APPLICATION_JSON)
 					.build();
 
 		}

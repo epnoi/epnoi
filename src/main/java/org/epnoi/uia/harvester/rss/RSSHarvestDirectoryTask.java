@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +21,13 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
 
 import epnoi.model.Context;
 import epnoi.model.Feed;
+import epnoi.model.InformationSource;
 import epnoi.model.Item;
 
 class RSSHarvestDirectoryTask implements Runnable {
@@ -126,10 +129,6 @@ class RSSHarvestDirectoryTask implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		/*
-		 * String[] tokens = handler.toString().split(delims); for (String token
-		 * : tokens) { System.out.println(">>> " + token); }
-		 */
 
 		StringTokenizer stringTokenizer = new StringTokenizer(
 				handler.toString());
@@ -139,8 +138,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 		while (stringTokenizer.hasMoreTokens()) {
 
 			String token = stringTokenizer.nextToken();
-			// token = token.replace(".", "");
-			// token = token.replace(",", "");
+
 			token = token.replaceAll("[^a-zA-Z 0-9]+", "");
 
 			if (!stopWordsList.contains(token.toLowerCase())) {
@@ -148,8 +146,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 				if (token.matches("[\\w]*[a-zA-Z]+[\\w]*")
 						&& token.length() > MIN_TOKEN_LENGTH
 						&& token.length() < MAX_TOKEN_LENGTH) {
-					// System.out.println("Este si!!");
-					// System.out.println("---> " + token);
+
 					if (!candidateKeywords.contains(token))
 						candidateKeywords.add(token);
 				}
@@ -158,6 +155,37 @@ class RSSHarvestDirectoryTask implements Runnable {
 
 		}
 		return candidateKeywords;
+	}
+
+	// ----------------------------------------------------------------------------------------
+
+	private String _scanContent(String resourceURI) {
+		Metadata metadata = new Metadata();
+		metadata.set(Metadata.RESOURCE_NAME_KEY, resourceURI);
+		InputStream is = null;
+		ContentHandler handler = null;
+		try {
+			is = new URL(resourceURI).openStream();
+
+			Parser parser = new AutoDetectParser();
+			handler = new BodyContentHandler(-1);
+
+			ParseContext context = new ParseContext();
+			context.set(Parser.class, parser);
+
+			parser.parse(is, handler, metadata, new ParseContext());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return handler.toString();
 	}
 
 	// ----------------------------------------------------------------------------------------
@@ -179,7 +207,9 @@ class RSSHarvestDirectoryTask implements Runnable {
 			// System.out.println("..........> "
 			// + Arrays.toString(filesToHarvest));
 			for (String fileToHarvest : filesToHarvest) {
-				System.out.println(">Harvesting :" + fileToHarvest);
+				System.out.println(">Harvesting :"
+						+ harvestDirectoy.getAbsolutePath() + "/"
+						+ fileToHarvest);
 
 				Feed feed = _harvestFile(directoryToHarvest + "/"
 						+ fileToHarvest);
@@ -192,17 +222,34 @@ class RSSHarvestDirectoryTask implements Runnable {
 							+ contentDirectoryPath + "/"
 							+ item.getURI().replaceAll("[^A-Za-z0-9]", "")
 							+ ".txt";
-					ArrayList<String> itemKeywords = _scanKeywords(itemContetFileName);
-					feedContext.getElements().put(item.getURI(), itemKeywords);
+					String  content = _scanContent(itemContetFileName);
+
+					feedContext.getElements().put(item.getURI(), content);
 
 				}
 
 				if (this.harvester.getCore() != null) {
+
+					InformationSource informationSource = (InformationSource) this.harvester
+							.getCore()
+							.getInformationAccess()
+							.get(this.manifest.getURI(),
+									InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+					feedContext.getParameters().put(
+							Context.INFORMATION_SOURCE_NAME,
+							informationSource.getName());
+					feedContext.getParameters().put(
+							Context.INFORMATION_SOURCE_URI, manifest.getURI());
+
 					this.harvester.getCore().getInformationAccess()
 							.put(feed, feedContext);
 				} else {
 
 					System.out.println("Result: Feed> " + feed);
+					for (Item item : feed.getItems()) {
+						System.out.println("		 Item> " + item);
+					}
+
 					System.out.println("Result: Context> " + feedContext);
 				}
 
@@ -234,23 +281,52 @@ class RSSHarvestDirectoryTask implements Runnable {
 
 	// ----------------------------------------------------------------------------------------
 
+	protected String convertDateFormat(String dateExpression) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = dateFormat.parse(dateExpression);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+		return (dt1.format(date) + "^^xsd:date");
+
+	}
+
+	// ----------------------------------------------------------------------------------------
+
 	public Feed _harvestFile(String filePath) {
 
 		RSSFeedParser parser = new RSSFeedParser("file://" + filePath);
 		Feed feed = parser.readFeed();
 		// System.out.println("Feed : " + feed);
 		// System.out.println(feed);
-		feed.setPubDate(getDate(filePath));
+
+		if (feed.getPubDate() == "") {
+
+			String date = getDate(filePath);
+			System.out.println("date---> " + date);
+			feed.setPubDate(date);
+		}
+
+		feed.setURI(manifest.getURI());
+
 		return feed;
 
 		// return feed.getItems();
 	}
 
-	private String getDate(String filePath) {
+	// ----------------------------------------------------------------------------------------
 
+	private String getDate(String filePath) {
+		System.out.println("filePath> " + filePath);
 		int bracketOpeningPosition = filePath.indexOf("[");
 		int bracketClosingPosition = filePath.indexOf("]");
-		String filePathDatePart = filePath.substring(bracketClosingPosition);
+		String filePathDatePart = filePath.substring(
+				bracketOpeningPosition + 1, bracketClosingPosition);
 		return filePathDatePart;
 	}
 

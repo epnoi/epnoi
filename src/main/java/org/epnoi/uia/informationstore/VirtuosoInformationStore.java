@@ -8,6 +8,9 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFDAOFactory;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.uia.search.SearchContext;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SelectExpression;
 
 import epnoi.model.Context;
 import epnoi.model.InformationSource;
@@ -49,25 +52,10 @@ public class VirtuosoInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
-	public void put(Resource resource) {
-
-		RDFDAO rdfDAO = this.datoFactory.build(resource);
-
-		rdfDAO.create(resource);
-		/*
-		 * if (!rdfDAO.exists(resource.getURI())) {
-		 * System.out.println("The information source doesn't exist");
-		 * 
-		 * rdfDAO.create(resource); } else {
-		 * System.out.println("The information source already exists!");
-		 * rdfDAO.create(resource); }
-		 */
-	}
-
-	// ------------------------------------------------------------------------
-
 	public void put(Resource resource, Context context) {
-		this.put(resource);
+		RDFDAO rdfDAO = this.datoFactory.build(resource);
+		rdfDAO.create(resource, context);
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -78,14 +66,14 @@ public class VirtuosoInformationStore implements InformationStore {
 		Resource resource = dao.read(selector.getProperty(SelectorHelper.URI));
 		return resource;
 	}
-	
+
 	// ------------------------------------------------------------------------
 
 	public void remove(Selector selector) {
 		RDFDAO dao = this.datoFactory.build(selector);
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
-		
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -94,4 +82,22 @@ public class VirtuosoInformationStore implements InformationStore {
 
 		return this.queryResolver.query(queryExpression);
 	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public SearchSelectResult query(SelectExpression selectionExpression,
+			SearchContext searchContext) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public void update(Resource resource) {
+		RDFDAO rdfDAO = this.datoFactory.build(resource);
+
+		rdfDAO.update(resource);
+	}
+
 }

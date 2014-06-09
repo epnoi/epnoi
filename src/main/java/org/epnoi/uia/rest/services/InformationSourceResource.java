@@ -1,7 +1,5 @@
 package org.epnoi.uia.rest.services;
 
-import java.util.ArrayList;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -12,11 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.dao.cassandra.SearchCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
-import epnoi.model.Search;
 import epnoi.model.User;
 
 @Path("/informationSources")
@@ -40,8 +35,8 @@ public class InformationSourceResource extends UIAService {
 			return Response.status(404).build();
 		}
 
-		Core core = getUIACore();
-		User user = (User) core.getInformationAccess().get(URI,
+		this.core = getUIACore();
+		User user = (User) this.core.getInformationAccess().get(URI,
 				UserRDFHelper.USER_CLASS);
 		if (user == null) {
 			return Response.status(404).build();
@@ -52,6 +47,5 @@ public class InformationSourceResource extends UIAService {
 		return Response.ok(user.getInformationSourceSubscriptions(),
 				MediaType.APPLICATION_JSON).build();
 
-		// return Response.status(404).build();
 	}
 }

@@ -21,16 +21,13 @@ public class InformationSourceWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------------------------------
 
-	public void put(Resource resource, Context context) {
-		
-	}
 
-	public void put(Resource resource) {
-		//InformationSource informationSource = (InformationSource) resource;
+	public void put(Resource resource, Context context) {
+		// InformationSource informationSource = (InformationSource) resource;
 
 		InformationStore informationStore = core.getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 	}
 
 	// -------------------------------------------------------------------------------------------------------------
@@ -38,28 +35,39 @@ public class InformationSourceWrapper implements Wrapper {
 	public Resource get(String URI) {
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+		selector.setProperty(SelectorHelper.TYPE,
+				InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		return informationStore.get(selector);
 	}
-	
+
 	// -------------------------------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+		selector.setProperty(SelectorHelper.TYPE,
+				InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 	}
 
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void update(Resource resource) {
+		InformationStore informationStore = core.getInformationStoresByType(
+				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+		informationStore.update(resource);
+
+	}
+
+	// -------------------------------------------------------------------------------------
 
 }

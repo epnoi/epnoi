@@ -17,42 +17,52 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
+import epnoi.model.Context;
 import epnoi.model.Resource;
 
 public abstract class RDFDAO {
 
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
-	protected VirtuosoInformationStoreParameters parameters;
-	protected VirtGraph graph = null;
+	protected static VirtuosoInformationStoreParameters parameters;
+	protected static VirtGraph graph = null;
 
-	abstract public void create(Resource resource);
+	abstract public void create(Resource resource, Context context);
 
 	abstract public void remove(String URI);
-	
+
 	abstract public Resource read(String URI);
 	
+	abstract public void update(Resource resource);
+
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-	
-	public void init(InformationStoreParameters parameters) {
 
-		// System.out.println(".............................................. "+
-		// parameters);
-		this.parameters = (VirtuosoInformationStoreParameters) parameters;
-		if ((this.parameters.getPort() != null)
-				&& (this.parameters.getHost() != null)) {
-			this.virtuosoURL = "jdbc:virtuoso://" + this.parameters.getHost()
-					+ ":" + this.parameters.getPort();
-			graph = new VirtGraph(this.parameters.getGraph(), virtuosoURL,
-					this.parameters.getUser(), this.parameters.getPassword());
+	public synchronized void init(InformationStoreParameters parameters) {
 
+		 //System.out.println(".............................................. "+parameters);
+		if (graph == null) {
+			//System.out.println(">>-----------------------> initialized");
+			this.parameters = (VirtuosoInformationStoreParameters) parameters;
+			if ((this.parameters.getPort() != null)
+					&& (this.parameters.getHost() != null)) {
+				this.virtuosoURL = "jdbc:virtuoso://"
+						+ this.parameters.getHost() + ":"
+						+ this.parameters.getPort();
+				graph = new VirtGraph(this.parameters.getGraph(), virtuosoURL,
+						this.parameters.getUser(),
+						this.parameters.getPassword());
+
+			}
+		}else{
+			//System.out.println(">>----------------------->"+this.graph);
 		}
+		//System.out.println("El result es "+ this.graph);
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	protected ResultSet makeQuery(String query) {
-		System.out.println("-------------------------------" + query);
+		//System.out.println("-------------------------------" + query);
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -123,7 +133,7 @@ public abstract class RDFDAO {
 
 	protected String cleanOddCharacters(String text) {
 		String cleanedText;
-		cleanedText = text.replace("\"", "");
+		cleanedText = text.replaceAll("[^a-zA-Z0-9]"," ");
 		return cleanedText;
 	}
 }

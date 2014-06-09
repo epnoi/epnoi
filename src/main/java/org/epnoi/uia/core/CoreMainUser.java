@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.uia.informationsources.generators.RSSInformationSourceRandomGenerator;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
@@ -48,7 +49,7 @@ public class CoreMainUser {
 
 		try {
 
-			URL configFileURL = CoreMain.class.getResource("uiaCoreMain.xml");
+			URL configFileURL = CoreMain.class.getResource("uiaCoreMainUser.xml");
 
 			parametersModel = ParametersModelReader.read(configFileURL
 					.getPath());
@@ -111,13 +112,21 @@ public class CoreMainUser {
 
 		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
 		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
+
+		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
+		
+		core.getInformationAccess().put(testUser,new Context());
+		
+		
+		
 		/*
 		 * User newUserReaded2 = (User) core.getInformationAccess().get(
 		 * testUser.getURI(), UserRDFHelper.USER_CLASS);
 		 * 
 		 * System.out.println("The readed newUser is " + newUserReaded2);
 		 */
-		core.getInformationAccess().put(testUser);
+		Context context=new Context();
+		core.getInformationAccess().put(testUser,context);
 		InformationSource slashdotInformationSource = new InformationSource();
 		slashdotInformationSource
 				.setURI("http://www.epnoi.org/informationSources/slashdot");
@@ -139,6 +148,18 @@ public class CoreMainUser {
 				.setType(InformationSourceRDFHelper.RSS_INFORMATION_SOURCE_CLASS);
 		highScalabilityInformationSource
 				.setInformationUnitType(FeedRDFHelper.ITEM_CLASS);
+		
+
+		InformationSource randomInformationSource = new InformationSource();
+		randomInformationSource
+				.setURI("http://www.epnoi.org/informationSources/randomInformationSource");
+		randomInformationSource.setName("randomInformationSource");
+		randomInformationSource
+				.setURL("http://www.epnoi.org/informationSources/randomInformationSource");
+		randomInformationSource
+				.setType(InformationSourceRDFHelper.RSS_INFORMATION_SOURCE_CLASS);
+		randomInformationSource
+				.setInformationUnitType(FeedRDFHelper.ITEM_CLASS);
 
 		InformationSourceSubscription informationSourceSubscription = new InformationSourceSubscription();
 
@@ -146,6 +167,7 @@ public class CoreMainUser {
 				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
 		informationSourceSubscription
 				.setInformationSource("http://www.epnoi.org/informationSources/slashdot");
+		informationSourceSubscription.setNumberOfItems(6);
 
 		InformationSourceSubscription informationSourceSubscriptionHigh = new InformationSourceSubscription();
 
@@ -153,19 +175,38 @@ public class CoreMainUser {
 				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
 		informationSourceSubscriptionHigh
 				.setInformationSource("http://www.epnoi.org/informationSources/highScalability");
+		informationSourceSubscriptionHigh.setNumberOfItems(4);
 
-		core.getInformationAccess().put(slashdotInformationSource);
+		InformationSourceSubscription informationSourceSubscriptionRandom = new InformationSourceSubscription();
 
-		core.getInformationAccess().put(highScalabilityInformationSource);
+		informationSourceSubscriptionRandom
+				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
+		informationSourceSubscriptionRandom
+				.setInformationSource("http://www.epnoi.org/informationSources/randomInformationSource");
+		informationSourceSubscriptionRandom.setNumberOfItems(2);
+		
+		Context emptyContex = new Context();
+		core.getInformationAccess().put(slashdotInformationSource, emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscriptionHigh);
+		core.getInformationAccess().put(highScalabilityInformationSource, emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscription);
-		List<Feed> feeds = _generateFeedsData();
-		for (Feed feed : feeds) {
-			core.getInformationAccess().put(feed);
-		}
+		core.getInformationAccess().put(informationSourceSubscriptionHigh, emptyContex);
 
+		core.getInformationAccess().put(informationSourceSubscription, emptyContex);
+
+		core.getInformationAccess().put(randomInformationSource, emptyContex);
+
+		core.getInformationAccess().put(informationSourceSubscriptionRandom, emptyContex);
+		
+		
+		/*
+		 * List<Feed> feeds = _generateFeedsData(); for (Feed feed : feeds) {
+		 * core.getInformationAccess().put(feed); }
+		 */
+/*
+		RSSInformationSourceRandomGenerator generator = new RSSInformationSourceRandomGenerator();
+		generator.generate(core);
+*/
 		System.out.println("information source handler");
 
 		for (String subscription : testUser.getInformationSourceSubscriptions()) {

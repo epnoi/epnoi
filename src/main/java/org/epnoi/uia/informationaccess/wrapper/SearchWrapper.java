@@ -31,25 +31,13 @@ public class SearchWrapper implements Wrapper {
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
 	}
 
-	// -------------------------------------------------------------------------------------
-
-	public void put(Resource resource) {
-		logger.info("Putting the user:");
-		logger.info("User: " + resource);
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
-
-		informationStore.put(resource);
-	}
 
 	// -------------------------------------------------------------------------------------
 
@@ -81,6 +69,15 @@ public class SearchWrapper implements Wrapper {
 
 		}
 
-	// -------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------
+
+		@Override
+		public void update(Resource resource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		// -------------------------------------------------------------------------------------
+
 
 }

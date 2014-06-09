@@ -25,25 +25,26 @@ public class FeedWrapper implements Wrapper {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
-		informationStore.put(resource);
+		informationStore.put(resource, context);
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
+		System.out
+				.println("]------------------------------------------------------------"
+						+ informationStore);
+		informationStore.put(resource, context);
+		
+		//-----------------
+		
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		System.out
+				.println("]------------------------------------------------------------"
+						+ informationStore);
 		informationStore.put(resource, context);
 
 	}
 
-	public void put(Resource resource) {
-
-		System.out
-				.println("--------------------------------------------->  "
-						+ this.core
-								.getInformationStoresByType(InformationStoreHelper.RDF_INFORMATION_STORE));
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		// System.out.println("--------------------------------------------->  "+informationStore);
-		informationStore.put(resource);
-	}
+	// ------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------------
 
@@ -52,9 +53,21 @@ public class FeedWrapper implements Wrapper {
 		return null;
 	}
 
+	// -------------------------------------------------------------------------------------
+
 	public void remove(String URI) {
 		// TODO Auto-generated method stub
 
 	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void update(Resource resource) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// -------------------------------------------------------------------------------------
 
 }

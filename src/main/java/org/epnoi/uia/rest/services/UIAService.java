@@ -49,16 +49,22 @@ public abstract class UIAService {
 	}
 
 	// ----------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
+	// ----------------------------------------------------------------------------------------
 
 	public ParametersModel _readParameters() {
 		ParametersModel parametersModel = null;
 
 		try {
 			
-			URL configFileURL = context.getResource("/WEB-INF/uia.xml");
+			String configFileURL = context.getRealPath("/WEB-INF/uia.xml");
 			
-			parametersModel = ParametersModelReader.read(configFileURL
-					.getPath());
+			System.out.println("AQUI --->"+configFileURL);
+			parametersModel = ParametersModelReader.read(configFileURL);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

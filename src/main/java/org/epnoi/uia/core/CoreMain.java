@@ -19,7 +19,7 @@ public class CoreMain {
 
 		String feedTitle ="arXiv";
 		Core core = getUIACore();
-
+/*
 		SelectExpression selectExpression = new SelectExpression();
 
 		String queryExpression = "SELECT ?uri FROM <{GRAPH}> " + "{"
@@ -36,7 +36,7 @@ public class CoreMain {
 
 		selectExpression.setSparqlExpression(queryExpression);
 		core.getSearchHandler().search(selectExpression, new SearchContext());
-
+*/
 	}
 
 	// ---------------------------------------------------------------------------------
