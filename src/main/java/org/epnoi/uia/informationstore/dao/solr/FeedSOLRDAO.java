@@ -29,8 +29,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource) {
 		Feed feed = (Feed) resource;
-		System.out
-				.println("]------------------------------------------------------------");
+	
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -64,9 +63,6 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
-		System.out
-				.println("]------------------------------------------------------------");
-		
 	
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -120,8 +116,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
 				item.getDescription());
-		System.out
-				.println("]------------------------------------------------------------");
+		
 		if (context != null) {
 			String content= (String) context.getElements().get(
 					item.getURI());

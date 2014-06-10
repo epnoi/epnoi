@@ -74,7 +74,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
-				System.out.println("--column " + column);
+				//System.out.println("--column " + column);
 				if (SearchCassandraHelper.TITLE.equals(column.getName())) {
 					search.setTitle(column.getValue());
 

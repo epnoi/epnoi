@@ -70,7 +70,7 @@ public class UserCassandraDAO extends CassandraDAO {
 		 * + column); }
 		 */
 		
-		System.out.println("!!------> "+URI);
+		//System.out.println("!!------> "+URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {
@@ -79,7 +79,7 @@ public class UserCassandraDAO extends CassandraDAO {
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
-				System.out.println("--column " + column);
+				//System.out.println("--column " + column);
 				if (UserCassandraHelper.NAME.equals(column.getName())) {
 					user.setName(column.getValue());
 

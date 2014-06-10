@@ -39,7 +39,7 @@ public class UserRDFDAO extends RDFDAO {
 				.replace("{URI}", userURI)
 				.replace("{USER_CLASS}", UserRDFHelper.USER_CLASS);
 
-		System.out.println("AQUI MELON---------------------------------> " + queryExpression);
+		//System.out.println("AQUI MELON---------------------------------> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
@@ -118,8 +118,10 @@ public class UserRDFDAO extends RDFDAO {
 		user.setURI(URI);
 		String queryExpression = "DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">";
+		/*
 		System.out.println("----------------------------->>>>>>> "
 				+ queryExpression);
+		*/
 		Query sparql = QueryFactory.create(queryExpression);
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, this.graph);

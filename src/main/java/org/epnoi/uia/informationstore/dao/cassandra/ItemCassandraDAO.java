@@ -85,7 +85,7 @@ public class ItemCassandraDAO extends CassandraDAO {
 		dao.init();
 		Feed feed = (Feed) dao
 				.read("http://www.epnoi.org/informationSources/slashdot");
-		System.out.println(">>> " + feed.getItems().get(0).toString());
+		//System.out.println(">>> " + feed.getItems().get(0).toString());
 	}
 
 }
