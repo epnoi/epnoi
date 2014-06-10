@@ -38,8 +38,6 @@ public abstract class SOLRDAO {
 
 	public void init(InformationStoreParameters parameters) {
 
-		System.out.println(".............................................. "
-				+ parameters);
 		this.parameters = (SOLRInformationStoreParameters) parameters;
 		if ((this.parameters.getPort() != null)
 				&& (this.parameters.getHost() != null)) {
@@ -48,7 +46,7 @@ public abstract class SOLRDAO {
 					+ this.parameters.getPort() + "/"
 					+ this.parameters.getPath() + "/"
 					+ this.parameters.getCore();
-			logger.info("Initializing in the URL " + this.solrURL);
+			logger.info("Initializing in the URL " + this.solrURL+ "with the following paramters: "+this.parameters);
 			this.server = new HttpSolrServer(this.solrURL);
 
 		}
