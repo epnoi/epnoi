@@ -73,7 +73,7 @@ public class SOLRDAOQueryResolver {
 			QueryResponse queryResponse = this.server.query(solrQuery);
 
 			for (SolrDocument document : queryResponse.getResults()) {
-				
+
 
 				SelectionResultPair selectionResultPair = new SelectionResultPair();
 				selectionResultPair.setResourceURI((String) document
