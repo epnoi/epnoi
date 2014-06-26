@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.Random;
 
 import org.atmosphere.cpr.Broadcaster;
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceNotificationsSet;
+import org.epnoi.model.Item;
 
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
-import epnoi.model.Item;
 import flexjson.JSONSerializer;
 
 public class EventGenerator {

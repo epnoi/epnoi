@@ -1,12 +1,10 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
+import org.epnoi.model.Feed;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
-
-import epnoi.model.Feed;
-import epnoi.model.Resource;
 
 public class SOLRDAOFactory {
 	SOLRInformationStoreParameters parameters;

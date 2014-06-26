@@ -6,8 +6,6 @@ import org.epnoi.uia.search.organize.OrganizationResultPair;
 import org.epnoi.uia.search.organize.SearchOrganizationResult;
 import org.epnoi.uia.search.select.Facet;
 
-import epnoi.model.Resource;
-
 public class SearchResult {
 	List<OrganizationResultPair> resources;
 	List<Facet> facets;

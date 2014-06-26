@@ -3,6 +3,9 @@ package org.epnoi.uia.informationaccess;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.model.ContentSummary;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
@@ -12,10 +15,6 @@ import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.ContentSummary;
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public class InformationAccessImplementation implements InformationAccess {
 

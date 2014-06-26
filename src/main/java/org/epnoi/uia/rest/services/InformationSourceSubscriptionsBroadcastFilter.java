@@ -3,11 +3,11 @@ package org.epnoi.uia.rest.services;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.BroadcastFilter.BroadcastAction.ACTION;
 import org.atmosphere.cpr.PerRequestBroadcastFilter;
+import org.epnoi.model.InformationSourceNotificationsSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
+
 
 public class InformationSourceSubscriptionsBroadcastFilter implements PerRequestBroadcastFilter {
 

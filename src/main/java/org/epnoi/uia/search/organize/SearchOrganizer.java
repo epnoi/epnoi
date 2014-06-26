@@ -2,11 +2,10 @@ package org.epnoi.uia.search.organize;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectionResultPair;
-
-import epnoi.model.Resource;
 
 public class SearchOrganizer {
 	private static final Logger logger = Logger.getLogger(SearchOrganizer.class

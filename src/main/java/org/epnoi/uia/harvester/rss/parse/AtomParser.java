@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
-import epnoi.model.Feed;
+import org.epnoi.model.Feed;
 
 public class AtomParser {
 	static final String TITLE = "title";

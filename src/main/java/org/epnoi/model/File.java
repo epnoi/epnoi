@@ -1,0 +1,55 @@
+package org.epnoi.model;
+
+import javax.xml.bind.annotation.XmlElement;
+
+public class File implements Resource{
+	Long ID;
+	String URI;
+	String resource;
+	String title;
+	String uploaderURI;
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long id) {
+		this.ID = id;
+	}
+	@XmlElement(name="URI")
+	public String getURI() {
+		return URI;
+	}
+
+	public void setURI(String uri) {
+		this.URI = uri;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUploaderURI() {
+		return uploaderURI;
+	}
+
+	public void setUploaderURI(String uploaderURI) {
+		this.uploaderURI = uploaderURI;
+	}
+	
+	
+
+	
+}

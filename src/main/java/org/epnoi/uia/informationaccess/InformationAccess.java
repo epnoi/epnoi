@@ -1,15 +1,15 @@
 package org.epnoi.uia.informationaccess;
 
+import org.epnoi.model.ContentSummary;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.parameterization.ParametersModel;
 
-import epnoi.model.ContentSummary;
-import epnoi.model.Context;
-import epnoi.model.Resource;
+
 
 public interface InformationAccess {
-
 
 	public void put(Resource resource, Context context);
 
@@ -28,14 +28,12 @@ public interface InformationAccess {
 	public void removeInformationStore(String URI);
 
 	public void update(Resource resource);
-	
-	public void publish(String eventType, Resource source);
-	
-	public void subscribe(InformationAccessListener listener, String subscriptionExpression);
-	
-	public ContentSummary getContentSummary(String URI);
-	
-	
 
+	public void publish(String eventType, Resource source);
+
+	public void subscribe(InformationAccessListener listener,
+			String subscriptionExpression);
+
+	public ContentSummary getContentSummary(String URI);
 
 }

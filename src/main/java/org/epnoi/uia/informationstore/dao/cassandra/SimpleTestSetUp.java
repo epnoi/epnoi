@@ -2,9 +2,10 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import java.util.Arrays;
 
-import epnoi.model.Context;
-import epnoi.model.Search;
-import epnoi.model.User;
+import org.epnoi.model.Context;
+import org.epnoi.model.Search;
+import org.epnoi.model.User;
+
 
 public class SimpleTestSetUp {
 	public static void main(String[] args) {

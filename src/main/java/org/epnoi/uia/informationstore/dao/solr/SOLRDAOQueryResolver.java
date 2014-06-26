@@ -10,14 +10,13 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.select.SearchSelectResult;
-import org.epnoi.uia.search.select.SelectExpression;
 import org.epnoi.uia.search.select.Facet;
 import org.epnoi.uia.search.select.FacetValue;
+import org.epnoi.uia.search.select.SearchSelectResult;
+import org.epnoi.uia.search.select.SelectExpression;
 import org.epnoi.uia.search.select.SelectionResultPair;
 
 public class SOLRDAOQueryResolver {

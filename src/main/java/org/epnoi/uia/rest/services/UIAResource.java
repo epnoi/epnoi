@@ -19,16 +19,16 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceNotificationsSet;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.rest.services.response.UIA;
 
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Resource;
 import flexjson.JSONDeserializer;
 
 @Path("/UIA")

@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import virtuoso.jena.driver.VirtGraph;
@@ -25,10 +29,6 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.model.Resource;
 
 public class FeedRDFDAO extends RDFDAO {
 

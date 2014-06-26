@@ -7,20 +7,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.params.ModifiableSolrParams;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.select.SearchSelectResult;
-import org.epnoi.uia.search.select.SearchSelector;
-import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public abstract class SOLRDAO {
 	private static final Logger logger = Logger.getLogger(SOLRDAO.class
