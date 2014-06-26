@@ -2,20 +2,21 @@ package org.epnoi.uia.informationaccess.wrapper;
 
 import java.util.HashMap;
 
+import org.epnoi.model.Annotation;
+import org.epnoi.model.Feed;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+import org.epnoi.model.User;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationaccess.wrapper.exception.WrapperNotFoundException;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-
-import epnoi.model.Feed;
-import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Item;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;
@@ -37,11 +38,11 @@ public class WrapperFactory {
 				this.core));
 		this.wrappersByClass.put(InformationSourceSubscription.class.getName(),
 				new InformationSourceSubscriptionWrapper(this.core));
-		this.wrappersByClass.put(Item.class.getName(),
-				new ItemWrapper(this.core));
+		this.wrappersByClass.put(Item.class.getName(), new ItemWrapper(
+				this.core));
+		this.wrappersByClass.put(Annotation.class.getName(),
+				new AnnotationWrapper(this.core));
 
-		
-		
 		this.wrappersByType.put(UserRDFHelper.USER_CLASS, new UserWrapper(
 				this.core));
 		this.wrappersByType.put(SearchRDFHelper.SEARCH_CLASS,
@@ -49,15 +50,17 @@ public class WrapperFactory {
 		this.wrappersByType.put(
 				InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS,
 				new InformationSourceWrapper(this.core));
-		this.wrappersByType.put(
-				InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS,
-				new InformationSourceSubscriptionWrapper(this.core));
-		this.wrappersByType.put(
-				FeedRDFHelper.FEED_CLASS,
-				new FeedWrapper(this.core));
-		this.wrappersByType.put(
-				FeedRDFHelper.ITEM_CLASS,
-				new ItemWrapper(this.core));
+		this.wrappersByType
+				.put(InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS,
+						new InformationSourceSubscriptionWrapper(this.core));
+		this.wrappersByType.put(FeedRDFHelper.FEED_CLASS, new FeedWrapper(
+				this.core));
+		this.wrappersByType.put(FeedRDFHelper.ITEM_CLASS, new ItemWrapper(
+				this.core));
+
+		this.wrappersByType.put(AnnotationRDFHelper.ANNOTATION_CLASS,
+				new AnnotationWrapper(this.core));
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

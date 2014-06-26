@@ -2,9 +2,11 @@ package org.epnoi.uia.informationstore.dao.rdf;
 
 import java.util.Iterator;
 
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.model.Context;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.Resource;
+import org.epnoi.model.User;
 
-import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -17,11 +19,6 @@ import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
-
-import epnoi.model.Context;
-import epnoi.model.InformationSource;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class UserRDFDAO extends RDFDAO {
 
@@ -147,6 +144,7 @@ public class UserRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
+	
 	
 		public void update(Resource resource) {
 			

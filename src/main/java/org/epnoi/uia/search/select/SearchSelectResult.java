@@ -3,8 +3,6 @@ package org.epnoi.uia.search.select;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.javatuples.Pair;
-
 public class SearchSelectResult {
 	List<SelectionResultPair> resources;
 	List<Facet> facets;

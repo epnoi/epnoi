@@ -2,26 +2,19 @@ package org.epnoi.uia.informationstore.dao.solr;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.uia.rest.services.JsonUtils;
 import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.select.SearchSelector;
 import org.epnoi.uia.search.select.SelectExpression;
 
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.model.Resource;
+
 
 public class FeedSOLRDAO extends SOLRDAO {
 

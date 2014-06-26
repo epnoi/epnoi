@@ -17,8 +17,8 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
-import epnoi.model.Context;
-import epnoi.model.Resource;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 
 public abstract class RDFDAO {
 

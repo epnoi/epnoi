@@ -1,23 +1,23 @@
 package org.epnoi.uia.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.epnoi.model.Annotation;
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Item;
+import org.epnoi.model.User;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.SearchResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Item;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class CoreMainTest {
 	public static String TEST_USER_URI = "http://www.epnoi.org/users/testUser";
@@ -35,7 +35,28 @@ public class CoreMainTest {
 		testUser.setName("testUser");
 		testUser.setDescription("User create for testing purposes");
 		testUser.setPassword("1234");
-
+		
+		core.getAnnotationHandler().annotate(TEST_USER_URI, "http://whatever/topic");
+		
+		core.getAnnotationHandler().annotate(TEST_USER_URI,  "http://whatever/elOtroTopic");
+		
+		System.out.println("Anotaciones up to now > "+core.getAnnotationHandler().getAnnotations());
+		
+		for(String annotationURI: core.getAnnotationHandler().getAnnotations()){
+			System.out.println("-------------------------------annnnnnnotation :> "+core.getInformationAccess().get(annotationURI, AnnotationRDFHelper.ANNOTATION_CLASS));
+		}
+		
+		
+		/*
+		
+		System.out.println("Annotations for "+TEST_USER_URI+ core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
+		
+		core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,  "http://whatever/topic");
+		
+		core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,  "http://whatever/elOtroTopic");
+		
+		System.out.println("Once again, Annotations for "+TEST_USER_URI+ core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
+*/
 		for (int i = 0; i < 10; i++)
 			testUser.addKnowledgeObject("http://knowledgeObject" + i);
 
@@ -49,6 +70,14 @@ public class CoreMainTest {
 		_generateInformationSources(core, testUser);
 		_generateFeeds(core);
 
+		
+
+		System.out.println("Annotated as whatever" +core.getAnnotationHandler().getAnnotatedAs("http://whatever"));
+		
+		
+		
+		
+		
 		System.out
 				.println("//////////////////////////////////////////////////////////////////////");
 		System.out.println();
@@ -62,23 +91,23 @@ public class CoreMainTest {
 		System.out
 				.println("//////////////////////////////////////////////////////////////////////");
 
-		
 		System.out.println("Searching for word0");
-		
+
 		SelectExpression selectExpression = new SelectExpression();
 		selectExpression.setSolrExpression("content:word3");
 		SearchContext searchContext = new SearchContext();
 		searchContext.getFacets().add("date");
-		//searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
+		// searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
 		// searchContext.getFilterQueries().add("date:\"2014-03-04T17:56:05Z\"");
 
 		SearchResult searchResult = core.getSearchHandler().search(
 				selectExpression, searchContext);
-		System.out.println("#results ---> " + searchResult.getResources().size());
+		System.out.println("#results ---> "
+				+ searchResult.getResources().size());
 		System.out.println("#facets ---> " + searchResult.getFacets().size());
 
-		System.out.println("The results are "+searchResult.getResources());
-		
+		System.out.println("The results are " + searchResult.getResources());
+
 	}
 
 	private static void _generateInformationSources(Core core, User user) {
@@ -175,7 +204,7 @@ public class CoreMainTest {
 			itemA.setTitle("Iten titleA" + i);
 			itemA.setLink("http://feedA" + i);
 			itemA.setDescription("Description \" for item A " + i);
-			itemA.setPubDate("Mon, 16 Dec 2013 22:22:0"+i+" GMT");
+			itemA.setPubDate("Mon, 16 Dec 2013 22:22:0" + i + " GMT");
 			itemA.setAuthor("authorA");
 			/*
 			 * List<String> kewords = Arrays.asList("mi" + i, "mama" + i, "me" +

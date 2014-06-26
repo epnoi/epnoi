@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -20,9 +24,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import epnoi.model.Context;
-import epnoi.model.Item;
-import epnoi.model.Resource;
+
 
 public class ItemRDFDAO extends RDFDAO {
 

@@ -1,17 +1,17 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
+import org.epnoi.model.Annotation;
+import org.epnoi.model.Feed;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
-
-import epnoi.model.Feed;
-import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Item;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class RDFDAOFactory {
 	VirtuosoInformationStoreParameters parameters;
@@ -46,6 +46,10 @@ public class RDFDAOFactory {
 			return dao;
 		} else if (resource instanceof User) {
 			RDFDAO dao = new UserRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof Annotation) {
+			RDFDAO dao = new AnnotationRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 		} else {
@@ -89,6 +93,11 @@ public class RDFDAOFactory {
 			ItemRDFDAO itemDAO = new ItemRDFDAO();
 			itemDAO.init(this.parameters);
 			return itemDAO;
+		} else if (typeSelector.equals(AnnotationRDFHelper.ANNOTATION_CLASS)) {
+
+			AnnotationRDFDAO annotationDAO = new AnnotationRDFDAO();
+			annotationDAO.init(this.parameters);
+			return annotationDAO;
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

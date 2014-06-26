@@ -3,8 +3,8 @@ package org.epnoi.uia.harvester.rss.parse;
 import java.util.ArrayList;
 import java.util.List;
 
-import epnoi.model.Feed;
-import epnoi.model.Item;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
 
 
 

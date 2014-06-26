@@ -24,14 +24,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.parameterization.RSSFeedParameters;
 import org.epnoi.uia.parameterization.manifest.ManifestHandler;
 import org.epnoi.uia.parameterization.manifest.RSSManifest;
 import org.w3c.dom.Document;
-
-import epnoi.model.Feed;
-import epnoi.model.Item;
 
 class RSSHoardTask implements Runnable {
 	private final Logger logger = Logger.getLogger(RSSHoardTask.class

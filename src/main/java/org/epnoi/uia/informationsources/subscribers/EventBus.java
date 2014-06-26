@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.atmosphere.cpr.Broadcaster;
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceNotificationsSet;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationaccess.events.EventsHelper;
 import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Resource;
 import flexjson.JSONSerializer;
 
 public class EventBus implements InformationAccessListener {

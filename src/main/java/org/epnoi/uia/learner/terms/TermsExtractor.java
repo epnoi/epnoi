@@ -17,13 +17,6 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.SimpleTokenizer;
 
-import org.apache.poi.ss.formula.functions.T;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-
-import epnoi.model.Item;
-
 public class TermsExtractor {
 
 	TermsDetector termDetector;

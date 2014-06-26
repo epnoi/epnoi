@@ -1,11 +1,10 @@
 package org.epnoi.uia.informationaccess.wrapper;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public class FeedWrapper implements Wrapper {
 	Core core;

@@ -2,16 +2,14 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class CassandraInformationStore implements InformationStore {
 InformationStoreParameters parameters;

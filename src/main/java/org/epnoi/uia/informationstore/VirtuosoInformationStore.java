@@ -2,7 +2,8 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
-import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOFactory;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
@@ -11,10 +12,6 @@ import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.InformationSource;
-import epnoi.model.Resource;
 
 public class VirtuosoInformationStore implements InformationStore {
 	VirtuosoInformationStoreParameters parameters;

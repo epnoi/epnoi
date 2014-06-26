@@ -1,15 +1,14 @@
 package org.epnoi.uia.informationaccess.wrapper;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-
-import epnoi.model.Context;
-import epnoi.model.Item;
-import epnoi.model.Resource;
 
 public class ItemWrapper implements Wrapper {
 	Core core;

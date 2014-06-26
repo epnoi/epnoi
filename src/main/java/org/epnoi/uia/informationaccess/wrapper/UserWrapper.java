@@ -2,17 +2,15 @@ package org.epnoi.uia.informationaccess.wrapper;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
+import org.epnoi.model.User;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationaccess.wrapper.exception.InformationDiscrepancyException;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class UserWrapper implements Wrapper {
 	private static final Logger logger = Logger.getLogger(UserWrapper.class

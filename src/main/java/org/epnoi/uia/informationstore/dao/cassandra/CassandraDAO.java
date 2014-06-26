@@ -25,10 +25,10 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.SliceQuery;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.Selector;
 
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public abstract class CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";

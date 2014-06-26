@@ -3,14 +3,13 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.ExternalResource;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+import org.epnoi.model.Search;
 import org.epnoi.uia.informationstore.Selector;
-
-import epnoi.model.Context;
-import epnoi.model.ExternalResource;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.model.Resource;
-import epnoi.model.Search;
 
 public class ItemCassandraDAO extends CassandraDAO {
 

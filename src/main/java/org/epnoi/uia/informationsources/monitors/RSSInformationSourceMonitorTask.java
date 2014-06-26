@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.atmosphere.cpr.Broadcaster;
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.uia.informationsources.generators.RSSInformationSourceRandomGenerator;
-import org.epnoi.uia.parameterization.manifest.Manifest;
 
-import epnoi.model.Feed;
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
 import flexjson.JSONSerializer;
 
 class RSSInformationSourceMonitorTask implements Runnable {

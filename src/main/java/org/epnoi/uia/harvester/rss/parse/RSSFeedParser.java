@@ -11,8 +11,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
-import epnoi.model.Feed;
-import epnoi.model.Item;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
 
 public class RSSFeedParser {
 	static final String TITLE = "title";

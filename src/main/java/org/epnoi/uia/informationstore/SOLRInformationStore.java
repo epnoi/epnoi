@@ -3,8 +3,8 @@ package org.epnoi.uia.informationstore;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
-import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAO;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOQueryResolver;
@@ -13,10 +13,6 @@ import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.InformationSource;
-import epnoi.model.Resource;
 
 public class SOLRInformationStore implements InformationStore {
 

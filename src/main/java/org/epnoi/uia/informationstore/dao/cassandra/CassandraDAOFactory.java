@@ -1,5 +1,8 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import org.epnoi.model.Feed;
+import org.epnoi.model.Resource;
+import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
@@ -8,10 +11,6 @@ import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
-
-import epnoi.model.Feed;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class CassandraDAOFactory {
 
