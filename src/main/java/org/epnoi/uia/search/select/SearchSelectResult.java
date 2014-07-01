@@ -3,34 +3,32 @@ package org.epnoi.uia.search.select;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.javatuples.Pair;
-
 public class SearchSelectResult {
-	List<SelectionResultPair> resources;
+	List<SelectionResultTuple> resources;
 	List<Facet> facets;
 
 	// --------------------------------------------------------------------
 	
 	public SearchSelectResult() {
-		this.resources = new ArrayList<SelectionResultPair>();
+		this.resources = new ArrayList<SelectionResultTuple>();
 		this.facets = new ArrayList<Facet>();
 	}
 
 	// --------------------------------------------------------------------
 
-	public SearchSelectResult(List<SelectionResultPair> queryResults) {
+	public SearchSelectResult(List<SelectionResultTuple> queryResults) {
 		this.resources = queryResults;
 	}
 
 	// --------------------------------------------------------------------
 
-	public List<SelectionResultPair> getResources() {
+	public List<SelectionResultTuple> getResources() {
 		return resources;
 	}
 
 	// --------------------------------------------------------------------
 
-	public void setResources(List<SelectionResultPair> resources) {
+	public void setResources(List<SelectionResultTuple> resources) {
 		this.resources = resources;
 	}
 

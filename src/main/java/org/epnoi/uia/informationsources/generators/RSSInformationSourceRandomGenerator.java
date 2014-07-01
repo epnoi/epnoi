@@ -6,11 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
 import org.epnoi.uia.core.Core;
 
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.Item;
+
 
 public class RSSInformationSourceRandomGenerator {
 	Context emptyContext = new Context();

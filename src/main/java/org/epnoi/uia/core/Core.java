@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.uia.annotation.AnnotationHandler;
+import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationaccess.InformationAccess;
@@ -38,6 +40,7 @@ public class Core {
 	private ParametersModel parametersModel = null;
 
 	private SearchHandler searchHandler = null;
+	private AnnotationHandler annotationHandler = null;
 
 	// ----------------------------------------------------------------------------------------------------------
 
@@ -60,12 +63,18 @@ public class Core {
 		this._initInformationAccess();
 		this._initInformationSourcesHandler();
 		this._initSearchHandler();
+		this._initAnnotationsHandler();
 		this._hoardersInitialization();
 		this._harvestersInitialization();
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initAnnotationsHandler() {
+		this.annotationHandler = new AnnotationHandlerImpl(this);
+
+	}
 
 	/**
 	 * Information Stores initialization
@@ -245,6 +254,14 @@ public class Core {
 			dataSource.close();
 		}
 
+	}
+
+	public AnnotationHandler getAnnotationHandler() {
+		return annotationHandler;
+	}
+
+	public void setAnnotationHandler(AnnotationHandler annotationHandler) {
+		this.annotationHandler = annotationHandler;
 	}
 
 }

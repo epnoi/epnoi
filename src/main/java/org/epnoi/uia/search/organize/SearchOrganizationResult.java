@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.epnoi.uia.search.select.Facet;
 
-import epnoi.model.Resource;
-
 public class SearchOrganizationResult {
 	List<OrganizationResultPair> elements;
 	List<Facet> facets;

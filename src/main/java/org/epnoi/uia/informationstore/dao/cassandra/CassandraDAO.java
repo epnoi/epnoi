@@ -25,10 +25,9 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.SliceQuery;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.Selector;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public abstract class CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";
@@ -41,15 +40,14 @@ public abstract class CassandraDAO {
 
 	protected static Map<String, ColumnFamilyTemplate<String, String>> columnFamilyTemplates = null;
 	protected static List<ColumnFamilyDefinition> columnFamilyDefinitions = null;
-	
+
 	public abstract Resource read(Selector selector);
+
 	public abstract Resource read(String URI);
-	
-	
+
 	public abstract void create(Resource resource, Context context);
-	
+
 	public abstract void remove(String URI);
-	
 
 	public void init() {
 
@@ -60,7 +58,10 @@ public abstract class CassandraDAO {
 		List<String> columnFamillyNames = Arrays.asList(
 				ExternalResourceCassandraHelper.COLUMN_FAMILLY,
 				UserCassandraHelper.COLUMN_FAMILLY,
-				SearchCassandraHelper.COLUMN_FAMILLY, FeedCassandraHelper.COLUMN_FAMILLY, ItemCassandraHelper.COLUMN_FAMILLY);
+				SearchCassandraHelper.COLUMN_FAMILLY,
+				FeedCassandraHelper.COLUMN_FAMILLY,
+				ItemCassandraHelper.COLUMN_FAMILLY,
+				PaperCassandraHelper.COLUMN_FAMILLY);
 
 		if (CassandraDAO.columnFamilyDefinitions == null) {
 			System.out.println("Intializing columnFamilyDefinitions");
