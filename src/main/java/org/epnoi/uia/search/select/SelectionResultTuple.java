@@ -1,8 +1,9 @@
 package org.epnoi.uia.search.select;
 
-public class SelectionResultPair {
+public class SelectionResultTuple {
 	private String resourceURI;
 	private float score;
+	private String type;
 
 	// -----------------------------------------------------------------------
 
@@ -30,10 +31,22 @@ public class SelectionResultPair {
 
 	// -----------------------------------------------------------------------
 
+	public String getType() {
+		return type;
+	}
+	
+	// -----------------------------------------------------------------------
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	// -----------------------------------------------------------------------
+	
 	@Override
 	public String toString() {
-		return "SelectionResultPair [resourceURI=" + resourceURI + ", score="
-				+ score + "]";
+		return "SelectionResultTuple [resourceURI=" + resourceURI + ", score="
+				+ score + ", type=" + type + "]";
 	}
 
 }

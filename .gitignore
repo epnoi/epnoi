@@ -39,6 +39,4 @@ Thumbs.db
 
 # Directories #
 ###############
-
-
-
+/target/**

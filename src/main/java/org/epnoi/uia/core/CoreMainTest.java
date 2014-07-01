@@ -1,16 +1,16 @@
 package org.epnoi.uia.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.epnoi.model.Annotation;
 import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
+import org.epnoi.model.Paper;
 import org.epnoi.model.User;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
@@ -35,28 +35,38 @@ public class CoreMainTest {
 		testUser.setName("testUser");
 		testUser.setDescription("User create for testing purposes");
 		testUser.setPassword("1234");
-		
-		core.getAnnotationHandler().annotate(TEST_USER_URI, "http://whatever/topic");
-		
-		core.getAnnotationHandler().annotate(TEST_USER_URI,  "http://whatever/elOtroTopic");
-		
-		System.out.println("Anotaciones up to now > "+core.getAnnotationHandler().getAnnotations());
-		
-		for(String annotationURI: core.getAnnotationHandler().getAnnotations()){
-			System.out.println("-------------------------------annnnnnnotation :> "+core.getInformationAccess().get(annotationURI, AnnotationRDFHelper.ANNOTATION_CLASS));
+
+		core.getAnnotationHandler().annotate(TEST_USER_URI,
+				"http://whatever/topic");
+
+		core.getAnnotationHandler().annotate(TEST_USER_URI,
+				"http://whatever/elOtroTopic");
+
+		System.out.println("Anotaciones up to now > "
+				+ core.getAnnotationHandler().getAnnotations());
+
+		for (String annotationURI : core.getAnnotationHandler()
+				.getAnnotations()) {
+			System.out
+					.println("-------------------------------annnnnnnotation :> "
+							+ core.getInformationAccess().get(annotationURI,
+									AnnotationRDFHelper.ANNOTATION_CLASS));
 		}
-		
-		
+
 		/*
-		
-		System.out.println("Annotations for "+TEST_USER_URI+ core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
-		
-		core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,  "http://whatever/topic");
-		
-		core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,  "http://whatever/elOtroTopic");
-		
-		System.out.println("Once again, Annotations for "+TEST_USER_URI+ core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
-*/
+		 * 
+		 * System.out.println("Annotations for "+TEST_USER_URI+
+		 * core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
+		 * 
+		 * core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,
+		 * "http://whatever/topic");
+		 * 
+		 * core.getAnnotationHandler().removeAnnotation(TEST_USER_URI,
+		 * "http://whatever/elOtroTopic");
+		 * 
+		 * System.out.println("Once again, Annotations for "+TEST_USER_URI+
+		 * core.getAnnotationHandler().getAnnotations(TEST_USER_URI));
+		 */
 		for (int i = 0; i < 10; i++)
 			testUser.addKnowledgeObject("http://knowledgeObject" + i);
 
@@ -70,14 +80,13 @@ public class CoreMainTest {
 		_generateInformationSources(core, testUser);
 		_generateFeeds(core);
 
-		
+		_testPapers(core);
 
-		System.out.println("Annotated as whatever" +core.getAnnotationHandler().getAnnotatedAs("http://whatever"));
-		
-		
-		
-		
-		
+		System.out
+				.println("Annotated as whatever"
+						+ core.getAnnotationHandler().getAnnotatedAs(
+								"http://whatever"));
+
 		System.out
 				.println("//////////////////////////////////////////////////////////////////////");
 		System.out.println();
@@ -94,7 +103,7 @@ public class CoreMainTest {
 		System.out.println("Searching for word0");
 
 		SelectExpression selectExpression = new SelectExpression();
-		selectExpression.setSolrExpression("content:word3");
+		selectExpression.setSolrExpression("description:strangeword");
 		SearchContext searchContext = new SearchContext();
 		searchContext.getFacets().add("date");
 		// searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
@@ -176,12 +185,33 @@ public class CoreMainTest {
 		 * RSSInformationSourceRandomGenerator generator = new
 		 * RSSInformationSourceRandomGenerator(); generator.generate(core);
 		 */
+		
+		
+		
+		/*
 		System.out.println("information source handler");
 
 		for (String subscription : user.getInformationSourceSubscriptions()) {
 			core.getInformationSourcesHandler().retrieveNotifications(
 					subscription);
 		}
+*/
+
+
+	}
+
+	private static void _testPapers(Core core) {
+		Paper paper = new Paper();
+		paper.setURI("http://testPaper");
+
+		String[] authors = { "A", "B" };
+		paper.setAuthors(new ArrayList<String>(Arrays.asList(authors)));
+
+		paper.setTitle("Test paper title");
+		paper.setDescription("Description of the paper, strangeword");
+		paper.setPubDate("Tue, 13 Dec 2013 22:22:16 GMT");
+
+		core.getInformationAccess().put(paper, new Context());
 
 	}
 

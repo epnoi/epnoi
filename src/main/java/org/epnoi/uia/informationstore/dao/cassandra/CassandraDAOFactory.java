@@ -1,12 +1,14 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
 import org.epnoi.model.Feed;
+import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
@@ -29,14 +31,18 @@ public class CassandraDAOFactory {
 			UserCassandraDAO userDAO = new UserCassandraDAO();
 			userDAO.init();
 			return userDAO;
-			
+
 		}
-		
-		if (resource instanceof Feed) {
+
+		else if (resource instanceof Feed) {
 			FeedCassandraDAO userDAO = new FeedCassandraDAO();
 			userDAO.init();
 			return userDAO;
-			
+		} else if (resource instanceof Paper) {
+			PaperCassandraDAO userDAO = new PaperCassandraDAO();
+			userDAO.init();
+			return userDAO;
+
 		}
 		throw new DAONotFoundException("Not implemented");
 	}
@@ -60,11 +66,18 @@ public class CassandraDAOFactory {
 
 		} else if (typeSelector.equals(FeedRDFHelper.ITEM_CLASS)) {
 
-			ItemCassandraDAO searchDAO = new ItemCassandraDAO();
-			searchDAO.init();
-			return searchDAO;
+			ItemCassandraDAO itemDAO = new ItemCassandraDAO();
+			itemDAO.init();
+			return itemDAO;
 
-		} else {
+		}  else if (typeSelector.equals(RDFHelper.PAPER_CLASS)){
+			PaperCassandraDAO paperDAO = new PaperCassandraDAO();
+			paperDAO.init();
+			return paperDAO;
+
+		}	
+		
+		else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);
 		}
 	}
