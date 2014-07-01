@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Context {
+	public static final String ANNOTATED_CONTENT = "ANNOTATED_CONTENT";
 	public static final String INFORMATION_SOURCE_URI= "INFORMATION_SOURCE_URI";
 	public static final String INFORMATION_SOURCE_NAME= "INFORMATION_SOURCE_NAME";
 	Map<String, String> parameters = new HashMap<String, String>();

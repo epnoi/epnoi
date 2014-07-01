@@ -10,6 +10,8 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SelectExpression;
@@ -125,6 +127,9 @@ public class FeedSOLRDAO extends SOLRDAO {
 				convertDateFormat(item.getPubDate()));
 		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY, context
 				.getParameters().get(Context.INFORMATION_SOURCE_NAME));
+		
+		
+		newDocument.addField(SOLRDAOHelper.TYPE_PROPERTY, FeedRDFHelper.ITEM_CLASS);
 		
 		return newDocument;
 

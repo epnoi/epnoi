@@ -7,6 +7,7 @@ import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
+import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
 import org.epnoi.uia.core.Core;
@@ -15,6 +16,7 @@ import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
@@ -43,6 +45,11 @@ public class WrapperFactory {
 		this.wrappersByClass.put(Annotation.class.getName(),
 				new AnnotationWrapper(this.core));
 
+		this.wrappersByClass.put(Paper.class.getName(),
+				new PaperWrapper(this.core));
+
+		
+		
 		this.wrappersByType.put(UserRDFHelper.USER_CLASS, new UserWrapper(
 				this.core));
 		this.wrappersByType.put(SearchRDFHelper.SEARCH_CLASS,
@@ -60,6 +67,8 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(AnnotationRDFHelper.ANNOTATION_CLASS,
 				new AnnotationWrapper(this.core));
+		this.wrappersByType.put(RDFHelper.PAPER_CLASS,
+				new PaperWrapper(this.core));
 
 	}
 

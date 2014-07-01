@@ -9,8 +9,10 @@ import java.util.Locale;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
+import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 
+import ucar.nc2.constants._Coordinate;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -24,48 +26,32 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-
-
-public class ItemRDFDAO extends RDFDAO {
+public class PaperRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-		Item item = (Item) resource;
-		String itemURI = item.getURI();
-		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
-				+ "{ <{URI}> a <{ITEM_CLASS}> ; "
-				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
-				+ "<{PUB_DATE_PROPERTY}> \"{ITEM_PUB_DATE}\"^^xsd:dateTime ; "
-				+ "<{DESCRIPTION_PROPERTY}> \"{ITEM_DESCRIPTION}\" ; "
-				+ "<{AUTHOR_PROPERTY}> \"{ITEM_AUTHOR}\" ; "
-				+ "<{IS_AGGREGATED_BY_PROPERTY}> <{INFORMATION_SOURCE_URI}> ; "
-				+ "<{TITLE_PROPERTY}>  \"{ITEM_TITLE}\" . }";
-		
+		Paper paper = (Paper) resource;
+		String paperURI = paper.getURI();
+
+		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+				+ "{ <{URI}> a <{PAPER_CLASS}> ; "
+				+ "<{PUB_DATE_PROPERTY}> \"{PAPER_PUB_DATE}\"^^xsd:dateTime ; "
+				+ "<{TITLE_PROPERTY}>  \"{PAPER_TITLE}\" . }";
+
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
-				.replace("{URI}", itemURI)
-				.replace("{ITEM_CLASS}", FeedRDFHelper.ITEM_CLASS)
-				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
-				.replace("{ITEM_LINK}", item.getLink())
+				.replace("{URI}", paperURI)
+				.replace("{PAPER_CLASS}", RDFHelper.PAPER_CLASS)
+				.replace("{PUB_DATE_PROPERTY}",DublinCoreRDFHelper.DATE_PROPERTY)
+				.replace("{PAPER_PUB_DATE}", convertDateFormat(paper.getPubDate()))
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
-				.replace("{ITEM_TITLE}", cleanOddCharacters(item.getTitle()))
-				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
-				.replace("{DESCRIPTION_PROPERTY}",
-						FeedRDFHelper.DESCRIPTION_PROPERTY)
-				.replace("{ITEM_DESCRIPTION}",
-						cleanOddCharacters(item.getDescription()))
-				.replace("{ITEM_PUB_DATE}",
-						convertDateFormat(item.getPubDate()))
-				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
-				.replace("{ITEM_AUTHOR}", item.getAuthor())
-				.replace("{IS_AGGREGATED_BY_PROPERTY}", RDFOAIOREHelper.IS_AGGREGATED_BY_PROPERTY)
-				.replace("{INFORMATION_SOURCE_URI}", context.getParameters().get(Context.INFORMATION_SOURCE_URI));
-		
-
+				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
+		System.out.println("----> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -84,7 +70,8 @@ public class ItemRDFDAO extends RDFDAO {
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
 		// System.out.println("\nDESCRIBE results:");
-		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
+				.hasNext();) {
 			Triple triple = (Triple) i.next();
 			this.graph.remove(triple);
 		}
@@ -93,7 +80,7 @@ public class ItemRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		Item item = new Item();
+		Paper item = new Paper();
 		item.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
@@ -103,7 +90,8 @@ public class ItemRDFDAO extends RDFDAO {
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
 		// System.out.println("\nDESCRIBE results:");
-		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
+				.hasNext();) {
 			Triple t = (Triple) i.next();
 			// System.out.println(" { " + t.getSubject() + " SSS "+
 			// t.getPredicate().getURI() + " " + t.getObject() + " . }");
@@ -111,20 +99,9 @@ public class ItemRDFDAO extends RDFDAO {
 
 			if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
 				item.setTitle(t.getObject().getLiteral().getValue().toString());
-			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
-				item.setLink(t.getObject().getLiteral().getValue().toString());
 
-			} else if (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
-				item.setDescription(clean(t.getObject().getLiteral().getValue()
-						.toString()));
-
-			} else if (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
-				item.setPubDate(t.getObject().getLiteral().getValue()
-						.toString());
-			} else if (FeedRDFHelper.AUTHOR_PROPERTY.equals(predicateURI)) {
-				item.setAuthor(t.getObject().getLiteral().getValue().toString());
-			} else if (FeedRDFHelper.GUID_PROPERTY.equals(predicateURI)) {
-				item.setGuid(t.getObject().getLiteral().getValue().toString());
+			}else if (DublinCoreRDFHelper.DATE_PROPERTY.equals(predicateURI)) {
+				item.setPubDate(t.getObject().getLiteral().getValue().toString());
 
 			}
 		}

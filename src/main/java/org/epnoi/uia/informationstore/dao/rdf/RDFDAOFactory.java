@@ -5,6 +5,7 @@ import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
+import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.Selector;
@@ -31,6 +32,10 @@ public class RDFDAOFactory {
 			dao.init(this.parameters);
 
 			return dao;
+		} else if (resource instanceof Paper) {
+			RDFDAO dao = new PaperRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 		} else if (resource instanceof InformationSourceSubscription) {
 			RDFDAO dao = new InformationSourceSubscriptionRDFDAO();
 			dao.init(this.parameters);
@@ -46,6 +51,10 @@ public class RDFDAOFactory {
 			return dao;
 		} else if (resource instanceof User) {
 			RDFDAO dao = new UserRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof Paper) {
+			RDFDAO dao = new PaperRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 		} else if (resource instanceof Annotation) {
@@ -93,6 +102,10 @@ public class RDFDAOFactory {
 			ItemRDFDAO itemDAO = new ItemRDFDAO();
 			itemDAO.init(this.parameters);
 			return itemDAO;
+		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
+			RDFDAO dao = new PaperRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 		} else if (typeSelector.equals(AnnotationRDFHelper.ANNOTATION_CLASS)) {
 
 			AnnotationRDFDAO annotationDAO = new AnnotationRDFDAO();

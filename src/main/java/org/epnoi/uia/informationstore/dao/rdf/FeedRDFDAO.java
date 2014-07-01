@@ -29,7 +29,6 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-
 public class FeedRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
@@ -45,7 +44,7 @@ public class FeedRDFDAO extends RDFDAO {
 				+ "<{URL_PROPERTY}> \"{FEED_LINK}\" ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
-				
+
 				+ "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
 
 		System.out.println("pubDate ----------------------->"
@@ -57,10 +56,10 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{FEED_CLASS}", FeedRDFHelper.FEED_CLASS)
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{FEED_LINK}", feed.getLink())
-				.replace("{TITLE_PROPERTY}", RDFHelper.TITLE_PROPERTY)
+				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
 				.replace("{FEED_TITLE}", cleanOddCharacters(feed.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
-				
+
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
 				.replace("{FEED_DESCRIPTION}",
@@ -143,7 +142,7 @@ public class FeedRDFDAO extends RDFDAO {
 			// + t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
 
-			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
+			if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
 				feed.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				feed.setLink(t.getObject().getLiteral().getValue().toString());
@@ -189,21 +188,23 @@ public class FeedRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-
 	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
 
 		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
-		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH));
-		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+				Locale.ENGLISH));
 
 		for (SimpleDateFormat pattern : knownPatterns) {
 			try {
 				// Take a try
 				Date parsedDate = pattern.parse(dateExpression);
-				SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+				SimpleDateFormat dt1 = new SimpleDateFormat(
+						"yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
 				return (dt1.format(parsedDate));
 			} catch (ParseException pe) {
 				// Loop on
@@ -282,12 +283,12 @@ public class FeedRDFDAO extends RDFDAO {
 		feeds.add(feedB);
 		return feeds;
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------------------------
-	
-		public void update(Resource resource) {
-			
-		}
+
+	public void update(Resource resource) {
+
+	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -305,8 +306,9 @@ public class FeedRDFDAO extends RDFDAO {
 		parameters.setPassword("dba");
 
 		Context context = new Context();
-		context.getParameters().put(Context.INFORMATION_SOURCE_URI, "http://informationsourceURI");
-		
+		context.getParameters().put(Context.INFORMATION_SOURCE_URI,
+				"http://informationsourceURI");
+
 		feedRDFDAO.init(parameters);
 
 		if (!feedRDFDAO.exists(feedURI)) {
