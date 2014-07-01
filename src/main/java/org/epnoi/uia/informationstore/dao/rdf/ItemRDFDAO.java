@@ -48,7 +48,7 @@ public class ItemRDFDAO extends RDFDAO {
 				.replace("{ITEM_CLASS}", FeedRDFHelper.ITEM_CLASS)
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{ITEM_LINK}", item.getLink())
-				.replace("{TITLE_PROPERTY}", RDFHelper.TITLE_PROPERTY)
+				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
 				.replace("{ITEM_TITLE}", cleanOddCharacters(item.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 				.replace("{DESCRIPTION_PROPERTY}",
@@ -109,7 +109,7 @@ public class ItemRDFDAO extends RDFDAO {
 			// t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
 
-			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
+			if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
 				item.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				item.setLink(t.getObject().getLiteral().getValue().toString());

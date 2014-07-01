@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.search.select.SearchSelectResult;
-import org.epnoi.uia.search.select.SelectionResultPair;
+import org.epnoi.uia.search.select.SelectionResultTuple;
 
 public class SearchOrganizer {
 	private static final Logger logger = Logger.getLogger(SearchOrganizer.class
@@ -24,9 +24,9 @@ public class SearchOrganizer {
 
 		logger.info("Organizing the searh select result ");
 		SearchOrganizationResult searchOrganizationResult = new SearchOrganizationResult();
-		for (SelectionResultPair selectPair : searchSelection.getResources()) {
+		for (SelectionResultTuple selectPair : searchSelection.getResources()) {
 			Resource resource = this.core.getInformationAccess().get(
-					selectPair.getResourceURI());
+					selectPair.getResourceURI(), selectPair.getType());
 
 			OrganizationResultPair organizationPair = new OrganizationResultPair();
 			organizationPair.setResource(resource);

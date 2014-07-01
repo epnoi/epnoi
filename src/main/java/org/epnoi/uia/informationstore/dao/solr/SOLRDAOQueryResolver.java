@@ -17,7 +17,7 @@ import org.epnoi.uia.search.select.Facet;
 import org.epnoi.uia.search.select.FacetValue;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-import org.epnoi.uia.search.select.SelectionResultPair;
+import org.epnoi.uia.search.select.SelectionResultTuple;
 
 public class SOLRDAOQueryResolver {
 	private static final Logger logger = Logger
@@ -55,8 +55,9 @@ public class SOLRDAOQueryResolver {
 		solrQuery.setQuery(searchSelectExpression.getSolrExpression());
 		solrQuery.setParam("password", "password");
 		solrQuery.setParam("username", "admin");
-		solrQuery.addField("uri");
-		solrQuery.addField("score");
+		solrQuery.addField(SOLRDAOHelper.SCORE_PROPERTY);
+		solrQuery.addField(SOLRDAOHelper.URI_PROPERTY);
+		solrQuery.addField(SOLRDAOHelper.TYPE_PROPERTY);
 
 		for (String facet : searchContext.getFacets()) {
 			solrQuery.setFacet(true).addFacetField(facet).setFacetMinCount(1)
@@ -73,17 +74,21 @@ public class SOLRDAOQueryResolver {
 
 			for (SolrDocument document : queryResponse.getResults()) {
 
+				SelectionResultTuple selectionResultTuple = new SelectionResultTuple();
+				selectionResultTuple.setResourceURI((String) document
+						.getFieldValue(SOLRDAOHelper.URI_PROPERTY));
+				selectionResultTuple.setScore((float) document
+						.getFieldValue(SOLRDAOHelper.SCORE_PROPERTY));
+System.out.println("el tipe >"+ document
+						.getFieldValue(SOLRDAOHelper.TYPE_PROPERTY));
+				selectionResultTuple.setType((String) document
+						.getFieldValue(SOLRDAOHelper.TYPE_PROPERTY));
 
-				SelectionResultPair selectionResultPair = new SelectionResultPair();
-				selectionResultPair.setResourceURI((String) document
-						.getFieldValue("uri"));
-				selectionResultPair.setScore((float) document
-						.getFieldValue("score"));
-
-				searchSelectResult.getResources().add(selectionResultPair);
+				searchSelectResult.getResources().add(selectionResultTuple);
 			}
 
-//			System.out.println("-----------> " + queryResponse.getExplainMap());
+			// System.out.println("-----------> " +
+			// queryResponse.getExplainMap());
 
 			List<FacetField> facetFields = queryResponse.getFacetFields();
 			if (facetFields != null) {
@@ -91,7 +96,7 @@ public class SOLRDAOQueryResolver {
 				for (int i = 0; i < facetFields.size(); i++) {
 					Facet selectionFacet = new Facet();
 					FacetField facetField = facetFields.get(i);
-//					System.out.println("facet:>" + facetField.getName());
+					// System.out.println("facet:>" + facetField.getName());
 
 					selectionFacet.setName(facetField.getName());
 
@@ -101,11 +106,11 @@ public class SOLRDAOQueryResolver {
 						selectionFacetValue.setValue(facetInstance.getName());
 						selectionFacetValue.setCount(facetInstance.getCount());
 						selectionFacet.getValues().add(selectionFacetValue);
-/*
-						System.out.println(facetInstance.getName() + " : "
-								+ facetInstance.getCount() + " [drilldown qry:"
-								+ facetInstance.getAsFilterQuery());
-								*/
+						/*
+						 * System.out.println(facetInstance.getName() + " : " +
+						 * facetInstance.getCount() + " [drilldown qry:" +
+						 * facetInstance.getAsFilterQuery());
+						 */
 					}
 					searchSelectResult.getFacets().add(selectionFacet);
 				}
@@ -116,7 +121,7 @@ public class SOLRDAOQueryResolver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println("The result ---------> " + searchSelectResult);
+		// System.out.println("The result ---------> " + searchSelectResult);
 		return searchSelectResult;
 	}
 
