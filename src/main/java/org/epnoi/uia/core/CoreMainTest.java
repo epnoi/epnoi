@@ -14,6 +14,7 @@ import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.SearchResult;
@@ -201,6 +202,11 @@ public class CoreMainTest {
 	}
 
 	private static void _testPapers(Core core) {
+		
+		System.out.println("This is the oai:arXiv.org:0705.3658 user >"+core.getInformationAccess().get("oai:arXiv.org:0705.3658", RDFHelper.PAPER_CLASS));
+		
+		
+		
 		Paper paper = new Paper();
 		paper.setURI("http://testPaper");
 
