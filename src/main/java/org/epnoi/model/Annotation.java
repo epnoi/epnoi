@@ -8,6 +8,8 @@ public class Annotation implements Resource {
 	private String hasTopic;
 	private String annotatesResource;
 	private String onSourceResource;
+	private String predicate;
+	private String label;
 
 	// ---------------------------------------------------------------------------------
 
@@ -70,12 +72,38 @@ public class Annotation implements Resource {
 		this.onSourceResource = onSourceResource;
 	}
 
+	// ---------------------------------------------------------------------------------
+	
+	public String getPredicate() {
+		return predicate;
+	}
+
+	// ---------------------------------------------------------------------------------
+	
+	public void setPredicate(String predicate) {
+		this.predicate = predicate;
+	}
+
+	// ---------------------------------------------------------------------------------
+	
+	public String getLabel() {
+		return label;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
 		return "Annotation [URI=" + URI + ", pavProperties=" + pavProperties
 				+ ", hasTopic=" + hasTopic + ", annotatesResource="
 				+ annotatesResource + ", onSourceResource=" + onSourceResource
-				+ "]";
+				+ ", predicate=" + predicate + ", label=" + label + "]";
 	}
 
 }

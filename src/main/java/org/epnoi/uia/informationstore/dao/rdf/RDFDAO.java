@@ -27,7 +27,7 @@ public abstract class RDFDAO {
 	protected static VirtuosoInformationStoreParameters parameters;
 	protected static VirtGraph graph = null;
 
-	abstract public void create(Resource resource, Context context);
+	abstract  public void create(Resource resource, Context context);
 
 	abstract public void remove(String URI);
 

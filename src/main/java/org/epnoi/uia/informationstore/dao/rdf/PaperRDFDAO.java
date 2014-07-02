@@ -1,6 +1,5 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,11 +9,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.epnoi.model.Context;
-import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 
-import ucar.nc2.constants._Coordinate;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -32,7 +29,7 @@ public class PaperRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource, Context context) {
+	public synchronized void  create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 		String paperURI = paper.getURI();
 
@@ -51,7 +48,7 @@ public class PaperRDFDAO extends RDFDAO {
 				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
 		System.out.println("----> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression, this.graph);
+				queryExpression, graph);
 		vur.exec();
 
 	}

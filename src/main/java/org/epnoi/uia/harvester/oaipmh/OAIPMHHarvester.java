@@ -114,7 +114,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 		Object result = expr.evaluate(harvestDocument, XPathConstants.NODESET);
 
 		NodeList nodes = (NodeList) result;
-		System.out.println("OBJECT -> " + nodes.getLength());
+	
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			Element recordElement = (Element) nodes.item(i);
@@ -157,8 +157,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 				.getElementsByTagName("setSpec");
 		if ((setSpecNodeList != null) && (setSpecNodeList.item(0) != null)) {
 			String setSpec = setSpecNodeList.item(0).getTextContent();
-			System.out.println("Annotating as setSpec " + setSpec);
-			// newDocument.setField("setSpec", setSpec);
+			core.getAnnotationHandler().label(paper.getURI(), setSpec);
 		}
 
 		NodeList newnodes = recordElement.getElementsByTagName("dc:title");
@@ -174,7 +173,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 		for (int j = 0; j < newnodes.getLength(); j++) {
 			String identifier = newnodes.item(j).getTextContent();
 
-			System.out.println("Identifier----> " + identifier);
+			
 			if (identifier.startsWith("http://")) {
 				// System.out.println("Este es el URL " + identifier);
 
@@ -195,16 +194,16 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 			// newDocument.addField("subject",
 			// newnodes.item(j).getTextContent());
-			System.out.println("Annotating as subject "
-					+ newnodes.item(j).getTextContent());
+			
+			String subject= newnodes.item(j).getTextContent();
+			core.getAnnotationHandler().label(paper.getURI(), subject);
 		}
 
 		newnodes = recordElement.getElementsByTagName("dc:date");
 
 		ArrayList<Date> dates = new ArrayList<Date>();
 		for (int j = 0; j < newnodes.getLength(); j++) {
-			System.out.println("DATES HAY____ ------------------------> "
-					+ newnodes.item(j).getTextContent());
+			
 			try {
 
 				SimpleDateFormat formatoDeFecha = new SimpleDateFormat(
@@ -242,8 +241,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 		for (int j = 0; j < newnodes.getLength(); j++) {
 			String type = newnodes.item(j).getTextContent();
-			System.out.println("este el type -------> " + type);
-
+			
 		}
 
 		return paper;

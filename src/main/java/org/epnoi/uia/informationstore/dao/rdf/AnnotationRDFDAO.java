@@ -26,12 +26,20 @@ public class AnnotationRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		Annotation annotation = (Annotation) resource;
+		System.out.println("The last annotation> "+annotation);
 		String userURI = annotation.getURI();
 
-		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+		
+		String queryExpression = null;
+		
+		
+		if (annotation.getHasTopic()!=null){
+			
+			//Annotation of a topic (i.e. annotat
+		queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{ANNOTATION_CLASS}> ; "
 				+ "<{ANNOTATES_DOCUMENT_PROPERTY}> <{ANNOTATED_DOCUMENT_URI}> ;"
-				+ "<{HAS_TOPIC_PROPERTY}> <{TOPIC_URI}> . }";
+								+ "<{HAS_TOPIC_PROPERTY}> <{TOPIC_URI}> . }";
 
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
@@ -45,25 +53,43 @@ public class AnnotationRDFDAO extends RDFDAO {
 						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
 				.replace("{ANNOTATED_DOCUMENT_URI}",
 						annotation.getAnnotatesResource());
+		}else{
+			queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+					+ "{ <{URI}> a <{ANNOTATION_CLASS}> ; "
+					+ "<{ANNOTATES_DOCUMENT_PROPERTY}> <{ANNOTATED_DOCUMENT_URI}> ;"
+									+ "<{LABEL_PROPERTY}> \"{LABEL}\" . }";
 
+			queryExpression = queryExpression
+					.replace("{GRAPH}", this.parameters.getGraph())
+					.replace("{URI}", userURI)
+					.replace("{ANNOTATION_CLASS}",
+							AnnotationRDFHelper.ANNOTATION_CLASS)
+					.replace("{LABEL_PROPERTY}",
+							RDFHelper.LABEL_PROPERTY)
+					.replace("{LABEL}", cleanOddCharacters(annotation.getLabel()))
+					.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
+							AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
+					.replace("{ANNOTATED_DOCUMENT_URI}",
+							annotation.getAnnotatesResource());
+		}
+		
 		// System.out.println(" ------> queryExpression " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 
 		vur.exec();
 
-		/*
-		 * Node ownsProperty = Node.createURI(UserRDFHelper.OWNS_PROPERTY);
-		 * 
-		 * for (String knowledgeObjectURI : annotation.getKnowledgeObjects()) {
-		 * 
-		 * Node objectKnowledgeObject = Node.createURI(knowledgeObjectURI);
-		 * 
-		 * this.graph.add(new Triple(userNode, ownsProperty,
-		 * objectKnowledgeObject));
-		 * 
-		 * }
-		 */
+	/*
+		Node Property = Node.createURI(UserRDFHelper.OWNS_PROPERTY);
+	 
+		  
+		  Node objectKnowledgeObject = Node.createURI(knowledgeObjectURI);
+		  
+		  this.graph.add(new Triple(userNode, ownsProperty,
+		  objectKnowledgeObject));
+		*/  
+		  
+		 
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
