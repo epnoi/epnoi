@@ -92,6 +92,7 @@ public abstract class SOLRDAO {
 		 * "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		 */
 		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				
 				Locale.ENGLISH);
 		return (dt1.format(date));
 

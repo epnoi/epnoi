@@ -3,8 +3,10 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import org.epnoi.model.Context;
@@ -129,7 +131,7 @@ public class PaperRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-
+/*
 	protected String convertDateFormat(String dateExpression) {
 		DateFormat formatter = new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
@@ -147,5 +149,36 @@ public class PaperRDFDAO extends RDFDAO {
 		return (dt1.format(date));
 
 	}
+*/	
+	String convertDateFormat(String dateExpression) {
+		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
+		knownPatterns.add(new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+				Locale.ENGLISH));
+
+		for (SimpleDateFormat pattern : knownPatterns) {
+			try {
+				// Take a try
+				Date parsedDate = pattern.parse(dateExpression);
+				SimpleDateFormat dt1 = new SimpleDateFormat(
+						"yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+				return (dt1.format(parsedDate));
+			} catch (ParseException pe) {
+				// Loop on
+			}
+		}
+		System.err.println("No known Date format found: " + dateExpression);
+		return null;
+
+	}
+	
+	
+	
+	
 
 }

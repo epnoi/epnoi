@@ -13,6 +13,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.DateConverter;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import virtuoso.jena.driver.VirtGraph;
@@ -65,7 +66,7 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{FEED_DESCRIPTION}",
 						cleanOddCharacters(feed.getDescription()))
 				.replace("{FEED_PUB_DATE}",
-						convertDateFormat(feed.getPubDate()));
+						DateConverter.convertDateFormat(feed.getPubDate()));
 		System.out.println("queryExpression ----------------------->"
 				+ queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
@@ -187,7 +188,7 @@ public class FeedRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------
-
+/*
 	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
@@ -214,7 +215,7 @@ public class FeedRDFDAO extends RDFDAO {
 		return null;
 
 	}
-
+*/
 	// ---------------------------------------------------------------------------------------------------
 
 	private static List<Feed> _generateData() {
