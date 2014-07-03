@@ -29,7 +29,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-		SolrInputDocument document = _indexItem(paper, context);
+		SolrInputDocument document = _indexPaper(paper, context);
 
 		try {
 			this.server.add(document);
@@ -55,7 +55,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	private SolrInputDocument _indexItem(Paper paper, Context context) {
+	private SolrInputDocument _indexPaper(Paper paper, Context context) {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
