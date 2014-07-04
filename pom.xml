@@ -28,6 +28,8 @@
 		<atmosphere.version>2.0.1</atmosphere.version>
 		<jettyVersion>7.6.0.RC5</jettyVersion>
 		<!-- <jettyVersion>6.1.10</jettyVersion> -->
+	    <maven.compiler.target>1.7</maven.compiler.target>
+    	<maven.compiler.source>1.7</maven.compiler.source>
 	</properties>
 	
 
@@ -87,8 +89,8 @@
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
 			<version>2.10.1</version>
-
 		</dependency>
+		
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
