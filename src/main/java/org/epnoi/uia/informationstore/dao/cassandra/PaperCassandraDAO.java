@@ -55,6 +55,12 @@ public class PaperCassandraDAO extends CassandraDAO {
 					annotatedContent.toXml(),
 					PaperCassandraHelper.COLUMN_FAMILLY);
 		}
+
+		String content = paper.getTitle() + "." + paper.getDescription();
+
+		super.updateColumn(paper.getURI(), PaperCassandraHelper.CONTENT,
+				content, PaperCassandraHelper.COLUMN_FAMILLY);
+
 	}
 
 	// --------------------------------------------------------------------------------
