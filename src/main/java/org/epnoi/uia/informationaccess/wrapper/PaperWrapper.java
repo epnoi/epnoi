@@ -53,14 +53,14 @@ public class PaperWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		joinPaper = (Paper) informationStore.get(selector);
 
-	System.out.println("joinPaper RDF----> "+joinPaper);
+	//System.out.println("joinPaper RDF----> "+joinPaper);
 		
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		Paper cassandraItem = (Paper) informationStore.get(selector);
 
-		System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
+		//System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
 		
 		joinPaper.setTitle(cassandraItem.getTitle());
 		joinPaper.setAuthors(cassandraItem.getAuthors());

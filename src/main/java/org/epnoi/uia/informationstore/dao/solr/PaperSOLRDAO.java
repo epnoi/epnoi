@@ -7,9 +7,9 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
-import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.DateConverter;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class PaperSOLRDAO extends SOLRDAO {
@@ -29,7 +29,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-		SolrInputDocument document = _indexItem(paper, context);
+		SolrInputDocument document = _indexPaper(paper, context);
 
 		try {
 			this.server.add(document);
@@ -55,7 +55,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	private SolrInputDocument _indexItem(Paper paper, Context context) {
+	private SolrInputDocument _indexPaper(Paper paper, Context context) {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
@@ -84,7 +84,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 		}
 		
 		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,
-				convertDateFormat(paper.getPubDate()));
+				DateConverter.convertDateFormat(paper.getPubDate()));
 		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY,
 				context.getParameters().get(Context.INFORMATION_SOURCE_NAME));
 		

@@ -9,6 +9,8 @@ public interface AnnotationHandler {
 
 	public void annotate(String URI, String topicURI);
 
+	public void annotate(String URI, String predicateURI, String topicURI);
+	
 	public void label(String URI, String label);
 
 	public void removeAnnotation(String URI, String topicURI);

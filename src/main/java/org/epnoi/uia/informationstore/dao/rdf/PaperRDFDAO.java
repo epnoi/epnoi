@@ -1,18 +1,17 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import org.epnoi.model.Context;
-import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 
-import ucar.nc2.constants._Coordinate;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -30,7 +29,7 @@ public class PaperRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public void create(Resource resource, Context context) {
+	public synchronized void  create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 		String paperURI = paper.getURI();
 
@@ -49,7 +48,7 @@ public class PaperRDFDAO extends RDFDAO {
 				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
 		System.out.println("----> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression, this.graph);
+				queryExpression, graph);
 		vur.exec();
 
 	}
@@ -129,7 +128,7 @@ public class PaperRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-
+/*
 	protected String convertDateFormat(String dateExpression) {
 		DateFormat formatter = new SimpleDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
@@ -147,5 +146,36 @@ public class PaperRDFDAO extends RDFDAO {
 		return (dt1.format(date));
 
 	}
+*/	
+	String convertDateFormat(String dateExpression) {
+		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
+		knownPatterns.add(new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+				Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+				Locale.ENGLISH));
+
+		for (SimpleDateFormat pattern : knownPatterns) {
+			try {
+				// Take a try
+				Date parsedDate = pattern.parse(dateExpression);
+				SimpleDateFormat dt1 = new SimpleDateFormat(
+						"yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+				return (dt1.format(parsedDate));
+			} catch (ParseException pe) {
+				// Loop on
+			}
+		}
+		System.err.println("No known Date format found: " + dateExpression);
+		return null;
+
+	}
+	
+	
+	
+	
 
 }
