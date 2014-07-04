@@ -1,6 +1,9 @@
 package org.epnoi.uia.harvester.oaipmh;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,11 +19,11 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.FileUtils;
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.core.CoreUtility;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -38,9 +41,15 @@ public class OAIPMHHarvester extends CommandLineTool {
 	private static final Logger logger = Logger.getLogger(OAIPMHHarvester.class
 			.getName());
 
-	
+	private static final String LAST_HARVESTED_FILENAME = "lastHarvested";
+	private static String lastHarvested = null;;
+	private final int PROGRESS_BEFORE_UPDATE = 20;
+	private static File progressFile;
+
 	DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-	Core core = CoreUtility.getUIACore();
+	Core core = null;
+
+	// Core core = CoreUtility.getUIACore();
 
 	/*
 	 * OAIPMHIndexer -in where-oaipmh-harvest-dir -repository name
@@ -70,19 +79,33 @@ public class OAIPMHHarvester extends CommandLineTool {
 		int numIndexed = 0;
 
 		File folder = new File(harvestDir);
+
+		try {
+			progressFile = new File(folder.getAbsolutePath() + "/"
+					+ OAIPMHHarvester.LAST_HARVESTED_FILENAME);
+
+			List<String> lines = FileUtils.readLines(progressFile);
+			System.out.println("lo leido----> " + lines.get(0));
+			lastHarvested = lines.get(0);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		File[] listOfFiles = folder.listFiles();
 		System.out.println("Harvesting the directory/repository "
 				+ folder.getAbsolutePath());
+
+		// _updateLastHarvested((new Date()).toString(), pro);
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
 				String filePath = "file://" + listOfFiles[i].getAbsolutePath();
 				System.out.println("Found the file: " + filePath);
 				if (filePath.endsWith(".xml")) {
-					harvester.harvestFile(filePath);
+					harvester.harvestFile(filePath, progressFile);
 
 				}
-				// ----------------------------------------------------indexer.getServer().commit();
 			} else if (listOfFiles[i].isDirectory()) {
 				System.out.println("Directory " + listOfFiles[i].getName());
 			}
@@ -96,7 +119,8 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 	// --------------------------------------------------------------------------------------------------------------------------
 
-	public void harvestFile(String filepath) throws Exception {
+	public void harvestFile(String filepath, File progressFile)
+			throws Exception {
 
 		System.out.println("Indexing the file " + filepath);
 		logger.info("Indexing the file " + filepath);
@@ -114,26 +138,75 @@ public class OAIPMHHarvester extends CommandLineTool {
 		Object result = expr.evaluate(harvestDocument, XPathConstants.NODESET);
 
 		NodeList nodes = (NodeList) result;
-	
+
+		System.out.println("---> " + nodes.getLength());
+		int progressCounter = 0;
+		boolean lastHarvestedFound = false || (lastHarvested == null);
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			Element recordElement = (Element) nodes.item(i);
+			
 
-			Paper paper = _indexRecord(recordElement, simpleDateFormat);
+			if (!lastHarvestedFound) {
+				String identifier = showIdentifier(recordElement);
+				System.out.println("----> paso de este->"+identifier);
+				lastHarvestedFound = identifier.equals(lastHarvested);
+			} else {
 
-			System.out.println("Harvesting paper ------------------->" + paper);
-			// Aqui iria el core.getInformationAccess(....
+				System.out.println("Mete aqui el " + showIdentifier(recordElement));
+				
+				Paper paper = _harvestRecord(recordElement, simpleDateFormat);
 
-			core.getInformationAccess().put(paper, new Context());
+				// System.out.println("Harvesting paper ------------------->" +
+				// paper);
+
+				 core.getInformationAccess().put(paper, new Context());
+
+				progressCounter++;
+				if (progressCounter == PROGRESS_BEFORE_UPDATE) {
+
+					
+					
+					String identifier = showIdentifier(recordElement);
+					
+
+					System.out
+							.println("updating the identifier> " + identifier);
+					_updateLastHarvested(identifier, progressFile);
+					progressCounter = 0;
+				}
+
+			}
+		}
+	}
+
+	// --------------------------------------------------------------------------------------------------------------------------
+	
+	public String showIdentifier(Element recordElement) {
+
+		String id = null;
+		Element headerElement = (Element) recordElement.getElementsByTagName(
+				"header").item(0);
+
+		// Identifier
+		NodeList identifierNodeList = headerElement
+				.getElementsByTagName("identifier");
+
+		if ((identifierNodeList != null)
+				&& (identifierNodeList.item(0) != null)) {
+			id = identifierNodeList.item(0).getTextContent();
+
+			// newDocument.setField("id", identifier);
 
 		}
 
+		return id;
+
 	}
-	
+
 	// --------------------------------------------------------------------------------------------------------------------------
 
-
-	private Paper _indexRecord(Element recordElement,
+	private Paper _harvestRecord(Element recordElement,
 			SimpleDateFormat simpleDateFormat) {
 
 		Paper paper = new Paper();
@@ -173,7 +246,6 @@ public class OAIPMHHarvester extends CommandLineTool {
 		for (int j = 0; j < newnodes.getLength(); j++) {
 			String identifier = newnodes.item(j).getTextContent();
 
-			
 			if (identifier.startsWith("http://")) {
 				// System.out.println("Este es el URL " + identifier);
 
@@ -194,8 +266,8 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 			// newDocument.addField("subject",
 			// newnodes.item(j).getTextContent());
-			
-			String subject= newnodes.item(j).getTextContent();
+
+			String subject = newnodes.item(j).getTextContent();
 			core.getAnnotationHandler().label(paper.getURI(), subject);
 		}
 
@@ -203,7 +275,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 		ArrayList<Date> dates = new ArrayList<Date>();
 		for (int j = 0; j < newnodes.getLength(); j++) {
-			
+
 			try {
 
 				SimpleDateFormat formatoDeFecha = new SimpleDateFormat(
@@ -241,7 +313,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 		for (int j = 0; j < newnodes.getLength(); j++) {
 			String type = newnodes.item(j).getTextContent();
-			
+
 		}
 
 		return paper;
@@ -258,6 +330,22 @@ public class OAIPMHHarvester extends CommandLineTool {
 			}
 		}
 		return earliestDate;
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------------
+
+	private static void _updateLastHarvested(String id, File progressFile) {
+
+		try {
+			FileWriter fileWriter = new FileWriter(progressFile);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			bufferedWriter.write(id);
+			bufferedWriter.newLine();
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
