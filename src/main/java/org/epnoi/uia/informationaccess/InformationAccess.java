@@ -1,5 +1,6 @@
 package org.epnoi.uia.informationaccess;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.ContentSummary;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -35,5 +36,7 @@ public interface InformationAccess {
 			String subscriptionExpression);
 
 	public ContentSummary getContentSummary(String URI);
+	
+	public Content getContent(String URI);
 
 }
