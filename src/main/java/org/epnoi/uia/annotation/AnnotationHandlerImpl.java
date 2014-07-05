@@ -61,6 +61,37 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	// ------------------------------------------------------------------------------
 
+		public List<String> getAnnotatedAs(String topicURI, String type) {
+			InformationStore informationStore = this.core
+					.getInformationStoresByType(
+							InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+
+			String queryExpression = "SELECT DISTINCT ?uri FROM <{GRAPH}>"
+					+ "{ ?annotationURI <{ANNOTATES_DOCUMENT_PROPERTY}> ?uri . "
+					+ "  ?annotationURI <{HAS_TOPIC_PROPERTY}> <" + topicURI
+					+ "> ."
+					+ " ?uri a <" + type + "> . " 
+					+ "}";
+
+			queryExpression = queryExpression
+					.replace(
+							"{GRAPH}",
+							((VirtuosoInformationStoreParameters) informationStore
+									.getParameters()).getGraph())
+					.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
+							AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
+					.replace("{HAS_TOPIC_PROPERTY}",
+							AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY);
+
+			System.out.println("----> QUERY EXPRESSION " + queryExpression);
+			List<String> queryResults = informationStore.query(queryExpression);
+
+			return queryResults;
+		}
+	
+		
+	// ------------------------------------------------------------------------------
+
 	public List<Resource> getAnnotatedResources(Annotation annotation) {
 		List<Resource> resources = new ArrayList<Resource>();
 		return resources;
@@ -163,6 +194,34 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				+ "{ ?annotationURI <{ANNOTATES_DOCUMENT_PROPERTY}> ?uri . "
 				+ "  ?annotationURI <{LABEL_PROPERTY}> \"" + label + "\" ."
 				+ "}";
+
+		queryExpression = queryExpression
+				.replace(
+						"{GRAPH}",
+						((VirtuosoInformationStoreParameters) informationStore
+								.getParameters()).getGraph())
+				.replace("{LABEL_PROPERTY}", RDFHelper.LABEL_PROPERTY)
+				.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
+						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY);
+
+		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		List<String> queryResults = informationStore.query(queryExpression);
+
+		return queryResults;
+	}
+
+	// ------------------------------------------------------------------------------
+
+	@Override
+	public List<String> getLabeledAs(String label, String type) {
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+
+		String queryExpression = "SELECT  DISTINCT ?uri FROM <{GRAPH}>"
+				+ "{ ?annotationURI <{ANNOTATES_DOCUMENT_PROPERTY}> ?uri . "
+				+ " ?annotationURI <{LABEL_PROPERTY}> \"" + label + "\" . "
+				+ " ?uri a <" + type + "> . " + "}";
 
 		queryExpression = queryExpression
 				.replace(

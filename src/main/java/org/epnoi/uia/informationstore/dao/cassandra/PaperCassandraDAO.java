@@ -4,12 +4,15 @@ import gate.Document;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Search;
 import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class PaperCassandraDAO extends CassandraDAO {
 
@@ -57,7 +60,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 		}
 
 		String content = paper.getTitle() + "." + paper.getDescription();
-
+System.out.println("content:> "+content);
 		super.updateColumn(paper.getURI(), PaperCassandraHelper.CONTENT,
 				content, PaperCassandraHelper.COLUMN_FAMILLY);
 
@@ -101,9 +104,15 @@ public class PaperCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void update(Search search) {
-		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
-				search.getDescription(), UserCassandraHelper.COLUMN_FAMILLY);
+	@Override
+	public Content<String> getContent(Selector selector) {
+
+		String value = super.readColumn(
+				selector.getProperty(SelectorHelper.URI),
+				PaperCassandraHelper.CONTENT,
+				PaperCassandraHelper.COLUMN_FAMILLY);
+
+		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_PLAIN);
 	}
 
 }
