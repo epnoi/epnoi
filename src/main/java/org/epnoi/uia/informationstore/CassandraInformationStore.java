@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
@@ -99,6 +100,12 @@ InformationStoreParameters parameters;
 
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
+	}
+	
+	
+	public Content<String> getContent(Selector selector){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		return dao.getContent(selector);
 	}
 
 }
