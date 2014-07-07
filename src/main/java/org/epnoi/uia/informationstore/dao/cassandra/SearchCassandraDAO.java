@@ -7,6 +7,7 @@ import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
@@ -136,4 +137,13 @@ public class SearchCassandraDAO extends CassandraDAO {
 		}
 		return searchs;
 	}
+	
+	// --------------------------------------------------------------------------------
+	
+		@Override
+		public Content<String> getContent(Selector selector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 }

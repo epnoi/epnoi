@@ -25,6 +25,7 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.SliceQuery;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.Selector;
@@ -48,6 +49,8 @@ public abstract class CassandraDAO {
 	public abstract void create(Resource resource, Context context);
 
 	public abstract void remove(String URI);
+
+	public abstract Content<String> getContent(Selector selector);
 
 	public void init() {
 
@@ -173,6 +176,20 @@ public abstract class CassandraDAO {
 
 			System.out.println(e.getMessage());
 		}
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	protected String readColumn(String key, String name, String columnFamilyName) {
+		try {
+			ColumnFamilyResult<String, String> res = CassandraDAO.columnFamilyTemplates
+					.get(columnFamilyName).queryColumns(key);
+			String value = res.getString(name);
+			return value;
+		} catch (HectorException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
@@ -113,4 +114,13 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		System.out.println("Exiting test");
 
 	}
+	
+	// --------------------------------------------------------------------------------
+	
+		@Override
+		public Content getContent(Selector selector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 }

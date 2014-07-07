@@ -37,6 +37,6 @@ public interface InformationAccess {
 
 	public ContentSummary getContentSummary(String URI);
 	
-	public Content getContent(String URI);
+	public Content<String> getContent(String URI, String resourceType);
 
 }

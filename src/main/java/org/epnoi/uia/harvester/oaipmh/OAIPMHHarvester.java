@@ -24,6 +24,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -47,9 +48,9 @@ public class OAIPMHHarvester extends CommandLineTool {
 	private static File progressFile;
 
 	DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-	Core core = null;
+	//Core core = null;
 
-	// Core core = CoreUtility.getUIACore();
+	 Core core = CoreUtility.getUIACore();
 
 	/*
 	 * OAIPMHIndexer -in where-oaipmh-harvest-dir -repository name
@@ -87,11 +88,15 @@ public class OAIPMHHarvester extends CommandLineTool {
 			List<String> lines = FileUtils.readLines(progressFile);
 			System.out.println("lo leido----> " + lines.get(0));
 			lastHarvested = lines.get(0);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		if(lastHarvested!=null && lastHarvested.length()==0){
+			lastHarvested=null;
+		}
+			
 		File[] listOfFiles = folder.listFiles();
 		System.out.println("Harvesting the directory/repository "
 				+ folder.getAbsolutePath());
@@ -142,6 +147,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 		System.out.println("---> " + nodes.getLength());
 		int progressCounter = 0;
 		boolean lastHarvestedFound = false || (lastHarvested == null);
+		System.out.println("---lh" +lastHarvested);
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			Element recordElement = (Element) nodes.item(i);
