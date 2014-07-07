@@ -19,9 +19,9 @@ public class ControllerCreator {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
 																		// time
 
-			String gateHomePath = TermCandidatesDetector.class.getResource("").getPath()+"/gate";
+			String gateHomePath = TermCandidatesFinder.class.getResource("").getPath()+"/gate";
 			String pluginsPath = gateHomePath+ "/plugins";
-			String grammarsPath = TermCandidatesDetector.class.getResource("").getPath()+"/grammars/nounphrases";
+			String grammarsPath = TermCandidatesFinder.class.getResource("").getPath()+"/grammars/nounphrases";
 
 			System.out.println("The gateHomePath is "+gateHomePath);
 			System.out.println("The pluginsPath is "+pluginsPath);
