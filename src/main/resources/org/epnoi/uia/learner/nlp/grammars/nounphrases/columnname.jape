@@ -1,0 +1,14 @@
+Phase: ColumnNameFinder
+Input: StartTag Value
+Options: control = appelt
+
+Rule: ColumnName
+
+(	
+	({StartTag}) :columnname 
+	(({Value})?) :columnvalue
+) 
+
+-->
+
+:columnname.ColumnName = { name=:columnname@cleanString, value=:columnvalue@cleanString }
