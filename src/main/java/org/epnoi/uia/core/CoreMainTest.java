@@ -1,5 +1,10 @@
 package org.epnoi.uia.core;
 
+import gate.Document;
+import gate.Factory;
+import gate.Utils;
+import gate.creole.ResourceInstantiationException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +19,6 @@ import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.SearchResult;
@@ -82,6 +86,8 @@ public class CoreMainTest {
 		_generateFeeds(core);
 
 		_testPapers(core);
+
+		_testGateInitialization();
 
 		System.out
 				.println("Annotated as whatever"
@@ -186,27 +192,22 @@ public class CoreMainTest {
 		 * RSSInformationSourceRandomGenerator generator = new
 		 * RSSInformationSourceRandomGenerator(); generator.generate(core);
 		 */
-		
-		
-		
+
 		/*
-		System.out.println("information source handler");
-
-		for (String subscription : user.getInformationSourceSubscriptions()) {
-			core.getInformationSourcesHandler().retrieveNotifications(
-					subscription);
-		}
-*/
-
+		 * System.out.println("information source handler");
+		 * 
+		 * for (String subscription : user.getInformationSourceSubscriptions())
+		 * { core.getInformationSourcesHandler().retrieveNotifications(
+		 * subscription); }
+		 */
 
 	}
 
 	private static void _testPapers(Core core) {
-		
-		System.out.println("This is the oai:arXiv.org:0705.3658 user >"+core.getInformationAccess().get("oai:arXiv.org:0705.3658", RDFHelper.PAPER_CLASS));
-		
-		
-		
+
+		// System.out.println("This is the oai:arXiv.org:0705.3658 user >"+core.getInformationAccess().get("oai:arXiv.org:0705.3658",
+		// RDFHelper.PAPER_CLASS));
+
 		Paper paper = new Paper();
 		paper.setURI("http://testPaper");
 
@@ -219,6 +220,30 @@ public class CoreMainTest {
 
 		core.getInformationAccess().put(paper, new Context());
 
+	}
+
+	private static void _testGateInitialization() {
+		System.out
+				.println("test gate initialization ---------------------------------------------------------------");
+		try {
+			Document document = (Document) Factory
+					.createResource(
+							"gate.corpora.DocumentImpl",
+							Utils.featureMap(
+									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+									"My taylor is rich and my mum is in the kitchen",
+									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
+									"text/plain"));
+
+			System.out.println("Este es el document > " + document.toXml());
+
+		} catch (ResourceInstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out
+				.println("test gate initialization ---------------------------------------------------------------");
 	}
 
 	private static void _generateFeeds(Core core) {
