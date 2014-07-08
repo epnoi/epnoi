@@ -216,4 +216,25 @@ public class UserCassandraDAO extends CassandraDAO {
 			return null;
 		}
 
+		@Override
+		public Content<String> getAnnotatedContent(Selector selector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setContent(Selector selector, Content<String> content) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setAnnotatedContent(Selector selector,
+				Content<String> annotatedContent) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+
 }

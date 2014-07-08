@@ -1,5 +1,7 @@
 package org.epnoi.uia.harvester.oaipmh;
 
+import gate.Document;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,14 +23,14 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.epnoi.model.Content;
+import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.Selector;
-import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -55,12 +57,25 @@ public class OAIPMHHarvester extends CommandLineTool {
 	//Core core = null;
 
 	 Core core = CoreUtility.getUIACore();
+	 TermCandidatesFinder termCandidatesFinder;
 
 	/*
 	 * OAIPMHIndexer -in where-oaipmh-harvest-dir -repository name
 	 * 
 	 * -name arxiv -in /JUNK (/JUNK/OAIPMH/harvests/arxiv/harvest should exist )
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
+	 
+	 public OAIPMHHarvester(){
+		 this.termCandidatesFinder = new TermCandidatesFinder();
+		 this.termCandidatesFinder.init();
+		 
+	 }
+	 
+	 
 	public static void main(String[] args) throws Exception {
 
 		HashMap<String, String> options = getOptions(args);
@@ -173,17 +188,17 @@ public class OAIPMHHarvester extends CommandLineTool {
 				 core.getInformationAccess().put(paper, new Context());
 				 
 				 
-				System.out.println("The content is >   "+core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS));
+				Content<String> content=core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS);
 
-				Selector selector = new Selector();
-				selector.setProperty(SelectorHelper.URI, paper.getURI());
-				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+				Document annotatedContent=this.termCandidatesFinder.findTermCandidates(content.getContent());
 				
+											
+				core.getInformationAccess().setAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS, new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
 				
-				
-				core.getInformationAccess().setContent(paper.getURI(), RDFHelper.PAPER_CLASS, new Content<>("Lo nuevo metio ", "tipo"));
-				System.out.println("The modified content is >   "+core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS));
+				System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 
+				
+				
 				
 				progressCounter++;
 				if (progressCounter == PROGRESS_BEFORE_UPDATE) {

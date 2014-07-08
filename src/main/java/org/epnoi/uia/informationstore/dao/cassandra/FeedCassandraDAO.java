@@ -147,6 +147,8 @@ public class FeedCassandraDAO extends CassandraDAO {
 			return null;
 		}
 
+		
+		
 
 	private void _showFeed(String URI) {
 		ColumnSliceIterator<String, String, String> columnsIterator = super
@@ -167,6 +169,25 @@ public class FeedCassandraDAO extends CassandraDAO {
 		Feed feed = (Feed) dao
 				.read("http://www.epnoi.org/informationSources/slashdot");
 		System.out.println(">>> " + feed.getItems().get(0).toString());
+	}
+
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

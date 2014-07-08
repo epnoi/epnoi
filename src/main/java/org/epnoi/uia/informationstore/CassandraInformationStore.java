@@ -125,7 +125,7 @@ InformationStoreParameters parameters;
 
 	// ------------------------------------------------------------------------
 	
-	public Content<String> setAnnotatedContent(Selector selector, Content<String> annotatedContent){
+	public void setAnnotatedContent(Selector selector, Content<String> annotatedContent){
 		CassandraDAO dao = this.daoFactory.build(selector);
 		dao.setAnnotatedContent(selector, annotatedContent);
 	}
