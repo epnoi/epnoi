@@ -133,24 +133,13 @@ public class CoreMainAnnotationsTest {
 				System.out.println("---> annotations ---> " + document.getAnnotations());
 				
 			} catch (ResourceInstantiationException e) { // TODO Auto-generated
-															// catch block
+											// catch block
 															// e.printStackTrace();
-															// }
+													// }
 
 				
 
-				/*
-				 * String content = annotatedContent.getContent(); Document
-				 * document = new DocumentImpl(); XMLInputFactory inputFactory =
-				 * XMLInputFactory.newInstance(); InputStream is = new
-				 * ByteArrayInputStream(content.getBytes()); try {
-				 * XMLStreamReader xsr = inputFactory.createXMLStreamReader(is);
-				 * 
-				 * xsr.next(); DocumentStaxUtils.readGateXmlDocument(xsr,
-				 * document); } catch (XMLStreamException e) { // TODO
-				 * Auto-generated catch block e.printStackTrace(); }
-				 */
-
+			
 			}
 			showTerms(document);
 		}
