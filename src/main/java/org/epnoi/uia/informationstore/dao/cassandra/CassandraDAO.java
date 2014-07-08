@@ -51,7 +51,16 @@ public abstract class CassandraDAO {
 	public abstract void remove(String URI);
 
 	public abstract Content<String> getContent(Selector selector);
+	
+	public abstract Content<String> getAnnotatedContent(Selector selector);
 
+	public abstract void setContent(Selector selector, Content<String> content);
+	
+	public abstract void setAnnotatedContent(Selector selector, Content<String> annotatedContent);
+	
+	
+	
+	
 	public void init() {
 
 		CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
