@@ -1,5 +1,11 @@
 package org.epnoi.uia.core;
 
+import gate.Gate;
+import gate.util.GateException;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +23,7 @@ import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
@@ -58,7 +65,7 @@ public class Core {
 		this.informationStores = new HashMap<String, InformationStore>();
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
-
+		this._initGATE();
 		this._informationStoresInitialization();
 		this._initInformationAccess();
 		this._initInformationSourcesHandler();
@@ -256,12 +263,50 @@ public class Core {
 
 	}
 
+	// ----------------------------------------------------------------------------------------------------------
+
 	public AnnotationHandler getAnnotationHandler() {
 		return annotationHandler;
 	}
 
+	// ----------------------------------------------------------------------------------------------------------
+
 	public void setAnnotationHandler(AnnotationHandler annotationHandler) {
 		this.annotationHandler = annotationHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initGATE() {
+		String gateHomePath = Core.class.getResource("").getPath() + "/gate";
+		String pluginsPath = gateHomePath + "/plugins";
+		String grammarsPath = Core.class.getResource("").getPath()
+				+ "/grammars/nounphrases";
+
+		System.out.println("The gateHomePath is " + gateHomePath);
+		System.out.println("The pluginsPath is " + pluginsPath);
+		System.out.println("The grammarsPath is " + grammarsPath);
+
+		File gateHomeDirectory = new File(gateHomePath);
+		File pluginsDirectory = new File(pluginsPath);
+
+		Gate.setPluginsHome(pluginsDirectory);
+
+		Gate.setGateHome(gateHomeDirectory);
+		Gate.setUserConfigFile(new File(gateHomeDirectory, "user-gate.xml"));
+
+		try {
+			Gate.init(); // to prepare the GATE library
+
+			URL anniePlugin = new File(pluginsDirectory, "ANNIE").toURI()
+					.toURL();
+
+			Gate.getCreoleRegister().registerDirectories(anniePlugin);
+		} catch (MalformedURLException | GateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
