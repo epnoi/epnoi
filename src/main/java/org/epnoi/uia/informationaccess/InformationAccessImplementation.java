@@ -141,26 +141,71 @@ public class InformationAccessImplementation implements InformationAccess {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(String URI, String resourceType) {
-		CassandraInformationStore informationStore = (CassandraInformationStore)this.core.getInformationStoresByType(
-				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, resourceType);
 		selector.setProperty(SelectorHelper.URI, URI);
 		Content<String> content = informationStore.getContent(selector);
-		
-		
-		
+
 		return content;
 	}
-	
+
 	// ---------------------------------------------------------------------------
-	
-	
-	
+
+	@Override
+	public Content<String> getAnnotatedContent(String URI, String resourceType) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		Content<String> content = informationStore
+				.getAnnotatedContent(selector);
+		return content;
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public void setContent(String URI, String resourceType,
+			Content<String> content) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore
+				.setContent(selector, content);
+
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public void setAnnotatedContent(String URI, String resourceType,
+			Content<String> annotatedContent) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore
+				.setContent(selector, annotatedContent);
+
+	}
 
 }

@@ -102,10 +102,32 @@ InformationStoreParameters parameters;
 		// TODO Auto-generated method stub
 	}
 	
+	// ------------------------------------------------------------------------
 	
 	public Content<String> getContent(Selector selector){
 		CassandraDAO dao = this.daoFactory.build(selector);
 		return dao.getContent(selector);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public Content<String> getAnnotatedContent(Selector selector){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		return dao.getContent(selector);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public void setContent(Selector selector, Content<String> content){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		dao.setContent(selector,content);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public Content<String> setAnnotatedContent(Selector selector, Content<String> annotatedContent){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		dao.setAnnotatedContent(selector, annotatedContent);
 	}
 
 }

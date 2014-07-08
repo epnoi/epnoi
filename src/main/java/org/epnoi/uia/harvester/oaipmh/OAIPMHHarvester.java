@@ -20,11 +20,15 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -167,7 +171,20 @@ public class OAIPMHHarvester extends CommandLineTool {
 				// paper);
 
 				 core.getInformationAccess().put(paper, new Context());
+				 
+				 
+				System.out.println("The content is >   "+core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 
+				Selector selector = new Selector();
+				selector.setProperty(SelectorHelper.URI, paper.getURI());
+				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+				
+				
+				
+				core.getInformationAccess().setContent(paper.getURI(), RDFHelper.PAPER_CLASS, new Content<>("Lo nuevo metio ", "tipo"));
+				System.out.println("The modified content is >   "+core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS));
+
+				
 				progressCounter++;
 				if (progressCounter == PROGRESS_BEFORE_UPDATE) {
 

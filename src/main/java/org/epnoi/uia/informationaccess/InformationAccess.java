@@ -38,5 +38,12 @@ public interface InformationAccess {
 	public ContentSummary getContentSummary(String URI);
 	
 	public Content<String> getContent(String URI, String resourceType);
+	
+	public Content<String> getAnnotatedContent(String URI, String resourceType);
 
+	public void  setContent(String URI, String resourceType, Content<String> content);
+	
+	public void  setAnnotatedContent(String URI, String resourceType, Content<String> annotatedContent);
+
+	
 }

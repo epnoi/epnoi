@@ -60,10 +60,11 @@ public class PaperCassandraDAO extends CassandraDAO {
 		}
 
 		String content = paper.getTitle() + "." + paper.getDescription();
-System.out.println("content:> "+content);
+	//	System.out.println("content:> " + content);
 		super.updateColumn(paper.getURI(), PaperCassandraHelper.CONTENT,
 				content, PaperCassandraHelper.COLUMN_FAMILLY);
 
+		
 	}
 
 	// --------------------------------------------------------------------------------
@@ -115,4 +116,41 @@ System.out.println("content:> "+content);
 		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_PLAIN);
 	}
 
+	// --------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+
+		String value = super.readColumn(
+				selector.getProperty(SelectorHelper.URI),
+				PaperCassandraHelper.ANNOTATED_CONTENT,
+				PaperCassandraHelper.COLUMN_FAMILLY);
+
+		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_XML);
+	}
+
+	// --------------------------------------------------------------------------------
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+
+		super.updateColumn(selector.getProperty(SelectorHelper.URI),
+				PaperCassandraHelper.CONTENT, content.getContent(),
+				PaperCassandraHelper.COLUMN_FAMILLY);
+	}
+
+	// --------------------------------------------------------------------------------
+	
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+
+		super.updateColumn(selector.getProperty(SelectorHelper.URI),
+				PaperCassandraHelper.ANNOTATED_CONTENT,
+				annotatedContent.getContent(),
+				PaperCassandraHelper.COLUMN_FAMILLY);
+	}
+
+	// --------------------------------------------------------------------------------
+	
 }
