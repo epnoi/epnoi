@@ -65,7 +65,7 @@ public abstract class CassandraDAO {
 
 		CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
 				"localhost:9160");
-		System.out.println("Cluster instantiated");
+		//System.out.println("Cluster instantiated");
 
 		List<String> columnFamillyNames = Arrays.asList(
 				ExternalResourceCassandraHelper.COLUMN_FAMILLY,
@@ -108,8 +108,11 @@ public abstract class CassandraDAO {
 
 			}
 		} else {
+			
+			/*
 			System.out
 					.println("columnFamilyDefinitions was already initialized");
+		*/
 		}
 
 		if (CassandraDAO.keyspaceDefinition == null) {
@@ -127,8 +130,9 @@ public abstract class CassandraDAO {
 			cluster.addKeyspace(CassandraDAO.keyspaceDefinition, true);
 			System.out.println("Keyspace " + KEYSPACE + " created");
 		} else {
+			/*
 			System.out.println("The keyspace was already initialized");
-
+*/
 		}
 		if (CassandraDAO.keyspace == null) {
 			CassandraDAO.keyspace = HFactory.createKeyspace(KEYSPACE,

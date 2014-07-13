@@ -2,7 +2,6 @@ package org.epnoi.uia.learner.nlp;
 
 import gate.Factory;
 import gate.FeatureMap;
-import gate.Gate;
 import gate.LanguageAnalyser;
 import gate.ProcessingResource;
 import gate.creole.ResourceInstantiationException;
@@ -11,23 +10,23 @@ import gate.util.GateException;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
+
+import org.epnoi.uia.core.Core;
 
 public class ControllerCreator {
 	public SerialAnalyserController createController() {
 		try {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
 																		// time
-
-			String gateHomePath = TermCandidatesFinder.class.getResource("").getPath()+"/gate";
+			String gateHomePath = Core.class.getResource("").getPath()+"/gate";
 			String pluginsPath = gateHomePath+ "/plugins";
-			String grammarsPath = TermCandidatesFinder.class.getResource("").getPath()+"/grammars/nounphrases";
+			String grammarsPath = Core.class.getResource("").getPath()+"/grammars/nounphrases";
 
 			System.out.println("The gateHomePath is "+gateHomePath);
 			System.out.println("The pluginsPath is "+pluginsPath);
 			System.out.println("The grammarsPath is "+grammarsPath);
 			
-
+/*
 			File gateHomeDirectory = new File(gateHomePath);
 			File pDir = new File(pluginsPath);
 
@@ -46,7 +45,7 @@ public class ControllerCreator {
 																		// register
 																		// the
 																		// plugin
-
+	*/
 			SerialAnalyserController sac = (SerialAnalyserController) Factory
 					.createResource("gate.creole.SerialAnalyserController");
 
@@ -63,11 +62,11 @@ public class ControllerCreator {
 					.createResource("gate.creole.POSTagger");
 
 			
+				
 			
 			
 			
-			
-			
+	
 			
 			FeatureMap mainGrammarFeature = Factory.newFeatureMap();
 			mainGrammarFeature.put("grammarURL", new File(grammarsPath
@@ -110,11 +109,6 @@ public class ControllerCreator {
 			sac.add(POStagger);
 			sac.add(mainGrammarTransducer);
 			
-/*
-			sac.add(startTagJape);
-			sac.add(endTagJape);
-			sac.add(colNameJape);
-*/
 			long endLoadResourcesTime = System.currentTimeMillis(); // end time
 			long loadResourcesTime = endLoadResourcesTime
 					- startLoadResourcesTime; // total time
