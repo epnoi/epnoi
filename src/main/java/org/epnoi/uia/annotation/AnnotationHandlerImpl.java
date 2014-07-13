@@ -204,7 +204,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
 						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		System.out.println("----> QUERY EXPRESSION TO COPY " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;

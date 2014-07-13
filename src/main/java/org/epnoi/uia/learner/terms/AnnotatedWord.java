@@ -6,6 +6,11 @@ public class AnnotatedWord<T extends Comparable<T>> implements Comparable<Annota
 
 	// -------------------------------------------------------------------------------------------------------
 
+	
+	public AnnotatedWord(T annotation) {
+		this.annotation= annotation;
+	}
+	
 	public String getWord() {
 		return word;
 	}

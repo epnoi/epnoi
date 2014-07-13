@@ -191,11 +191,11 @@ public class OAIPMHHarvester extends CommandLineTool {
 				Content<String> content=core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS);
 
 				Document annotatedContent=this.termCandidatesFinder.findTermCandidates(content.getContent());
-				
+				//System.out.println("------)> "+annotatedContent.toXml());
 											
 				core.getInformationAccess().setAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS, new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
 				
-				System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
+				//System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 
 				
 				
@@ -266,10 +266,17 @@ public class OAIPMHHarvester extends CommandLineTool {
 		// setSpec
 		NodeList setSpecNodeList = recordElement
 				.getElementsByTagName("setSpec");
+		
+		for (int j = 0; j < setSpecNodeList.getLength(); j++) {
+			String setSpec = setSpecNodeList.item(j).getTextContent();
+			core.getAnnotationHandler().label(paper.getURI(), setSpec);
+		}
+		/*
 		if ((setSpecNodeList != null) && (setSpecNodeList.item(0) != null)) {
 			String setSpec = setSpecNodeList.item(0).getTextContent();
 			core.getAnnotationHandler().label(paper.getURI(), setSpec);
 		}
+*/
 
 		NodeList newnodes = recordElement.getElementsByTagName("dc:title");
 

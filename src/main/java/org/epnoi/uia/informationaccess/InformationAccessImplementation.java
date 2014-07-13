@@ -204,7 +204,7 @@ public class InformationAccessImplementation implements InformationAccess {
 		selector.setProperty(SelectorHelper.TYPE, resourceType);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore
-				.setContent(selector, annotatedContent);
+				.setAnnotatedContent(selector, annotatedContent);
 
 	}
 

@@ -14,22 +14,22 @@ public class TermsDetector {
 
 	// ---------------------------------------------------------------------------------------
 
-	public List<AnnotatedWord<TermMetadata>> detect(
+	public List<AnnotatedWord<TermCandidateMetadata>> detect(
 			List<List<AnnotatedWord<String>>> sentences) {
-		Map<String, AnnotatedWord<TermMetadata>> detectedTerms = new HashMap<>();
+		Map<String, AnnotatedWord<TermCandidateMetadata>> detectedTerms = new HashMap<>();
 
 		for (List<AnnotatedWord<String>> sentence : sentences) {
-			List<AnnotatedWord<TermMetadata>> detectedTermsInSentence = _detectTermsInSentence(sentence);
-			for (AnnotatedWord<TermMetadata> term : detectedTermsInSentence) {
-				AnnotatedWord<TermMetadata> storedTerm = detectedTerms.get(term
+			List<AnnotatedWord<TermCandidateMetadata>> detectedTermsInSentence = _detectTermsInSentence(sentence);
+			for (AnnotatedWord<TermCandidateMetadata> term : detectedTermsInSentence) {
+				AnnotatedWord<TermCandidateMetadata> storedTerm = detectedTerms.get(term
 						.getWord());
 				if (storedTerm != null) {
 					Long occurrences = (Long) storedTerm.getAnnotation().metadata
-							.get(TermMetadata.OCURRENCES);
+							.get(TermCandidateMetadata.OCURRENCES);
 					storedTerm.getAnnotation().metadata.put(
-							TermMetadata.OCURRENCES, ++occurrences);
+							TermCandidateMetadata.OCURRENCES, ++occurrences);
 				} else {
-					term.getAnnotation().metadata.put(TermMetadata.OCURRENCES,
+					term.getAnnotation().metadata.put(TermCandidateMetadata.OCURRENCES,
 							new Long(1));
 					detectedTerms.put(term.getWord(), term);
 				}
@@ -42,9 +42,9 @@ public class TermsDetector {
 
 	// ---------------------------------------------------------------------------------------
 
-	private List<AnnotatedWord<TermMetadata>> _detectTermsInSentence(
+	private List<AnnotatedWord<TermCandidateMetadata>> _detectTermsInSentence(
 			List<AnnotatedWord<String>> sentence) {
-		List<AnnotatedWord<TermMetadata>> recognizedTermsInSentence = new ArrayList<AnnotatedWord<TermMetadata>>();
+		List<AnnotatedWord<TermCandidateMetadata>> recognizedTermsInSentence = new ArrayList<AnnotatedWord<TermCandidateMetadata>>();
 
 		Automaton<AnnotatedWord<String>> automaton = new AutomatonImpl();
 		automaton.init();
@@ -57,7 +57,7 @@ public class TermsDetector {
 				// System.out.println("recognizedItem > " + regonizedInput);
 
 				if (regonizedInput.size() > 0) {
-					AnnotatedWord<TermMetadata> term = _buidTerm(regonizedInput);
+					AnnotatedWord<TermCandidateMetadata> term = _buidTerm(regonizedInput);
 					recognizedTermsInSentence.add(term);
 				}
 				automaton.init();
@@ -67,7 +67,7 @@ public class TermsDetector {
 		List<Input<AnnotatedWord<String>>> regonizedInput = automaton
 				.getRecognizedInputString();
 		if (regonizedInput.size() > 1) {
-			AnnotatedWord<TermMetadata> term = _buidTerm(regonizedInput);
+			AnnotatedWord<TermCandidateMetadata> term = _buidTerm(regonizedInput);
 			recognizedTermsInSentence.add(term);
 		}
 
@@ -76,10 +76,10 @@ public class TermsDetector {
 
 	// ---------------------------------------------------------------------------------------
 
-	private AnnotatedWord<TermMetadata> _buidTerm(
+	private AnnotatedWord<TermCandidateMetadata> _buidTerm(
 			List<Input<AnnotatedWord<String>>> regonizedInput) {
-		AnnotatedWord<TermMetadata> term = new AnnotatedWord<>();
-		term.setAnnotation(new TermMetadata());
+		AnnotatedWord<TermCandidateMetadata> term = new AnnotatedWord<>(new TermCandidateMetadata());
+		term.setAnnotation(new TermCandidateMetadata());
 
 		Iterator<Input<AnnotatedWord<String>>> recognizedInputIt = regonizedInput
 				.iterator();

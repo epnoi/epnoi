@@ -113,7 +113,7 @@ InformationStoreParameters parameters;
 	
 	public Content<String> getAnnotatedContent(Selector selector){
 		CassandraDAO dao = this.daoFactory.build(selector);
-		return dao.getContent(selector);
+		return dao.getAnnotatedContent(selector);
 	}
 
 	// ------------------------------------------------------------------------

@@ -36,11 +36,13 @@ public class CoreMainAnnotationsTest {
 				"math", UserRDFHelper.USER_CLASS);
 		System.out.println("USER_________________________________"
 				+ userURIs.size());
+				
 
 		List<String> mathURIs = core.getAnnotationHandler().getLabeledAs(
 				"math", RDFHelper.PAPER_CLASS);
 		System.out.println("MATH_________________________________"
 				+ mathURIs.size());
+
 		/*
 		 * for (String paperURI :
 		 * core.getAnnotationHandler().getLabeledAs("math")) {
@@ -50,76 +52,85 @@ public class CoreMainAnnotationsTest {
 		 * 
 		 * }
 		 */
+		
 		List<String> csURIs = core.getAnnotationHandler().getLabeledAs("cs",
 				RDFHelper.PAPER_CLASS);
 		System.out.println("CS____________________________________"
 				+ csURIs.size());
+		
 		/*
 		 * System.out.println("----> the content is " +
 		 * core.getInformationAccess().getContent( "oai:arXiv.org:0705.3833",
 		 * RDFHelper.PAPER_CLASS));
 		 */
-		for (String paperURI : core.getAnnotationHandler().getLabeledAs("cs")) {
+		//for (String paperURI : core.getAnnotationHandler().getLabeledAs("cs")) {
 			/*
 			 * ystem.out.println(paperURI+" CS paper> " +
 			 * core.getInformationAccess().getContent( paperURI,
 			 * RDFHelper.PAPER_CLASS));
 			 */
 
-		}
+	//	}
 
 		/*
 		 * for(String paperURI:core.getAnnotationHandler().getLabeledAs("cs")){
 		 * System.out.println("Math paper> "+paperURI); }
 		 */
 
+		System.out
+				.println("------------------------------------------------------------------------------");
 		List<String> phisicsURIs = core.getAnnotationHandler().getLabeledAs(
-				"physics", RDFHelper.PAPER_CLASS);
-		System.out.println("Physics____________________________________"
+				"Physics   Physics Education", RDFHelper.PAPER_CLASS);
+		System.out.println("G 2 2____________________________________"
 				+ phisicsURIs.size());
 
-		_whatever("oai:arXiv.org:0705.3659", core);
+		// _whatever("oai:arXiv.org:0711.3503", core);
 	}
 
 	private static void _whatever(String URI, Core core) {
+		Content<String> content = core.getInformationAccess().getContent(URI,
+				RDFHelper.PAPER_CLASS);
+
 		Content<String> annotatedContent = core.getInformationAccess()
 				.getAnnotatedContent(URI, RDFHelper.PAPER_CLASS);
 
-		
-		System.out.println("->> "+annotatedContent.getContent());
-		
+		System.out.println("->> " + annotatedContent.getContent());
+
 		if (annotatedContent.getContent() != null) {
-
-			String gateHomePath = TermCandidatesFinder.class.getResource("")
-					.getPath() + "/gate";
-			String pluginsPath = gateHomePath + "/plugins";
-			String grammarsPath = TermCandidatesFinder.class.getResource("")
-					.getPath() + "/grammars/nounphrases";
-
-			System.out.println("The gateHomePath is " + gateHomePath);
-			System.out.println("The pluginsPath is " + pluginsPath);
-			System.out.println("The grammarsPath is " + grammarsPath);
-
-			File gateHomeDirectory = new File(gateHomePath);
-			File pDir = new File(pluginsPath);
-
-			Gate.setPluginsHome(pDir);
-
-			Gate.setGateHome(gateHomeDirectory);
-			Gate.setUserConfigFile(new File(gateHomeDirectory, "user-gate.xml"));
-
-			try {
-				Gate.init();
-			} catch (GateException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} // to prepare the GATE library
-
+			/*
+			 * String gateHomePath = TermCandidatesFinder.class.getResource("")
+			 * .getPath() + "/gate"; String pluginsPath = gateHomePath +
+			 * "/plugins"; String grammarsPath =
+			 * TermCandidatesFinder.class.getResource("") .getPath() +
+			 * "/grammars/nounphrases";
+			 * 
+			 * System.out.println("The gateHomePath is " + gateHomePath);
+			 * System.out.println("The pluginsPath is " + pluginsPath);
+			 * System.out.println("The grammarsPath is " + grammarsPath);
+			 * 
+			 * File gateHomeDirectory = new File(gateHomePath); File pDir = new
+			 * File(pluginsPath);
+			 * 
+			 * Gate.setPluginsHome(pDir);
+			 * 
+			 * Gate.setGateHome(gateHomeDirectory); Gate.setUserConfigFile(new
+			 * File(gateHomeDirectory, "user-gate.xml"));
+			 * 
+			 * try { Gate.init(); } catch (GateException e1) {
+			 * 
+			 * e1.printStackTrace(); }
+			 */
 			/*
 			 * System.out .println(
 			 * "..............................................................> "
 			 * + annotatedContent.getContent());
 			 */
+
+			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+			termCandidatesFinder.init();
+			showTerms(termCandidatesFinder.findTermCandidates(content
+					.getContent()));
+
 			Document document = null;
 			try {
 				document = (Document) Factory
@@ -130,21 +141,17 @@ public class CoreMainAnnotationsTest {
 										annotatedContent.getContent(),
 										gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
 										"text/xml"));
-				System.out.println("---> annotations ---> " + document.getAnnotations());
-				
-			} catch (ResourceInstantiationException e) { // TODO Auto-generated
-											// catch block
-															// e.printStackTrace();
-													// }
+				System.out.println("---> annotations ---> "
+						+ document.getAnnotations());
 
-				
+			} catch (ResourceInstantiationException e) {
+				e.printStackTrace();
 
-			
 			}
 			showTerms(document);
 		}
 	}
-	
+
 	private static void showTerms(Document document) {
 		for (Annotation annotation : document.getAnnotations().get(
 				"TermCandidate")) {
