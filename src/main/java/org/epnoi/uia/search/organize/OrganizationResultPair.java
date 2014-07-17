@@ -1,6 +1,6 @@
 package org.epnoi.uia.search.organize;
 
-import epnoi.model.Resource;
+import org.epnoi.model.Resource;
 
 public class OrganizationResultPair {
 	private Resource resource;

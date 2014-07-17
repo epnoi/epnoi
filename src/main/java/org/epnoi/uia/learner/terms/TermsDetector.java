@@ -78,7 +78,7 @@ public class TermsDetector {
 
 	private AnnotatedWord<TermMetadata> _buidTerm(
 			List<Input<AnnotatedWord<String>>> regonizedInput) {
-		AnnotatedWord<TermMetadata> term = new AnnotatedWord<>();
+		AnnotatedWord<TermMetadata> term = new AnnotatedWord<>(new TermMetadata());
 		term.setAnnotation(new TermMetadata());
 
 		Iterator<Input<AnnotatedWord<String>>> recognizedInputIt = regonizedInput

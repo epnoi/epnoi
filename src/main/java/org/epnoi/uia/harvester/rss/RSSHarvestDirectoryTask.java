@@ -20,15 +20,14 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.Item;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
-
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.InformationSource;
-import epnoi.model.Item;
 
 class RSSHarvestDirectoryTask implements Runnable {
 	private Manifest manifest;

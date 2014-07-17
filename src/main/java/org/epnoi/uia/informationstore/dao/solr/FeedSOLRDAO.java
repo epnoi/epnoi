@@ -2,26 +2,21 @@ package org.epnoi.uia.informationstore.dao.solr;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.uia.rest.services.JsonUtils;
 import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.select.SearchSelector;
 import org.epnoi.uia.search.select.SelectExpression;
 
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.model.Resource;
+
 
 public class FeedSOLRDAO extends SOLRDAO {
 
@@ -29,8 +24,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource) {
 		Feed feed = (Feed) resource;
-		System.out
-				.println("]------------------------------------------------------------");
+	
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -64,9 +58,6 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
-		System.out
-				.println("]------------------------------------------------------------");
-		
 	
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -120,8 +111,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
 				item.getDescription());
-		System.out
-				.println("]------------------------------------------------------------");
+		
 		if (context != null) {
 			String content= (String) context.getElements().get(
 					item.getURI());
@@ -137,6 +127,9 @@ public class FeedSOLRDAO extends SOLRDAO {
 				convertDateFormat(item.getPubDate()));
 		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY, context
 				.getParameters().get(Context.INFORMATION_SOURCE_NAME));
+		
+		
+		newDocument.addField(SOLRDAOHelper.TYPE_PROPERTY, FeedRDFHelper.ITEM_CLASS);
 		
 		return newDocument;
 

@@ -11,12 +11,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceNotificationsSet;
+import org.epnoi.model.User;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceNotificationsSet;
-import epnoi.model.User;
 
 @Path("/users/{USER_ID}/notifications/informationSources")
 public class UserNotificationsResource extends UIAService {

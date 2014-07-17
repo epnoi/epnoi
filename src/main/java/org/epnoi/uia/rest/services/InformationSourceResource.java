@@ -10,9 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-
-import epnoi.model.User;
 
 @Path("/informationSources")
 public class InformationSourceResource extends UIAService {

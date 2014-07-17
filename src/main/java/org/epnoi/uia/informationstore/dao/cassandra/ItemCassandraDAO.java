@@ -3,14 +3,14 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.Context;
+import org.epnoi.model.ExternalResource;
+import org.epnoi.model.Feed;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+import org.epnoi.model.Search;
 import org.epnoi.uia.informationstore.Selector;
-
-import epnoi.model.Context;
-import epnoi.model.ExternalResource;
-import epnoi.model.Feed;
-import epnoi.model.Item;
-import epnoi.model.Resource;
-import epnoi.model.Search;
 
 public class ItemCassandraDAO extends CassandraDAO {
 
@@ -79,13 +79,43 @@ public class ItemCassandraDAO extends CassandraDAO {
 	}
 
 	// --------------------------------------------------------------------------------
+	
+	@Override
+	public Content<String> getContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	// --------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		FeedCassandraDAO dao = new FeedCassandraDAO();
 		dao.init();
 		Feed feed = (Feed) dao
 				.read("http://www.epnoi.org/informationSources/slashdot");
-		System.out.println(">>> " + feed.getItems().get(0).toString());
+		//System.out.println(">>> " + feed.getItems().get(0).toString());
 	}
 
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

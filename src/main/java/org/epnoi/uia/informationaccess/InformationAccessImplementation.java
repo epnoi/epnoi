@@ -3,19 +3,25 @@ package org.epnoi.uia.informationaccess;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.ContentSummary;
+import org.epnoi.model.Context;
+import org.epnoi.model.Paper;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationaccess.events.InformationAccessListener;
 import org.epnoi.uia.informationaccess.wrapper.Wrapper;
 import org.epnoi.uia.informationaccess.wrapper.WrapperFactory;
+import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
+import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.ContentSummary;
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public class InformationAccessImplementation implements InformationAccess {
 
@@ -134,6 +140,72 @@ public class InformationAccessImplementation implements InformationAccess {
 	public ContentSummary getContentSummary(String URI) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getContent(String URI, String resourceType) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		Content<String> content = informationStore.getContent(selector);
+
+		return content;
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getAnnotatedContent(String URI, String resourceType) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		Content<String> content = informationStore
+				.getAnnotatedContent(selector);
+		return content;
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public void setContent(String URI, String resourceType,
+			Content<String> content) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore
+				.setContent(selector, content);
+
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public void setAnnotatedContent(String URI, String resourceType,
+			Content<String> annotatedContent) {
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore
+				.setAnnotatedContent(selector, annotatedContent);
+
 	}
 
 }

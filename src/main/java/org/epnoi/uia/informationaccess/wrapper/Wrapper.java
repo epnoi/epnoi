@@ -1,7 +1,7 @@
 package org.epnoi.uia.informationaccess.wrapper;
 
-import epnoi.model.Context;
-import epnoi.model.Resource;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 
 public interface Wrapper {
 

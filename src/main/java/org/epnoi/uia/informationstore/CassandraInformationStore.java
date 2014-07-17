@@ -2,16 +2,15 @@ package org.epnoi.uia.informationstore;
 
 import java.util.List;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
-import epnoi.model.User;
 
 public class CassandraInformationStore implements InformationStore {
 InformationStoreParameters parameters;
@@ -101,6 +100,34 @@ InformationStoreParameters parameters;
 
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	public Content<String> getContent(Selector selector){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		return dao.getContent(selector);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public Content<String> getAnnotatedContent(Selector selector){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		return dao.getAnnotatedContent(selector);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public void setContent(Selector selector, Content<String> content){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		dao.setContent(selector,content);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	public void setAnnotatedContent(Selector selector, Content<String> annotatedContent){
+		CassandraDAO dao = this.daoFactory.build(selector);
+		dao.setAnnotatedContent(selector, annotatedContent);
 	}
 
 }

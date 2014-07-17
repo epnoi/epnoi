@@ -25,10 +25,10 @@ import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.SliceQuery;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.Selector;
-
-import epnoi.model.Context;
-import epnoi.model.Resource;
 
 public abstract class CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";
@@ -41,26 +41,39 @@ public abstract class CassandraDAO {
 
 	protected static Map<String, ColumnFamilyTemplate<String, String>> columnFamilyTemplates = null;
 	protected static List<ColumnFamilyDefinition> columnFamilyDefinitions = null;
-	
-	public abstract Resource read(Selector selector);
-	public abstract Resource read(String URI);
-	
-	
-	public abstract void create(Resource resource, Context context);
-	
-	public abstract void remove(String URI);
-	
 
+	public abstract Resource read(Selector selector);
+
+	public abstract Resource read(String URI);
+
+	public abstract void create(Resource resource, Context context);
+
+	public abstract void remove(String URI);
+
+	public abstract Content<String> getContent(Selector selector);
+	
+	public abstract Content<String> getAnnotatedContent(Selector selector);
+
+	public abstract void setContent(Selector selector, Content<String> content);
+	
+	public abstract void setAnnotatedContent(Selector selector, Content<String> annotatedContent);
+	
+	
+	
+	
 	public void init() {
 
 		CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
 				"localhost:9160");
-		System.out.println("Cluster instantiated");
+		//System.out.println("Cluster instantiated");
 
 		List<String> columnFamillyNames = Arrays.asList(
 				ExternalResourceCassandraHelper.COLUMN_FAMILLY,
 				UserCassandraHelper.COLUMN_FAMILLY,
-				SearchCassandraHelper.COLUMN_FAMILLY, FeedCassandraHelper.COLUMN_FAMILLY, ItemCassandraHelper.COLUMN_FAMILLY);
+				SearchCassandraHelper.COLUMN_FAMILLY,
+				FeedCassandraHelper.COLUMN_FAMILLY,
+				ItemCassandraHelper.COLUMN_FAMILLY,
+				PaperCassandraHelper.COLUMN_FAMILLY);
 
 		if (CassandraDAO.columnFamilyDefinitions == null) {
 			System.out.println("Intializing columnFamilyDefinitions");
@@ -95,8 +108,11 @@ public abstract class CassandraDAO {
 
 			}
 		} else {
+			
+			/*
 			System.out
 					.println("columnFamilyDefinitions was already initialized");
+		*/
 		}
 
 		if (CassandraDAO.keyspaceDefinition == null) {
@@ -114,8 +130,9 @@ public abstract class CassandraDAO {
 			cluster.addKeyspace(CassandraDAO.keyspaceDefinition, true);
 			System.out.println("Keyspace " + KEYSPACE + " created");
 		} else {
+			/*
 			System.out.println("The keyspace was already initialized");
-
+*/
 		}
 		if (CassandraDAO.keyspace == null) {
 			CassandraDAO.keyspace = HFactory.createKeyspace(KEYSPACE,
@@ -172,6 +189,20 @@ public abstract class CassandraDAO {
 
 			System.out.println(e.getMessage());
 		}
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	protected String readColumn(String key, String name, String columnFamilyName) {
+		try {
+			ColumnFamilyResult<String, String> res = CassandraDAO.columnFamilyTemplates
+					.get(columnFamilyName).queryColumns(key);
+			String value = res.getString(name);
+			return value;
+		} catch (HectorException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------

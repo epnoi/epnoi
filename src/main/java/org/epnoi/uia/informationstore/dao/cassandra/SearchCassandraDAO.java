@@ -7,12 +7,13 @@ import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 
+import org.epnoi.model.Content;
+import org.epnoi.model.Context;
+import org.epnoi.model.ExternalResource;
+import org.epnoi.model.Resource;
+import org.epnoi.model.Search;
 import org.epnoi.uia.informationstore.Selector;
 
-import epnoi.model.Context;
-import epnoi.model.ExternalResource;
-import epnoi.model.Resource;
-import epnoi.model.Search;
 
 public class SearchCassandraDAO extends CassandraDAO {
 
@@ -74,7 +75,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
-				System.out.println("--column " + column);
+				//System.out.println("--column " + column);
 				if (SearchCassandraHelper.TITLE.equals(column.getName())) {
 					search.setTitle(column.getValue());
 
@@ -136,4 +137,35 @@ public class SearchCassandraDAO extends CassandraDAO {
 		}
 		return searchs;
 	}
+	
+	// --------------------------------------------------------------------------------
+	
+		@Override
+		public Content<String> getContent(Selector selector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Content<String> getAnnotatedContent(Selector selector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setContent(Selector selector, Content<String> content) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setAnnotatedContent(Selector selector,
+				Content<String> annotatedContent) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		
+		
+		
 }

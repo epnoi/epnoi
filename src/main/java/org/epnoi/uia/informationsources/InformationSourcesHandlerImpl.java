@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
@@ -11,10 +15,6 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
-import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceNotification;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Resource;
 
 public class InformationSourcesHandlerImpl implements InformationSourcesHandler {
 

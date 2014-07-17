@@ -6,21 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.informationsources.generators.RSSInformationSourceRandomGenerator;
+import org.epnoi.model.Context;
+import org.epnoi.model.Feed;
+import org.epnoi.model.InformationSource;
+import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.Item;
+import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
 
-import epnoi.model.Context;
-import epnoi.model.Feed;
-import epnoi.model.InformationSource;
-import epnoi.model.InformationSourceSubscription;
-import epnoi.model.Item;
-import epnoi.model.Search;
-import epnoi.model.User;
 
 public class CoreMainUser {
 	// ---------------------------------------------------------------------------------

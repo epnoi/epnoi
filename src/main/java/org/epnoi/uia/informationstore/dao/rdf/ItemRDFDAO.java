@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.epnoi.model.Context;
+import org.epnoi.model.Item;
+import org.epnoi.model.Resource;
+
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -20,9 +24,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import epnoi.model.Context;
-import epnoi.model.Item;
-import epnoi.model.Resource;
+
 
 public class ItemRDFDAO extends RDFDAO {
 
@@ -46,7 +48,7 @@ public class ItemRDFDAO extends RDFDAO {
 				.replace("{ITEM_CLASS}", FeedRDFHelper.ITEM_CLASS)
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{ITEM_LINK}", item.getLink())
-				.replace("{TITLE_PROPERTY}", RDFHelper.TITLE_PROPERTY)
+				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
 				.replace("{ITEM_TITLE}", cleanOddCharacters(item.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 				.replace("{DESCRIPTION_PROPERTY}",
@@ -107,7 +109,7 @@ public class ItemRDFDAO extends RDFDAO {
 			// t.getPredicate().getURI() + " " + t.getObject() + " . }");
 			String predicateURI = t.getPredicate().getURI();
 
-			if (RDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
+			if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
 				item.setTitle(t.getObject().getLiteral().getValue().toString());
 			} else if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
 				item.setLink(t.getObject().getLiteral().getValue().toString());
