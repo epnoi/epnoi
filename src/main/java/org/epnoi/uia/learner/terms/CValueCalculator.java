@@ -5,7 +5,7 @@ public class CValueCalculator {
 	private static final double LENGHT_ONE_WEIGTH = 0.5;
 
 	public static double calculateCValue(
-			AnnotatedWord<TermCandidateMetadata> termCandidate) {
+			AnnotatedWord<TermMetadata> termCandidate) {
 
 		double lenghtWeight;
 		if (termCandidate.getAnnotation().getLength() == 1) {

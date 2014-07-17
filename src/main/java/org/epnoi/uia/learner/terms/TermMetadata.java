@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TermCandidateMetadata implements Comparable<TermCandidateMetadata> {
+public class TermMetadata implements Comparable<TermMetadata> {
 	Map<String, Object> metadata = new HashMap<>();
 
 	public static final String OCURRENCES = "OCURRENCES";
@@ -17,15 +17,22 @@ public class TermCandidateMetadata implements Comparable<TermCandidateMetadata> 
 	private long ocurrencesAsSubterm;
 	private long numberOfSuperterns;
 	private double cValue;
+	private double domainConsensus;
+	private double domainPertinence;
+	private double termProbability;
+	private double termhood;
 
 	// -------------------------------------------------------------------------------------------------------
-	TermCandidateMetadata() {
+	TermMetadata() {
 		this.length = 0;
 		this.words = null;
 		this.ocurrences = 1L;
 		this.ocurrencesAsSubterm = 0;
 		this.numberOfSuperterns = 0;
-		this.cValue= 0;
+		this.cValue = 0;
+		this.domainConsensus = 0;
+		this.termProbability = 0;
+		this.termhood = 0;
 	}
 
 	// -------------------------------------------------------------------------------------------------------
@@ -55,7 +62,7 @@ public class TermCandidateMetadata implements Comparable<TermCandidateMetadata> 
 	// -------------------------------------------------------------------------------------------------------
 
 	@Override
-	public int compareTo(TermCandidateMetadata termMetadata) {
+	public int compareTo(TermMetadata termMetadata) {
 
 		return termMetadata.length - this.length;
 	}
@@ -112,23 +119,78 @@ public class TermCandidateMetadata implements Comparable<TermCandidateMetadata> 
 
 	public void setCValue(double cValue) {
 		this.cValue = cValue;
+
 	}
-	
+
 	// -------------------------------------------------------------------------------------------------------
-	
+
 	public double getCValue() {
 		return this.cValue;
 	}
-	
+
 	// -------------------------------------------------------------------------------------------------------
 
-	
+	public double getDomainConsensus() {
+		return domainConsensus;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public void setDomainConsensus(double domainConsensus) {
+		this.domainConsensus = domainConsensus;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public double getTermProbability() {
+		return termProbability;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public void setTermProbability(double termProbability) {
+		this.termProbability = termProbability;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public double getDomainPertinence() {
+		return domainPertinence;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public void setDomainPertinence(double domainPertinence) {
+		this.domainPertinence = domainPertinence;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public double getTermhood() {
+		return termhood;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
+	public void setTermhood(double termhood) {
+		this.termhood = termhood;
+	}
+
+	// -------------------------------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
-		return "TermCandidateMetadata [length=" + length + ", words="
-				+ Arrays.toString(words) + ", ocurrences=" + ocurrences
-				+ ", ocurrencesAsSubterm=" + ocurrencesAsSubterm
-				+ ", numberOfSuperterns=" + numberOfSuperterns + ", cValue="
-				+ cValue + "]";
+		return "TermCandidateMetadata [metadata=" + metadata + ", length="
+				+ length + ", words=" + Arrays.toString(words)
+				+ ", ocurrences=" + ocurrences + ", ocurrencesAsSubterm="
+				+ ocurrencesAsSubterm + ", numberOfSuperterns="
+				+ numberOfSuperterns + ", cValue=" + cValue
+				+ ", domainConsensus=" + domainConsensus
+				+ ", domainPertinence=" + domainPertinence
+				+ ", termProbability=" + termProbability + ", termhood="
+				+ termhood + "]";
 	}
+
+	// -------------------------------------------------------------------------------------------------------
+
 }
