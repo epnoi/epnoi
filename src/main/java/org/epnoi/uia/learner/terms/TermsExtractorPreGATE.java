@@ -114,10 +114,10 @@ public class TermsExtractorPreGATE {
 
 	// -------------------------------------------------------------------------------------------------------
 
-	public List<AnnotatedWord<TermCandidateMetadata>> extractTerms(String content) {
+	public List<AnnotatedWord<TermMetadata>> extractTerms(String content) {
 
 		List<List<AnnotatedWord<String>>> annotatedSentences = _generateAnnotatedSentences(content);
-		List<AnnotatedWord<TermCandidateMetadata>> detectedTerms = this.termDetector
+		List<AnnotatedWord<TermMetadata>> detectedTerms = this.termDetector
 				.detect(annotatedSentences);
 		System.out.println("detected Terms >>>>> " + detectedTerms);
 
@@ -184,7 +184,7 @@ public class TermsExtractorPreGATE {
 		 * , FeedRDFHelper.ITEM_CLASS); List<AnnotatedWord<TermMetadata>>
 		 * extractedTerms = termExtractor .extractTerms(item.getContent());
 		 */
-		List<AnnotatedWord<TermCandidateMetadata>> extractedTerms = termExtractor
+		List<AnnotatedWord<TermMetadata>> extractedTerms = termExtractor
 				.extractTerms("My father mother is rich. And my great father mother is in the big kitchen. I love normal distribution. Normal Fourier Distribution is great!.");
 		System.out.println("........> " + extractedTerms);
 	}

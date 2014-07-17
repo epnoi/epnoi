@@ -30,10 +30,10 @@ public class TermCandidateBuilder {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public AnnotatedWord<TermCandidateMetadata> buildTermCandidate(
+	public AnnotatedWord<TermMetadata> buildTermCandidate(
 			Annotation annotation) {
-		AnnotatedWord<TermCandidateMetadata> termCandidate = new AnnotatedWord<TermCandidateMetadata>(
-				new TermCandidateMetadata());
+		AnnotatedWord<TermMetadata> termCandidate = new AnnotatedWord<TermMetadata>(
+				new TermMetadata());
 
 		Long startOffset = annotation.getStartNode().getOffset();
 		Long endOffset = annotation.getEndNode().getOffset();
@@ -105,10 +105,10 @@ public class TermCandidateBuilder {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public AnnotatedWord<TermCandidateMetadata> generateSubTermCandidate(
+	public AnnotatedWord<TermMetadata> generateSubTermCandidate(
 			String[] words) {
-		AnnotatedWord<TermCandidateMetadata> termCandidate = new AnnotatedWord<TermCandidateMetadata>(
-				new TermCandidateMetadata());
+		AnnotatedWord<TermMetadata> termCandidate = new AnnotatedWord<TermMetadata>(
+				new TermMetadata());
 		termCandidate.getAnnotation().setLength(words.length);
 		termCandidate.getAnnotation().setWords(words);
 		termCandidate.setWord(this._generateWord(Arrays.asList(words)));
@@ -118,9 +118,9 @@ public class TermCandidateBuilder {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public List<AnnotatedWord<TermCandidateMetadata>> splitTermCandidate(
-			AnnotatedWord<TermCandidateMetadata> termCandidate) {
-		List<AnnotatedWord<TermCandidateMetadata>> termCandidates = new ArrayList<AnnotatedWord<TermCandidateMetadata>>();
+	public List<AnnotatedWord<TermMetadata>> splitTermCandidate(
+			AnnotatedWord<TermMetadata> termCandidate) {
+		List<AnnotatedWord<TermMetadata>> termCandidates = new ArrayList<AnnotatedWord<TermMetadata>>();
 
 		String[] words = termCandidate.getAnnotation().getWords();
 		List<String[]> listSubtermsWords = _generateSubtermsWords(words);
@@ -155,8 +155,8 @@ public class TermCandidateBuilder {
 
 	public static void main(String[] args) {
 		TermCandidateBuilder termBuilder = new TermCandidateBuilder(null);
-		AnnotatedWord<TermCandidateMetadata> termCandidate = new AnnotatedWord<TermCandidateMetadata>(
-				new TermCandidateMetadata());
+		AnnotatedWord<TermMetadata> termCandidate = new AnnotatedWord<TermMetadata>(
+				new TermMetadata());
 		termCandidate.getAnnotation().setWords(
 				new String[] { "a", "b", "c", "d" });
 		System.out.println(termBuilder.splitTermCandidate(termCandidate));
