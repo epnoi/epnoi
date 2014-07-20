@@ -24,6 +24,8 @@ public abstract class SOLRDAO {
 	abstract public void create(Resource resource);
 
 	abstract public void create(Resource resource, Context context);
+	
+	abstract public void remove(String URI);
 
 	// --------------------------------------------------------------------------------
 

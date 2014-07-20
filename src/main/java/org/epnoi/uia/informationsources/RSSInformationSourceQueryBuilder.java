@@ -10,7 +10,7 @@ import java.util.Locale;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFOAIOREHelper;
+import org.epnoi.uia.informationstore.dao.rdf.OAIORERDFHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -48,7 +48,7 @@ public class RSSInformationSourceQueryBuilder implements
 				.replace("{FEED_CLASS}", FeedRDFHelper.FEED_CLASS)
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{AGGREGATES_PROPERTY}",
-						RDFOAIOREHelper.AGGREGATES_PROPERTY)
+						OAIORERDFHelper.AGGREGATES_PROPERTY)
 				.replace("{PUBDATE_PROPERTY}", RDFHelper.PUBDATE_PROPERTY)
 				.replace("{INFORMATION_SOURCE_URI}",
 						informationSourceSubscription.getInformationSource())

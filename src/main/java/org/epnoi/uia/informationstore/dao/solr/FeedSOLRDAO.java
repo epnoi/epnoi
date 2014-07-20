@@ -279,4 +279,21 @@ public class FeedSOLRDAO extends SOLRDAO {
 		 */
 
 	}
+
+	// ---------------------------------------------------------------------------------------------------
+	
+	@Override
+	public void remove(String URI) {
+		try {
+			this.server.deleteById(URI);
+			this.server.commit();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }

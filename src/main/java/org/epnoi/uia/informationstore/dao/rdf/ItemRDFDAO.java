@@ -59,7 +59,7 @@ public class ItemRDFDAO extends RDFDAO {
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)
 				.replace("{ITEM_AUTHOR}", item.getAuthor())
-				.replace("{IS_AGGREGATED_BY_PROPERTY}", RDFOAIOREHelper.IS_AGGREGATED_BY_PROPERTY)
+				.replace("{IS_AGGREGATED_BY_PROPERTY}", OAIORERDFHelper.IS_AGGREGATED_BY_PROPERTY)
 				.replace("{INFORMATION_SOURCE_URI}", context.getParameters().get(Context.INFORMATION_SOURCE_URI));
 		
 
