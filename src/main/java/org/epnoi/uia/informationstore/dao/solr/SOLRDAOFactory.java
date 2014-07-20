@@ -2,8 +2,26 @@ package org.epnoi.uia.informationstore.dao.solr;
 
 import org.epnoi.model.Feed;
 import org.epnoi.model.Paper;
+import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.FeedRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.ItemRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.PaperRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.informationstore.dao.rdf.ResearchObjectRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.UserRDFDAO;
+import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 
@@ -28,10 +46,45 @@ public class SOLRDAOFactory {
 			SOLRDAO dao = new PaperSOLRDAO();
 			dao.init(this.parameters);
 			return dao;
+		} else if (resource instanceof ResearchObject) {
+			SOLRDAO dao = new ResearchObjectSOLRDAO();
+			dao.init(this.parameters);
+			return dao;
 		} else {
 			throw new DAONotFoundException("For resource " + resource);
 		}
 
+	}
+	
+	//----------------------------------------------------------------------------------------
+	
+
+	public SOLRDAO build(Selector selector) throws DAONotFoundException {
+		String typeSelector = selector.getProperty(SelectorHelper.TYPE);
+		if (typeSelector == null) {
+			throw new DAONotFoundException(
+					"No type specified for building the SOLRDAO");
+
+		} else if (typeSelector.equals(FeedRDFHelper.FEED_CLASS)) {
+
+			FeedSOLRDAO feedDAO = new FeedSOLRDAO();
+			feedDAO.init(this.parameters);
+			return feedDAO;
+
+		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
+			SOLRDAO dao = new PaperSOLRDAO();
+			dao.init(this.parameters);
+			return dao;
+
+		} else if (typeSelector.equals(RDFHelper.RESEARCH_OBJECT_CLASS)) {
+		
+			ResearchObjectSOLRDAO researchObjectDAO = new ResearchObjectSOLRDAO();
+			researchObjectDAO.init(this.parameters);
+			return researchObjectDAO;
+
+		} else {
+			throw new DAONotFoundException("Unknown type " + typeSelector);
+		}
 	}
 
 }

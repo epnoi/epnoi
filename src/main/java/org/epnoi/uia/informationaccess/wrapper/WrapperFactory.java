@@ -8,6 +8,7 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
 import org.epnoi.uia.core.Core;
@@ -47,6 +48,10 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(Paper.class.getName(),
 				new PaperWrapper(this.core));
+		
+
+		this.wrappersByClass.put(ResearchObject.class.getName(),
+				new ResearchObjectWrapper(this.core));
 
 		
 		
@@ -70,6 +75,10 @@ public class WrapperFactory {
 		this.wrappersByType.put(RDFHelper.PAPER_CLASS,
 				new PaperWrapper(this.core));
 
+		this.wrappersByType.put(RDFHelper.RESEARCH_OBJECT_CLASS,
+				new ResearchObjectWrapper(this.core));
+
+	
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

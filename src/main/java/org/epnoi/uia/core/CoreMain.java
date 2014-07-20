@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFOAIOREHelper;
+import org.epnoi.uia.informationstore.dao.rdf.OAIORERDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
 import org.epnoi.uia.search.SearchContext;
