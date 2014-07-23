@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.DublinCoreMetadataElementsSet;
+import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 
@@ -88,7 +89,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 		vur.exec();
 
 		this.addDublinCoreProperties(researchObjectURI + MANIFEST,
-				researchObject.getDCProperties());
+				researchObject.getDcProperties());
 
 		Node uriNode = Node.createURI(researchObjectURI);
 		Node aggregatesProperty = Node
@@ -189,7 +190,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 			}
 
 			DublinCoreMetadataElementsSet dcProperties = this.readDC(URI+MANIFEST);
-			researchObject.setDCProperties(dcProperties);
+			researchObject.setDcProperties(dcProperties);
 		}
 		return researchObject;
 	}
@@ -216,13 +217,13 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 			Triple t = i.next();
 			String predicateURI = t.getPredicate().getURI();
 
-			if (dcProperties.isDublinCoreProperty(predicateURI)) {
+			if (DublinCoreMetadataElementsSetHelper.isDublinCoreProperty(predicateURI)) {
 
-				if (dcProperties.isDatatypeProperty(predicateURI)) {
+				if (DublinCoreMetadataElementsSetHelper.isDatatypeProperty(predicateURI)) {
 
 					dcProperties.addPropertyValue(predicateURI, t.getObject()
 							.getURI().toString());
-				} else if (dcProperties.isObjectProperty(predicateURI)) {
+				} else if (DublinCoreMetadataElementsSetHelper.isObjectProperty(predicateURI)) {
 					dcProperties.addPropertyValue(predicateURI, t.getObject()
 							.getLiteral().getValue().toString());
 				}

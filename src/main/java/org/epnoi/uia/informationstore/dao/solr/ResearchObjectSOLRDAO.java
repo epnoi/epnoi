@@ -80,18 +80,18 @@ public class ResearchObjectSOLRDAO extends SOLRDAO {
 
 		newDocument.addField(
 				SOLRDAOHelper.DESCRIPTION_PROPERTY,
-				paper.getDCProperties().getPropertyFirstValue(
+				paper.getDcProperties().getPropertyFirstValue(
 						DublinCoreRDFHelper.DESCRIPTION_PROPERTY));
 
-		String content = paper.getDCProperties().getPropertyFirstValue(
+		String content = paper.getDcProperties().getPropertyFirstValue(
 				DublinCoreRDFHelper.TITLE_PROPERTY)
 				+ ". "
-				+ paper.getDCProperties().getPropertyFirstValue(
+				+ paper.getDcProperties().getPropertyFirstValue(
 						DublinCoreRDFHelper.DESCRIPTION_PROPERTY);
 		newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
 
 		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY, DateConverter
-				.convertDateFormat(paper.getDCProperties()
+				.convertDateFormat(paper.getDcProperties()
 						.getPropertyFirstValue(
 								DublinCoreRDFHelper.DATE_PROPERTY)));
 		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY,

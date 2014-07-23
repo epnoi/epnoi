@@ -31,26 +31,24 @@ public class CoreMainROsTest {
 		researchObject.setURI("http://testResearchObject");
 		researchObject.getAggregatedResources().add("http://resourceA");
 		researchObject.getAggregatedResources().add("http://resourceB");
-		researchObject.getDCProperties().addPropertyValue(
-				DublinCoreRDFHelper.TITLE_PROPERTY, "First RO, loquetienesquebuscar");
-		researchObject.getDCProperties().addPropertyValue(
+		researchObject.getDcProperties().addPropertyValue(
+				DublinCoreRDFHelper.TITLE_PROPERTY,
+				"First RO, loquetienesquebuscar");
+		researchObject.getDcProperties().addPropertyValue(
 				DublinCoreRDFHelper.DESCRIPTION_PROPERTY,
 				"Description of the first RO");
-		researchObject.getDCProperties().addPropertyValue(
-				DublinCoreRDFHelper.DATE_PROPERTY,
-				"2005-02-28T00:00:00Z");
+		researchObject.getDcProperties().addPropertyValue(
+				DublinCoreRDFHelper.DATE_PROPERTY, "2005-02-28T00:00:00Z");
 
 		Context context = new Context();
 		context.getParameters().put(Context.INFORMATION_SOURCE_NAME,
 				"coreMainTest");
 
 		core.getInformationAccess().put(researchObject, context);
-		
-		
-		Resource readedRO =  core.getInformationAccess().get("http://testResearchObject",RDFHelper.RESEARCH_OBJECT_CLASS);
-		System.out.println("Readed RO >"+readedRO);
-		
-		
+
+		Resource readedRO = core.getInformationAccess().get(
+				"http://testResearchObject", RDFHelper.RESEARCH_OBJECT_CLASS);
+		System.out.println("Readed RO >" + readedRO);
 
 		SelectExpression selectExpression = new SelectExpression();
 
@@ -58,19 +56,29 @@ public class CoreMainROsTest {
 
 		SearchContext searchContext = new SearchContext();
 		searchContext.getFacets().add("date");
-		//searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
-		//searchContext.getFilterQueries().add("date:\"2014-03-04T17:56:05Z\"");
-		
-		
-		core.getInformationAccess().remove("http://testResearchObject", RDFHelper.RESEARCH_OBJECT_CLASS);
+		// searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
+		// searchContext.getFilterQueries().add("date:\"2014-03-04T17:56:05Z\"");
 
+		/*
+		 * REMOVAL
+		 * core.getInformationAccess().remove("http://testResearchObject",
+		 * RDFHelper.RESEARCH_OBJECT_CLASS);
+		 */
 		SearchResult searchResult = core.getSearchHandler().search(
 				selectExpression, searchContext);
 		System.out.println("Result ---> " + searchResult);
-		
-		
-		
-		//core.getInformationAccess().remove(researchObject);
+
+		researchObject.getAggregatedResources().add("http://newResource");
+		researchObject.getAggregatedResources().remove("http://resourceB");
+
+		core.getInformationAccess().update(researchObject);
+
+		Resource updatedRO = core.getInformationAccess().get(
+				"http://testResearchObject", RDFHelper.RESEARCH_OBJECT_CLASS);
+
+		System.out.println("Readed updated RO >" + updatedRO);
+
+		core.getInformationAccess().remove(researchObject);
 
 	}
 

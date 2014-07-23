@@ -91,7 +91,7 @@ public class SOLRInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void remove(Selector selector) {
-		System.out.println("Entra en SOLRInformationStore->remove "+selector);
+		//System.out.println("Entra en SOLRInformationStore->remove "+selector);
 		SOLRDAO solrDAO = this.datoFactory.build(selector);
 
 		solrDAO.remove(selector.getProperty(SelectorHelper.URI));

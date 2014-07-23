@@ -7,7 +7,6 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class ResearchObjectWrapper implements Wrapper {
@@ -53,7 +52,7 @@ public class ResearchObjectWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		
+
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
@@ -63,20 +62,19 @@ public class ResearchObjectWrapper implements Wrapper {
 				RDFHelper.RESEARCH_OBJECT_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
-		
-		informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
-		
-		
+
 	}
 
 	// -------------------------------------------------------------------------------------
 
 	@Override
 	public void update(Resource resource) {
-		// TODO Auto-generated method stub
+		this.remove(resource.getURI());
+		this.put(resource, Context.emptyContext);
 
 	}
 
