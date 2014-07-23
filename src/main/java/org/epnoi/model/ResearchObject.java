@@ -41,13 +41,13 @@ public class ResearchObject implements Resource {
 
 	// --------------------------------------------------------------------------
 
-	public DublinCoreMetadataElementsSet getDCProperties() {
+	public DublinCoreMetadataElementsSet getDcProperties() {
 		return dcProperties;
 	}
 
 	// --------------------------------------------------------------------------
 
-	public void setDCProperties(DublinCoreMetadataElementsSet dcProperties) {
+	public void setDcProperties(DublinCoreMetadataElementsSet dcProperties) {
 		this.dcProperties = dcProperties;
 	}
 

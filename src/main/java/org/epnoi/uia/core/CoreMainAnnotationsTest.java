@@ -3,13 +3,10 @@ package org.epnoi.uia.core;
 import gate.Annotation;
 import gate.Document;
 import gate.Factory;
-import gate.Gate;
 import gate.Utils;
 import gate.creole.ResourceInstantiationException;
-import gate.util.GateException;
 import gate.util.InvalidOffsetException;
 
-import java.io.File;
 import java.util.List;
 
 import org.epnoi.model.Content;

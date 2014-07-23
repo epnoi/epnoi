@@ -7,17 +7,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.cpr.DefaultBroadcaster;
 import org.atmosphere.jersey.SuspendResponse;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationsources.monitors.RSSInformationSourceMonitor;
 import org.epnoi.uia.informationsources.subscribers.EventBus;
-import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 
 @Path("/notificationsService")
 public class NotificationServiceResource extends UIAService {
