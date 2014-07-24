@@ -121,6 +121,10 @@ public class ResearchObjectsServiceClient {
 			 * System.out.println("After deleting the resource we have: " +
 			 * response);
 			 */
+			
+			
+			
+			/*REMOVAL PART
 			service.path("/uia/researchobjects/researchobject")
 					.queryParam("uri", researchObject.getURI())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
@@ -132,7 +136,7 @@ public class ResearchObjectsServiceClient {
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 					.get(ResearchObject.class);
 			System.out.println("failed response " + failedResponse);
-
+*/
 			/*
 			 * 
 			 * Client client = Client.create();

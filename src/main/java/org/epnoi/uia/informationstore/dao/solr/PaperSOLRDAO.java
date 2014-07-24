@@ -76,12 +76,19 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 		newDocument.addField(SOLRDAOHelper.DESCRIPTION_PROPERTY,
 				paper.getDescription());
+		/*
+		 * if (context != null) { String content = (String)
+		 * context.getElements().get(paper.getURI());
+		 * newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
+		 * 
+		 * }
+		 */
 
-		if (context != null) {
-			String content = (String) context.getElements().get(paper.getURI());
-			newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
-
-		}
+		String content = paper.getTitle() + " " + paper.getDescription();
+		System.out.println("Contet> "+content);
+		
+		newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
+		
 
 		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,
 				DateConverter.convertDateFormat(paper.getPubDate()));

@@ -46,18 +46,16 @@ public class CoreMainTest {
 
 		core.getAnnotationHandler().annotate(TEST_USER_URI,
 				"http://whatever/elOtroTopic");
-
-		System.out.println("Anotaciones up to now > "
-				+ core.getAnnotationHandler().getAnnotations());
-
-		for (String annotationURI : core.getAnnotationHandler()
-				.getAnnotations()) {
-			System.out
-					.println("-------------------------------annnnnnnotation :> "
-							+ core.getInformationAccess().get(annotationURI,
-									AnnotationRDFHelper.ANNOTATION_CLASS));
-		}
-
+		/*
+		 * System.out.println("Anotaciones up to now > " +
+		 * core.getAnnotationHandler().getAnnotations());
+		 * 
+		 * for (String annotationURI : core.getAnnotationHandler()
+		 * .getAnnotations()) { System.out
+		 * .println("-------------------------------annnnnnnotation :> " +
+		 * core.getInformationAccess().get(annotationURI,
+		 * AnnotationRDFHelper.ANNOTATION_CLASS)); }
+		 */
 		/*
 		 * 
 		 * System.out.println("Annotations for "+TEST_USER_URI+
@@ -212,7 +210,7 @@ public class CoreMainTest {
 		paper.setURI("http://testPaper");
 
 		String[] authors = { "A", "B" };
-		paper.setAuthors(new ArrayList<String>(Arrays.asList(authors)));
+		paper.setAuthors(new ArrayList<String>(Arrays.	asList(authors)));
 
 		paper.setTitle("Test paper title");
 		paper.setDescription("Description of the paper, strangeword");
@@ -280,5 +278,6 @@ public class CoreMainTest {
 				.put(Context.INFORMATION_SOURCE_URI,
 						"http://www.epnoi.org/informationSources/testInformationSource");
 		core.getInformationAccess().put(feedA, context);
+		core.getInformationAccess().remove(feedA);
 	}
 }

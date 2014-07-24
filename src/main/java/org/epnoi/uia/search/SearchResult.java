@@ -1,5 +1,6 @@
 package org.epnoi.uia.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.uia.search.organize.OrganizationResultPair;
@@ -10,6 +11,11 @@ public class SearchResult {
 	List<OrganizationResultPair> resources;
 	List<Facet> facets;
 
+	public SearchResult(){
+		resources=new ArrayList<OrganizationResultPair>();
+		this.facets = new ArrayList<Facet>();
+	}
+	
 	// ----------------------------------------------------------------------------
 
 	public List<Facet> getFacets() {
