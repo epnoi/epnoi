@@ -16,7 +16,7 @@ import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.SearchResult;
 import org.epnoi.uia.search.select.SelectExpression;
 
-@Path("/UIA/searchs")
+@Path("/uia/searchs")
 public class SearchsResource extends UIAService {
 
 	@Context
@@ -33,7 +33,7 @@ public class SearchsResource extends UIAService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("")
-	public Response getSearchInJSON(@QueryParam("query") String query,
+	public Response getSearch(@QueryParam("query") String query,
 			@QueryParam("facet") List<String> facet,
 			@QueryParam("filter") List<String> filter) {
 		System.out.println("GET: query: "+query +" facets: " + facet + " filter: "
