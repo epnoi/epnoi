@@ -26,70 +26,69 @@ public class AnnotationRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		Annotation annotation = (Annotation) resource;
-		System.out.println("The last annotation> "+annotation);
+		//System.out.println("The last annotation> " + annotation);
 		String userURI = annotation.getURI();
 
-		
 		String queryExpression = null;
-		
-		
-		if (annotation.getHasTopic()!=null){
-			
-			//Annotation of a topic (i.e. annotat
-		queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
-				+ "{ <{URI}> a <{ANNOTATION_CLASS}> ; "
-				+ "<{ANNOTATES_DOCUMENT_PROPERTY}> <{ANNOTATED_DOCUMENT_URI}> ;"
-								+ "<{HAS_TOPIC_PROPERTY}> <{TOPIC_URI}> . }";
 
-		queryExpression = queryExpression
-				.replace("{GRAPH}", this.parameters.getGraph())
-				.replace("{URI}", userURI)
-				.replace("{ANNOTATION_CLASS}",
-						AnnotationRDFHelper.ANNOTATION_CLASS)
-				.replace("{HAS_TOPIC_PROPERTY}",
-						AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY)
-				.replace("{TOPIC_URI}", annotation.getHasTopic())
-				.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
-						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
-				.replace("{ANNOTATED_DOCUMENT_URI}",
-						annotation.getAnnotatesResource());
-		}else{
+		if (annotation.getHasTopic() != null) {
+
+			// Annotation of a topic (i.e. annotat
 			queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 					+ "{ <{URI}> a <{ANNOTATION_CLASS}> ; "
 					+ "<{ANNOTATES_DOCUMENT_PROPERTY}> <{ANNOTATED_DOCUMENT_URI}> ;"
-									+ "<{LABEL_PROPERTY}> \"{LABEL}\" . }";
+					+ "<{HAS_TOPIC_PROPERTY}> <{TOPIC_URI}> . }";
 
 			queryExpression = queryExpression
 					.replace("{GRAPH}", this.parameters.getGraph())
 					.replace("{URI}", userURI)
 					.replace("{ANNOTATION_CLASS}",
 							AnnotationRDFHelper.ANNOTATION_CLASS)
-					.replace("{LABEL_PROPERTY}",
-							RDFHelper.LABEL_PROPERTY)
-					.replace("{LABEL}", cleanOddCharacters(annotation.getLabel()))
-					.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
+					.replace("{HAS_TOPIC_PROPERTY}",
+							AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY)
+					.replace("{TOPIC_URI}", annotation.getHasTopic())
+					.replace(
+							"{ANNOTATES_DOCUMENT_PROPERTY}",
+							AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
+					.replace("{ANNOTATED_DOCUMENT_URI}",
+							annotation.getAnnotatesResource());
+		} else {
+			queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+					+ "{ <{URI}> a <{ANNOTATION_CLASS}> ; "
+					+ "<{ANNOTATES_DOCUMENT_PROPERTY}> <{ANNOTATED_DOCUMENT_URI}> ;"
+					+ "<{LABEL_PROPERTY}> \"{LABEL}\" . }";
+
+			queryExpression = queryExpression
+					.replace("{GRAPH}", parameters.getGraph())
+					.replace("{URI}", userURI)
+					.replace("{ANNOTATION_CLASS}",
+							AnnotationRDFHelper.ANNOTATION_CLASS)
+					.replace("{LABEL_PROPERTY}", RDFHelper.LABEL_PROPERTY)
+					.replace("{LABEL}",
+							cleanOddCharacters(annotation.getLabel()))
+					.replace(
+							"{ANNOTATES_DOCUMENT_PROPERTY}",
 							AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
 					.replace("{ANNOTATED_DOCUMENT_URI}",
 							annotation.getAnnotatesResource());
 		}
-		
+
 		// System.out.println(" ------> queryExpression " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression, this.graph);
+				queryExpression, graph);
 
 		vur.exec();
 
-	/*
-		Node Property = Node.createURI(UserRDFHelper.OWNS_PROPERTY);
-	 
-		  
-		  Node objectKnowledgeObject = Node.createURI(knowledgeObjectURI);
-		  
-		  this.graph.add(new Triple(userNode, ownsProperty,
-		  objectKnowledgeObject));
-		*/  
-		  
-		 
+		/*
+		 * Node Property = Node.createURI(UserRDFHelper.OWNS_PROPERTY);
+		 * 
+		 * 
+		 * Node objectKnowledgeObject = Node.createURI(knowledgeObjectURI);
+		 * 
+		 * this.graph.add(new Triple(userNode, ownsProperty,
+		 * objectKnowledgeObject));
+		 */
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -113,7 +112,7 @@ public class AnnotationRDFDAO extends RDFDAO {
 	public void remove(String URI) {
 
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
+				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, graph);
 
@@ -135,14 +134,14 @@ public class AnnotationRDFDAO extends RDFDAO {
 		Annotation annotation = new Annotation();
 		annotation.setURI(URI);
 		String queryExpression = "DESCRIBE <" + URI + "> FROM <"
-				+ this.parameters.getGraph() + ">";
+				+ parameters.getGraph() + ">";
 		/*
 		 * System.out.println("----------------------------->>>>>>> " +
 		 * queryExpression);
 		 */
 		Query sparql = QueryFactory.create(queryExpression);
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
+				sparql, graph);
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
@@ -159,10 +158,11 @@ public class AnnotationRDFDAO extends RDFDAO {
 						.toString()));
 			} else if (AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY
 					.equals(predicateURI)) {
-				annotation.setHasTopic((t.getObject().getURI()
-						.toString()));
+				annotation.setHasTopic((t.getObject().getURI().toString()));
+			} else if (RDFHelper.LABEL_PROPERTY
+					.equals(predicateURI)) {
+				annotation.setLabel((t.getObject().getLiteral().getValue().toString()));
 			}
-
 		}
 
 		return annotation;

@@ -34,7 +34,7 @@ public class ResearchObjectResource extends UIAService {
 	// ----------------------------------------------------------------------------------------
 	@PostConstruct
 	public void init() {
-		logger = Logger.getLogger(ResearchObject.class.getName());
+		logger = Logger.getLogger(ResearchObjectResource.class.getName());
 		logger.info("Initializing ResearchObjectResource");
 		this.core = this.getUIACore();
 
