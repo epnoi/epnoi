@@ -10,6 +10,7 @@ public class Annotation implements Resource {
 	private String onSourceResource;
 	private String predicate;
 	private String label;
+	
 
 	// ---------------------------------------------------------------------------------
 
