@@ -1,6 +1,5 @@
 package org.epnoi.uia.rest.services;
 
-import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;

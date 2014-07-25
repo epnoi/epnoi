@@ -6,6 +6,7 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
 import org.epnoi.uia.informationstore.Selector;
@@ -61,7 +62,13 @@ public class RDFDAOFactory {
 			RDFDAO dao = new AnnotationRDFDAO();
 			dao.init(this.parameters);
 			return dao;
-		} else {
+		} else if (resource instanceof ResearchObject) {
+			RDFDAO dao = new ResearchObjectRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		}
+
+		else {
 			throw new DAONotFoundException("For resource " + resource);
 		}
 
@@ -111,6 +118,12 @@ public class RDFDAOFactory {
 			AnnotationRDFDAO annotationDAO = new AnnotationRDFDAO();
 			annotationDAO.init(this.parameters);
 			return annotationDAO;
+
+		} else if (typeSelector.equals(RDFHelper.RESEARCH_OBJECT_CLASS)) {
+
+		 ResearchObjectRDFDAO researchObjectDAO = new ResearchObjectRDFDAO();
+			researchObjectDAO.init(this.parameters);
+			return researchObjectDAO;
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

@@ -3,13 +3,8 @@ package org.epnoi.uia.core;
 import java.net.URL;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFOAIOREHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.select.SelectExpression;
 
 public class CoreMain {
 	private static final Logger logger = Logger.getLogger(CoreMain.class

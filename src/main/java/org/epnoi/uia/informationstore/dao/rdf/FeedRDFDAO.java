@@ -1,13 +1,9 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
@@ -76,7 +72,7 @@ public class FeedRDFDAO extends RDFDAO {
 		itemRDFDAO.init(this.parameters);
 		Node uriNode = Node.createURI(feedURI);
 		Node aggregatesProperty = Node
-				.createURI(RDFOAIOREHelper.AGGREGATES_PROPERTY);
+				.createURI(OAIORERDFHelper.AGGREGATES_PROPERTY);
 		for (Item item : feed.getItems()) {
 			// System.out.println(item.getURI());
 			if (item.getURI() != null) {
@@ -110,7 +106,7 @@ public class FeedRDFDAO extends RDFDAO {
 			Triple triple = (Triple) i.next();
 
 			this.graph.remove(triple);
-			if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(triple
+			if (OAIORERDFHelper.AGGREGATES_PROPERTY.equals(triple
 					.getPredicate().getURI())) {
 				itemRDFDAO.remove(triple.getObject().getURI());
 			}
@@ -158,7 +154,7 @@ public class FeedRDFDAO extends RDFDAO {
 			} else if (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
 				feed.setLanguage(t.getObject().getURI().toString());
 
-			} else if (RDFOAIOREHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
+			} else if (OAIORERDFHelper.AGGREGATES_PROPERTY.equals(predicateURI)) {
 				// System.out.println("predicateURI " + predicateURI);
 				String itemURI = t.getObject().toString();
 

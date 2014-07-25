@@ -15,7 +15,6 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
 public class RDFDAOQueryResolver {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";

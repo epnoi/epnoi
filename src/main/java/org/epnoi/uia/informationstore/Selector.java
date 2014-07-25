@@ -30,4 +30,13 @@ public class Selector {
 		return this.properties.get(propertyName);
 	}
 	
+	// -------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "Selector [properties=" + properties + "]";
+	}
+	
+	// -------------------------------------------------------------------------------
+	
 }

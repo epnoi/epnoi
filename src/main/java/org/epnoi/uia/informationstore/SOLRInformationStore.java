@@ -30,7 +30,6 @@ public class SOLRInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void init(InformationStoreParameters parameters) {
-
 		this.parameters = (SOLRInformationStoreParameters) parameters;
 		this.datoFactory = new SOLRDAOFactory(this.parameters);
 		this.queryResolver = new SOLRDAOQueryResolver();
@@ -73,11 +72,11 @@ public class SOLRInformationStore implements InformationStore {
 		SOLRDAO solrDAO = this.datoFactory.build(resource);
 
 		if (!solrDAO.exists(resource.getURI())) {
-			System.out.println("The information source doesn't exist");
+			// System.out.println("The information source doesn't exist");
 
 			solrDAO.create(resource, context);
 		} else {
-			System.out.println("The information source already exists!");
+			// System.out.println("The information source already exists!");
 			solrDAO.create(resource, context);
 		}
 	}
@@ -92,8 +91,10 @@ public class SOLRInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void remove(Selector selector) {
-		// TODO Auto-generated method stub
+		//System.out.println("Entra en SOLRInformationStore->remove "+selector);
+		SOLRDAO solrDAO = this.datoFactory.build(selector);
 
+		solrDAO.remove(selector.getProperty(SelectorHelper.URI));
 	}
 
 	// ------------------------------------------------------------------------
@@ -107,7 +108,7 @@ public class SOLRInformationStore implements InformationStore {
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	// ------------------------------------------------------------------------
 
 	@Override

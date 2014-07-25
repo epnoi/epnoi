@@ -25,6 +25,9 @@ public class SearchOrganizer {
 		logger.info("Organizing the searh select result ");
 		SearchOrganizationResult searchOrganizationResult = new SearchOrganizationResult();
 		for (SelectionResultTuple selectPair : searchSelection.getResources()) {
+			
+			
+			System.out.println("peta ----------------> "+selectPair.getResourceURI());
 			Resource resource = this.core.getInformationAccess().get(
 					selectPair.getResourceURI(), selectPair.getType());
 

@@ -79,8 +79,7 @@ public class SOLRDAOQueryResolver {
 						.getFieldValue(SOLRDAOHelper.URI_PROPERTY));
 				selectionResultTuple.setScore((float) document
 						.getFieldValue(SOLRDAOHelper.SCORE_PROPERTY));
-System.out.println("el tipe >"+ document
-						.getFieldValue(SOLRDAOHelper.TYPE_PROPERTY));
+
 				selectionResultTuple.setType((String) document
 						.getFieldValue(SOLRDAOHelper.TYPE_PROPERTY));
 
