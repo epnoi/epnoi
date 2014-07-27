@@ -17,7 +17,7 @@ Rule: Noun
 
 :nouns.TermCandidate = {rule= "Noun", value = "", string=:nouns.Token.string},
 :nouns{
-System.out.println("------------------------------------------------------");
+//System.out.println("------------------------------------------------------");
 //System.out.println("-- ---> "+inputAS );
 //System.out.println("------------------------------------------------------");
 }
@@ -32,7 +32,7 @@ Rule: AdjNoun
 
 :nouns.TermCandidate = {rule= "AdjNoun", value = "", string=:nouns.Token.string},
 :nouns{
-System.out.println("------------------------------------------------------");
+//System.out.println("------------------------------------------------------");
 //System.out.println("-- ---> "+inputAS );
 //System.out.println("------------------------------------------------------");
 }

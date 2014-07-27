@@ -85,7 +85,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 		 */
 
 		String content = paper.getTitle() + " " + paper.getDescription();
-		System.out.println("Contet> "+content);
+		//System.out.println("Contet> "+content);
 		
 		newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
 		
