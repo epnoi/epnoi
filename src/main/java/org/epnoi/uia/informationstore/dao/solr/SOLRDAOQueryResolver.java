@@ -10,6 +10,8 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
@@ -122,6 +124,29 @@ public class SOLRDAOQueryResolver {
 		}
 		// System.out.println("The result ---------> " + searchSelectResult);
 		return searchSelectResult;
+	}
+
+	// ------------------------------------------------------------------------------
+
+	public boolean exists(Selector selector) {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("uri:\"" + selector.getProperty(SelectorHelper.URI)+"\"");
+		solrQuery.setParam("password", "password");
+		solrQuery.setParam("username", "admin");
+		solrQuery.addField(SOLRDAOHelper.SCORE_PROPERTY);
+		solrQuery.addField(SOLRDAOHelper.URI_PROPERTY);
+		solrQuery.addField(SOLRDAOHelper.TYPE_PROPERTY);
+
+		try {
+			QueryResponse queryResponse = this.server.query(solrQuery);
+			System.out.println("solrQueryResponse....> "+queryResponse);
+			return queryResponse.getResults().size() > 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+
 	}
 
 	// ------------------------------------------------------------------------------

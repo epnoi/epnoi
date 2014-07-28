@@ -12,5 +12,7 @@ public interface Wrapper {
 	public void update(Resource resource);
 
 	public Resource get(String URI);
+	
+	public boolean exists(String URI);
 
 }

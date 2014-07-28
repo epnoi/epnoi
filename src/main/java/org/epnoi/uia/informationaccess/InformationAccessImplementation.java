@@ -99,12 +99,6 @@ public class InformationAccessImplementation implements InformationAccess {
 
 	// ---------------------------------------------------------------------------
 
-	public SearchSelectResult query(SelectExpression queryExpression) {
-		return new SearchSelectResult(null);
-	}
-
-	// ---------------------------------------------------------------------------
-
 	public void addInformationStore(InformationStore informationStore) {
 		// TODO Auto-generated method stub
 
@@ -184,8 +178,7 @@ public class InformationAccessImplementation implements InformationAccess {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, resourceType);
 		selector.setProperty(SelectorHelper.URI, URI);
-		informationStore
-				.setContent(selector, content);
+		informationStore.setContent(selector, content);
 
 	}
 
@@ -201,9 +194,23 @@ public class InformationAccessImplementation implements InformationAccess {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, resourceType);
 		selector.setProperty(SelectorHelper.URI, URI);
-		informationStore
-				.setAnnotatedContent(selector, annotatedContent);
+		informationStore.setAnnotatedContent(selector, annotatedContent);
 
 	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public boolean contains(String URI, String resourceType) {
+
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, resourceType);
+		selector.setProperty(SelectorHelper.URI, URI);
+		Wrapper wrapper = this.wrapperFactory.build(resourceType);
+		return wrapper.exists(URI);
+
+	}
+
+	// ---------------------------------------------------------------------------
 
 }

@@ -415,18 +415,20 @@ public class TermExtractor {
 
 	public static void main(String[] args) {
 		TermExtractor termExtractor = new TermExtractor();
-		// List<String> consideredDomains = Arrays.asList("cs");
+		List<String> consideredDomains = Arrays.asList("cs","math");
 		// List<String> consideredDomains = Arrays.asList("math");
 
 		/*
 		 * List<String> consideredDomains =
 		 * Arrays.asList("Physics   Biological Physics");
 		 */
-
+/*
 		List<String> consideredDomains = Arrays.asList(
 				"Quantitative Biology   Populations and Evolution",
 				"Physics   Biological Physics",
 				"Nonlinear Sciences   Exactly Solvable and Integrable Systems");
+	
+		*/
 		/*
 		 * 
 		 * List<String> consideredDomains = Arrays

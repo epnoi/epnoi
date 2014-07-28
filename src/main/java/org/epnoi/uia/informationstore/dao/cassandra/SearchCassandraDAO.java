@@ -125,7 +125,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 
 	public List<Search> getSearchs() {
 		List<Search> searchs = new ArrayList<Search>();
-		List<Row<String, String, String>> result = (CassandraCQLClient
+		List<Row<String, String, String>> result = (CassandraQueryResolver
 				.query("select * from " + SearchCassandraHelper.COLUMN_FAMILLY));
 		if (result != null) {
 			for (Row<String, String, String> row : result) {

@@ -51,11 +51,11 @@ public class UserWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
-		informationStore.put(resource,context);
+		informationStore.put(resource, context);
 		// Finally we store the RDF information associated with the user
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		informationStore.put(resource,context);
+		informationStore.put(resource, context);
 	}
 
 	// -------------------------------------------------------------------------------------
@@ -94,18 +94,23 @@ public class UserWrapper implements Wrapper {
 		return combinedUser;
 
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// -------------------------------------------------------------------------------------
 
-	
-	
-	
+	@Override
+	public boolean exists(String URI) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	// -------------------------------------------------------------------------------------
+
 }

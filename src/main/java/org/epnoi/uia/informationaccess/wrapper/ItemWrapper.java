@@ -80,4 +80,12 @@ public class ItemWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------
 
+	@Override
+	public boolean exists(String URI) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	// -------------------------------------------------------------------------------------
+
 }
