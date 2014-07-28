@@ -97,4 +97,15 @@ public class VirtuosoInformationStore implements InformationStore {
 		rdfDAO.update(resource);
 	}
 
+	// ------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(Selector selector) {
+
+		return this.queryResolver.exists(selector);
+
+	}
+
+	// ------------------------------------------------------------------------
+
 }

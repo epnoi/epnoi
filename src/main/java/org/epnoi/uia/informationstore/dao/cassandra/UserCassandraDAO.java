@@ -112,14 +112,14 @@ public class UserCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 	public boolean existsUserWithName(String name) {
-		List result = (CassandraCQLClient
+		List result = (CassandraQueryResolver
 				.query("select * from User where NAME='" + name + "'"));
 		return ((result != null) && (result.size() > 0));
 	}
 
 	// --------------------------------------------------------------------------------
 	public User getUserWithName(String name) {
-		List result = (CassandraCQLClient
+		List result = (CassandraQueryResolver
 				.query("select * from User where NAME='" + name + "'"));
 		if ((result != null) && (result.size() > 0)) {
 			Row row = (Row) result.get(0);
@@ -133,7 +133,7 @@ public class UserCassandraDAO extends CassandraDAO {
 
 	public List<User> getUsers() {
 		List<User> users = new ArrayList<User>();
-		List<Row<String, String, String>> result = (CassandraCQLClient
+		List<Row<String, String, String>> result = (CassandraQueryResolver
 				.query("select * from " + UserCassandraHelper.COLUMN_FAMILLY));
 
 		if (result != null) {

@@ -76,8 +76,17 @@ public class SearchWrapper implements Wrapper {
 			// TODO Auto-generated method stub
 			
 		}
+		
+		// -------------------------------------------------------------------------------------
+
+		@Override
+		public boolean exists(String URI) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 
 		// -------------------------------------------------------------------------------------
 
+		
 
 }

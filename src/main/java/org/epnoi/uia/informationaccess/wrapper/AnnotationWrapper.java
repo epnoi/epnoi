@@ -21,7 +21,7 @@ public class AnnotationWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------------------------------
 	public void put(Resource resource, Context context) {
-	
+
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
@@ -55,7 +55,8 @@ public class AnnotationWrapper implements Wrapper {
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, AnnotationRDFHelper.ANNOTATION_CLASS);
+		selector.setProperty(SelectorHelper.TYPE,
+				AnnotationRDFHelper.ANNOTATION_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 
@@ -67,6 +68,14 @@ public class AnnotationWrapper implements Wrapper {
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(String URI) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	// -------------------------------------------------------------------------------------
