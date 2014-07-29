@@ -77,7 +77,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-
+System.out.println("----> > "+URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, PaperCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {

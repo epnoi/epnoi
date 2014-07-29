@@ -62,7 +62,7 @@ public class PaperWrapper implements Wrapper {
 
 		Paper cassandraItem = (Paper) informationStore.get(selector);
 
-		// System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
+		System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
 
 		joinPaper.setTitle(cassandraItem.getTitle());
 		joinPaper.setAuthors(cassandraItem.getAuthors());
