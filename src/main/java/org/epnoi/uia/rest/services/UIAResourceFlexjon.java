@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,6 +21,7 @@ import javax.ws.rs.core.Response;
 
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
+import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
@@ -33,8 +31,10 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 import org.epnoi.uia.rest.services.response.UIA;
 
-@Path("/uia")
-public class UIAResource extends UIAService {
+import flexjson.JSONDeserializer;
+
+@Path("/uiaflexjon")
+public class UIAResourceFlexjon extends UIAService {
 
 	@Context
 	ServletContext context;
@@ -44,7 +44,7 @@ public class UIAResource extends UIAService {
 	private static Map<String, String> resourceTypesTable = new HashMap<String, String>();
 	static {
 		resourceTypesTable.put("papers", RDFHelper.PAPER_CLASS);
-		resourceTypesTable.put("users", UserRDFHelper.USER_CLASS);
+		resourceTypesTable.put("user", UserRDFHelper.USER_CLASS);
 		resourceTypesTable.put("informationsources",
 				InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 		resourceTypesTable
@@ -61,9 +61,10 @@ public class UIAResource extends UIAService {
 	@PostConstruct
 	public void init() {
 
-		logger = Logger.getLogger(UIAResource.class.getName());
-		logger.info("Initializing "+getClass());
-		this.core = this.getUIACore();
+		System.out.println("Initialicing the UIA service");
+
+		knownDeserializableClasses.put("informationSourceSubscriptions",
+				InformationSourceSubscription.class);
 
 	}
 
@@ -77,14 +78,15 @@ public class UIAResource extends UIAService {
 		System.out.println("GET: UIA");
 
 		UIA uia = new UIA();
-		
+		this.core = this.getUIACore();
 		String timeStamp = Long.toString(System.currentTimeMillis());
 		uia.setTimestamp(timeStamp);
 
+		System.out.println("--->>>-->> " + this.core.getInformationStores());
 		for (InformationStore informationStore : this.core
 				.getInformationStores()) {
 			org.epnoi.uia.rest.services.response.InformationStore informationStoreResponse = new org.epnoi.uia.rest.services.response.InformationStore();
-
+			System.out.println("----> " + informationStore);
 			informationStoreResponse
 					.setInformationStoreParameters(informationStore
 							.getParameters());
@@ -104,27 +106,48 @@ public class UIAResource extends UIAService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Path("/resources/{RESOURCE_TYPE}")
-	public void updateResource(Resource resource,
-			@PathParam("RESOURCE_TYPE") String resourceType) {
-		System.out.println("POST: UIA " + resource);
-		
+	public Response putResource(
+			String jsonExpression,
+			@DefaultValue("none") @PathParam("RESOURCE_TYPE") String resourceType) {
+		System.out.println("POST: UIA");
+
+		this.core = this.getUIACore();
+
+		System.out
+				.println("======================================================================================");
+		System.out.println("This is the resourceType " + resourceType);
+		System.out.println("This is the resource " + jsonExpression);
+
+		Resource resource = new JSONDeserializer<Resource>().deserialize(
+				jsonExpression, InformationSourceSubscription.class);
+		System.out.println("What we have deserialized " + resource);
+
+		System.out
+				.println("----------------------------------------------------");
+		Resource storedResource = this
+				.getUIACore()
+				.getInformationAccess()
+				.get(resource.getURI(),
+						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
+
+		System.out.println("lo que habia en el UIA " + storedResource);
+
 		this.getUIACore().getInformationAccess().update(resource);
 
-	}
-	
-	// --------------------------------------------------------------------------------
+		storedResource = this
+				.getUIACore()
+				.getInformationAccess()
+				.get(resource.getURI(),
+						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
-		@PUT 
-		@Consumes({ MediaType.APPLICATION_JSON })
-		@Path("/resources/{RESOURCE_TYPE}")
-		public void createResource(Resource resource,
-				@PathParam("RESOURCE_TYPE") String resourceType) {
-			System.out.println("PUT: UIA " + resource);
-			
-			this.getUIACore().getInformationAccess().put(resource, org.epnoi.model.Context.emptyContext);
-
+		System.out.println("lo que ha quedaddo despues en el UIA "
+				+ storedResource);
+		if (jsonExpression != null) {
+			return Response.ok(jsonExpression, MediaType.APPLICATION_JSON)
+					.build();
 		}
-	
+		return Response.status(404).build();
+	}
 
 	// --------------------------------------------------------------------------------
 
@@ -136,7 +159,7 @@ public class UIAResource extends UIAService {
 			@PathParam("RESOURCE_TYPE") String resourceType) {
 		System.out.println("GET: UIA uri> " + URI + " reourceType > "
 				+ resourceType);
-
+/*
 		String resourceClass = UIAResource.resourceTypesTable.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
 
@@ -151,23 +174,7 @@ public class UIAResource extends UIAService {
 						.build();
 			}
 		}
-		return Response.status(404).build();
-	}
-
-	// --------------------------------------------------------------------------------
-
-	@DELETE
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Path("/resources/{RESOURCE_TYPE}")
-	// @Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteResource(@QueryParam("uri") String URI,
-			@PathParam("RESOURCE_TYPE") String resourceType) {
-		System.out.println("DELETE: UIA uri> " + URI + " reourceType > "
-				+ resourceType);
-		String resourceClass = UIAResource.resourceTypesTable.get(resourceType);
-		if ((URI != null) && (resourceClass != null)) {
-			this.core.getInformationAccess().remove(URI, resourceType);
-		}
+		*/
 		return Response.status(404).build();
 	}
 
@@ -180,8 +187,10 @@ public class UIAResource extends UIAService {
 	public Response getResource(
 			@DefaultValue("none") @QueryParam("URI") String URI) {
 		System.out.println("GET: UIA");
-		
-	
+		System.out.println("....entra");
+
+		this.core = this.getUIACore();
+
 		List<InformationSourceNotification> notifications = new ArrayList<InformationSourceNotification>();
 
 		for (InformationSourceNotification notification : core
@@ -199,5 +208,26 @@ public class UIAResource extends UIAService {
 				.build();
 	}
 
-
+	// --------------------------------------------------------------------------------
+	/*
+	 * String _translateResourceType(String resourceType) {
+	 * 
+	 * if (resourceType.equals("informationSources")) { return
+	 * InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS; } if
+	 * (resourceType.equals("informationSourceSubscriptions")) { return
+	 * InformationSourceSubscriptionRDFHelper
+	 * .INFORMATION_SOURCE_SUBSCRIPTION_CLASS; } else if
+	 * (resourceType.equals("users")) { return UserRDFHelper.USER_CLASS; }
+	 * 
+	 * return null; }
+	 * 
+	 * //
+	 * ------------------------------------------------------------------------
+	 * --------
+	 * 
+	 * Resource deserializeResource(String resourceExpression, String
+	 * resourceType) { Resource resource = new
+	 * JSONDeserializer<Resource>().deserialize( resourceExpression,
+	 * this.knownDeserializableClasses.get(resourceType)); return resource; }
+	 */
 }
