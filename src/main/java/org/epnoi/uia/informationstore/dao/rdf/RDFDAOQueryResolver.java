@@ -3,6 +3,8 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -10,6 +12,8 @@ import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
@@ -20,6 +24,8 @@ public class RDFDAOQueryResolver {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
 
 	protected VirtuosoInformationStoreParameters parameters;
+	private static final Node typePropertyNode = Node
+			.createURI(RDFHelper.TYPE_PROPERTY);
 	protected VirtGraph graph = null;
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +48,7 @@ public class RDFDAOQueryResolver {
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	protected ResultSet makeQuery(String query) {
-		
+
 		Query sparql = QueryFactory.create(query);
 
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -56,8 +62,8 @@ public class RDFDAOQueryResolver {
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public List<String> query(String query) {
-		//showTriplets();
-		
+		// showTriplets();
+
 		ArrayList<String> resultURIs = new ArrayList<String>();
 		Query sparql = QueryFactory.create(query);
 
@@ -74,6 +80,20 @@ public class RDFDAOQueryResolver {
 		}
 
 		return resultURIs;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	public boolean exists(Selector selector) {
+		Node uriNode = Node.createURI(selector.getProperty(SelectorHelper.URI));
+
+		Node classNode = Node.createURI(selector
+				.getProperty(SelectorHelper.TYPE));
+
+		return this.graph.find(
+				new Triple(uriNode, RDFDAOQueryResolver.typePropertyNode,
+						classNode)).hasNext();
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------

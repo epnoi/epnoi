@@ -77,6 +77,14 @@ public class ResearchObjectWrapper implements Wrapper {
 		this.put(resource, Context.emptyContext);
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+		@Override
+		public boolean exists(String URI) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 
 	// -------------------------------------------------------------------------------------
 

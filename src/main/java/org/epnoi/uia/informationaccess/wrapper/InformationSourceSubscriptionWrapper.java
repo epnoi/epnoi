@@ -19,10 +19,9 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 		this.core = core;
 	}
 
-
 	// -------------------------------------------------------------------------------------------------------------
 
-	public void put(Resource resource, Context context){
+	public void put(Resource resource, Context context) {
 		// InformationSource informationSource = (InformationSource) resource;
 
 		InformationStore informationStore = core.getInformationStoresByType(
@@ -68,6 +67,14 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.update(resource);
 		this.core.getInformationAccess().publish(EventsHelper.UPDATE, resource);
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(String URI) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	// -------------------------------------------------------------------------------------

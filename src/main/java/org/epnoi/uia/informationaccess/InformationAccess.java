@@ -31,6 +31,8 @@ public interface InformationAccess {
 	public void update(Resource resource);
 
 	public void publish(String eventType, Resource source);
+	
+	public boolean contains(String URI, String resourceType);
 
 	public void subscribe(InformationAccessListener listener,
 			String subscriptionExpression);

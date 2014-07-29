@@ -66,7 +66,16 @@ public class InformationSourceWrapper implements Wrapper {
 		informationStore.update(resource);
 
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(String URI) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	// -------------------------------------------------------------------------------------
 
+	
 }

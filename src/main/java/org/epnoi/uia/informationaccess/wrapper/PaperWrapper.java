@@ -12,6 +12,8 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
+import com.hp.hpl.jena.vocabulary.RDF;
+
 public class PaperWrapper implements Wrapper {
 	Core core;
 
@@ -53,22 +55,19 @@ public class PaperWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		joinPaper = (Paper) informationStore.get(selector);
 
-	//System.out.println("joinPaper RDF----> "+joinPaper);
-		
+		// System.out.println("joinPaper RDF----> "+joinPaper);
+
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		Paper cassandraItem = (Paper) informationStore.get(selector);
 
-		//System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
-		
+		System.out.println("joinPaper CASSANDRA----> "+cassandraItem);
+
 		joinPaper.setTitle(cassandraItem.getTitle());
 		joinPaper.setAuthors(cassandraItem.getAuthors());
 		joinPaper.setDescription(cassandraItem.getDescription());
-		
-		
-		
-		
+
 		return joinPaper;
 	}
 
@@ -97,6 +96,40 @@ public class PaperWrapper implements Wrapper {
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(String URI) {
+		
+		System.out.println(" checking the existence > "+URI);
+		
+		boolean exists;
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+		selector.setProperty(SelectorHelper.URI, URI);
+		exists = informationStore.exists(selector);
+		if (exists) {
+
+			informationStore = this.core.getInformationStoresByType(
+					InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
+			exists = informationStore.exists(selector);
+
+			if (exists) {
+				informationStore = this.core.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+						.get(0);
+				exists = informationStore.exists(selector);
+			}
+		}
+		
+		
+		return exists;
 	}
 
 	// -------------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ import org.xml.sax.InputSource;
 
 public class XMLUtils{
 
-private static org.w3c.dom.Document writeToFile(String xmlContent,
+public static org.w3c.dom.Document writeToFile(String xmlContent,
 		String path) {
 	System.out.println("This is the path " + path);
 	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

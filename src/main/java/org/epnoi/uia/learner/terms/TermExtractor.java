@@ -31,8 +31,8 @@ public class TermExtractor {
 	TermsIndex termsIndex;
 	ResourcesIndex resourcesIndex;
 	DomainsIndex domainsIndex;
-	double cValueWeight = 0.33;
-	double domainPertinenceWeight = 0.33;
+	double cValueWeight = 0.5;
+	double domainPertinenceWeight = 0.3;
 	double domainConsensusWeight = 1 - cValueWeight - domainPertinenceWeight;
 
 	// -----------------------------------------------------------------------------------

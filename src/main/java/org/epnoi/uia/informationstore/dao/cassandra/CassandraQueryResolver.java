@@ -12,37 +12,18 @@ import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 
-public class CassandraCQLClient {
+import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
+
+public class CassandraQueryResolver {
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
 	private final static String HOST_PORT = "localhost:9160";
 
 	private final static StringSerializer se = StringSerializer.get();
 
-	public static void main(String[] args) {
-		Cluster c = HFactory.getOrCreateCluster(CLUSTER, HOST_PORT);
-
-		CqlQuery<String, String, String> cqlQuery = new CqlQuery<String, String, String>(
-				HFactory.createKeyspace(KEYSPACE, c), se, se, se);
-		cqlQuery.setQuery("select key from 'Item'");
-		QueryResult<CqlRows<String, String, String>> result = cqlQuery
-				.execute();
-		if (result != null && result.get() != null) {
-			List<Row<String, String, String>> list = result.get().getList();
-			for (Row row : list) {
-				System.out.println("." + row.getKey());
-				List columns = row.getColumnSlice().getColumns();
-				for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
-					HColumn column = (HColumn) iterator.next();
-					System.out.print(column.getName() + ":" + column.getValue()
-							+ "\t");
-				}
-				System.out.println("");
-			}
-		} else{
-			System.out.println("Seems that that the query didn't return anything");
-		}
-	}
+	// ------------------------------------------------------------------------------------------
 
 	public static List<Row<String, String, String>> query(String query) {
 		List<Row<String, String, String>> list = null;
@@ -69,4 +50,50 @@ public class CassandraCQLClient {
 		}
 		return list;
 	}
+
+	// ------------------------------------------------------------------------------------------
+	
+	public boolean exists(Selector selector) {
+
+		String URI = selector.getProperty(SelectorHelper.URI);
+
+		String resourceType = selector.getProperty(SelectorHelper.TYPE);
+
+		PaperCassandraDAO paperDAO = new PaperCassandraDAO();
+		paperDAO.init();
+		Resource paper = paperDAO.read(URI);
+		System.out.println("paper>"+paper);
+		return (paper != null);
+
+	}
+
+	// ------------------------------------------------------------------------------------------
+	
+	public static void main(String[] args) {
+		Cluster c = HFactory.getOrCreateCluster(CLUSTER, HOST_PORT);
+
+		CqlQuery<String, String, String> cqlQuery = new CqlQuery<String, String, String>(
+				HFactory.createKeyspace(KEYSPACE, c), se, se, se);
+		cqlQuery.setQuery("select key from 'Item'");
+		QueryResult<CqlRows<String, String, String>> result = cqlQuery
+				.execute();
+		if (result != null && result.get() != null) {
+			List<Row<String, String, String>> list = result.get().getList();
+			for (Row row : list) {
+				System.out.println("." + row.getKey());
+				List columns = row.getColumnSlice().getColumns();
+				for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+					HColumn column = (HColumn) iterator.next();
+					System.out.print(column.getName() + ":" + column.getValue()
+							+ "\t");
+				}
+				System.out.println("");
+			}
+		} else {
+			System.out
+					.println("Seems that that the query didn't return anything");
+		}
+	}
+	
+	// ------------------------------------------------------------------------------------------
 }

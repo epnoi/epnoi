@@ -117,4 +117,14 @@ public class SOLRInformationStore implements InformationStore {
 		return this.queryResolver.query(selectionExpression, searchContext);
 	}
 
+	// ------------------------------------------------------------------------
+	
+	@Override
+	public boolean exists(Selector selector) {
+		return this.queryResolver.exists(selector);
+	}
+	
+	// ------------------------------------------------------------------------
+
+	
 }

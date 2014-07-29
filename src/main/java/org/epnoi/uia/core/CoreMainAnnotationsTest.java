@@ -12,9 +12,8 @@ import java.util.List;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.User;
+import org.epnoi.uia.commons.XMLUtils;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
 public class CoreMainAnnotationsTest {
 
@@ -29,45 +28,37 @@ public class CoreMainAnnotationsTest {
 		core.getInformationAccess().put(annotatedUser, new Context());
 		core.getAnnotationHandler().label(annotatedUser.getURI(), "math");
 
+		/*
 		List<String> userURIs = core.getAnnotationHandler().getLabeledAs(
 				"math", UserRDFHelper.USER_CLASS);
 		System.out.println("USER_________________________________"
 				+ userURIs.size());
-				
 
 		List<String> mathURIs = core.getAnnotationHandler().getLabeledAs(
 				"math", RDFHelper.PAPER_CLASS);
 		System.out.println("MATH_________________________________"
 				+ mathURIs.size());
 
-		/*
-		 * for (String paperURI :
-		 * core.getAnnotationHandler().getLabeledAs("math")) {
-		 * System.out.println(paperURI+" Math paper> " +
-		 * core.getInformationAccess().getContent( paperURI,
-		 * RDFHelper.PAPER_CLASS));
-		 * 
-		 * }
-		 */
-		
+
 		List<String> csURIs = core.getAnnotationHandler().getLabeledAs("cs",
 				RDFHelper.PAPER_CLASS);
 		System.out.println("CS____________________________________"
 				+ csURIs.size());
-		
+*/
 		/*
 		 * System.out.println("----> the content is " +
 		 * core.getInformationAccess().getContent( "oai:arXiv.org:0705.3833",
 		 * RDFHelper.PAPER_CLASS));
 		 */
-		//for (String paperURI : core.getAnnotationHandler().getLabeledAs("cs")) {
-			/*
-			 * ystem.out.println(paperURI+" CS paper> " +
-			 * core.getInformationAccess().getContent( paperURI,
-			 * RDFHelper.PAPER_CLASS));
-			 */
+		// for (String paperURI :
+		// core.getAnnotationHandler().getLabeledAs("cs")) {
+		/*
+		 * ystem.out.println(paperURI+" CS paper> " +
+		 * core.getInformationAccess().getContent( paperURI,
+		 * RDFHelper.PAPER_CLASS));
+		 */
 
-	//	}
+		// }
 
 		/*
 		 * for(String paperURI:core.getAnnotationHandler().getLabeledAs("cs")){
@@ -79,9 +70,14 @@ public class CoreMainAnnotationsTest {
 		List<String> phisicsURIs = core.getAnnotationHandler().getLabeledAs(
 				"Physics   Physics Education", RDFHelper.PAPER_CLASS);
 		System.out.println("G 2 2____________________________________"
-				+ phisicsURIs.size());
+				+ phisicsURIs);
 
-		// _whatever("oai:arXiv.org:0711.3503", core);
+		 _whatever("oai:arXiv.org:0711.3503", core);
+
+		//String uri = "oai:arXiv.org:1012.2513";
+		
+		//System.out.println(uri+" exist? "+core.getInformationAccess().contains(uri,RDFHelper.PAPER_CLASS));
+
 	}
 
 	private static void _whatever(String URI, Core core) {
@@ -91,7 +87,15 @@ public class CoreMainAnnotationsTest {
 		Content<String> annotatedContent = core.getInformationAccess()
 				.getAnnotatedContent(URI, RDFHelper.PAPER_CLASS);
 
+		
+		
+		
+		
+		
+		
 		System.out.println("->> " + annotatedContent.getContent());
+		
+		XMLUtils.writeToFile(annotatedContent.getContent(),URI+"GATEdocument.xml");
 
 		if (annotatedContent.getContent() != null) {
 			/*
@@ -122,12 +126,12 @@ public class CoreMainAnnotationsTest {
 			 * "..............................................................> "
 			 * + annotatedContent.getContent());
 			 */
-
+/*
 			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
 			termCandidatesFinder.init();
 			showTerms(termCandidatesFinder.findTermCandidates(content
 					.getContent()));
-
+*/
 			Document document = null;
 			try {
 				document = (Document) Factory
@@ -140,6 +144,7 @@ public class CoreMainAnnotationsTest {
 										"text/xml"));
 				System.out.println("---> annotations ---> "
 						+ document.getAnnotations());
+				
 
 			} catch (ResourceInstantiationException e) {
 				e.printStackTrace();
