@@ -151,10 +151,11 @@ public class AnnotationsServiceClient {
 			
 			
 			
-			
+			/*
 			service.path("/uia/researchobjects/researchobject")
 					.queryParam("uri", researchObject.getURI())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
+*/
 
 		} catch (Exception e) {
 
