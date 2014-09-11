@@ -29,22 +29,22 @@ public class CoreMainAnnotationsTest {
 		core.getAnnotationHandler().label(annotatedUser.getURI(), "math");
 
 		/*
-		List<String> userURIs = core.getAnnotationHandler().getLabeledAs(
-				"math", UserRDFHelper.USER_CLASS);
-		System.out.println("USER_________________________________"
-				+ userURIs.size());
-
-		List<String> mathURIs = core.getAnnotationHandler().getLabeledAs(
-				"math", RDFHelper.PAPER_CLASS);
-		System.out.println("MATH_________________________________"
-				+ mathURIs.size());
-
-
-		List<String> csURIs = core.getAnnotationHandler().getLabeledAs("cs",
-				RDFHelper.PAPER_CLASS);
-		System.out.println("CS____________________________________"
-				+ csURIs.size());
-*/
+		 * List<String> userURIs = core.getAnnotationHandler().getLabeledAs(
+		 * "math", UserRDFHelper.USER_CLASS);
+		 * System.out.println("USER_________________________________" +
+		 * userURIs.size());
+		 * 
+		 * List<String> mathURIs = core.getAnnotationHandler().getLabeledAs(
+		 * "math", RDFHelper.PAPER_CLASS);
+		 * System.out.println("MATH_________________________________" +
+		 * mathURIs.size());
+		 * 
+		 * 
+		 * List<String> csURIs = core.getAnnotationHandler().getLabeledAs("cs",
+		 * RDFHelper.PAPER_CLASS);
+		 * System.out.println("CS____________________________________" +
+		 * csURIs.size());
+		 */
 		/*
 		 * System.out.println("----> the content is " +
 		 * core.getInformationAccess().getContent( "oai:arXiv.org:0705.3833",
@@ -72,11 +72,14 @@ public class CoreMainAnnotationsTest {
 		System.out.println("G 2 2____________________________________"
 				+ phisicsURIs);
 
-		 _whatever("oai:arXiv.org:0711.3503", core);
+		// _whatever("oai:arXiv.org:0711.3503", core);
 
-		//String uri = "oai:arXiv.org:1012.2513";
-		
-		//System.out.println(uri+" exist? "+core.getInformationAccess().contains(uri,RDFHelper.PAPER_CLASS));
+		// String uri = "oai:arXiv.org:1012.2513";
+
+		// System.out.println(uri+" exist? "+core.getInformationAccess().contains(uri,RDFHelper.PAPER_CLASS));
+
+		System.out.println("Este es el type > "
+				+ core.getInformationAccess().get("http://testResearchObject"));
 
 	}
 
@@ -87,15 +90,10 @@ public class CoreMainAnnotationsTest {
 		Content<String> annotatedContent = core.getInformationAccess()
 				.getAnnotatedContent(URI, RDFHelper.PAPER_CLASS);
 
-		
-		
-		
-		
-		
-		
 		System.out.println("->> " + annotatedContent.getContent());
-		
-		XMLUtils.writeToFile(annotatedContent.getContent(),URI+"GATEdocument.xml");
+
+		XMLUtils.writeToFile(annotatedContent.getContent(), URI
+				+ "GATEdocument.xml");
 
 		if (annotatedContent.getContent() != null) {
 			/*
@@ -126,12 +124,12 @@ public class CoreMainAnnotationsTest {
 			 * "..............................................................> "
 			 * + annotatedContent.getContent());
 			 */
-/*
-			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
-			termCandidatesFinder.init();
-			showTerms(termCandidatesFinder.findTermCandidates(content
-					.getContent()));
-*/
+			/*
+			 * TermCandidatesFinder termCandidatesFinder = new
+			 * TermCandidatesFinder(); termCandidatesFinder.init();
+			 * showTerms(termCandidatesFinder.findTermCandidates(content
+			 * .getContent()));
+			 */
 			Document document = null;
 			try {
 				document = (Document) Factory
@@ -144,7 +142,6 @@ public class CoreMainAnnotationsTest {
 										"text/xml"));
 				System.out.println("---> annotations ---> "
 						+ document.getAnnotations());
-				
 
 			} catch (ResourceInstantiationException e) {
 				e.printStackTrace();

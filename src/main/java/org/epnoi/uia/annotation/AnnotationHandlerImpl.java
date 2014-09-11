@@ -9,7 +9,6 @@ import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.VirtuosoInformationStore;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -97,7 +96,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 	// ------------------------------------------------------------------------------
 
 	@Override
-	public void annotate(String URI, String topicURI) {
+	public Annotation annotate(String URI, String topicURI) {
 		Annotation annotation = new Annotation();
 		annotation.setAnnotatesResource(URI);
 		annotation.setHasTopic(topicURI);
@@ -105,34 +104,33 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 		System.out.println(".............................................>>> ");
 		core.getInformationAccess().put(annotation, new Context());
-
+		return annotation;
 	}
 
 	// ------------------------------------------------------------------------------
 
 	@Override
-	public void annotate(String URI, String predicate, String topicURI) {
+	public Annotation annotate(String URI, String predicate, String topicURI) {
 		Annotation annotation = new Annotation();
 		annotation.setAnnotatesResource(URI);
 		annotation.setHasTopic(topicURI);
 		annotation.setPredicate(predicate);
 		annotation.setURI(URI + "annotation" + topicURI.hashCode());
 
-		System.out.println(".............................................>>> ");
 		core.getInformationAccess().put(annotation, new Context());
-
+		return annotation;
 	}
 
 	// ------------------------------------------------------------------------------
 
 	@Override
-	public void label(String URI, String label) {
+	public Annotation label(String URI, String label) {
 		Annotation annotation = new Annotation();
 		annotation.setAnnotatesResource(URI);
 		annotation.setLabel(label);
 		annotation.setURI(URI + "label" + label.hashCode());
 		core.getInformationAccess().put(annotation, new Context());
-
+		return annotation;
 	}
 
 	// ------------------------------------------------------------------------------
@@ -195,15 +193,14 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		
 		List<String> queryResults = informationStore.query(queryExpression);
 
-		System.out.println(" AHORA TENDRIAMOS QUE BORRAR > " + queryResults);
+		
 		for (String annotationURI : queryResults) {
 			core.getInformationAccess().remove(annotationURI,
 					AnnotationRDFHelper.ANNOTATION_CLASS);
 		}
-
 
 	}
 
@@ -275,8 +272,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		String queryExpression = "SELECT ?uri FROM <{GRAPH}>"
 				+ "{ ?uri a <{ANNOTATION_CLASS}> ; "
 				+ " <{ANNOTATES_DOCUMENT_PROPERTY}> <" + URI + "> ; "
-				+ " <{HAS_TOPIC_PROPERTY}> ?topic . "
-						+ "} ";
+				+ " <{HAS_TOPIC_PROPERTY}> ?topic . " + "} ";
 
 		queryExpression = queryExpression
 				.replace(
@@ -304,12 +300,10 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
-		String queryExpression = "SELECT ?uri FROM <{GRAPH}>"
-				+ "{ "
+		String queryExpression = "SELECT ?uri FROM <{GRAPH}>" + "{ "
 				+ "?uri a <{ANNOTATION_CLASS}> . "
 				+ "?uri <{ANNOTATES_DOCUMENT_PROPERTY}> <" + URI + "> ."
-				+ "?uri <{LABEL_PROPERTY}> ?label"
-				+ " } ";
+				+ "?uri <{LABEL_PROPERTY}> ?label" + " } ";
 
 		queryExpression = queryExpression
 				.replace(
@@ -327,7 +321,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 		return queryResults;
 	}
-	
+
 	// ------------------------------------------------------------------------------
 
 	@Override
@@ -336,11 +330,9 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
-		String queryExpression = "SELECT ?uri FROM <{GRAPH}>"
-				+ "{ "
+		String queryExpression = "SELECT ?uri FROM <{GRAPH}>" + "{ "
 				+ "?uri a <{ANNOTATION_CLASS}> . "
-				+ "?uri <HAS_TOPIC_PROPERTY> ?topic"
-				+ " } ";
+				+ "?uri <HAS_TOPIC_PROPERTY> ?topic" + " } ";
 
 		queryExpression = queryExpression
 				.replace(

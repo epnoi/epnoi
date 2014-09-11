@@ -1,5 +1,7 @@
 package org.epnoi.uia.rest.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -14,18 +16,26 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.rest.services.response.jsonld.JSONLDResearchObjectResponseBuilder;
 import org.epnoi.uia.rest.services.response.jsonld.JSONLDResponse;
 
+import com.sun.jersey.api.Responses;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 @Path("/uia/researchobjects/researchobject")
+@Api(value = "/uia/researchobjects/researchobject", description = "Operations for handling Research Objects")
 public class ResearchObjectResource extends UIAService {
 
 	@Context
@@ -45,14 +55,22 @@ public class ResearchObjectResource extends UIAService {
 	@PUT
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Creates a Researh Object", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "The Research Object has been created"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
 	public Response createResearchObject(ResearchObject researchObject) {
 		logger.info("PUT RO> " + researchObject);
 
+		URI researchObjectURI = null;
+		try {
+			researchObjectURI = new URI(researchObject.getURI());
+		} catch (URISyntaxException e) {
+			throw new WebApplicationException();
+		}
 		this.core.getInformationAccess().put(researchObject,
 				org.epnoi.model.Context.emptyContext);
-
-		String result = "Adding " + researchObject;
-		return Response.status(201).entity(result).build();
+		return Response.created(researchObjectURI).build();
 	}
 
 	// -----------------------------------------------------------------------------------------
@@ -60,10 +78,16 @@ public class ResearchObjectResource extends UIAService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("")
-	public Response getResearchObject(@QueryParam("uri") String uri,
-			@QueryParam("format") String format) {
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The Research Object has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A Research Object with such URI could not be found") })
+	@ApiOperation(value = "Returns the label with the provided URI", notes = "", response = ResearchObject.class)
+	public Response getResearchObject(
+			@ApiParam(value = "Research Object URI", required = true, allowMultiple = false) @QueryParam("uri") String uri,
+			@ApiParam(value = "Desired JSON format for the retrieved Research Object", required = true, allowMultiple = false, allowableValues = "json,jsonld") @QueryParam("format") String format) {
 
-		System.out.println("GET RO> uri=" + uri + " format=" + format);
+		logger.info("GET RO> uri=" + uri + " format=" + format);
 
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationAccess().get(uri,
@@ -99,7 +123,7 @@ public class ResearchObjectResource extends UIAService {
 			}
 		} else {
 
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
 	}
 
@@ -108,6 +132,11 @@ public class ResearchObjectResource extends UIAService {
 	@POST
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Updates a Research Object", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The resource has been deleted from the Research Object "),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "Either a Research Object or the an aggregated resource with such URI could not be found") })
 	public Response updateResearchObject(ResearchObject researchObject) {
 		logger.info("POST RO> " + researchObject);
 
@@ -117,10 +146,9 @@ public class ResearchObjectResource extends UIAService {
 
 		if (researchObjectToBeUpdated != null) {
 			core.getInformationAccess().update(researchObject);
-			return Response.ok("{}", MediaType.APPLICATION_JSON).status(200)
-					.build();
+			return Response.ok().build();
 		} else {
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
 
 	}
@@ -130,9 +158,15 @@ public class ResearchObjectResource extends UIAService {
 	@POST
 	@Path("/aggregation")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addAggregatedResource(@QueryParam("uri") String URI,
-			@QueryParam("resourceuri") String resourceURI) {
-		System.out.println(" ro " + URI + " aggr " + resourceURI);
+	@ApiOperation(value = "Sets a Researh Object Dublin Core property", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The resource has been deleted from the Research Object "),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "Either a Research Object or the an aggregated resource with such URI could not be found") })
+	public Response addAggregatedResource(
+			@ApiParam(value = "Research Object uri", required = true, allowMultiple = false) @QueryParam("uri") String URI,
+			@ApiParam(value = "Resource to be aggregated to the Research Object", required = true, allowMultiple = false) @QueryParam("resourceuri") String resourceURI) {
+		logger.info(" ro " + URI + " aggr " + resourceURI);
 
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationAccess().get(URI,
@@ -145,11 +179,10 @@ public class ResearchObjectResource extends UIAService {
 			}
 
 		} else {
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
 
-		return Response.ok("{}", MediaType.APPLICATION_JSON).status(200)
-				.build();
+		return Response.ok().build();
 
 	}
 
@@ -158,16 +191,21 @@ public class ResearchObjectResource extends UIAService {
 	@POST
 	@Path("/dc/{PROPERTY}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDCProperty(@QueryParam("uri") String URI,
-			@QueryParam("value") String value,
-			@PathParam("PROPERTY") String propertyName) {
-		System.out.println(" ro " + URI + " property " + propertyName +"value> "+value);
+	@ApiOperation(value = "Sets a Researh Object Dublin Core property", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The Research Object has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A Research Object with such URI could not be found") })
+	public Response updateDCProperty(
+			@ApiParam(value = "Research Object URI", required = true, allowMultiple = false) @QueryParam("uri") String URI,
+			@ApiParam(value = "Dublin Core property value", required = true, allowMultiple = false) @QueryParam("value") String value,
+			@ApiParam(value = "Dublin Core property name", required = true, allowMultiple = false, allowableValues = "title,description,date,creator") @PathParam("PROPERTY") String propertyName) {
+		logger.info(" ro " + URI + " property " + propertyName + "value> "
+				+ value);
 		System.out.println("Updating the property "
 				+ DublinCoreMetadataElementsSetHelper
 						.getPropertyURI(propertyName) + " with value " + value);
-		
-		
-		
+
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationAccess().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
@@ -179,11 +217,10 @@ public class ResearchObjectResource extends UIAService {
 					value);
 			core.getInformationAccess().update(researchObject);
 		} else {
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
 
-		return Response.ok("{}", MediaType.APPLICATION_JSON).status(200)
-				.build();
+		return Response.ok().build();
 
 	}
 
@@ -192,8 +229,14 @@ public class ResearchObjectResource extends UIAService {
 	@DELETE
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeResearchObject(@QueryParam("uri") String URI) {
-		System.out.println("DELETE RO  > " + URI + " resource> " + URI);
+	@ApiOperation(value = "Removes a Researh Object", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The Research Object with such URI has been deleted"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A Research Object with such URI could not be found") })
+	public Response removeResearchObject(
+			@ApiParam(value = "Research Object uri", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
+		logger.info("DELETE RO  > " + URI + " resource> " + URI);
 
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationAccess().get(URI,
@@ -201,12 +244,9 @@ public class ResearchObjectResource extends UIAService {
 		if (researchObject != null) {
 			this.core.getInformationAccess().remove(URI,
 					RDFHelper.RESEARCH_OBJECT_CLASS);
-
-			return Response.ok().status(200).build();
-
+			return Response.ok().build();
 		} else {
-
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
 
 	}
@@ -216,26 +256,26 @@ public class ResearchObjectResource extends UIAService {
 	@DELETE
 	@Path("/aggregation")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeAggregatedResource(@QueryParam("uri") String URI,
-			@QueryParam("resourceuri") String resourceURI) {
+	@ApiOperation(value = "Removes an aggregated resource from a Researh Object", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The resource has been deleted from the Research Object "),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "Either a Research Object or the an aggregated resource with such URI could not be found") })
+	public Response removeAggregatedResource(
+			@ApiParam(value = "Research Object uri", required = true, allowMultiple = false) @QueryParam("uri") String URI,
+			@ApiParam(value = "Aggregated resource to delete uri", required = true, allowMultiple = false) @QueryParam("resourceuri") String resourceURI) {
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationAccess().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 		if (researchObject != null
 				&& researchObject.getAggregatedResources()
 						.contains(resourceURI)) {
-
 			researchObject.getAggregatedResources().remove(resourceURI);
-
 			this.core.getInformationAccess().update(researchObject);
-
-			return Response.ok().status(200).build();
-
+			return Response.ok().build();
 		} else {
 
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
-
 	}
-
 }

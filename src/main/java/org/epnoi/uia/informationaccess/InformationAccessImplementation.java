@@ -16,10 +16,9 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.informationstore.VirtuosoInformationStore;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.search.select.SearchSelectResult;
-import org.epnoi.uia.search.select.SelectExpression;
 
 public class InformationAccessImplementation implements InformationAccess {
 
@@ -58,12 +57,14 @@ public class InformationAccessImplementation implements InformationAccess {
 
 	public Resource get(String URI) {
 		// TODO: As it is now it just delivers items/feeds
-		Resource resource;
-		Wrapper wrapper = this.wrapperFactory.build(FeedRDFHelper.ITEM_CLASS);
-		resource = wrapper.get(URI);
-		if (resource == null) {
-			wrapper = this.wrapperFactory.build(FeedRDFHelper.FEED_CLASS);
+		Resource resource = null;
+
+		String resourceType = this.getType(URI);
+		if (resourceType != null) {
+
+			Wrapper wrapper = this.wrapperFactory.build(resourceType);
 			resource = wrapper.get(URI);
+
 		}
 		return resource;
 	}
@@ -212,5 +213,15 @@ public class InformationAccessImplementation implements InformationAccess {
 	}
 
 	// ---------------------------------------------------------------------------
+
+	public String getType(String URI) {
+		VirtuosoInformationStore informationStore = (VirtuosoInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+		System.out.println("==================================>>>> "
+				+ informationStore.getType(URI));
+
+		return informationStore.getType(URI);
+	}
 
 }

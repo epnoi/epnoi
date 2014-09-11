@@ -12,11 +12,19 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.model.ResearchObject;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.SearchResult;
 import org.epnoi.uia.search.select.SelectExpression;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 @Path("/uia/searchs")
+@Api(value = "/uia/searchs", description = "Operations about search")
 public class SearchsResource extends UIAService {
 
 	@Context
@@ -33,11 +41,17 @@ public class SearchsResource extends UIAService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("")
-	public Response getSearch(@QueryParam("query") String query,
-			@QueryParam("facet") List<String> facet,
-			@QueryParam("filter") List<String> filter) {
-		System.out.println("GET: query: "+query +" facets: " + facet + " filter: "
-				+ filter);
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The Research Object has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A Research Object with such URI could not be found") })
+	@ApiOperation(value = "Returns the search result", notes = "", response = SearchResult.class)
+	public Response getSearch(
+			@ApiParam(value = "Search query expression", required = true, allowMultiple = false)@QueryParam("query") String query,
+			@ApiParam(value = "Considered facet", required = false, allowMultiple = true) @QueryParam("facet") List<String> facet,
+			@ApiParam(value = "Filters defined about the considered facets ", required = false, allowMultiple = true) @QueryParam("filter") List<String> filter) {
+		System.out.println("GET: query: " + query + " facets: " + facet
+				+ " filter: " + filter);
 
 		/*
 		 * 
@@ -63,7 +77,7 @@ public class SearchsResource extends UIAService {
 			searchContext.getFacets().add(facetParameter);
 
 		}
-		
+
 		for (String filterParameter : filter) {
 			searchContext.getFilterQueries().add(filterParameter);
 
@@ -72,9 +86,9 @@ public class SearchsResource extends UIAService {
 		SearchResult searchResult = this.core.getSearchHandler().search(
 				selectExpression, searchContext);
 		System.out.println("Results:");
-		System.out.println("#results " +searchResult.getResources().size());
-		System.out.println("#facets " +searchResult.getFacets().size());
-		
+		System.out.println("#results " + searchResult.getResources().size());
+		System.out.println("#facets " + searchResult.getFacets().size());
+
 		if (searchResult != null) {
 			return Response.ok(searchResult, MediaType.APPLICATION_JSON)
 					.build();

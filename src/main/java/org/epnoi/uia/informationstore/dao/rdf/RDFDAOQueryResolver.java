@@ -3,6 +3,7 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.uia.commons.DateConverter;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
@@ -93,6 +94,34 @@ public class RDFDAOQueryResolver {
 		return this.graph.find(
 				new Triple(uriNode, RDFDAOQueryResolver.typePropertyNode,
 						classNode)).hasNext();
+
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	public String getType(String URI) {
+		Node uriNode = Node.createURI(URI);
+
+		String queryExpression = "SELECT ?type FROM <{GRAPH}> { <{URI}> a ?type . }";
+
+		queryExpression = queryExpression.replace("{GRAPH}",
+				this.parameters.getGraph()).replace("{URI}", URI);
+
+		VirtuosoQueryExecution virtuosoQueryEngine = VirtuosoQueryExecutionFactory
+				.create(queryExpression, this.graph);
+		System.out.println("La expression que peta " + queryExpression);
+		ResultSet results = virtuosoQueryEngine.execSelect();
+		RDFNode typeNode = null;
+		while (results.hasNext()) {
+			QuerySolution result = results.nextSolution();
+			typeNode = result.get("type");
+		}
+
+		if (typeNode != null) {
+			return typeNode.asResource().getURI();
+		} else {
+			return null;
+		}
 
 	}
 

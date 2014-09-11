@@ -108,4 +108,11 @@ public class VirtuosoInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
+	public String getType(String URI) {
+
+		return this.queryResolver.getType(URI);
+
+	}
+
+	// ------------------------------------------------------------------------
 }
