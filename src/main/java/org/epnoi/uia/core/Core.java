@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
+import org.epnoi.uia.core.eventbus.EventBus;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationaccess.InformationAccess;
@@ -23,7 +24,6 @@ import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
@@ -48,6 +48,7 @@ public class Core {
 
 	private SearchHandler searchHandler = null;
 	private AnnotationHandler annotationHandler = null;
+	private EventBus eventBus = null;
 
 	// ----------------------------------------------------------------------------------------------------------
 
@@ -65,6 +66,7 @@ public class Core {
 		this.informationStores = new HashMap<String, InformationStore>();
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
+		this._initEventBus();
 		this._initGATE();
 		this._informationStoresInitialization();
 		this._initInformationAccess();
@@ -77,6 +79,12 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initEventBus() {
+
+		logger.info("Initializing the Event Bus");
+		this.eventBus = new EventBus();
+	}
 
 	private void _initAnnotationsHandler() {
 		this.annotationHandler = new AnnotationHandlerImpl(this);
