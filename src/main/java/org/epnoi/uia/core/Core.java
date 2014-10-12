@@ -85,6 +85,9 @@ public class Core {
 		logger.info("Initializing the Event Bus");
 		this.eventBus = new EventBus();
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
 
 	private void _initAnnotationsHandler() {
 		this.annotationHandler = new AnnotationHandlerImpl(this);
@@ -281,6 +284,18 @@ public class Core {
 
 	public void setAnnotationHandler(AnnotationHandler annotationHandler) {
 		this.annotationHandler = annotationHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
