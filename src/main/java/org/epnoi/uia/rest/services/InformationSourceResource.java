@@ -35,7 +35,7 @@ public class InformationSourceResource extends UIAService {
 		}
 
 		this.core = getUIACore();
-		User user = (User) this.core.getInformationAccess().get(URI,
+		User user = (User) this.core.getInformationHandler().get(URI,
 				UserRDFHelper.USER_CLASS);
 		if (user == null) {
 			return Response.status(404).build();

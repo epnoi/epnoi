@@ -25,7 +25,7 @@ public class CoreMainAnnotationsTest {
 
 		User annotatedUser = new User();
 		annotatedUser.setURI("http://annotatedUser");
-		core.getInformationAccess().put(annotatedUser, new Context());
+		core.getInformationHandler().put(annotatedUser, new Context());
 		core.getAnnotationHandler().label(annotatedUser.getURI(), "math");
 
 		/*
@@ -79,16 +79,15 @@ public class CoreMainAnnotationsTest {
 		// System.out.println(uri+" exist? "+core.getInformationAccess().contains(uri,RDFHelper.PAPER_CLASS));
 
 		System.out.println("Este es el type > "
-				+ core.getInformationAccess().get("http://testResearchObject"));
+				+ core.getInformationHandler().get("http://testResearchObject"));
 
 	}
 
 	private static void _whatever(String URI, Core core) {
-		Content<String> content = core.getInformationAccess().getContent(URI,
-				RDFHelper.PAPER_CLASS);
+		Content<String> content = core.getInformationHandler().getContent(URI);
 
-		Content<String> annotatedContent = core.getInformationAccess()
-				.getAnnotatedContent(URI, RDFHelper.PAPER_CLASS);
+		Content<String> annotatedContent = core.getInformationHandler()
+				.getAnnotatedContent(URI);
 
 		System.out.println("->> " + annotatedContent.getContent());
 

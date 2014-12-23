@@ -57,7 +57,7 @@ public class AnnotationsResource extends UIAService {
 	public Response getAnnotations(
 			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
 		logger.info("GET Annotations> " + URI);
-		Resource resource = this.core.getInformationAccess().get(URI);
+		Resource resource = this.core.getInformationHandler().get(URI);
 		if (resource != null) {
 			ArrayList<String> annotations = new ArrayList<String>(this.core
 					.getAnnotationHandler().getAnnotations(URI));
@@ -85,7 +85,7 @@ public class AnnotationsResource extends UIAService {
 
 		System.out.println("GET Annotation> uri=" + uri);
 
-		Annotation annotation = (Annotation) this.core.getInformationAccess()
+		Annotation annotation = (Annotation) this.core.getInformationHandler()
 				.get(uri, AnnotationRDFHelper.ANNOTATION_CLASS);
 
 		if (annotation != null) {

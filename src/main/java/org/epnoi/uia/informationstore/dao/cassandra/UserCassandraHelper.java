@@ -10,3 +10,4 @@ public interface UserCassandraHelper  {
 	public static final String INFORMATION_SOURCE_SUBSCRIPTIONS="INFORMATION_SOURCE_SUBSCRIPTIONS";
 
 }
+	

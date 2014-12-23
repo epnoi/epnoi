@@ -82,7 +82,7 @@ public class ResourcesResource extends UIAService {
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("POST: UIA " + resource);
 
-		this.getUIACore().getInformationAccess().update(resource);
+		this.getUIACore().getInformationHandler().update(resource);
 		return Response.ok().build();
 	}
 
@@ -100,8 +100,8 @@ public class ResourcesResource extends UIAService {
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("PUT: UIA " + resource);
 
-		this.getUIACore().getInformationAccess()
-				.put(resource, org.epnoi.model.Context.emptyContext);
+		this.getUIACore().getInformationHandler()
+				.put(resource, org.epnoi.model.Context.getEmptyContext());
 		return Response.ok().build();
 	}
 
@@ -128,7 +128,7 @@ public class ResourcesResource extends UIAService {
 			this.core = this.getUIACore();
 			System.out.println("Getting the resource "
 					+ ResourcesResource.resourceTypesTable.get(resourceType));
-			Resource resource = this.core.getInformationAccess().get(URI,
+			Resource resource = this.core.getInformationHandler().get(URI,
 					resourceClass);
 
 			if (resource != null) {
@@ -157,7 +157,7 @@ public class ResourcesResource extends UIAService {
 		String resourceClass = ResourcesResource.resourceTypesTable
 				.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
-			this.core.getInformationAccess().remove(URI, resourceType);
+			this.core.getInformationHandler().remove(URI, resourceType);
 			return Response.ok().build();
 		}
 		return Response.status(Responses.NOT_FOUND).build();

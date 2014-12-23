@@ -231,7 +231,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 
 					InformationSource informationSource = (InformationSource) this.harvester
 							.getCore()
-							.getInformationAccess()
+							.getInformationHandler()
 							.get(this.manifest.getURI(),
 									InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 					feedContext.getParameters().put(
@@ -240,7 +240,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 					feedContext.getParameters().put(
 							Context.INFORMATION_SOURCE_URI, manifest.getURI());
 
-					this.harvester.getCore().getInformationAccess()
+					this.harvester.getCore().getInformationHandler()
 							.put(feed, feedContext);
 				} else {
 

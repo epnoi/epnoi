@@ -68,8 +68,8 @@ public class ResearchObjectResource extends UIAService {
 		} catch (URISyntaxException e) {
 			throw new WebApplicationException();
 		}
-		this.core.getInformationAccess().put(researchObject,
-				org.epnoi.model.Context.emptyContext);
+		this.core.getInformationHandler().put(researchObject,
+				org.epnoi.model.Context.getEmptyContext());
 		return Response.created(researchObjectURI).build();
 	}
 
@@ -90,7 +90,7 @@ public class ResearchObjectResource extends UIAService {
 		logger.info("GET RO> uri=" + uri + " format=" + format);
 
 		ResearchObject researchObject = (ResearchObject) core
-				.getInformationAccess().get(uri,
+				.getInformationHandler().get(uri,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		/*
@@ -141,11 +141,11 @@ public class ResearchObjectResource extends UIAService {
 		logger.info("POST RO> " + researchObject);
 
 		ResearchObject researchObjectToBeUpdated = (ResearchObject) core
-				.getInformationAccess().get(researchObject.getURI(),
+				.getInformationHandler().get(researchObject.getURI(),
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		if (researchObjectToBeUpdated != null) {
-			core.getInformationAccess().update(researchObject);
+			core.getInformationHandler().update(researchObject);
 			return Response.ok().build();
 		} else {
 			return Response.status(Responses.NOT_FOUND).build();
@@ -169,13 +169,13 @@ public class ResearchObjectResource extends UIAService {
 		logger.info(" ro " + URI + " aggr " + resourceURI);
 
 		ResearchObject researchObject = (ResearchObject) core
-				.getInformationAccess().get(URI,
+				.getInformationHandler().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		if (researchObject != null) {
 			if (!researchObject.getAggregatedResources().contains(resourceURI)) {
 				researchObject.getAggregatedResources().add(resourceURI);
-				core.getInformationAccess().update(researchObject);
+				core.getInformationHandler().update(researchObject);
 			}
 
 		} else {
@@ -207,7 +207,7 @@ public class ResearchObjectResource extends UIAService {
 						.getPropertyURI(propertyName) + " with value " + value);
 
 		ResearchObject researchObject = (ResearchObject) core
-				.getInformationAccess().get(URI,
+				.getInformationHandler().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 		String propertyURI = DublinCoreMetadataElementsSetHelper
 				.getPropertyURI(propertyName);
@@ -215,7 +215,7 @@ public class ResearchObjectResource extends UIAService {
 
 			researchObject.getDcProperties().addPropertyValue(propertyURI,
 					value);
-			core.getInformationAccess().update(researchObject);
+			core.getInformationHandler().update(researchObject);
 		} else {
 			return Response.status(Responses.NOT_FOUND).build();
 		}
@@ -239,10 +239,10 @@ public class ResearchObjectResource extends UIAService {
 		logger.info("DELETE RO  > " + URI + " resource> " + URI);
 
 		ResearchObject researchObject = (ResearchObject) core
-				.getInformationAccess().get(URI,
+				.getInformationHandler().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 		if (researchObject != null) {
-			this.core.getInformationAccess().remove(URI,
+			this.core.getInformationHandler().remove(URI,
 					RDFHelper.RESEARCH_OBJECT_CLASS);
 			return Response.ok().build();
 		} else {
@@ -265,13 +265,13 @@ public class ResearchObjectResource extends UIAService {
 			@ApiParam(value = "Research Object uri", required = true, allowMultiple = false) @QueryParam("uri") String URI,
 			@ApiParam(value = "Aggregated resource to delete uri", required = true, allowMultiple = false) @QueryParam("resourceuri") String resourceURI) {
 		ResearchObject researchObject = (ResearchObject) core
-				.getInformationAccess().get(URI,
+				.getInformationHandler().get(URI,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 		if (researchObject != null
 				&& researchObject.getAggregatedResources()
 						.contains(resourceURI)) {
 			researchObject.getAggregatedResources().remove(resourceURI);
-			this.core.getInformationAccess().update(researchObject);
+			this.core.getInformationHandler().update(researchObject);
 			return Response.ok().build();
 		} else {
 

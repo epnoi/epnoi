@@ -3,7 +3,6 @@ package org.epnoi.uia.annotation;
 import java.util.List;
 
 import org.epnoi.model.Annotation;
-import org.epnoi.model.Resource;
 
 public interface AnnotationHandler {
 

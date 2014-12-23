@@ -59,7 +59,7 @@ public class LabelsResource extends UIAService {
 			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
 		logger.info("GET labels> " + URI);
 
-		Resource resource = this.core.getInformationAccess().get(URI);
+		Resource resource = this.core.getInformationHandler().get(URI);
 		if (resource != null) {
 
 			ArrayList<String> labels = new ArrayList<String>(this.core
@@ -88,7 +88,7 @@ public class LabelsResource extends UIAService {
 
 		logger.info("GET label uri=" + uri);
 
-		Annotation annotation = (Annotation) this.core.getInformationAccess()
+		Annotation annotation = (Annotation) this.core.getInformationHandler()
 				.get(uri, AnnotationRDFHelper.ANNOTATION_CLASS);
 
 		if (annotation != null) {

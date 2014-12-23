@@ -58,12 +58,26 @@ public class TermExtractor {
 			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
 					domain, this.consideredResources);
 
-			this.resourcePerConsideredDomain.put(domain, foundURIs);
+			this.resourcePerConsideredDomain.put(domain,
+					_cleanResources(foundURIs));
 			System.out.println("The considered domain " + domain + " has "
 					+ foundURIs.size() + " elements");
 		}
 
 		// System.out.println("----> "+this.resourcePerConsideredDomain);
+	}
+
+	// -----------------------------------------------------------------------------------
+
+	private List<String> _cleanResources(List<String> foundURIs) {
+		List<String> cleanedURIs = new ArrayList<String>();
+		for (String uri : foundURIs) {
+			if (core.getInformationHandler().contains(uri,
+					this.consideredResources)) {
+				cleanedURIs.add(uri);
+			}
+		}
+		return cleanedURIs;
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -127,8 +141,8 @@ public class TermExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private Document retrieveAnnotatedDocument(String URI) {
-		Content<String> annotatedContent = core.getInformationAccess()
-				.getAnnotatedContent(URI, this.consideredResources);
+		Content<String> annotatedContent = core.getInformationHandler()
+				.getAnnotatedContent(URI);
 		Document document = null;
 		try {
 			document = (Document) Factory
@@ -415,20 +429,19 @@ public class TermExtractor {
 
 	public static void main(String[] args) {
 		TermExtractor termExtractor = new TermExtractor();
-		List<String> consideredDomains = Arrays.asList("cs","math");
+		List<String> consideredDomains = Arrays.asList("cs", "math");
 		// List<String> consideredDomains = Arrays.asList("math");
 
 		/*
 		 * List<String> consideredDomains =
 		 * Arrays.asList("Physics   Biological Physics");
 		 */
-/*
-		List<String> consideredDomains = Arrays.asList(
-				"Quantitative Biology   Populations and Evolution",
-				"Physics   Biological Physics",
-				"Nonlinear Sciences   Exactly Solvable and Integrable Systems");
-	
-		*/
+		/*
+		 * List<String> consideredDomains = Arrays.asList(
+		 * "Quantitative Biology   Populations and Evolution",
+		 * "Physics   Biological Physics",
+		 * "Nonlinear Sciences   Exactly Solvable and Integrable Systems");
+		 */
 		/*
 		 * 
 		 * List<String> consideredDomains = Arrays

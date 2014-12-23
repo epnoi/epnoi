@@ -28,7 +28,7 @@ public class SearchOrganizer {
 			
 			
 			System.out.println("peta ----------------> "+selectPair.getResourceURI());
-			Resource resource = this.core.getInformationAccess().get(
+			Resource resource = this.core.getInformationHandler().get(
 					selectPair.getResourceURI(), selectPair.getType());
 
 			OrganizationResultPair organizationPair = new OrganizationResultPair();

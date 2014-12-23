@@ -34,6 +34,7 @@ import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
 public class OAIPMHHarvester extends CommandLineTool {
 	public static final String PARAMETER_COMMAND = "-command";
@@ -72,6 +73,10 @@ public class OAIPMHHarvester extends CommandLineTool {
 	 public OAIPMHHarvester(){
 		 this.termCandidatesFinder = new TermCandidatesFinder();
 		 this.termCandidatesFinder.init();
+		 
+		 
+		 org.w3c.dom.Node testNode = null;
+		 
 		 
 	 }
 	 
@@ -185,15 +190,15 @@ public class OAIPMHHarvester extends CommandLineTool {
 				// System.out.println("Harvesting paper ------------------->" +
 				// paper);
 
-				 core.getInformationAccess().put(paper, new Context());
+				 core.getInformationHandler().put(paper, Context.getEmptyContext());
 				 
 				 
-				Content<String> content=core.getInformationAccess().getContent(paper.getURI(), RDFHelper.PAPER_CLASS);
+				Content<String> content=core.getInformationHandler().getContent(paper.getURI());
 
 				Document annotatedContent=this.termCandidatesFinder.findTermCandidates(content.getContent());
-				//System.out.println("------)> "+annotatedContent.toXml());
+				System.out.println("------)> "+annotatedContent.toXml());
 											
-				core.getInformationAccess().setAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS, new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
+				core.getInformationHandler().setAnnotatedContent(paper.getURI(),  new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
 				
 				//System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 
@@ -258,7 +263,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 
 		if ((identifierNodeList != null)
 				&& (identifierNodeList.item(0) != null)) {
-			String identifier = identifierNodeList.item(0).getTextContent();
+			String identifier = ((org.w3c.dom.Node)identifierNodeList.item(0)).getTextContent();
 
 			// newDocument.setField("id", identifier);
 			paper.setURI(identifier);

@@ -7,20 +7,21 @@ import java.util.Map;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.dao.cassandra.AnnotatedContenCassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
 import org.epnoi.uia.informationstore.dao.cassandra.CassandraQueryResolver;
+import org.epnoi.uia.informationstore.dao.cassandra.ContentCassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.FeedCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.ItemCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraHelper;
+import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
-
-import com.hp.hpl.jena.graph.Node;
 
 public class CassandraInformationStore implements InformationStore {
 	private InformationStoreParameters parameters;
@@ -34,7 +35,8 @@ public class CassandraInformationStore implements InformationStore {
 				FeedCassandraHelper.COLUMN_FAMILLY);
 		typesTable.put(FeedRDFHelper.ITEM_CLASS,
 				ItemCassandraHelper.COLUMN_FAMILLY);
-
+		typesTable.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
+				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// ---------------------------------------------------------------------
@@ -50,6 +52,7 @@ public class CassandraInformationStore implements InformationStore {
 		this.parameters = parameters;
 		this.daoFactory = new CassandraDAOFactory(parameters);
 		this.queryResolver = new CassandraQueryResolver();
+		this.queryResolver.init();
 	}
 
 	// ------------------------------------------------------------------------
@@ -118,14 +121,16 @@ public class CassandraInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public Content<String> getContent(Selector selector) {
-		CassandraDAO dao = this.daoFactory.build(selector);
+		ContentCassandraDAO dao = new ContentCassandraDAO();
+		dao.init();
 		return dao.getContent(selector);
 	}
 
 	// ------------------------------------------------------------------------
 
 	public Content<String> getAnnotatedContent(Selector selector) {
-		CassandraDAO dao = this.daoFactory.build(selector);
+		AnnotatedContenCassandraDAO dao = new AnnotatedContenCassandraDAO();
+		dao.init();
 		return dao.getAnnotatedContent(selector);
 	}
 
@@ -140,8 +145,11 @@ public class CassandraInformationStore implements InformationStore {
 
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
-		CassandraDAO dao = this.daoFactory.build(selector);
+
+		AnnotatedContenCassandraDAO dao = new AnnotatedContenCassandraDAO();
+		dao.init();
 		dao.setAnnotatedContent(selector, annotatedContent);
+
 	}
 
 	// ------------------------------------------------------------------------

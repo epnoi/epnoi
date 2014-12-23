@@ -126,17 +126,17 @@ public class UIAResourceFlexjon extends UIAService {
 				.println("----------------------------------------------------");
 		Resource storedResource = this
 				.getUIACore()
-				.getInformationAccess()
+				.getInformationHandler()
 				.get(resource.getURI(),
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
 		System.out.println("lo que habia en el UIA " + storedResource);
 
-		this.getUIACore().getInformationAccess().update(resource);
+		this.getUIACore().getInformationHandler().update(resource);
 
 		storedResource = this
 				.getUIACore()
-				.getInformationAccess()
+				.getInformationHandler()
 				.get(resource.getURI(),
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
