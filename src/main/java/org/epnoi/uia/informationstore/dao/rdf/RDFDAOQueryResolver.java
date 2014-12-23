@@ -3,7 +3,6 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.epnoi.uia.commons.DateConverter;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;

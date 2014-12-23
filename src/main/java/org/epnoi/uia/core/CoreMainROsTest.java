@@ -44,9 +44,9 @@ public class CoreMainROsTest {
 		context.getParameters().put(Context.INFORMATION_SOURCE_NAME,
 				"coreMainTest");
 
-		core.getInformationAccess().put(researchObject, context);
+		core.getInformationHandler().put(researchObject, context);
 
-		Resource readedRO = core.getInformationAccess().get(
+		Resource readedRO = core.getInformationHandler().get(
 				"http://testResearchObject", RDFHelper.RESEARCH_OBJECT_CLASS);
 		System.out.println("Readed RO >" + readedRO);
 
@@ -71,14 +71,14 @@ public class CoreMainROsTest {
 		researchObject.getAggregatedResources().add("http://newResource");
 		researchObject.getAggregatedResources().remove("http://resourceB");
 
-		core.getInformationAccess().update(researchObject);
+		core.getInformationHandler().update(researchObject);
 
-		Resource updatedRO = core.getInformationAccess().get(
+		Resource updatedRO = core.getInformationHandler().get(
 				"http://testResearchObject", RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		System.out.println("Readed updated RO >" + updatedRO);
 
-		core.getInformationAccess().remove(researchObject);
+		core.getInformationHandler().remove(researchObject);
 
 	}
 

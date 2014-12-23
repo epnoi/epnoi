@@ -9,6 +9,7 @@ import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.User;
+import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
@@ -66,6 +67,10 @@ public class RDFDAOFactory {
 			RDFDAO dao = new ResearchObjectRDFDAO();
 			dao.init(this.parameters);
 			return dao;
+		} else if (resource instanceof WikipediaPage) {
+			RDFDAO dao = new WikipediaPageRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 		}
 
 		else {
@@ -121,9 +126,16 @@ public class RDFDAOFactory {
 
 		} else if (typeSelector.equals(RDFHelper.RESEARCH_OBJECT_CLASS)) {
 
-		 ResearchObjectRDFDAO researchObjectDAO = new ResearchObjectRDFDAO();
+			ResearchObjectRDFDAO researchObjectDAO = new ResearchObjectRDFDAO();
 			researchObjectDAO.init(this.parameters);
 			return researchObjectDAO;
+			
+		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+
+			WikipediaPageRDFDAO wikipediaPageDAO = new WikipediaPageRDFDAO();
+			wikipediaPageDAO.init(this.parameters);
+			return wikipediaPageDAO;
+
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

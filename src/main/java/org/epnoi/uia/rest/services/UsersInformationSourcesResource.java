@@ -38,7 +38,7 @@ public class UsersInformationSourcesResource extends UIAService {
 		}
 
 		Core core = getUIACore();
-		User user = (User) core.getInformationAccess().get(URI,
+		User user = (User) core.getInformationHandler().get(URI,
 				UserRDFHelper.USER_CLASS);
 
 		if (user == null) {
@@ -52,7 +52,7 @@ public class UsersInformationSourcesResource extends UIAService {
 				.getInformationSourceSubscriptions()) {
 
 			InformationSourceSubscription informationSourceSubscription = (InformationSourceSubscription) this.core
-					.getInformationAccess()
+					.getInformationHandler()
 					.get(informationSourceURI,
 							InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 			informationSourceSubscriptions.add(informationSourceSubscription);
@@ -86,7 +86,7 @@ public class UsersInformationSourcesResource extends UIAService {
 		}
 
 		Core core = getUIACore();
-		User user = (User) core.getInformationAccess().get(userURI,
+		User user = (User) core.getInformationHandler().get(userURI,
 				UserRDFHelper.USER_CLASS);
 
 		if (user == null) {
@@ -97,7 +97,7 @@ public class UsersInformationSourcesResource extends UIAService {
 				informationSourceSubscriptionURI)) {
 
 			InformationSourceSubscription informationSourceSubcription = (InformationSourceSubscription) core
-					.getInformationAccess()
+					.getInformationHandler()
 					.get(informationSourceSubscriptionURI,
 							InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 

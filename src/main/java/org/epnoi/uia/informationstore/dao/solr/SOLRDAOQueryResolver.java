@@ -139,7 +139,7 @@ public class SOLRDAOQueryResolver {
 
 		try {
 			QueryResponse queryResponse = this.server.query(solrQuery);
-			System.out.println("solrQueryResponse....> "+queryResponse);
+			
 			return queryResponse.getResults().size() > 0;
 
 		} catch (Exception e) {

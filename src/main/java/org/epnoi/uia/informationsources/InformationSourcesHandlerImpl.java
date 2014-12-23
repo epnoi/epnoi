@@ -32,14 +32,14 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 		VirtuosoInformationStoreParameters parameters = (VirtuosoInformationStoreParameters) informationStore
 				.getParameters();
 		InformationSourceSubscription informationSourceSubscription = (InformationSourceSubscription) this.core
-				.getInformationAccess()
+				.getInformationHandler()
 				.get(informationSourceSubscriptionURI,
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
 		// System.out.println("ISS> " + informationSourceSubscription);
 
 		InformationSource informationSource = (InformationSource) this.core
-				.getInformationAccess().get(
+				.getInformationHandler().get(
 						informationSourceSubscription.getInformationSource(),
 						InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
 
@@ -56,7 +56,7 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 
 			InformationSourceNotification informationSourceNotification = new InformationSourceNotification();
 			informationSourceNotification.setURI(informationUnitURI);
-			Resource resource = this.core.getInformationAccess().get(
+			Resource resource = this.core.getInformationHandler().get(
 					informationUnitURI,
 					informationSource.getInformationUnitType());
 			informationSourceNotification.setResource(resource);

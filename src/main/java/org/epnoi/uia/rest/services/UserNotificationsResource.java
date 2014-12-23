@@ -40,7 +40,7 @@ public class UserNotificationsResource extends UIAService {
 		}
 
 		Core core = getUIACore();
-		User user = (User) core.getInformationAccess().get(URI,
+		User user = (User) core.getInformationHandler().get(URI,
 				UserRDFHelper.USER_CLASS);
 
 		if (user == null) {
@@ -95,7 +95,7 @@ public class UserNotificationsResource extends UIAService {
 		}
 
 		Core core = getUIACore();
-		User user = (User) core.getInformationAccess().get(userURI,
+		User user = (User) core.getInformationHandler().get(userURI,
 				UserRDFHelper.USER_CLASS);
 
 		if (user == null) {

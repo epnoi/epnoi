@@ -19,4 +19,5 @@ public class RDFHelper {
 	
 	public static final String PAPER_CLASS = "http://www.epnoi.org/ontology#Paper";
 	public static final String RESEARCH_OBJECT_CLASS = "http://www.epnoi.org/ontology#ResearchObject";
+	public static final String WIKIPEDIA_PAGE_CLASS = "http://www.epnoi.org/ontology#WikipediaPage";
 }

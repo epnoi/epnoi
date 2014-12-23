@@ -27,7 +27,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	public void annotate(Annotation annotation, String URI) {
 		annotation.setAnnotatesResource(URI);
-		this.core.getInformationAccess().put(annotation, new Context());
+		this.core.getInformationHandler().put(annotation, new Context());
 	}
 
 	// ------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setURI(URI + "annotation" + topicURI.hashCode());
 
 		System.out.println(".............................................>>> ");
-		core.getInformationAccess().put(annotation, new Context());
+		core.getInformationHandler().put(annotation, new Context());
 		return annotation;
 	}
 
@@ -117,7 +117,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setPredicate(predicate);
 		annotation.setURI(URI + "annotation" + topicURI.hashCode());
 
-		core.getInformationAccess().put(annotation, new Context());
+		core.getInformationHandler().put(annotation, new Context());
 		return annotation;
 	}
 
@@ -129,7 +129,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setAnnotatesResource(URI);
 		annotation.setLabel(label);
 		annotation.setURI(URI + "label" + label.hashCode());
-		core.getInformationAccess().put(annotation, new Context());
+		core.getInformationHandler().put(annotation, new Context());
 		return annotation;
 	}
 
@@ -163,7 +163,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 		System.out.println(" AHORA TENDRIAMOS QUE BORRAR > " + queryResults);
 		for (String annotationURI : queryResults) {
-			core.getInformationAccess().remove(annotationURI,
+			core.getInformationHandler().remove(annotationURI,
 					AnnotationRDFHelper.ANNOTATION_CLASS);
 		}
 
@@ -198,7 +198,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 		
 		for (String annotationURI : queryResults) {
-			core.getInformationAccess().remove(annotationURI,
+			core.getInformationHandler().remove(annotationURI,
 					AnnotationRDFHelper.ANNOTATION_CLASS);
 		}
 

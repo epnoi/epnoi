@@ -2,14 +2,14 @@ package org.epnoi.model;
 
 public class Content<T> {
 	private T content;
-	private String format;
+	private String type;
 
 	// ----------------------------------------------------------------------------------------------
 
 	public Content(T content, String format) {
 		super();
 		this.content = content;
-		this.format = format;
+		this.type = format;
 	}
 
 	public T getContent() {
@@ -24,23 +24,27 @@ public class Content<T> {
 
 	// ----------------------------------------------------------------------------------------------
 
-	public String getFormat() {
-		return format;
+	public String getType() {
+		return type;
 	}
 
 	// ----------------------------------------------------------------------------------------------
 
-	public void setFormat(String format) {
-		this.format = format;
+	public void setType(String format) {
+		this.type = format;
 	}
-	
+
+	// ----------------------------------------------------------------------------------------------
+
+	public boolean isEmpty() {
+		return ((this.content == null)||(this.type == null));
+	}
+
 	// ----------------------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "Content [content=" + content + ", format=" + format + "]";
+		return "Content [content=" + content + ", format=" + type + "]";
 	}
-
-	
 
 }

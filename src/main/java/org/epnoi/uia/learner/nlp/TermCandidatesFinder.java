@@ -11,6 +11,7 @@ import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
 
 public class TermCandidatesFinder {
+	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
 
@@ -23,18 +24,19 @@ public class TermCandidatesFinder {
 			e.printStackTrace();
 		}
 
-		this.corpus.add(doc);
+		if (doc.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
 
-		// controller.setCorpus(
-		try {
-			controller.execute();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.corpus.add(doc);
+
+			// controller.setCorpus(
+			try {
+				controller.execute();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			corpus.remove(0);
 		}
-		corpus.remove(0);
-		System.out.println("csize----> " + corpus.size());
-		// System.out.println("---> " + doc.toXml());
 		return doc;
 
 	}

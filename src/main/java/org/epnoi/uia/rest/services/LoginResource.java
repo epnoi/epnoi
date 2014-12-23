@@ -59,7 +59,7 @@ public class LoginResource extends UIAService{
 			System.out.println("The user exists and it was uried " + cassandraUser.getURI());
 		
 			Core core = getUIACore();
-			User user = (User) core.getInformationAccess().get(cassandraUser.getURI(),
+			User user = (User) core.getInformationHandler().get(cassandraUser.getURI(),
 					UserRDFHelper.USER_CLASS);
 			if (user == null) {
 				return Response.status(404).build();

@@ -17,8 +17,8 @@ import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
-import org.epnoi.uia.informationaccess.InformationAccess;
-import org.epnoi.uia.informationaccess.InformationAccessImplementation;
+import org.epnoi.uia.informationhandler.InformationHandler;
+import org.epnoi.uia.informationhandler.InformationHandlerImp;
 import org.epnoi.uia.informationsources.InformationSourcesHandler;
 import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
@@ -41,7 +41,7 @@ public class Core {
 
 	private RSSHoarder rssHoarder;
 	private RSSHarvester rssHarvester;
-	private InformationAccess informationAccess;
+	private InformationHandler informationHandler;
 	private InformationSourcesHandler informationSourcesHandler = null;
 
 	private ParametersModel parametersModel = null;
@@ -69,7 +69,7 @@ public class Core {
 		this._initEventBus();
 		this._initGATE();
 		this._informationStoresInitialization();
-		this._initInformationAccess();
+		this._initInformationHandler();
 		this._initInformationSourcesHandler();
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
@@ -162,8 +162,8 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _initInformationAccess() {
-		this.informationAccess = new InformationAccessImplementation(this);
+	private void _initInformationHandler() {
+		this.informationHandler = new InformationHandlerImp(this);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -232,8 +232,8 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public InformationAccess getInformationAccess() {
-		return this.informationAccess;
+	public InformationHandler getInformationHandler() {
+		return this.informationHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -325,10 +325,12 @@ public class Core {
 					.toURL();
 
 			Gate.getCreoleRegister().registerDirectories(anniePlugin);
+			
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
 	}
 

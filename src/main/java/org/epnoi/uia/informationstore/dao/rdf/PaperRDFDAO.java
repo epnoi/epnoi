@@ -29,7 +29,7 @@ public class PaperRDFDAO extends RDFDAO {
 
 	// ---------------------------------------------------------------------------------------------------
 
-	public synchronized void  create(Resource resource, Context context) {
+	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 		String paperURI = paper.getURI();
 
@@ -42,8 +42,10 @@ public class PaperRDFDAO extends RDFDAO {
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", paperURI)
 				.replace("{PAPER_CLASS}", RDFHelper.PAPER_CLASS)
-				.replace("{PUB_DATE_PROPERTY}",DublinCoreRDFHelper.DATE_PROPERTY)
-				.replace("{PAPER_PUB_DATE}", convertDateFormat(paper.getPubDate()))
+				.replace("{PUB_DATE_PROPERTY}",
+						DublinCoreRDFHelper.DATE_PROPERTY)
+				.replace("{PAPER_PUB_DATE}",
+						convertDateFormat(paper.getPubDate()))
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
 				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
 		System.out.println("----> " + queryExpression);
@@ -56,15 +58,13 @@ public class PaperRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
-		itemRDFDAO.init(this.parameters);
 
 		String feedURI = URI;
 
 		Query sparql = QueryFactory.create("DESCRIBE <" + feedURI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
+				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
+				sparql, graph);
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
@@ -82,9 +82,9 @@ public class PaperRDFDAO extends RDFDAO {
 		Paper item = new Paper();
 		item.setURI(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
+				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
+				sparql, graph);
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
@@ -99,8 +99,9 @@ public class PaperRDFDAO extends RDFDAO {
 			if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
 				item.setTitle(t.getObject().getLiteral().getValue().toString());
 
-			}else if (DublinCoreRDFHelper.DATE_PROPERTY.equals(predicateURI)) {
-				item.setPubDate(t.getObject().getLiteral().getValue().toString());
+			} else if (DublinCoreRDFHelper.DATE_PROPERTY.equals(predicateURI)) {
+				item.setPubDate(t.getObject().getLiteral().getValue()
+						.toString());
 
 			}
 		}
@@ -111,10 +112,6 @@ public class PaperRDFDAO extends RDFDAO {
 
 	public void update(Resource resource) {
 
-	}
-
-	private String clean(String expression) {
-		return expression.replaceAll("[^a-zA-Z0-9]", " ");
 	}
 
 	// ---------------------------------------------------------------------------------------------------
@@ -128,25 +125,7 @@ public class PaperRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-/*
-	protected String convertDateFormat(String dateExpression) {
-		DateFormat formatter = new SimpleDateFormat(
-				"EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH);
-		Date date = null;
-		try {
-			date = formatter.parse(dateExpression);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// "2005-02-28T00:00:00Z"^^xsd:dateTime
-		// "2013-12-16T23:44:00+0100"^^xsd:dateTime
-		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-				Locale.ENGLISH);
-		return (dt1.format(date));
-
-	}
-*/	
+	
 	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
@@ -173,9 +152,5 @@ public class PaperRDFDAO extends RDFDAO {
 		return null;
 
 	}
-	
-	
-	
-	
 
 }
