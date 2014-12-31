@@ -20,8 +20,8 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
-public class TermExtractor {
-	private static final Logger logger = Logger.getLogger(TermExtractor.class
+public class TermsExtractor {
+	private static final Logger logger = Logger.getLogger(TermsExtractor.class
 			.getName());
 	Core core;
 	List<String> consideredDomains;
@@ -428,7 +428,7 @@ public class TermExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		TermExtractor termExtractor = new TermExtractor();
+		TermsExtractor termExtractor = new TermsExtractor();
 		List<String> consideredDomains = Arrays.asList("cs", "math");
 		// List<String> consideredDomains = Arrays.asList("math");
 
