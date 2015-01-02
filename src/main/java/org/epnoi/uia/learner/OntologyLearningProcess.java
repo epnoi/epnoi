@@ -9,6 +9,7 @@ import org.epnoi.uia.learner.relations.RelationsTable;
 import org.epnoi.uia.learner.terms.AnnotatedWord;
 import org.epnoi.uia.learner.terms.TermMetadata;
 import org.epnoi.uia.learner.terms.TermVertice;
+import org.epnoi.uia.learner.terms.TerminologyExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class OntologyLearningProcess {
