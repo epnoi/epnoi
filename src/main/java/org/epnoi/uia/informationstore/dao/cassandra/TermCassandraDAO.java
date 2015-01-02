@@ -75,6 +75,10 @@ public class TermCassandraDAO extends CassandraDAO {
 				String.valueOf(termMetadata.getTermhood()),
 				TermCassandraHelper.COLUMN_FAMILLY);
 
+		super.updateColumn(term.getURI(), TermCassandraHelper.TERM_PROBABILITY,
+				String.valueOf(termMetadata.getTermProbability()),
+				TermCassandraHelper.COLUMN_FAMILLY);
+
 	}
 
 	// --------------------------------------------------------------------------------
@@ -135,6 +139,10 @@ public class TermCassandraDAO extends CassandraDAO {
 					break;
 				case TermCassandraHelper.TERMHOOD:
 					termMetadata.setTermhood(Double.parseDouble(columnValue));
+					break;
+					
+				case TermCassandraHelper.TERM_PROBABILITY:
+					termMetadata.setTermProbability(Double.parseDouble(columnValue));
 					break;
 
 				default:

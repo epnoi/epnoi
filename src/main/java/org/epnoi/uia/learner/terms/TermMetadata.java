@@ -19,7 +19,7 @@ public class TermMetadata implements Comparable<TermMetadata> {
 	private double cValue;
 	private double domainConsensus;
 	private double domainPertinence;
-	// private double termProbability;
+	private double termProbability;
 	private double termhood;
 
 	// -------------------------------------------------------------------------------------------------------
@@ -144,14 +144,14 @@ public class TermMetadata implements Comparable<TermMetadata> {
 
 	// -------------------------------------------------------------------------------------------------------
 
-	/*
-	 * 
-	 * 
-	 * public double getTermProbability() { return termProbability; }
-	 * 
-	 * public void setTermProbability(double termProbability) {
-	 * this.termProbability = termProbability; }
-	 */
+	public double getTermProbability() {
+		return termProbability;
+	}
+
+	public void setTermProbability(double termProbability) {
+		this.termProbability = termProbability;
+	}
+
 	// -------------------------------------------------------------------------------------------------------
 
 	public double getDomainPertinence() {
@@ -175,17 +175,18 @@ public class TermMetadata implements Comparable<TermMetadata> {
 	public void setTermhood(double termhood) {
 		this.termhood = termhood;
 	}
-
+	
 	// -------------------------------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "TermCandidateMetadata [length=" + length + ", words="
+		return "TermMetadata [length=" + length + ", words="
 				+ Arrays.toString(words) + ", ocurrences=" + ocurrences
 				+ ", ocurrencesAsSubterm=" + ocurrencesAsSubterm
 				+ ", numberOfSuperterns=" + numberOfSuperterns + ", cValue="
 				+ cValue + ", domainConsensus=" + domainConsensus
-				+ ", domainPertinence=" + domainPertinence + " termhood="
+				+ ", domainPertinence=" + domainPertinence
+				+ ", termProbability=" + termProbability + ", termhood="
 				+ termhood + "]";
 	}
 
