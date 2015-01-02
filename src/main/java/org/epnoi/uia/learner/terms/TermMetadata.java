@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TermMetadata implements Comparable<TermMetadata> {
-	Map<String, Object> metadata = new HashMap<>();
-
-	public static final String OCURRENCES = "OCURRENCES";
-	public static final String OCURRENCES_AS_SUBTERM = "OCURRENCES_OTHER_TERMS";
-	public static final String NUMBER_OF_SUPERTERMS = "NUMBER_OF_SUPERTERMS";
-
+	// Map<String, Object> metadata = new HashMap<>();
+	/*
+	 * public static final String OCURRENCES = "OCURRENCES"; public static final
+	 * String OCURRENCES_AS_SUBTERM = "OCURRENCES_OTHER_TERMS"; public static
+	 * final String NUMBER_OF_SUPERTERMS = "NUMBER_OF_SUPERTERMS";
+	 */
 	private int length;
 	private String[] words;
 	private long ocurrences;
@@ -19,11 +19,11 @@ public class TermMetadata implements Comparable<TermMetadata> {
 	private double cValue;
 	private double domainConsensus;
 	private double domainPertinence;
-	private double termProbability;
+	// private double termProbability;
 	private double termhood;
 
 	// -------------------------------------------------------------------------------------------------------
-	TermMetadata() {
+	public TermMetadata() {
 		this.length = 0;
 		this.words = null;
 		this.ocurrences = 1L;
@@ -31,7 +31,7 @@ public class TermMetadata implements Comparable<TermMetadata> {
 		this.numberOfSuperterns = 0;
 		this.cValue = 0;
 		this.domainConsensus = 0;
-		this.termProbability = 0;
+		// this.termProbability = 0;
 		this.termhood = 0;
 	}
 
@@ -48,19 +48,21 @@ public class TermMetadata implements Comparable<TermMetadata> {
 	}
 
 	// -------------------------------------------------------------------------------------------------------
-
-	public Object getMetadataProperty(String property) {
-		return this.metadata.get(property);
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-	public void setMetadataProperty(String property, Object value) {
-		this.metadata.put(property, value);
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
+	/*
+	 * public Object getMetadataProperty(String property) { return
+	 * this.metadata.get(property); }
+	 * 
+	 * //
+	 * ------------------------------------------------------------------------
+	 * -------------------------------
+	 * 
+	 * public void setMetadataProperty(String property, Object value) {
+	 * this.metadata.put(property, value); }
+	 * 
+	 * //
+	 * ------------------------------------------------------------------------
+	 * -------------------------------
+	 */
 	@Override
 	public int compareTo(TermMetadata termMetadata) {
 
@@ -142,16 +144,14 @@ public class TermMetadata implements Comparable<TermMetadata> {
 
 	// -------------------------------------------------------------------------------------------------------
 
-	public double getTermProbability() {
-		return termProbability;
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-	public void setTermProbability(double termProbability) {
-		this.termProbability = termProbability;
-	}
-
+	/*
+	 * 
+	 * 
+	 * public double getTermProbability() { return termProbability; }
+	 * 
+	 * public void setTermProbability(double termProbability) {
+	 * this.termProbability = termProbability; }
+	 */
 	// -------------------------------------------------------------------------------------------------------
 
 	public double getDomainPertinence() {
@@ -180,14 +180,12 @@ public class TermMetadata implements Comparable<TermMetadata> {
 
 	@Override
 	public String toString() {
-		return "TermCandidateMetadata [metadata=" + metadata + ", length="
-				+ length + ", words=" + Arrays.toString(words)
-				+ ", ocurrences=" + ocurrences + ", ocurrencesAsSubterm="
-				+ ocurrencesAsSubterm + ", numberOfSuperterns="
-				+ numberOfSuperterns + ", cValue=" + cValue
-				+ ", domainConsensus=" + domainConsensus
-				+ ", domainPertinence=" + domainPertinence
-				+ ", termProbability=" + termProbability + ", termhood="
+		return "TermCandidateMetadata [length=" + length + ", words="
+				+ Arrays.toString(words) + ", ocurrences=" + ocurrences
+				+ ", ocurrencesAsSubterm=" + ocurrencesAsSubterm
+				+ ", numberOfSuperterns=" + numberOfSuperterns + ", cValue="
+				+ cValue + ", domainConsensus=" + domainConsensus
+				+ ", domainPertinence=" + domainPertinence + " termhood="
 				+ termhood + "]";
 	}
 
