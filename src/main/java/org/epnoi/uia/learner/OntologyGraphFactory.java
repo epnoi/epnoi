@@ -13,7 +13,7 @@ public class OntologyGraphFactory {
 	static OntologyGraph build(OntologyLearningParameters ontologyLearningParamters, TermsTable termsTable, RelationsTable table){
 		OntologyGraph initialOntology = new OntologyGraph();
 		
-		int initialNumberOfTerms = Integer.parseInt(ontologyLearningParamters.getParameterValue(OntologyLearningParameters.NUMBER_INITIAL_TERMS));
+		int initialNumberOfTerms = Integer.parseInt((String)ontologyLearningParamters.getParameterValue(OntologyLearningParameters.NUMBER_INITIAL_TERMS));
 
 		List<AnnotatedWord<TermMetadata>> mostProblabeTerms= termsTable.getMostProbable(initialNumberOfTerms);
 		for (AnnotatedWord<TermMetadata> term: mostProblabeTerms){
