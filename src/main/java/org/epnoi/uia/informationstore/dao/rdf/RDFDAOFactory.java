@@ -8,6 +8,7 @@ import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Term;
 import org.epnoi.model.User;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.informationstore.Selector;
@@ -71,6 +72,10 @@ public class RDFDAOFactory {
 			RDFDAO dao = new WikipediaPageRDFDAO();
 			dao.init(this.parameters);
 			return dao;
+		} else if (resource instanceof Term) {
+			RDFDAO dao = new TermRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 		}
 
 		else {
@@ -129,13 +134,18 @@ public class RDFDAOFactory {
 			ResearchObjectRDFDAO researchObjectDAO = new ResearchObjectRDFDAO();
 			researchObjectDAO.init(this.parameters);
 			return researchObjectDAO;
-			
+
 		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
 
 			WikipediaPageRDFDAO wikipediaPageDAO = new WikipediaPageRDFDAO();
 			wikipediaPageDAO.init(this.parameters);
 			return wikipediaPageDAO;
 
+		} else if (typeSelector.equals(RDFHelper.TERM_CLASS)) {
+
+			TermRDFDAO termDAO = new TermRDFDAO();
+			termDAO.init(this.parameters);
+			return termDAO;
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

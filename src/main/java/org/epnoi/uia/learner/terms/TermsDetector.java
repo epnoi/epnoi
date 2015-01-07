@@ -24,13 +24,11 @@ public class TermsDetector {
 				AnnotatedWord<TermMetadata> storedTerm = detectedTerms.get(term
 						.getWord());
 				if (storedTerm != null) {
-					Long occurrences = (Long) storedTerm.getAnnotation().metadata
-							.get(TermMetadata.OCURRENCES);
-					storedTerm.getAnnotation().metadata.put(
-							TermMetadata.OCURRENCES, ++occurrences);
+					Long occurrences = (Long) storedTerm.getAnnotation().getOcurrences();
+					storedTerm.getAnnotation().setOcurrences(
+							 ++occurrences);
 				} else {
-					term.getAnnotation().metadata.put(TermMetadata.OCURRENCES,
-							new Long(1));
+					term.getAnnotation().setOcurrences(new Long(1));
 					detectedTerms.put(term.getWord(), term);
 				}
 			}

@@ -24,6 +24,8 @@ public class TermsIndex {
 
 		}
 	};
+
+	//Terms are indexed per domain, thus this table is domain_uri->term_word -> term
 	private Map<String, Map<String, AnnotatedWord<TermMetadata>>> terms;
 
 	// -------------------------------------------------------------------------------------------------------
@@ -58,12 +60,12 @@ public class TermsIndex {
 		if (indexedTerm == null) {
 			domainTerms.put(term.getWord(), term);
 		} else {
-			// System.out.println("indexed> "+indexedTerm);
+			//System.out.println("indexed> "+indexedTerm);
 			indexedTerm.getAnnotation().setOcurrences(
 					indexedTerm.getAnnotation().getOcurrences() + 1);
 
 		}
-		// System.out.println("this.terms " + this.terms);
+		//System.out.println("this.terms " + this.terms);
 	}
 
 	// -------------------------------------------------------------------------------------------------------

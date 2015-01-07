@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class ResourcesIndex {
 
+	//Resources are stored per domain, ie: domain_uri
+	
 	private Map<String, Map<String, AnnotatedWord<ResourceMetadata>>> resources;
 
 	// -------------------------------------------------------------------------------------------------------

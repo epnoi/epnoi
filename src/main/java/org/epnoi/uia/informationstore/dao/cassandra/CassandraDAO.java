@@ -77,7 +77,8 @@ public abstract class CassandraDAO {
 					PaperCassandraHelper.COLUMN_FAMILLY,
 					WikipediaPageCassandraHelper.COLUMN_FAMILLY,
 					AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
-					ContentCassandraHelper.COLUMN_FAMILLY);
+					ContentCassandraHelper.COLUMN_FAMILLY,
+					TermCassandraHelper.COLUMN_FAMILLY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				System.out.println("Intializing columnFamilyDefinitions");

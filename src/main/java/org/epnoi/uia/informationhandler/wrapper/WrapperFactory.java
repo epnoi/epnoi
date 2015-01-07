@@ -10,6 +10,7 @@ import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Term;
 import org.epnoi.model.User;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.core.Core;
@@ -55,6 +56,9 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(WikipediaPage.class.getName(),
 				new WikipediaPageWrapper(this.core));
+		
+		this.wrappersByClass.put(Term.class.getName(),
+				new TermWrapper(this.core));
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -83,6 +87,9 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
 				new WikipediaPageWrapper(this.core));
+		
+		this.wrappersByType.put(RDFHelper.TERM_CLASS,
+				new TermWrapper(this.core));
 
 	}
 

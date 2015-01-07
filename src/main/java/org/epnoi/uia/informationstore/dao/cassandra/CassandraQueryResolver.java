@@ -23,16 +23,16 @@ public class CassandraQueryResolver extends CassandraDAO {
 	public static final String KEYSPACE = "epnoiKeyspace";
 	private final static String HOST_PORT = "localhost:9160";
 
-	private final static StringSerializer se = StringSerializer.get();
+	private final static StringSerializer stringSerializer = StringSerializer.get();
 
 	// ------------------------------------------------------------------------------------------
 
 	public static List<Row<String, String, String>> query(String query) {
 		List<Row<String, String, String>> list = null;
-		Cluster c = HFactory.getOrCreateCluster(CLUSTER, HOST_PORT);
+		Cluster cluster = HFactory.getOrCreateCluster(CLUSTER, HOST_PORT);
 
 		CqlQuery<String, String, String> cqlQuery = new CqlQuery<String, String, String>(
-				HFactory.createKeyspace(KEYSPACE, c), se, se, se);
+				HFactory.createKeyspace(KEYSPACE, cluster), stringSerializer, stringSerializer, stringSerializer);
 		cqlQuery.setQuery(query);
 		// cqlQuery.setQuery("select * from User where NAME='Rafita'");
 		QueryResult<CqlRows<String, String, String>> result = cqlQuery
@@ -74,7 +74,7 @@ public class CassandraQueryResolver extends CassandraDAO {
 		Cluster c = HFactory.getOrCreateCluster(CLUSTER, HOST_PORT);
 
 		CqlQuery<String, String, String> cqlQuery = new CqlQuery<String, String, String>(
-				HFactory.createKeyspace(KEYSPACE, c), se, se, se);
+				HFactory.createKeyspace(KEYSPACE, c), stringSerializer, stringSerializer, stringSerializer);
 		cqlQuery.setQuery("select key from 'Item'");
 		QueryResult<CqlRows<String, String, String>> result = cqlQuery
 				.execute();

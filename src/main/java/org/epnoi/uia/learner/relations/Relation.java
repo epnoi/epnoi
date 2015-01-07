@@ -1,41 +1,42 @@
 package org.epnoi.uia.learner.relations;
 
+import org.epnoi.model.Term;
 import org.epnoi.uia.learner.terms.AnnotatedWord;
 import org.epnoi.uia.learner.terms.TermMetadata;
 
 public class Relation {
-	private AnnotatedWord<TermMetadata> origin;
-	private AnnotatedWord<TermMetadata> desination;
+	private Term origin;
+	private Term desination;
 	private String provenanceSentence;
 
 	//------------------------------------------------------------------------------------------------------------
 	
-	public AnnotatedWord<TermMetadata> getDestionation() {
+	public Term getDestionation() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	//------------------------------------------------------------------------------------------------------------
 
-	public AnnotatedWord<TermMetadata> getOrigin() {
+	public Term getOrigin() {
 		return origin;
 	}
 
 	//------------------------------------------------------------------------------------------------------------
 	
-	public void setOrigin(AnnotatedWord<TermMetadata> origin) {
+	public void setOrigin(Term origin) {
 		this.origin = origin;
 	}
 
 	//------------------------------------------------------------------------------------------------------------
 	
-	public AnnotatedWord<TermMetadata> getDesination() {
+	public Term getDesination() {
 		return desination;
 	}
 
 	//------------------------------------------------------------------------------------------------------------
 
-	public void setDesination(AnnotatedWord<TermMetadata> desination) {
+	public void setDesination(Term desination) {
 		this.desination = desination;
 	}
 
