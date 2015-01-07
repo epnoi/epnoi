@@ -13,6 +13,7 @@ public class TermCassandraHelper {
 
 	public static final String LENGTH = "LENGTH";
 	public static final String WORDS = "WORDS";
+	public static final String WORD = "WORD";
 	public static final String OCURRENCES = "OCURRENCES";
 	public static final String OCURRENCES_AS_SUBTERM = "OCURRENCESASSUBTERM";
 	public static final String NUMBER_OF_SUPERTERMS = "NUMBER_OF_SUPERTERMS";

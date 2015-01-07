@@ -2,19 +2,20 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import java.util.ArrayList;
 
-import gate.Document;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
-import org.epnoi.uia.learner.terms.AnnotatedWord;
 import org.epnoi.uia.learner.terms.TermMetadata;
+
+import com.google.common.collect.Lists;
 
 public class TermCassandraDAO extends CassandraDAO {
 
@@ -32,11 +33,17 @@ public class TermCassandraDAO extends CassandraDAO {
 
 		TermMetadata termMetadata = term.getAnnotatedTerm().getAnnotation();
 
+		// System.out.println("meto> " + term);
 		super.createRow(term.getURI(), TermCassandraHelper.COLUMN_FAMILLY);
+
+		super.updateColumn(term.getURI(), TermCassandraHelper.WORD, term
+				.getAnnotatedTerm().getWord(),
+				TermCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.LENGTH,
 				String.valueOf(termMetadata.getLength()),
 				TermCassandraHelper.COLUMN_FAMILLY);
+		// System.out.println(">>> " + term.getAnnotatedTerm().getAnnotation());
 
 		for (String word : term.getAnnotatedTerm().getAnnotation().getWords()) {
 
@@ -79,6 +86,9 @@ public class TermCassandraDAO extends CassandraDAO {
 				String.valueOf(termMetadata.getTermProbability()),
 				TermCassandraHelper.COLUMN_FAMILLY);
 
+		ColumnSliceIterator<String, String, String> columnsIterator = super
+				.getAllCollumns(term.getURI(),
+						TermCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -92,9 +102,18 @@ public class TermCassandraDAO extends CassandraDAO {
 
 	public Resource read(String URI) {
 
+		/*
+		 * ColumnSliceIterator<String, String, String> columnsIteratorAux =
+		 * super .getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILLY); while
+		 * (columnsIteratorAux.hasNext()) { HColumn<String, String> column=
+		 * columnsIteratorAux.next(); System.out.println("----> "+ column);
+		 * 
+		 * }
+		 */
+
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILLY);
-
+		System.out.println("------------------------------READING " + URI);
 		if (columnsIterator.hasNext()) {
 			Term term = new Term();
 			TermMetadata termMetadata = term.getAnnotatedTerm().getAnnotation();
@@ -108,6 +127,10 @@ public class TermCassandraDAO extends CassandraDAO {
 				String columnName = column.getName();
 				String columnValue = column.getValue();
 				switch (columnName) {
+				case TermCassandraHelper.WORD:
+					term.getAnnotatedTerm().setWord(columnValue);
+					break;
+
 				case TermCassandraHelper.LENGTH:
 					termMetadata.setLength(Integer.parseInt(columnValue));
 					break;
@@ -140,20 +163,24 @@ public class TermCassandraDAO extends CassandraDAO {
 				case TermCassandraHelper.TERMHOOD:
 					termMetadata.setTermhood(Double.parseDouble(columnValue));
 					break;
-					
+
 				case TermCassandraHelper.TERM_PROBABILITY:
-					termMetadata.setTermProbability(Double.parseDouble(columnValue));
+					termMetadata.setTermProbability(Double
+							.parseDouble(columnValue));
 					break;
 
 				default:
 					if (TermCassandraHelper.WORDS.equals(columnValue)) {
-						words.add(columnName);
+						words.add(0, columnName);
 					}
-
+					break;
 				}
-				termMetadata.setWords((String[]) words.toArray());
-				return term;
 			}
+			Lists.reverse(words);
+			termMetadata.setWords((String[]) words.toArray(new String[words
+					.size()]));
+			return term;
+
 		}
 
 		return null;
@@ -199,4 +226,18 @@ public class TermCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
+	public static void main(String[] args) {
+		Core core = CoreUtility.getUIACore();
+		Term term = new Term();
+		term.setURI("lauri");
+
+		term.getAnnotatedTerm().setAnnotation(new TermMetadata());
+		term.getAnnotatedTerm().getAnnotation().setLength(4);
+		term.getAnnotatedTerm().getAnnotation()
+				.setWords(new String[] { "mi", "mama", "me", "mima" });
+		core.getInformationHandler().put(term, Context.getEmptyContext());
+
+		System.out.println("-------> "
+				+ core.getInformationHandler().get("lauri"));
+	}
 }

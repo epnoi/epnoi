@@ -16,7 +16,9 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.epnoi.model.Content;
+import org.epnoi.model.Context;
 import org.epnoi.model.Term;
+import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -42,12 +44,14 @@ public class TermsExtractor {
 
 	public void init(Core core, OntologyLearningParameters parameters) {
 		logger.info("Initializing the TermExtractor for the domains ");
+		this.core = core;
 		this.parameters = parameters;
+
 		this.resourcePerConsideredDomain = new HashMap<>();
 		this.consideredDomains = (List<String>) parameters
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
 		this.consideredResources = (String) parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
+				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -59,6 +63,8 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void gatherResourcesPerConsideredDomain() {
+
+		System.out.print("Considered---> " + this.core);
 		for (String domain : this.consideredDomains) {
 			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
 					domain, this.consideredResources);
@@ -255,6 +261,9 @@ public class TermsExtractor {
 						+ aDomain.getAnnotation().getResources().size()
 						+ "  #terms "
 						+ aDomain.getAnnotation().getNumberOfTerms());
+
+				System.out.println("---> "
+						+ aDomain.getAnnotation().getResources());
 			}
 
 			System.out
@@ -265,23 +274,17 @@ public class TermsExtractor {
 			System.out
 					.println("=========================================================================================================================");
 
-			for (AnnotatedWord<TermMetadata> term : this.termsIndex
-					.getTerms(domain)) {
-
-				System.out.println("term(" + term.getWord() + ")> " + term);
-
-				/*
-				 * System.out.println("term> " + term.getWord() + " cValue>" +
-				 * term.getAnnotation().getCValue() + " domainConsensus> " +
-				 * term.getAnnotation().getDomainConsensus() +
-				 * " domainPertinence> " +
-				 * term.getAnnotation().getDomainPertinence() + "  ocurrences "
-				 * + term.getAnnotation().getOcurrences());
-				 */
-			}
-			System.out
-					.println("=========================================================================================================================");
-
+			/*
+			 * for (AnnotatedWord<TermMetadata> term : this.termsIndex
+			 * .getTerms(domain)) {
+			 * 
+			 * System.out.println("term(" + term.getWord() + ")> " + term);
+			 * 
+			 * 
+			 * } System.out .println(
+			 * "========================================================================================================================="
+			 * );
+			 */
 		}
 	}
 
@@ -311,9 +314,17 @@ public class TermsExtractor {
 					System.out.println("term(" + term.getWord() + ")> " + term);
 
 					Term newTerm = new Term();
-					newTerm.setURI(term.getWord());
+					newTerm.setURI(aDomain.getWord()
+							+ "/"
+							+ StringUtils.clean(term.getWord(), "[^a-zA-Z0-9]",
+									"_"));
 					newTerm.setAnnotatedTerm(term);
-					System.out.println("Introducing--------> " + newTerm);
+					System.out.println("Introducing--------> "
+							+ newTerm.getURI());
+					core.getInformationHandler().put(newTerm,
+							Context.getEmptyContext());
+					System.out.println("Labeling "+newTerm.getURI()+" as "+this.parameters.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN));
+					core.getAnnotationHandler().label(newTerm.getURI(), (String)this.parameters.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN));
 
 				}
 				System.out
@@ -484,6 +495,7 @@ public class TermsExtractor {
 		for (String termURI : foundURIs) {
 			Term term = (Term) this.core.getInformationHandler().get(termURI,
 					RDFHelper.TERM_CLASS);
+			System.out.println("retrieved term ---> "+term);
 			termsTable.addTerm(term);
 		}
 		return termsTable;
@@ -557,8 +569,17 @@ public class TermsExtractor {
 
 		termExtractor.init(core, ontologyLearningParameters);
 		termExtractor.extractTerms();
-		termExtractor.showResult();
+		termExtractor.storeResult();
 
+		TermsTable termsTable = termExtractor.retrieve();
+		System.out
+				.println("The retrieved terms table>--------------------------------------- ");
+
+		System.out
+				.println("----------------------------------------------------------------- ");
+		System.out.println(termsTable);
+		
+		System.out.println("# terms---> "+termsTable.size());
 	}
 
 }

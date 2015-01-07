@@ -43,4 +43,13 @@ public class Term implements Resource {
 
 	// -----------------------------------------------------------------------------
 
+	@Override
+	public String toString() {
+		return "Term [URI=" + URI + ", annotatedTerm=" + annotatedTerm + "]";
+	}
+
+	// -----------------------------------------------------------------------------
+
+	
+	
 }

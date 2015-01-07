@@ -7,14 +7,14 @@ public class StringUtils {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
-	public static String clean(String line, String regexp) {
+	public static String clean(String line, String regexp, String replacement) {
 
 		Pattern pattern = Pattern.compile(regexp);
 		Matcher matcher = pattern.matcher(line);
 
 		while (matcher.find()) {
-			System.out.println("------> " + matcher.group());
-			line = line.replace(matcher.group(), "");
+		//	System.out.println("------> " + matcher.group());
+			line = line.replace(matcher.group(), replacement);
 		}
 		return line;
 	}
@@ -67,7 +67,7 @@ public class StringUtils {
 		 * String regexp2 = "\\([^\\)]*\\)"; //
 		 * [[a-zA-Z0-9~@#\\^\\$&\\*\\(\\)-_\\+=\\[\\\{\\}\\|\\\,\\.\\?\\s]*\]";
 		 * String line =
-		 * "TEMPLATE[Infobox_Disease, Name = Autism, Image = Autism-stacking-cans 2nd edit.jpg, Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = 3202, eMedicine_mult = (TEMPLATE), MeshID = D001321] Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwèprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. "
+		 * "TEMPLATE[Infobox_Disease, Name = Autism, Image = Autism-stacking-cans 2nd edit.jpg, Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = 3202, eMedicine_mult = (TEMPLATE), MeshID = D001321] Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. "
 		 * ;
 		 * 
 		 * String lineWithoutTemplate = StringUtils.clean(line, regexp);
@@ -75,7 +75,7 @@ public class StringUtils {
 		 * System.out.println("The result line without templates is " +
 		 * lineWithoutTemplate);
 		 */
-		String line2 = "TEMPLATE[Infobox_Disease, Name = Autism, Image = [Autism-stacking-cans 2nd edit.jpg], Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = [3202], eMedicine_mult = (TEMPLATE), MeshID = D001321] Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwèprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. ";
+		String line2 = "TEMPLATE[Infobox_Disease, Name = Autism, Image = [Autism-stacking-cans 2nd edit.jpg], Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = [3202], eMedicine_mult = (TEMPLATE), MeshID = D001321] Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. ";
 		String regexp = "TEMPLATE\\[";
 		String lineWithoutTemplates = StringUtils.outerMatching(line2, regexp,
 				'[', ']');
