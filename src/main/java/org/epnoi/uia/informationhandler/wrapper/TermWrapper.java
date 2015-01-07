@@ -69,6 +69,12 @@ public class TermWrapper implements Wrapper {
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		informationStore.remove(selector);
+		
+		informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE)
+				.get(0);
+		informationStore.remove(selector);
 
 	}
 

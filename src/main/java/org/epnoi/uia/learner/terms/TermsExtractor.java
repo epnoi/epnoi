@@ -292,46 +292,50 @@ public class TermsExtractor {
 
 	private void storeResult() {
 		System.out.println("Storing the Term Extraction result");
-		for (String domain : this.consideredDomains) {
+
+		for (AnnotatedWord<DomainMetadata> aDomain : this.domainsIndex
+				.getDomains()) {
 
 			System.out
-					.println("Domains----------------------------------------------------------");
+					.println("=========================================================================================================================");
+			System.out
+					.println("=========================================================================================================================");
 
-			for (AnnotatedWord<DomainMetadata> aDomain : this.domainsIndex
-					.getDomains()) {
+			for (AnnotatedWord<TermMetadata> term : this.termsIndex
+					.getTerms(aDomain.getWord())) {
 
-				System.out
-						.println("=========================================================================================================================");
+				// System.out.println("term(" + term.getWord() + ")> " + term);
 
-				System.out.println("Domain (" + domain + ")> " + domain);
+				Term newTerm = new Term();
+				newTerm.setURI(aDomain.getWord()
+						+ "/"
+						+ StringUtils.clean(term.getWord(), "[^a-zA-Z0-9]", "_"));
+				newTerm.setAnnotatedTerm(term);
+				/*
+				 * System.out.println("Introducing--------> " +
+				 * newTerm.getURI());
+				 */
+				core.getInformationHandler().put(newTerm,
+						Context.getEmptyContext());
+				/*
+				 * System.out .println("Labeling " + newTerm.getURI() + " as " +
+				 * this.parameters
+				 * .getParameterValue(OntologyLearningParameters.
+				 * TARGET_DOMAIN));
+				 */
 
-				System.out
-						.println("=========================================================================================================================");
-
-				for (AnnotatedWord<TermMetadata> term : this.termsIndex
-						.getTerms(domain)) {
-
-					System.out.println("term(" + term.getWord() + ")> " + term);
-
-					Term newTerm = new Term();
-					newTerm.setURI(aDomain.getWord()
-							+ "/"
-							+ StringUtils.clean(term.getWord(), "[^a-zA-Z0-9]",
-									"_"));
-					newTerm.setAnnotatedTerm(term);
-					System.out.println("Introducing--------> "
-							+ newTerm.getURI());
-					core.getInformationHandler().put(newTerm,
-							Context.getEmptyContext());
-					System.out.println("Labeling "+newTerm.getURI()+" as "+this.parameters.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN));
-					core.getAnnotationHandler().label(newTerm.getURI(), (String)this.parameters.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN));
-
-				}
-				System.out
-						.println("=========================================================================================================================");
+				/*
+				 * core.getAnnotationHandler() .label(newTerm.getURI(), (String)
+				 * this.parameters
+				 * .getParameterValue(OntologyLearningParameters.
+				 * TARGET_DOMAIN));
+				 */
+				core.getAnnotationHandler().label(newTerm.getURI(),
+						aDomain.getWord());
 			}
+			System.out
+					.println("=========================================================================================================================");
 		}
-
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -371,6 +375,7 @@ public class TermsExtractor {
 				}
 
 			}
+
 		}
 	}
 
@@ -495,7 +500,7 @@ public class TermsExtractor {
 		for (String termURI : foundURIs) {
 			Term term = (Term) this.core.getInformationHandler().get(termURI,
 					RDFHelper.TERM_CLASS);
-			System.out.println("retrieved term ---> "+term);
+			// System.out.println("retrieved term ---> " + term);
 			termsTable.addTerm(term);
 		}
 		return termsTable;
@@ -510,6 +515,25 @@ public class TermsExtractor {
 
 		termsTable = this.retrieve();
 		return termsTable;
+	}
+
+	// -----------------------------------------------------------------------------------
+
+	private void removeTerms() {
+		List<String> foundURIs = this.core
+				.getAnnotationHandler()
+				.getLabeledAs(
+						(String) this.parameters
+								.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN),
+						RDFHelper.TERM_CLASS);
+		System.out.println("Found " + foundURIs.size() + " to get removed ");
+		for (String termURI : foundURIs) {
+			System.out.println("Removing the term " + termURI);
+			this.core.getInformationHandler().remove(termURI,
+					RDFHelper.TERM_CLASS);
+
+		}
+
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -568,6 +592,7 @@ public class TermsExtractor {
 		Core core = CoreUtility.getUIACore();
 
 		termExtractor.init(core, ontologyLearningParameters);
+		// termExtractor.removeTerms();
 		termExtractor.extractTerms();
 		termExtractor.storeResult();
 
@@ -577,9 +602,15 @@ public class TermsExtractor {
 
 		System.out
 				.println("----------------------------------------------------------------- ");
-		System.out.println(termsTable);
-		
-		System.out.println("# terms---> "+termsTable.size());
+		// System.out.println(termsTable);
+
+		System.out.println("# terms---> " + termsTable.size());
+		int i = 1;
+		for (Term term : termsTable.getMostProbable(30)) {
+			System.out.println("Term (" + i++ + ") "
+					+ term.getAnnotatedTerm().getAnnotation().getTermhood()
+					+ " " + term);
+		}
 	}
 
 }

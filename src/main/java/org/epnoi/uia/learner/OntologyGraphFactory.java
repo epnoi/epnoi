@@ -2,6 +2,7 @@ package org.epnoi.uia.learner;
 
 import java.util.List;
 
+import org.epnoi.model.Term;
 import org.epnoi.uia.learner.relations.RelationsTable;
 import org.epnoi.uia.learner.terms.AnnotatedWord;
 import org.epnoi.uia.learner.terms.TermMetadata;
@@ -15,8 +16,8 @@ public class OntologyGraphFactory {
 		
 		int initialNumberOfTerms = Integer.parseInt((String)ontologyLearningParamters.getParameterValue(OntologyLearningParameters.NUMBER_INITIAL_TERMS));
 
-		List<AnnotatedWord<TermMetadata>> mostProblabeTerms= termsTable.getMostProbable(initialNumberOfTerms);
-		for (AnnotatedWord<TermMetadata> term: mostProblabeTerms){
+		List<Term> mostProblabeTerms= termsTable.getMostProbable(initialNumberOfTerms);
+		for (Term term: mostProblabeTerms){
 			TermVertice termVertice = new TermVertice(term);
 			initialOntology.addVertex(termVertice);
 		}

@@ -5,13 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.learner.relations.Relation;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
 import org.epnoi.uia.learner.relations.RelationsTable;
-import org.epnoi.uia.learner.terms.AnnotatedWord;
-import org.epnoi.uia.learner.terms.TermMetadata;
 import org.epnoi.uia.learner.terms.TermVertice;
 import org.epnoi.uia.learner.terms.TermsExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
@@ -42,7 +41,7 @@ public class OntologyLearningProcess {
 		boolean extractTerms = (boolean) this.ontologyLearningParameters
 				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
 		if (extractTerms) {
-			this.termsTable = this.termExtractor.extract();	
+			this.termsTable = this.termExtractor.extract();	 
 		} else {
 			this.termsTable = this.termExtractor.retrieve();
 		}
@@ -62,7 +61,7 @@ public class OntologyLearningProcess {
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
 						termVerticeToExpand, hypernymRelationsThreshold)) {
-					AnnotatedWord<TermMetadata> destinationTerm = relation
+					Term destinationTerm = relation
 							.getDestionation();
 					TermVertice destinationTermVertice = new TermVertice(
 							destinationTerm);
