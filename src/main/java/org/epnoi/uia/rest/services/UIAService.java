@@ -4,12 +4,14 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
 
+import com.sun.jersey.api.Responses;
 
 public abstract class UIAService {
 
@@ -27,11 +29,9 @@ public abstract class UIAService {
 
 	// ----------------------------------------------------------------------------------------
 
-	
 	protected Core getUIACore() {
-		
-		this.core = (Core) this.context
-				.getAttribute(UIA_CORE_ATTRIBUTE);
+
+		this.core = (Core) this.context.getAttribute(UIA_CORE_ATTRIBUTE);
 		if (this.core == null) {
 			System.out.println("Loading the model!");
 			long time = System.currentTimeMillis();
@@ -48,21 +48,15 @@ public abstract class UIAService {
 	}
 
 	// ----------------------------------------------------------------------------------------
-	
-	
-	
-	
-	
-	// ----------------------------------------------------------------------------------------
 
 	public ParametersModel _readParameters() {
 		ParametersModel parametersModel = null;
 
 		try {
-			
+
 			String configFileURL = context.getRealPath("/WEB-INF/uia.xml");
-			
-			System.out.println("AQUI --->"+configFileURL);
+
+			System.out.println("AQUI --->" + configFileURL);
 			parametersModel = ParametersModelReader.read(configFileURL);
 
 		} catch (Exception e) {
@@ -74,9 +68,11 @@ public abstract class UIAService {
 		// related to the
 		// path where the epnoi server is deployed in order to have complete
 		// routes
-		//parametersModel.resolveToAbsolutePaths(EpnoiServer.class);
+		// parametersModel.resolveToAbsolutePaths(EpnoiServer.class);
 
 		return parametersModel;
 	}
+
+	
 
 }

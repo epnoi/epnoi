@@ -12,8 +12,8 @@ import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationaccess.events.EventsHelper;
-import org.epnoi.uia.informationaccess.events.InformationAccessListener;
+import org.epnoi.uia.informationhandler.events.EventsHelper;
+import org.epnoi.uia.informationhandler.events.InformationAccessListener;
 
 import flexjson.JSONSerializer;
 
@@ -27,7 +27,7 @@ public class EventBus implements InformationAccessListener {
 		
 		this.subscribers = new HashMap<String, Broadcaster>();
 		this.core = core;
-		this.core.getInformationAccess().subscribe(this, "whatever");
+		this.core.getInformationHandler().subscribe(this, "whatever");
 	}
 
 	// ------------------------------------------------------------------------------------------------

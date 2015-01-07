@@ -136,4 +136,6 @@ public abstract class RDFDAO {
 		cleanedText = text.replaceAll("[^a-zA-Z0-9]"," ");
 		return cleanedText;
 	}
+	
+	
 }

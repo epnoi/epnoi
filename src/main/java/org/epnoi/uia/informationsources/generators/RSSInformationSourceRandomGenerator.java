@@ -21,7 +21,7 @@ public class RSSInformationSourceRandomGenerator {
 	public void generate(Core core) {
 		Feed feed = _generateFeed();
 
-		core.getInformationAccess().put(feed, emptyContext);
+		core.getInformationHandler().put(feed, emptyContext);
 	}
 
 	// ---------------------------------------------------------------------------------------------------

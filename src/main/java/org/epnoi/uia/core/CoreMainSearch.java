@@ -72,7 +72,7 @@ public class CoreMainSearch {
 		
 		
 		
-		Resource resource =core.getInformationAccess().get("http://rss.slashdot.org/~r/Slashdot/slashdot/~3/-FraYC4r__w/story01.htm", FeedRDFHelper.ITEM_CLASS);
+		Resource resource =core.getInformationHandler().get("http://rss.slashdot.org/~r/Slashdot/slashdot/~3/-FraYC4r__w/story01.htm", FeedRDFHelper.ITEM_CLASS);
 		System.out.println("---> "+resource);
 	}
 }

@@ -41,6 +41,7 @@ public abstract class CassandraDAO {
 
 	protected static Map<String, ColumnFamilyTemplate<String, String>> columnFamilyTemplates = null;
 	protected static List<ColumnFamilyDefinition> columnFamilyDefinitions = null;
+	protected static boolean initialized = false;
 
 	public abstract Resource read(Selector selector);
 
@@ -51,108 +52,136 @@ public abstract class CassandraDAO {
 	public abstract void remove(String URI);
 
 	public abstract Content<String> getContent(Selector selector);
-	
+
 	public abstract Content<String> getAnnotatedContent(Selector selector);
 
 	public abstract void setContent(Selector selector, Content<String> content);
-	
-	public abstract void setAnnotatedContent(Selector selector, Content<String> annotatedContent);
-	
-	
-	
-	
+
+	public abstract void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent);
+
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------
+
 	public void init() {
+		if (!initialized) {
+			CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
+					"localhost:9160");
+			// System.out.println("Cluster instantiated");
 
-		CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
-				"localhost:9160");
-		//System.out.println("Cluster instantiated");
+			List<String> columnFamillyNames = Arrays.asList(
+					ExternalResourceCassandraHelper.COLUMN_FAMILLY,
+					UserCassandraHelper.COLUMN_FAMILLY,
+					SearchCassandraHelper.COLUMN_FAMILLY,
+					FeedCassandraHelper.COLUMN_FAMILLY,
+					ItemCassandraHelper.COLUMN_FAMILLY,
+					PaperCassandraHelper.COLUMN_FAMILLY,
+					WikipediaPageCassandraHelper.COLUMN_FAMILLY,
+					AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
+					ContentCassandraHelper.COLUMN_FAMILLY,
+					TermCassandraHelper.COLUMN_FAMILLY);
 
-		List<String> columnFamillyNames = Arrays.asList(
-				ExternalResourceCassandraHelper.COLUMN_FAMILLY,
-				UserCassandraHelper.COLUMN_FAMILLY,
-				SearchCassandraHelper.COLUMN_FAMILLY,
-				FeedCassandraHelper.COLUMN_FAMILLY,
-				ItemCassandraHelper.COLUMN_FAMILLY,
-				PaperCassandraHelper.COLUMN_FAMILLY);
+			if (CassandraDAO.columnFamilyDefinitions == null) {
+				System.out.println("Intializing columnFamilyDefinitions");
+				ColumnFamilyDefinition columnFamilyDefinition = null;
 
-		if (CassandraDAO.columnFamilyDefinitions == null) {
-			System.out.println("Intializing columnFamilyDefinitions");
-			ColumnFamilyDefinition columnFamilyDefinition = null;
+				CassandraDAO.columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
+				for (String columnFamilyName : columnFamillyNames) {
+					if (columnFamilyName
+							.equals(UserCassandraHelper.COLUMN_FAMILLY)) {
 
-			CassandraDAO.columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
-			for (String columnFamilyName : columnFamillyNames) {
-				if (columnFamilyName.equals(UserCassandraHelper.COLUMN_FAMILLY)) {
+						BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
+						columnDefinition.setName(StringSerializer.get()
+								.toByteBuffer(UserCassandraHelper.NAME));
+						columnDefinition.setIndexName("NAME_INDEX");
+						columnDefinition.setIndexType(ColumnIndexType.KEYS);
+						columnDefinition
+								.setValidationClass(ComparatorType.UTF8TYPE
+										.getClassName());
 
-					BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
-					columnDefinition.setName(StringSerializer.get()
-							.toByteBuffer(UserCassandraHelper.NAME));
-					columnDefinition.setIndexName("NAME_INDEX");
-					columnDefinition.setIndexType(ColumnIndexType.KEYS);
-					columnDefinition.setValidationClass(ComparatorType.UTF8TYPE
-							.getClassName());
+						// columnFamilyDefinition.addColumnDefinition(columnDefinition);
+						List<ColumnDefinition> columnsDefinition = new ArrayList<ColumnDefinition>();
+						columnsDefinition.add(columnDefinition);
+						columnFamilyDefinition = HFactory
+								.createColumnFamilyDefinition(KEYSPACE,
+										columnFamilyName,
+										ComparatorType.UTF8TYPE,
+										columnsDefinition);
+					} else {
 
-					// columnFamilyDefinition.addColumnDefinition(columnDefinition);
-					List<ColumnDefinition> columnsDefinition = new ArrayList<ColumnDefinition>();
-					columnsDefinition.add(columnDefinition);
-					columnFamilyDefinition = HFactory
-							.createColumnFamilyDefinition(KEYSPACE,
-									columnFamilyName, ComparatorType.UTF8TYPE,
-									columnsDefinition);
-				} else {
-					columnFamilyDefinition = HFactory
-							.createColumnFamilyDefinition(KEYSPACE,
-									columnFamilyName, ComparatorType.UTF8TYPE);
+						columnFamilyDefinition = HFactory
+								.createColumnFamilyDefinition(KEYSPACE,
+										columnFamilyName,
+										ComparatorType.UTF8TYPE);
+						System.out.println("Initializing > "
+								+ columnFamilyDefinition);
+					}
+					CassandraDAO.columnFamilyDefinitions
+							.add(columnFamilyDefinition);
+
 				}
-				CassandraDAO.columnFamilyDefinitions
-						.add(columnFamilyDefinition);
+			} else {
+
+				System.out
+						.println("columnFamilyDefinitions was already initialized");
 
 			}
-		} else {
-			
-			/*
-			System.out
-					.println("columnFamilyDefinitions was already initialized");
-		*/
-		}
 
-		if (CassandraDAO.keyspaceDefinition == null) {
-			CassandraDAO.keyspaceDefinition = cluster
-					.describeKeyspace(KEYSPACE);
-		}
-
-		if (CassandraDAO.keyspaceDefinition == null) {
-			// if the keyspace doesn't exist, it creates one
-			CassandraDAO.keyspaceDefinition = HFactory
-					.createKeyspaceDefinition(KEYSPACE,
-							ThriftKsDef.DEF_STRATEGY_CLASS, 1,
-							columnFamilyDefinitions);
-
-			cluster.addKeyspace(CassandraDAO.keyspaceDefinition, true);
-			System.out.println("Keyspace " + KEYSPACE + " created");
-		} else {
-			/*
-			System.out.println("The keyspace was already initialized");
-*/
-		}
-		if (CassandraDAO.keyspace == null) {
-			CassandraDAO.keyspace = HFactory.createKeyspace(KEYSPACE,
-					CassandraDAO.cluster);
-			System.out.println("Keyspace " + KEYSPACE + " instantiated");
-		}
-
-		if (CassandraDAO.columnFamilyTemplates == null) {
-			CassandraDAO.columnFamilyTemplates = new HashMap<String, ColumnFamilyTemplate<String, String>>();
-			ColumnFamilyTemplate<String, String> columnFamilyTemplate;
-
-			for (String columnFamilyName : columnFamillyNames) {
-				System.out.println("ct " + columnFamilyName);
-				columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
-						CassandraDAO.keyspace, columnFamilyName,
-						StringSerializer.get(), StringSerializer.get());
-
-				CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
-						columnFamilyTemplate);
+			if (CassandraDAO.keyspaceDefinition == null) {
+				CassandraDAO.keyspaceDefinition = cluster
+						.describeKeyspace(KEYSPACE);
 			}
+
+			if (CassandraDAO.keyspaceDefinition == null) {
+				// if the keyspace doesn't exist, it creates one
+				CassandraDAO.keyspaceDefinition = HFactory
+						.createKeyspaceDefinition(KEYSPACE,
+								ThriftKsDef.DEF_STRATEGY_CLASS, 1,
+								columnFamilyDefinitions);
+
+				cluster.addKeyspace(CassandraDAO.keyspaceDefinition, true);
+				System.out.println("Keyspace " + KEYSPACE + " created");
+			} else {
+
+				System.out.println("The keyspace was already initialized");
+
+				for (ColumnFamilyDefinition cfdef : columnFamilyDefinitions) {
+
+					System.out.println("adding the definition "
+							+ cfdef.getName());
+					try {
+						cluster.addColumnFamily(cfdef);
+					} catch (Exception e) {
+						System.out
+								.println("Trying to add the column definition "
+										+ cfdef.getName());
+					}
+				}
+
+			}
+			if (CassandraDAO.keyspace == null) {
+				CassandraDAO.keyspace = HFactory.createKeyspace(KEYSPACE,
+						CassandraDAO.cluster);
+				System.out.println("Keyspace " + KEYSPACE + " instantiated");
+			}
+
+			// Column family templates
+			// initialization------------------------------------------------------------------------------------------
+
+			if (CassandraDAO.columnFamilyTemplates == null) {
+				CassandraDAO.columnFamilyTemplates = new HashMap<String, ColumnFamilyTemplate<String, String>>();
+				ColumnFamilyTemplate<String, String> columnFamilyTemplate;
+
+				for (String columnFamilyName : columnFamillyNames) {
+					System.out.println("ct " + columnFamilyName);
+					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
+							CassandraDAO.keyspace, columnFamilyName,
+							StringSerializer.get(), StringSerializer.get());
+
+					CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
+							columnFamilyTemplate);
+				}
+			}
+			initialized=true;
 		}
 	}
 

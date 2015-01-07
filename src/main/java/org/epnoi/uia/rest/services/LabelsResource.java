@@ -1,5 +1,7 @@
 package org.epnoi.uia.rest.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -17,9 +19,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.model.Annotation;
+import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 
+import com.sun.jersey.api.Responses;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 @Path("/uia/labels")
+@Api(value = "/uia/labels", description = "Operations about resource labeling")
 public class LabelsResource extends UIAService {
 
 	@Context
@@ -29,7 +40,7 @@ public class LabelsResource extends UIAService {
 	@PostConstruct
 	public void init() {
 		logger = Logger.getLogger(LabelsResource.class.getName());
-		logger.info("Initializing "+getClass());
+		logger.info("Initializing " + getClass());
 		this.core = this.getUIACore();
 
 	}
@@ -39,17 +50,27 @@ public class LabelsResource extends UIAService {
 	@GET
 	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLabels(@QueryParam("uri") String URI) {
+	@ApiOperation(value = "Gets labels of a resource", notes = "", response = String.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 200, message = "The resource URI exists, its labels are returned"),
+			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
+	public Response getLabels(
+			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
 		logger.info("GET labels> " + URI);
 
-		System.out.println("--|>"+this.core.getAnnotationHandler()
-				.getLabels(URI));
-		
-		
-		ArrayList<String> labels = new ArrayList<String>(this.core.getAnnotationHandler()
-				.getLabels(URI));
+		Resource resource = this.core.getInformationHandler().get(URI);
+		if (resource != null) {
 
-		return Response.status(200).entity(labels).build();
+			ArrayList<String> labels = new ArrayList<String>(this.core
+					.getAnnotationHandler().getLabels(URI));
+
+			return Response.ok().entity(labels).build();
+		} else {
+
+			return Response.status(Responses.NOT_FOUND).build();
+		}
+
 	}
 
 	// -----------------------------------------------------------------------------------------
@@ -57,21 +78,26 @@ public class LabelsResource extends UIAService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/label")
-	public Response getLabel(@QueryParam("uri") String uri) {
+	@ApiOperation(value = "Returns the label with the provided URI", notes = "", response = Annotation.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The label annotation URI has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A label annotation with such URI could not be found") })
+	public Response getLabel(
+			@ApiParam(value = "URI of the label annotation ", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
 
-		System.out.println("GET label uri=" + uri);
+		logger.info("GET label uri=" + uri);
 
-		Annotation annotation = (Annotation) this.core.getInformationAccess()
+		Annotation annotation = (Annotation) this.core.getInformationHandler()
 				.get(uri, AnnotationRDFHelper.ANNOTATION_CLASS);
 
 		if (annotation != null) {
-			return Response.status(200).entity(annotation).build();
+			return Response.ok().entity(annotation).build();
 
 		} else {
 
-			return Response.status(404).build();
+			return Response.status(Responses.NOT_FOUND).build();
 		}
-
 	}
 
 	// -----------------------------------------------------------------------------------------
@@ -79,13 +105,26 @@ public class LabelsResource extends UIAService {
 	@POST
 	@Path("/label")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response label(@QueryParam("uri") String URI,
-			@QueryParam("label") String label) {
-		System.out.println(" ro " + URI + " label " + label);
+	@ApiOperation(value = "Annotates the resource using the label", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "An annotation has been created and used to label the resource with that URI"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
+	public Response label(
+			@ApiParam(value = "URI of the resource to be labeled", required = true, allowMultiple = false) @QueryParam("uri") String URI,
+			@ApiParam(value = "Label used to annotate the resource", required = true, allowMultiple = false) @QueryParam("label") String label) {
+		logger.info("POST label uri=" + URI + " label " + label);
 
-		core.getAnnotationHandler().label(URI, label);
-		
-		return Response.ok().status(201).build();
+		Annotation annotation = core.getAnnotationHandler().label(URI, label);
+
+		URI annotationURI = null;
+		try {
+			annotationURI = new URI(annotation.getURI());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return Response.created(annotationURI).build();
 
 	}
 
@@ -94,11 +133,16 @@ public class LabelsResource extends UIAService {
 	@DELETE
 	@Path("/label")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeAnnotation(@QueryParam("uri") String URI,
-			@QueryParam("label") String label) {
-		System.out.println("DELETE label > " + URI + " resource> " + URI);
-		this.core.getAnnotationHandler().removeLabel(URI,label);
-		return Response.ok().status(201).build();
-	}
+	@ApiOperation(value = "Unlabels the resource URI with label", notes = "")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The resource URI is no longer annotated using that label"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
+	public Response removeAnnotation(
+			@ApiParam(value = "URI of the resource to be unlabeled", required = true, allowMultiple = false) @QueryParam("uri") String URI,
+			@ApiParam(value = "Label that no longer annotates the resource", required = true, allowMultiple = false) @QueryParam("label") String label) {
 
+		this.core.getAnnotationHandler().removeLabel(URI, label);
+
+		return Response.ok().build();
+	}
 }

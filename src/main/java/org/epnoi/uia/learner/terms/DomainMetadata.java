@@ -1,12 +1,12 @@
 package org.epnoi.uia.learner.terms;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class DomainMetadata implements Comparable<DomainMetadata> {
 
-	private List<String> resources;
+	private Set<String> resources;
 	private long numberOfTerms;
 	private double minDomainConsensus = 1;
 	private double maxDomainConsensus = 0;
@@ -16,7 +16,7 @@ public class DomainMetadata implements Comparable<DomainMetadata> {
 
 	public DomainMetadata() {
 		this.numberOfTerms = 0;
-		this.resources = new ArrayList<String>();
+		this.resources = new HashSet<String>();
 
 	}
 
@@ -42,13 +42,13 @@ public class DomainMetadata implements Comparable<DomainMetadata> {
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public List<String> getResources() {
+	public Set<String> getResources() {
 		return resources;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void setResources(List<String> resources) {
+	public void setResources(Set<String> resources) {
 		this.resources = resources;
 	}
 

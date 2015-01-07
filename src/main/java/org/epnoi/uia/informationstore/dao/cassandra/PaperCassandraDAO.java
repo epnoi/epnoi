@@ -54,17 +54,16 @@ public class PaperCassandraDAO extends CassandraDAO {
 					Context.ANNOTATED_CONTENT);
 
 			super.updateColumn(paper.getURI(),
-					PaperCassandraHelper.ANNOTATED_CONTENT,
+					AnnotatedContentCassandraHelper.CONTENT,
 					annotatedContent.toXml(),
-					PaperCassandraHelper.COLUMN_FAMILLY);
+					AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
 		}
 
 		String content = paper.getTitle() + "." + paper.getDescription();
-	//	System.out.println("content:> " + content);
-		super.updateColumn(paper.getURI(), PaperCassandraHelper.CONTENT,
-				content, PaperCassandraHelper.COLUMN_FAMILLY);
+		// System.out.println("content:> " + content);
+		super.updateColumn(paper.getURI(), ContentCassandraHelper.CONTENT,
+				content, ContentCassandraHelper.COLUMN_FAMILLY);
 
-		
 	}
 
 	// --------------------------------------------------------------------------------
@@ -77,7 +76,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-System.out.println("----> > "+URI);
+		System.out.println("----> > " + URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, PaperCassandraHelper.COLUMN_FAMILLY);
 		if (columnsIterator.hasNext()) {
@@ -108,12 +107,8 @@ System.out.println("----> > "+URI);
 	@Override
 	public Content<String> getContent(Selector selector) {
 
-		String value = super.readColumn(
-				selector.getProperty(SelectorHelper.URI),
-				PaperCassandraHelper.CONTENT,
-				PaperCassandraHelper.COLUMN_FAMILLY);
-
-		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_PLAIN);
+		throw (new RuntimeException(
+				"The getContent method of the PaperCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
@@ -121,12 +116,8 @@ System.out.println("----> > "+URI);
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
 
-		String value = super.readColumn(
-				selector.getProperty(SelectorHelper.URI),
-				PaperCassandraHelper.ANNOTATED_CONTENT,
-				PaperCassandraHelper.COLUMN_FAMILLY);
-
-		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_XML);
+		throw (new RuntimeException(
+				"The getAnnotatedContent method of the PaperCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
@@ -134,23 +125,20 @@ System.out.println("----> > "+URI);
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 
-		super.updateColumn(selector.getProperty(SelectorHelper.URI),
-				PaperCassandraHelper.CONTENT, content.getContent(),
-				PaperCassandraHelper.COLUMN_FAMILLY);
+		throw (new RuntimeException(
+				"The setContent method of the PaperCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
-	
+
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
 
-		super.updateColumn(selector.getProperty(SelectorHelper.URI),
-				PaperCassandraHelper.ANNOTATED_CONTENT,
-				annotatedContent.getContent(),
-				PaperCassandraHelper.COLUMN_FAMILLY);
+		throw (new RuntimeException(
+				"The setAnnotatedContent method of the PaperCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
-	
+
 }

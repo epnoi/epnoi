@@ -65,7 +65,7 @@ public class CoreMainUser {
 
 		Core core = getUIACore();
 
-		User user = (User) core.getInformationAccess().get("http://userSara",
+		User user = (User) core.getInformationHandler().get("http://userSara",
 				UserRDFHelper.USER_CLASS);
 		System.out.println("The readed user is " + user);
 
@@ -95,7 +95,7 @@ public class CoreMainUser {
 		 * System.out.println("The readed newUser is " + newUserReaded);
 		 */
 
-		core.getInformationAccess()
+		core.getInformationHandler()
 				.remove("http://www.epnoi.org/users/testUser",
 						UserRDFHelper.USER_CLASS);
 
@@ -112,7 +112,7 @@ public class CoreMainUser {
 
 		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 		
-		core.getInformationAccess().put(testUser,new Context());
+		core.getInformationHandler().put(testUser,new Context());
 		
 		
 		
@@ -123,7 +123,7 @@ public class CoreMainUser {
 		 * System.out.println("The readed newUser is " + newUserReaded2);
 		 */
 		Context context=new Context();
-		core.getInformationAccess().put(testUser,context);
+		core.getInformationHandler().put(testUser,context);
 		InformationSource slashdotInformationSource = new InformationSource();
 		slashdotInformationSource
 				.setURI("http://www.epnoi.org/informationSources/slashdot");
@@ -183,17 +183,17 @@ public class CoreMainUser {
 		informationSourceSubscriptionRandom.setNumberOfItems(2);
 		
 		Context emptyContex = new Context();
-		core.getInformationAccess().put(slashdotInformationSource, emptyContex);
+		core.getInformationHandler().put(slashdotInformationSource, emptyContex);
 
-		core.getInformationAccess().put(highScalabilityInformationSource, emptyContex);
+		core.getInformationHandler().put(highScalabilityInformationSource, emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscriptionHigh, emptyContex);
+		core.getInformationHandler().put(informationSourceSubscriptionHigh, emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscription, emptyContex);
+		core.getInformationHandler().put(informationSourceSubscription, emptyContex);
 
-		core.getInformationAccess().put(randomInformationSource, emptyContex);
+		core.getInformationHandler().put(randomInformationSource, emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscriptionRandom, emptyContex);
+		core.getInformationHandler().put(informationSourceSubscriptionRandom, emptyContex);
 		
 		
 		/*

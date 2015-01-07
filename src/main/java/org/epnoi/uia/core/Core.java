@@ -14,16 +14,16 @@ import java.util.logging.Logger;
 
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
+import org.epnoi.uia.core.eventbus.EventBus;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
-import org.epnoi.uia.informationaccess.InformationAccess;
-import org.epnoi.uia.informationaccess.InformationAccessImplementation;
+import org.epnoi.uia.informationhandler.InformationHandler;
+import org.epnoi.uia.informationhandler.InformationHandlerImp;
 import org.epnoi.uia.informationsources.InformationSourcesHandler;
 import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
@@ -41,13 +41,14 @@ public class Core {
 
 	private RSSHoarder rssHoarder;
 	private RSSHarvester rssHarvester;
-	private InformationAccess informationAccess;
+	private InformationHandler informationHandler;
 	private InformationSourcesHandler informationSourcesHandler = null;
 
 	private ParametersModel parametersModel = null;
 
 	private SearchHandler searchHandler = null;
 	private AnnotationHandler annotationHandler = null;
+	private EventBus eventBus = null;
 
 	// ----------------------------------------------------------------------------------------------------------
 
@@ -65,9 +66,10 @@ public class Core {
 		this.informationStores = new HashMap<String, InformationStore>();
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
+		this._initEventBus();
 		this._initGATE();
 		this._informationStoresInitialization();
-		this._initInformationAccess();
+		this._initInformationHandler();
 		this._initInformationSourcesHandler();
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
@@ -77,6 +79,15 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initEventBus() {
+
+		logger.info("Initializing the Event Bus");
+		this.eventBus = new EventBus();
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
 
 	private void _initAnnotationsHandler() {
 		this.annotationHandler = new AnnotationHandlerImpl(this);
@@ -151,8 +162,8 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _initInformationAccess() {
-		this.informationAccess = new InformationAccessImplementation(this);
+	private void _initInformationHandler() {
+		this.informationHandler = new InformationHandlerImp(this);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -221,8 +232,8 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public InformationAccess getInformationAccess() {
-		return this.informationAccess;
+	public InformationHandler getInformationHandler() {
+		return this.informationHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -277,6 +288,18 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
 	private void _initGATE() {
 		String gateHomePath = Core.class.getResource("").getPath() + "/gate";
 		String pluginsPath = gateHomePath + "/plugins";
@@ -302,10 +325,12 @@ public class Core {
 					.toURL();
 
 			Gate.getCreoleRegister().registerDirectories(anniePlugin);
+			
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
 	}
 

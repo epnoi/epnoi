@@ -31,7 +31,7 @@ public class CoreMainTest {
 
 		Core core = CoreUtility.getUIACore();
 
-		core.getInformationAccess().remove(TEST_USER_URI,
+		core.getInformationHandler().remove(TEST_USER_URI,
 				UserRDFHelper.USER_CLASS);
 
 		User testUser = new User();
@@ -78,7 +78,7 @@ public class CoreMainTest {
 
 		testUser.addInformationSourceSubscription("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 
-		core.getInformationAccess().put(testUser, new Context());
+		core.getInformationHandler().put(testUser, new Context());
 
 		_generateInformationSources(core, testUser);
 		_generateFeeds(core);
@@ -98,7 +98,7 @@ public class CoreMainTest {
 		System.out.println();
 		System.out.println("Retrieving the user");
 
-		User retrievedUser = (User) core.getInformationAccess().get(
+		User retrievedUser = (User) core.getInformationHandler().get(
 				TEST_USER_URI, UserRDFHelper.USER_CLASS);
 		System.out.println("This is the test user :" + retrievedUser);
 
@@ -175,15 +175,15 @@ public class CoreMainTest {
 		informationSourceSubscriptionHigh.setNumberOfItems(4);
 
 		Context emptyContex = new Context();
-		core.getInformationAccess().put(slashdotInformationSource, emptyContex);
+		core.getInformationHandler().put(slashdotInformationSource, emptyContex);
 
-		core.getInformationAccess().put(highScalabilityInformationSource,
+		core.getInformationHandler().put(highScalabilityInformationSource,
 				emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscriptionHigh,
+		core.getInformationHandler().put(informationSourceSubscriptionHigh,
 				emptyContex);
 
-		core.getInformationAccess().put(informationSourceSubscription,
+		core.getInformationHandler().put(informationSourceSubscription,
 				emptyContex);
 
 		/*
@@ -216,7 +216,7 @@ public class CoreMainTest {
 		paper.setDescription("Description of the paper, strangeword");
 		paper.setPubDate("Tue, 13 Dec 2013 22:22:16 GMT");
 
-		core.getInformationAccess().put(paper, new Context());
+		core.getInformationHandler().put(paper, new Context());
 
 	}
 
@@ -277,7 +277,7 @@ public class CoreMainTest {
 		context.getParameters()
 				.put(Context.INFORMATION_SOURCE_URI,
 						"http://www.epnoi.org/informationSources/testInformationSource");
-		core.getInformationAccess().put(feedA, context);
-		core.getInformationAccess().remove(feedA);
+		core.getInformationHandler().put(feedA, context);
+		core.getInformationHandler().remove(feedA);
 	}
 }
