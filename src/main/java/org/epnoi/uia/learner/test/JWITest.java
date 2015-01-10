@@ -1,7 +1,9 @@
 package org.epnoi.uia.learner.test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.IRAMDictionary;
@@ -14,6 +16,7 @@ import edu.mit.jwi.item.IWord;
 import edu.mit.jwi.item.IWordID;
 import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.morph.WordnetStemmer;
 
 public class JWITest {
 
@@ -22,8 +25,8 @@ public class JWITest {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Starting JWI test!");
 
-		 String filepath = "/epnoi/epnoideployment/wordnet/dictWN40K/dict";
-		//String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1";
+		String filepath = "/epnoi/epnoideployment/wordnet/dictWN40K/dict";
+		// String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1";
 		JWITest test = new JWITest();
 
 		File folder = new File(filepath);
@@ -45,6 +48,17 @@ public class JWITest {
 
 		// now load into memory
 		System.out.print("Loading Wordnet into memory ... ");
+
+		System.out.print("Testing the stemmer ... ");
+
+		edu.mit.jwi.morph.WordnetStemmer wordnetStemmer = new WordnetStemmer(
+				dict);
+
+		List<String> wordsToStem = Arrays.asList("lions", "cow", "wrer", "Domestic Animal");
+		for (String word : wordsToStem) {
+			System.out.println(word +"> "+wordnetStemmer.findStems(word, POS.NOUN));
+		}
+
 		long t = System.currentTimeMillis();
 		dict.load(true);
 		trek(dict);
@@ -82,7 +96,7 @@ public class JWITest {
 		for (POS pos : POS.values()) {
 			for (Iterator<ISynset> i = dict.getSynsetIterator(pos); i.hasNext();) {
 				seen++;
-i.next();
+				i.next();
 			}
 		}
 		System.out.println("In my trek I saw " + seen + " hypernyms ");
