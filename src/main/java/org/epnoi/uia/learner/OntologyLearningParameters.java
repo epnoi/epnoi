@@ -1,8 +1,9 @@
 package org.epnoi.uia.learner;
 
-import java.util.HashMap;
+import org.epnoi.uia.commons.Parameters;
 
-public class OntologyLearningParameters {
+
+public class OntologyLearningParameters extends Parameters {
 /**
  *  NUMBER_INITIAL_TERMS: number of initial terms in the ontology
 	
@@ -20,20 +21,10 @@ public class OntologyLearningParameters {
 	
 	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";
 	public static final String EXTRACT_TERMS = "EXTRACT_TERMS";
-	
-
-	private HashMap<String, Object> parameters = new HashMap<String, Object>();
 
 	// ---------------------------------------------------------------------------------------------
 
-	public void setParameter(String parameter, Object value) {
-		this.parameters.put(parameter, value);
-
-	}
 
 	// ---------------------------------------------------------------------------------------------
 
-	public Object getParameterValue(String parameter) {
-		return this.parameters.get(parameter);
-	}
 }
