@@ -1,5 +1,7 @@
 package org.epnoi.uia.learner.nlp;
 
+import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
+
 import gate.Annotation;
 import gate.Corpus;
 import gate.Document;
