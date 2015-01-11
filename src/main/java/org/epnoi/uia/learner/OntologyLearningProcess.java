@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.epnoi.model.Term;
+import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.learner.relations.Relation;
@@ -16,14 +17,14 @@ import org.epnoi.uia.learner.terms.TermsExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class OntologyLearningProcess {
-	private OntologyLearningParameters ontologyLearningParameters;
+	private Parameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
 	private TermsTable termsTable;
 	private RelationsTable relationsTable;
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void init(Core core, OntologyLearningParameters ontologyLearningParameters) {
+	public void init(Core core, Parameters ontologyLearningParameters) {
 		this.termExtractor = new TermsExtractor();
 		this.termExtractor.init(core,ontologyLearningParameters);
 
@@ -31,7 +32,7 @@ public class OntologyLearningProcess {
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void execute(OntologyLearningParameters ontologyLearningParameters) {
+	public void execute(Parameters ontologyLearningParameters) {
 
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
@@ -94,7 +95,7 @@ public class OntologyLearningProcess {
 		boolean extractTerms = false;
 		Integer numberInitialTerms = 10;
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
+		Parameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);

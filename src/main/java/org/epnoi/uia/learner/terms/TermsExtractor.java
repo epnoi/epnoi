@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Term;
+import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
@@ -38,11 +39,11 @@ public class TermsExtractor {
 	double cValueWeight = 0.5;
 	double domainPertinenceWeight = 0.3;
 	double domainConsensusWeight = 1 - cValueWeight - domainPertinenceWeight;
-	OntologyLearningParameters parameters;
+	Parameters parameters;
 
 	// -----------------------------------------------------------------------------------
 
-	public void init(Core core, OntologyLearningParameters parameters) {
+	public void init(Core core, Parameters parameters) {
 		logger.info("Initializing the TermExtractor for the domains ");
 		this.core = core;
 		this.parameters = parameters;
@@ -570,7 +571,7 @@ public class TermsExtractor {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
+		Parameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);

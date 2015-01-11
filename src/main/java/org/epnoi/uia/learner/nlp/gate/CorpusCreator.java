@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.nlp;
+package org.epnoi.uia.learner.nlp.gate;
 
 import gate.Corpus;
 import gate.Document;
