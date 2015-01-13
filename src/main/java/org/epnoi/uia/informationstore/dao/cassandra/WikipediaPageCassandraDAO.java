@@ -1,22 +1,22 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import gate.Document;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
-import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
-import org.epnoi.model.User;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
@@ -73,19 +73,14 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 					WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
 		}
+		for (Entry<String, Object> contextElement : context.getElements()
+				.entrySet()) {
+			System.out.println("-----> "+contextElement);
+			super.updateColumn(wikipediaPage.getURI(), contextElement.getKey(),
+					"["+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE+"]"+((Document) contextElement.getValue()).toXml().toString(),
+					WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		}
 	}
-
-	/*
-	 * if (context.getElements().get(Context.ANNOTATED_CONTENT) != null) {
-	 * 
-	 * // gate.corpora.DocumentStaxUtils.readGateXmlDocument(xsr, doc); Document
-	 * annotatedContent = (Document) context.getElements().get(
-	 * Context.ANNOTATED_CONTENT);
-	 * 
-	 * super.updateColumn(paper.getURI(),
-	 * PaperCassandraHelper.ANNOTATED_CONTENT, annotatedContent.toXml(),
-	 * PaperCassandraHelper.COLUMN_FAMILLY); }
-	 */
 
 	// --------------------------------------------------------------------------------
 
@@ -119,12 +114,6 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 					paper.getSections().add(column.getName());
 				} else if (WikipediaPageCassandraHelper.SECTION_CONTENT
 						.equals(column.getValue())) {
-					/*
-					 * String section=column.getName()
-					 * 
-					 * 
-					 * sectionsContent.add(par);
-					 */
 
 					String columnName = column.getName();
 
@@ -163,9 +152,23 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
+		String annotatedContent = super.readColumn(
+				selector.getProperty(SelectorHelper.URI),
+				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
+				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
-		throw (new RuntimeException(
-				"The getAnnotatedContent method of the WikipediaPageCassandraDAO should not be invoked"));
+		Matcher matcher = pattern.matcher(annotatedContent);
+
+		if (matcher.find()) {
+			String type = annotatedContent.subSequence(matcher.start() + 1,
+					matcher.end() - 1).toString();
+
+			String content = annotatedContent.subSequence(matcher.end(),
+					annotatedContent.length()).toString();
+			return new Content<>(content, type);
+
+		}
+		return null;
 	}
 
 	// --------------------------------------------------------------------------------
@@ -183,8 +186,15 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
 
-		throw (new RuntimeException(
-				"The setAnnotatedContent method of the WikipediaPageCassandraDAO should not be invoked"));
+		System.out.println("selector> " + selector);
+
+		super.updateColumn(
+				selector.getProperty(SelectorHelper.URI),
+				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
+				"[" + annotatedContent.getType() + "]"
+						+ annotatedContent.getContent(),
+				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+
 	}
 
 	// --------------------------------------------------------------------------------

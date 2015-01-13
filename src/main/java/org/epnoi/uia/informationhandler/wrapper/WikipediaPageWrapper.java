@@ -1,5 +1,7 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.AnnotatedContentHelper;
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
@@ -111,12 +113,46 @@ public class WikipediaPageWrapper implements Wrapper {
 			informationStore = this.core.getInformationStoresByType(
 					InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 			exists = informationStore.exists(selector);
-			if(exists){
-				exists=!this.core.getInformationHandler().getAnnotatedContent(URI+"/first").isEmpty();
+			if (exists) {
+				/*
+				exists = !this.core
+						.getInformationHandler()
+						.getAnnotatedContent(
+								URI,
+								URI
+										+ "/first/"
+										+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE)
+						.isEmpty();
+*/
 			}
 		}
 
 		return exists;
+	}
+
+	@Override
+	public Content<String> getContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// -------------------------------------------------------------------------------------

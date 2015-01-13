@@ -22,6 +22,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
@@ -29,12 +30,13 @@ import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 
 public class OAIPMHHarvester extends CommandLineTool {
 	public static final String PARAMETER_COMMAND = "-command";
@@ -190,15 +192,27 @@ public class OAIPMHHarvester extends CommandLineTool {
 				// System.out.println("Harvesting paper ------------------->" +
 				// paper);
 
-				 core.getInformationHandler().put(paper, Context.getEmptyContext());
+				/*EN ESTE CONTEXTO DEBERIAS METER YA EL CONTENIDO ANOTAD*/ 
+				
+				core.getInformationHandler().put(paper, Context.getEmptyContext());
 				 
-				 
-				Content<String> content=core.getInformationHandler().getContent(paper.getURI());
+				Selector selector = new Selector();
+				selector.setProperty(SelectorHelper.URI, paper.getURI());
+				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+								 
+				Content<String> content=core.getInformationHandler().getContent(selector);
 
 				Document annotatedContent=this.termCandidatesFinder.findTermCandidates(content.getContent());
 				System.out.println("------)> "+annotatedContent.toXml());
 											
-				core.getInformationHandler().setAnnotatedContent(paper.getURI(),  new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
+
+				Selector annotationSelector = new Selector();
+				annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+				annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, paper.getURI()+"/"+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				annotationSelector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+				
+			
+				core.getInformationHandler().setAnnotatedContent(annotationSelector, new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
 				
 				//System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 

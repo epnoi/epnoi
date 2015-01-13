@@ -129,22 +129,10 @@ public class InformationHandlerImp implements InformationHandler {
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public ContentSummary getContentSummary(String URI) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// ---------------------------------------------------------------------------
-
-	@Override
-	public Content<String> getContent(String URI) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
-		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.URI, URI);
-		Content<String> content = informationStore.getContent(selector);
+	public Content<String> getContent(Selector selector) {
+		Wrapper wrapper = this.wrapperFactory.build(selector
+				.getProperty(SelectorHelper.TYPE));
+		Content<String> content = wrapper.getContent(selector);
 
 		return content;
 	}
@@ -152,46 +140,33 @@ public class InformationHandlerImp implements InformationHandler {
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(String URI) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
-		Selector selector = new Selector();
-
-		selector.setProperty(SelectorHelper.URI, URI);
-		Content<String> content = informationStore
-				.getAnnotatedContent(selector);
+	public Content<String> getAnnotatedContent(Selector selector) {
+		Wrapper wrapper = this.wrapperFactory.build(selector
+				.getProperty(SelectorHelper.TYPE));
+		Content<String> content = wrapper.getAnnotatedContent(selector);
 		return content;
 	}
 
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public void setContent(String URI, Content<String> content) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
-		Selector selector = new Selector();
-
-		selector.setProperty(SelectorHelper.URI, URI);
-		informationStore.setContent(selector, content);
+	public void setContent(Selector selector, Content<String> content) {
+		Wrapper wrapper = this.wrapperFactory.build(selector
+				.getProperty(SelectorHelper.TYPE));
+		wrapper.setContent(selector, content);
 
 	}
 
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public void setAnnotatedContent(String URI, Content<String> annotatedContent) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
-		Selector selector = new Selector();
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		Wrapper wrapper = this.wrapperFactory.build(selector
+				.getProperty(SelectorHelper.TYPE));
 
-		selector.setProperty(SelectorHelper.URI, URI);
-		informationStore.setAnnotatedContent(selector, annotatedContent);
+		
+		wrapper.setAnnotatedContent(selector, annotatedContent);
 
 	}
 
