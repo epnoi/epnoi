@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -74,8 +75,9 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 		}
 		for (Entry<String, Object> contextElement : context.getElements()
 				.entrySet()) {
+			System.out.println("-----> "+contextElement);
 			super.updateColumn(wikipediaPage.getURI(), contextElement.getKey(),
-					((Document) contextElement.getValue()).toXml().toString(),
+					"["+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE+"]"+((Document) contextElement.getValue()).toXml().toString(),
 					WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 		}
 	}
