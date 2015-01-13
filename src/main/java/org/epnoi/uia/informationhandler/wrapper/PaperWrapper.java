@@ -1,5 +1,6 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
@@ -137,7 +138,42 @@ public class PaperWrapper implements Wrapper {
 
 		return exists;
 	}
+	
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// -------------------------------------------------------------------------------------
+	
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	// -------------------------------------------------------------------------------------
+	
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// -------------------------------------------------------------------------------------
+	
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	// -------------------------------------------------------------------------------------
+	
+	
 
 }

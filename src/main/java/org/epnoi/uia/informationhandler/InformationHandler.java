@@ -6,6 +6,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.informationhandler.events.InformationAccessListener;
 import org.epnoi.uia.informationstore.InformationStore;
+import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.parameterization.ParametersModel;
 
 
@@ -36,16 +37,14 @@ public interface InformationHandler {
 
 	public void subscribe(InformationAccessListener listener,
 			String subscriptionExpression);
+	
+	public Content<String> getContent(Selector selector);
+	
+	public Content<String> getAnnotatedContent(Selector selector);
 
-	public ContentSummary getContentSummary(String URI);
+	public void  setContent(Selector selector, Content<String> content);
 	
-	public Content<String> getContent(String URI);
-	
-	public Content<String> getAnnotatedContent(String URI);
-
-	public void  setContent(String URI, Content<String> content);
-	
-	public void  setAnnotatedContent(String URI, Content<String> annotatedContent);
+	public void  setAnnotatedContent(Selector selector, Content<String> annotatedContent);
 
 	
 }

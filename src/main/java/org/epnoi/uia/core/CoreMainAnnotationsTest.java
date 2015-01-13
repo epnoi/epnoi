@@ -84,10 +84,11 @@ public class CoreMainAnnotationsTest {
 	}
 
 	private static void _whatever(String URI, Core core) {
+		/*
 		Content<String> content = core.getInformationHandler().getContent(URI);
 
 		Content<String> annotatedContent = core.getInformationHandler()
-				.getAnnotatedContent(URI);
+				.getAnnotatedContent(URI, URI);
 
 		System.out.println("->> " + annotatedContent.getContent());
 
@@ -95,6 +96,7 @@ public class CoreMainAnnotationsTest {
 				+ "GATEdocument.xml");
 
 		if (annotatedContent.getContent() != null) {
+			*/
 			/*
 			 * String gateHomePath = TermCandidatesFinder.class.getResource("")
 			 * .getPath() + "/gate"; String pluginsPath = gateHomePath +
@@ -129,6 +131,7 @@ public class CoreMainAnnotationsTest {
 			 * showTerms(termCandidatesFinder.findTermCandidates(content
 			 * .getContent()));
 			 */
+		/*
 			Document document = null;
 			try {
 				document = (Document) Factory
@@ -148,6 +151,7 @@ public class CoreMainAnnotationsTest {
 			}
 			showTerms(document);
 		}
+		*/
 	}
 
 	private static void showTerms(Document document) {

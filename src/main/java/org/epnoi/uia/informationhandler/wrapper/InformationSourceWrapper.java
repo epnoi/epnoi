@@ -1,5 +1,6 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
@@ -19,7 +20,6 @@ public class InformationSourceWrapper implements Wrapper {
 	}
 
 	// -------------------------------------------------------------------------------------------------------------
-
 
 	public void put(Resource resource, Context context) {
 		// InformationSource informationSource = (InformationSource) resource;
@@ -66,7 +66,7 @@ public class InformationSourceWrapper implements Wrapper {
 		informationStore.update(resource);
 
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
@@ -77,5 +77,39 @@ public class InformationSourceWrapper implements Wrapper {
 
 	// -------------------------------------------------------------------------------------
 
-	
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// -------------------------------------------------------------------------------------
+
 }
