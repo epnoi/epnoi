@@ -18,6 +18,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
@@ -25,6 +26,8 @@ import org.epnoi.model.Paper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.w3c.dom.DOMException;
@@ -149,15 +152,25 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 				core.getInformationHandler().put(paper,
 						Context.getEmptyContext());
 
+				Selector selector = new Selector();
+				selector.setProperty(SelectorHelper.URI, paper.getURI());
+				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				Content<String> content = core.getInformationHandler()
-						.getContent(paper.getURI());
+						.getContent(selector);
 
 				Document annotatedContent = this.termCandidatesFinder
 						.findTermCandidates(content.getContent());
 				// System.out.println("------)> " + annotatedContent.toXml());
 
-				core.getInformationHandler().setAnnotatedContent(
-						paper.getURI(),
+				
+				
+				Selector annotationSelector = new Selector();
+				annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+				annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, paper.getURI()+"/"+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				annotationSelector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+				
+				
+				core.getInformationHandler().setAnnotatedContent(annotationSelector,
 						new Content<>(annotatedContent.toXml(),
 								ContentHelper.CONTENT_TYPE_TEXT_XML));
 

@@ -12,6 +12,6 @@ public interface WikipediaPageCassandraHelper {
 	public static final String SECTION = "SECTION";
 	public static final String SECTION_CONTENT = "SECTION_CONTENT";
 
-	//public static final String ANNOTATED_CONTENT = "ANNOTATED_CONTENT";
+	public static final String ANNOTATED_CONTENT = "ANNOTATED_CONTENT";
 
 }

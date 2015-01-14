@@ -17,6 +17,8 @@ public class TermCandidatesFinder {
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
 
+	//----------------------------------------------------------------------------------	
+	
 	public Document findTermCandidates(String content) {
 		Document doc = null;
 		try {
@@ -43,6 +45,8 @@ public class TermCandidatesFinder {
 
 	}
 
+	//----------------------------------------------------------------------------------
+	
 	public void init() {
 		ControllerCreator controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
@@ -66,6 +70,8 @@ public class TermCandidatesFinder {
 		 */
 	}
 
+	//----------------------------------------------------------------------------------
+	
 	public static void main(String[] args) {
 
 		System.out
@@ -100,6 +106,8 @@ public class TermCandidatesFinder {
 				.println("TermCandidatesFinder test is over!================================================================");
 	}
 
+	//----------------------------------------------------------------------------------
+	
 	private static void showTerms(Document document) {
 		for (Annotation annotation : document.getAnnotations().get(
 				"TermCandidate")) {

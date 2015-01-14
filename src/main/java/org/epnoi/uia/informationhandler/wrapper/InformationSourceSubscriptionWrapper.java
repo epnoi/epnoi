@@ -1,5 +1,6 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
@@ -66,7 +67,8 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 		InformationStore informationStore = core.getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.update(resource);
-		this.core.getInformationHandler().publish(EventsHelper.UPDATE, resource);
+		this.core.getInformationHandler()
+				.publish(EventsHelper.UPDATE, resource);
 	}
 
 	// -------------------------------------------------------------------------------------
@@ -75,6 +77,41 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 	public boolean exists(String URI) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void setContent(Selector selector, Content<String> content) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public Content<String> getAnnotatedContent(Selector selector) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	@Override
+	public void setAnnotatedContent(Selector selector,
+			Content<String> annotatedContent) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// -------------------------------------------------------------------------------------

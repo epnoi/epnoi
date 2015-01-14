@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Term;
@@ -22,6 +23,8 @@ import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.OntologyLearningParameters;
 
@@ -153,8 +156,15 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private Document retrieveAnnotatedDocument(String URI) {
+
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.URI, URI);
+		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
+		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
+				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+
 		Content<String> annotatedContent = core.getInformationHandler()
-				.getAnnotatedContent(URI);
+				.getAnnotatedContent(selector);
 		Document document = null;
 		try {
 			document = (Document) Factory
