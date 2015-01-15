@@ -143,6 +143,7 @@ public class InformationHandlerImp implements InformationHandler {
 	public Content<String> getAnnotatedContent(Selector selector) {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
+		System.out.println("wrapper >"+wrapper);
 		Content<String> content = wrapper.getAnnotatedContent(selector);
 		return content;
 	}

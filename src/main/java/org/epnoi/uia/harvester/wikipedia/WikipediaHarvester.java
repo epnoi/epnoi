@@ -45,7 +45,10 @@ public class WikipediaHarvester {
 	private static final Logger logger = Logger
 			.getLogger(WikipediaHarvester.class.getName());
 
-	List<WikiPage> wikipediaPages = new ArrayList<WikiPage>();
+	private static final String templateRegExp = "TEMPLATE\\[";
+	private MediaWikiParserFactory pf;
+	private MediaWikiParser parser;
+	private List<WikipediaPage> harvestedWikipediaPages = new ArrayList<WikipediaPage>();
 
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -59,6 +62,8 @@ public class WikipediaHarvester {
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.core = core;
 		this.termCandidatesFinder.init();
+		pf = new MediaWikiParserFactory();
+		parser = pf.createParser();
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -86,10 +91,15 @@ public class WikipediaHarvester {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			count=1;
+			for (WikipediaPage page : this.harvestedWikipediaPages) {
+				System.out.println(count+++"||> "+page.getURI());
+				//if(!core.getInformationHandler().contains(page.getURI(), RDFHelper.WIKIPEDIA_PAGE_CLASS))
+				_introduceWikipediaPage(page);
+			}
 		}
 
-		logger.info("Finishing the harvesting  ---------------------------------------------------------------------> "
-				+ wikipediaPages.size());
+		logger.info("Finishing the harvesting  ---------------------------------------------------------------------> ");
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -121,10 +131,121 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
+	private String _createTermDefinition(WikipediaPage wikipediaPage,
+			Context context) {
+		System.out.println("URI> " + wikipediaPage.getURI());
+		/*
+		 * LO DE ANTES Document annotatedFirstSection =
+		 * retrieveAnnotatedDocument( wikipediaPage.getURI(),
+		 * wikipediaPage.getURI() + "/first" +
+		 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+		 */
+		Document annotatedFirstSection = (Document) context.getElements().get(
+				wikipediaPage.getURI() + "/first/"
+						+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+
+		// System.out.println("-----> "+annotatedFirstSection.toXml());
+
+		AnnotationSet sentenceAnnotations = annotatedFirstSection
+				.getAnnotations().get("Sentence");
+		if (!sentenceAnnotations.isEmpty()) {
+			Long offset = annotatedFirstSection.getAnnotations()
+					.get("Sentence").firstNode().getOffset();
+			Annotation annotation = sentenceAnnotations.get("Sentence")
+					.get(offset).iterator().next();
+
+			String firstSentence = "";
+			try {
+
+				firstSentence = annotatedFirstSection
+						.getContent()
+						.getContent(annotation.getStartNode().getOffset(),
+								annotation.getEndNode().getOffset()).toString();
+
+				firstSentence = StringUtils.outerMatching(firstSentence, "\\(",
+						'(', ')');
+			} catch (InvalidOffsetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return firstSentence;
+
+		} else {
+			return "";
+		}
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------
+
+	private void _introduceAnnotatedContent(WikipediaPage wikipediaPage,
+			Context context) {
+		Document annotatedContent = null;
+		List<String> sections = wikipediaPage.getSections();
+		// System.out.println("S> " + sections + " " +
+		// wikipediaPage.getURI());
+		for (int i = sections.size() - 1; i >= 0; i--) {
+
+			String sectionContent = wikipediaPage.getSectionsContent().get(
+					sections.get(i));
+			/*
+			 * System.out.println(" " + sections.get(i) + "  " +
+			 * wikipediaPage.getSectionsContent().get( sections.get(i)));
+			 */
+
+			String annotatedContentURI = _extractURI(wikipediaPage.getURI(),
+					sections.get(i),
+					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+			annotatedContent = termCandidatesFinder
+					.findTermCandidates(sectionContent);
+
+			context.getElements().put(annotatedContentURI, annotatedContent);
+		}
+
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------
+
+	private String _cleanTemplates(String parsedText) {
+
+		return StringUtils.outerMatching(parsedText, templateRegExp, '[', ']');
+
+	}
+	
+	private void _introduceWikipediaPage(WikipediaPage page) {
+		Context context = new Context();
+		_introduceAnnotatedContent(page, context);
+
+		String termDefinition = _createTermDefinition(page, context);
+
+		page.setTermDefinition(termDefinition);
+
+		core.getInformationHandler().put(page, context);
+		/*
+		 * System.out.println("The definition term of " +
+		 * wikipediaPage.getTerm() + " is " +
+		 * wikipediaPage.getTermDefinition());
+		 */
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------
+	/*
+	 * private Document retrieveAnnotatedDocument(String URI, String
+	 * annotatedContentURI) { org.epnoi.model.Content<String> annotatedContent =
+	 * core .getInformationHandler().getAnnotatedContent(URI,
+	 * annotatedContentURI); Document document = null; try { document =
+	 * (Document) Factory .createResource( "gate.corpora.DocumentImpl",
+	 * Utils.featureMap( gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+	 * annotatedContent.getContent(),
+	 * gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
+	 * 
+	 * } catch (ResourceInstantiationException e) { System.out .println(
+	 * "Couldn't retrieve the GATE document that represents the annotated content of "
+	 * + annotatedContentURI); e.printStackTrace(); } return document; }
+	 */
+
+	// -------------------------------------------------------------------------------------------------------------------
+
 	class WikipediaPageHandler implements PageCallbackHandler {
-		private static final String templateRegExp = "TEMPLATE\\[";
-		MediaWikiParserFactory pf = new MediaWikiParserFactory();
-		MediaWikiParser parser = pf.createParser();
 
 		// -------------------------------------------------------------------------------------------------------------------
 
@@ -135,8 +256,7 @@ public class WikipediaHarvester {
 		// -------------------------------------------------------------------------------------------------------------------
 
 		public void process(WikiPage page) {
-			System.out.println("> " + page.getTitle() + " " + count++);
-			wikipediaPages.add(page);
+			// System.out.println("> " + page.getTitle() + " " + count++);
 
 			ParsedPage parsedPage = parser.parse(page.getWikiText());
 
@@ -160,8 +280,9 @@ public class WikipediaHarvester {
 				wikipediaPage.addSection(sectionName);
 				String sectionContent = "";
 
+				String parsedText;
 				for (Content content : section.getContentList()) {
-					String parsedText = content.getText();
+					parsedText = content.getText();
 					if (!parsedText.equals(sectionName)) {
 
 						String lineWithoutTemplates = _cleanTemplates(parsedText);
@@ -182,137 +303,10 @@ public class WikipediaHarvester {
 				wikipediaPage.getSections().add("first");
 				wikipediaPage.getSectionsContent().put("first", "");
 			}
-			_introduceAnnotatedContent(wikipediaPage, context);
 
-			// String termDefinition = _createTermDefinition(wikipediaPage);
-			// wikipediaPage.setTermDefinition(termDefinition);
-
-			core.getInformationHandler().put(wikipediaPage, context);
-
-			System.out.println("The definition term of "
-					+ wikipediaPage.getTerm() + " is "
-					+ wikipediaPage.getTermDefinition());
-
+			harvestedWikipediaPages.add(wikipediaPage);
 		}
 
-		// -------------------------------------------------------------------------------------------------------------------
-
-		private String _createTermDefinition(WikipediaPage wikipediaPage,
-				Context context) {
-			System.out.println("URI> " + wikipediaPage.getURI());
-			/*
-			 * LO DE ANTES Document annotatedFirstSection =
-			 * retrieveAnnotatedDocument( wikipediaPage.getURI(),
-			 * wikipediaPage.getURI() + "/first" +
-			 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-			 */
-			Document annotatedFirstSection = (Document) context
-					.getElements()
-					.get(wikipediaPage.getURI() + "/first/"
-							+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-
-			// System.out.println("-----> "+annotatedFirstSection.toXml());
-
-			AnnotationSet sentenceAnnotations = annotatedFirstSection
-					.getAnnotations().get("Sentence");
-			if (!sentenceAnnotations.isEmpty()) {
-				Long offset = annotatedFirstSection.getAnnotations()
-						.get("Sentence").firstNode().getOffset();
-				Annotation annotation = sentenceAnnotations.get("Sentence")
-						.get(offset).iterator().next();
-
-				String firstSentence = "";
-				try {
-
-					firstSentence = annotatedFirstSection
-							.getContent()
-							.getContent(annotation.getStartNode().getOffset(),
-									annotation.getEndNode().getOffset())
-							.toString();
-
-					firstSentence = StringUtils.outerMatching(firstSentence,
-							"\\(", '(', ')');
-				} catch (InvalidOffsetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return firstSentence;
-
-			} else {
-				return "";
-			}
-		}
-
-		// -------------------------------------------------------------------------------------------------------------------
-
-		private void _introduceAnnotatedContent(WikipediaPage wikipediaPage,
-				Context context) {
-			Document annotatedContent = null;
-			List<String> sections = wikipediaPage.getSections();
-			System.out.println("S> " + sections + " " + wikipediaPage.getURI());
-			for (int i = sections.size() - 1; i >= 0; i--) {
-
-				String sectionContent = wikipediaPage.getSectionsContent().get(
-						sections.get(i));
-				/*
-				 * System.out.println(" " + sections.get(i) + "  " +
-				 * wikipediaPage.getSectionsContent().get( sections.get(i)));
-				 */
-
-				String annotatedContentURI = _extractURI(
-						wikipediaPage.getURI(), sections.get(i),
-						AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-				annotatedContent = termCandidatesFinder
-						.findTermCandidates(sectionContent);
-
-				/*
-				 * LO ANTERIOR core.getInformationHandler()
-				 * .setAnnotatedContent( wikipediaPage.getURI(),
-				 * annotatedContentURI, new org.epnoi.model.Content<String>(
-				 * annotatedContent.toXml(),
-				 * ContentHelper.CONTENT_TYPE_TEXT_XML));
-				 */
-				context.getElements()
-						.put(annotatedContentURI, annotatedContent);
-			}
-
-		}
-
-		// -------------------------------------------------------------------------------------------------------------------
-
-		private String _cleanTemplates(String parsedText) {
-
-			return StringUtils.outerMatching(parsedText, templateRegExp, '[',
-					']');
-
-		}
-
-		// -------------------------------------------------------------------------------------------------------------------
-/*
-		private Document retrieveAnnotatedDocument(String URI,
-				String annotatedContentURI) {
-			org.epnoi.model.Content<String> annotatedContent = core
-					.getInformationHandler().getAnnotatedContent(URI,
-							annotatedContentURI);
-			Document document = null;
-			try {
-				document = (Document) Factory
-						.createResource(
-								"gate.corpora.DocumentImpl",
-								Utils.featureMap(
-										gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-										annotatedContent.getContent(),
-										gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-										"text/xml"));
-
-			} catch (ResourceInstantiationException e) { 
-				System.out
-						.println("Couldn't retrieve the GATE document that represents the annotated content of "
-								+ annotatedContentURI);
-				e.printStackTrace();
-			}
-			return document;
-		}
-*/
+	
 	}
 }

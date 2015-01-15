@@ -19,15 +19,16 @@ public interface InformationStore {
 	public Resource get(Selector selector);
 
 	public List<String> query(String queryExpression);
-	
-	public SearchSelectResult query(SelectExpression selectionExpression, SearchContext searchContext);
+
+	public SearchSelectResult query(SelectExpression selectionExpression,
+			SearchContext searchContext);
 
 	public void put(Resource resource, Context context);
-	
+
 	public void remove(Selector selector);
-	
+
 	public boolean exists(Selector selector);
-	
+
 	public void update(Resource resource);
 
 	public InformationStoreParameters getParameters();

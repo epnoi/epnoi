@@ -45,7 +45,7 @@ public class CassandraDAOFactory {
 			WikipediaPageCassandraDAO wikipediaPageDAO = new WikipediaPageCassandraDAO();
 			wikipediaPageDAO.init();
 			return wikipediaPageDAO;
-		}else if (resource instanceof Term) {
+		} else if (resource instanceof Term) {
 			TermCassandraDAO termDAO = new TermCassandraDAO();
 			termDAO.init();
 			return termDAO;
@@ -60,6 +60,10 @@ public class CassandraDAOFactory {
 		String typeSelector = selector.getProperty(SelectorHelper.TYPE);
 		if (typeSelector == null) {
 			throw new DAONotFoundException("No column name specified");
+		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+			WikipediaPageCassandraDAO wikipediaPaperDAO = new WikipediaPageCassandraDAO();
+			wikipediaPaperDAO.init();
+			return wikipediaPaperDAO;
 		} else if (typeSelector.equals(UserRDFHelper.USER_CLASS)) {
 
 			UserCassandraDAO userDAO = new UserCassandraDAO();
@@ -81,21 +85,17 @@ public class CassandraDAOFactory {
 			PaperCassandraDAO paperDAO = new PaperCassandraDAO();
 			paperDAO.init();
 			return paperDAO;
-		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
-			WikipediaPageCassandraDAO wikipediaPaperDAO = new WikipediaPageCassandraDAO();
-			wikipediaPaperDAO.init();
-			return wikipediaPaperDAO;
 
-		}else if (typeSelector.equals(RDFHelper.TERM_CLASS)) {
+		} else if (typeSelector.equals(RDFHelper.TERM_CLASS)) {
 			TermCassandraDAO termDAO = new TermCassandraDAO();
 			termDAO.init();
 			return termDAO;
 
 		}
 
-
 		else {
-			throw new DAONotFoundException("Unknown wrapper for the resource class " + typeSelector);
+			throw new DAONotFoundException(
+					"Unknown wrapper for the resource class " + typeSelector);
 		}
 	}
 }

@@ -7,6 +7,7 @@ import gate.Corpus;
 import gate.Document;
 import gate.Factory;
 import gate.Utils;
+import gate.corpora.DocumentImpl;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
@@ -17,9 +18,9 @@ public class TermCandidatesFinder {
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
 
-	//----------------------------------------------------------------------------------	
-	
-	public Document findTermCandidates(String content) {
+	// ----------------------------------------------------------------------------------
+
+	public synchronized Document findTermCandidates(String content) {
 		Document doc = null;
 		try {
 			doc = Factory.newDocument(content);
@@ -38,6 +39,9 @@ public class TermCandidatesFinder {
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println("---------------> " + content);
+				System.out.println("---------------> " + doc.toString());
+				doc = new DocumentImpl();
 			}
 			corpus.remove(0);
 		}
@@ -45,8 +49,8 @@ public class TermCandidatesFinder {
 
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	public void init() {
 		ControllerCreator controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
@@ -70,8 +74,8 @@ public class TermCandidatesFinder {
 		 */
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	public static void main(String[] args) {
 
 		System.out
@@ -106,8 +110,8 @@ public class TermCandidatesFinder {
 				.println("TermCandidatesFinder test is over!================================================================");
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	private static void showTerms(Document document) {
 		for (Annotation annotation : document.getAnnotations().get(
 				"TermCandidate")) {

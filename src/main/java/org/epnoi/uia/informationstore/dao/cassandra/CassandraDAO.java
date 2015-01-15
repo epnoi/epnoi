@@ -3,8 +3,11 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -16,6 +19,7 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.ddl.ColumnDefinition;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ColumnIndexType;
@@ -23,6 +27,7 @@ import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.SliceQuery;
 
 import org.epnoi.model.Content;
@@ -181,7 +186,7 @@ public abstract class CassandraDAO {
 							columnFamilyTemplate);
 				}
 			}
-			initialized=true;
+			initialized = true;
 		}
 	}
 
@@ -218,6 +223,31 @@ public abstract class CassandraDAO {
 
 			System.out.println(e.getMessage());
 		}
+		updater = null;
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	protected void updateColumns(Set<String> keys,
+			Map<String, String> pairsOfNameValues, String columnFamilyName) {
+
+		Set<HColumn<String, String>> colums = new HashSet<HColumn<String, String>>();
+		for (Entry<String, String> pair : pairsOfNameValues.entrySet()) {
+			colums.add(HFactory.createStringColumn(pair.getKey(),
+					pair.getValue()));
+		}
+
+		Mutator<String> mutator = columnFamilyTemplates.get(
+				columnFamilyName).createMutator();
+		// String column_family_name = template.getColumnFamily();
+		for (String key : keys) {
+			for (HColumn<String, String> column : colums) {
+				mutator.addInsertion(key,
+						columnFamilyName, column);
+			}
+		}
+		System.out.println("ENTRA!");
+		mutator.execute();
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -227,6 +257,7 @@ public abstract class CassandraDAO {
 			ColumnFamilyResult<String, String> res = CassandraDAO.columnFamilyTemplates
 					.get(columnFamilyName).queryColumns(key);
 			String value = res.getString(name);
+			res = null;
 			return value;
 		} catch (HectorException e) {
 			e.printStackTrace();
@@ -242,8 +273,6 @@ public abstract class CassandraDAO {
 		try {
 			result = CassandraDAO.columnFamilyTemplates.get(columnFamilyName)
 					.queryColumns(key);
-			System.out.println("User: " + result.getString("name") + " "
-					+ result.getString("last"));
 
 		} catch (HectorException e) {
 			System.out.println("Not possible to read the column with key "
@@ -309,4 +338,5 @@ public abstract class CassandraDAO {
 		cassandraDAO.getAllCollumns("http://whatever", USER_CF);
 
 	}
+
 }
