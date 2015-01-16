@@ -158,6 +158,7 @@ public class CassandraInformationStore implements InformationStore {
 		dao.init();
 		dao.setAnnotatedContent(selector, annotatedContent);
 		dao=null;
+		
 
 	}
 

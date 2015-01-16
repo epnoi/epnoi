@@ -121,8 +121,9 @@ public class WikipediaPageWrapper implements Wrapper {
 				 * .isEmpty();
 				 */
 			}
-		}
 
+		}
+		selector = null;
 		return exists;
 	}
 
@@ -146,8 +147,6 @@ public class WikipediaPageWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
-		
-		
 		return informationStore.getAnnotatedContent(selector);
 	}
 

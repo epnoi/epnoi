@@ -228,7 +228,7 @@ public abstract class CassandraDAO {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	protected void updateColumns(Set<String> keys,
+	protected void updateColumns(String key,
 			Map<String, String> pairsOfNameValues, String columnFamilyName) {
 
 		Set<HColumn<String, String>> colums = new HashSet<HColumn<String, String>>();
@@ -237,17 +237,18 @@ public abstract class CassandraDAO {
 					pair.getValue()));
 		}
 
-		Mutator<String> mutator = columnFamilyTemplates.get(
-				columnFamilyName).createMutator();
+		Mutator<String> mutator = columnFamilyTemplates.get(columnFamilyName)
+				.createMutator();
 		// String column_family_name = template.getColumnFamily();
-		for (String key : keys) {
-			for (HColumn<String, String> column : colums) {
-				mutator.addInsertion(key,
-						columnFamilyName, column);
-			}
+
+		for (HColumn<String, String> column : colums) {
+			mutator.addInsertion(key, columnFamilyName, column);
 		}
-		System.out.println("ENTRA!");
+
+		colums.clear();
+		colums=null;
 		mutator.execute();
+		mutator =null;
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------

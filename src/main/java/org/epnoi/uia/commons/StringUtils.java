@@ -43,8 +43,7 @@ public class StringUtils {
 				endPosition++;
 			}
 
-			String detectedMatch = line.subSequence(initPosition, endPosition)
-					.toString();
+			String detectedMatch = line.substring(initPosition, endPosition);
 			//System.out.println("detected match! ---> " + detectedMatch);
 
 			matching = matching.replace(detectedMatch, "");

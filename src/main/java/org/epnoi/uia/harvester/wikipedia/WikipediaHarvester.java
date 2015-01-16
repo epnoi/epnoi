@@ -3,25 +3,21 @@ package org.epnoi.uia.harvester.wikipedia;
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
 import gate.util.InvalidOffsetException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.harvester.oaipmh.OAIPMHHarvester;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.Content;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.Section;
@@ -31,10 +27,10 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbac
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParser;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
 public class WikipediaHarvester {
+	// -Xmx1g
 	private static String wikipediaDumpPath = "/epnoi/epnoideployment/definitionalSentencesCreator/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
 
@@ -82,21 +78,40 @@ public class WikipediaHarvester {
 
 			WikiXMLParser wxsp = WikiXMLParserFactory
 					.getSAXParser(listOfFiles[i].getAbsolutePath());
-
+			WikipediaPageHandler wikipediaPageHandler = new WikipediaPageHandler();
 			try {
 
-				wxsp.setPageCallback(new WikipediaPageHandler());
+				wxsp.setPageCallback(wikipediaPageHandler);
 
 				wxsp.parse();
+
 			} catch (Exception e) {
 				e.printStackTrace();
+
+			} finally {
+				wikipediaPageHandler = null;
+
 			}
-			count=1;
-			for (WikipediaPage page : this.harvestedWikipediaPages) {
-				System.out.println(count+++"||> "+page.getURI());
-				//if(!core.getInformationHandler().contains(page.getURI(), RDFHelper.WIKIPEDIA_PAGE_CLASS))
-				_introduceWikipediaPage(page);
+			count = 1;
+
+			Iterator<WikipediaPage> harvestedWikipediaPagesIt = harvestedWikipediaPages
+					.iterator();
+			Context context = new Context();
+			while (harvestedWikipediaPagesIt.hasNext()) {
+				WikipediaPage wikipediaPage = harvestedWikipediaPagesIt.next();
+				System.out.println(count++ + "||> " + wikipediaPage.getURI());
+				_introduceWikipediaPage(wikipediaPage, context);
+				harvestedWikipediaPagesIt.remove();
+			
+			System.out.println(this.core.getInformationHandler().get(wikipediaPage.getURI()));
+				// if(count % 20==0){
+				/*
+				 * try { Thread.sleep(5000); } catch (InterruptedException e) {
+				 * // TODO Auto-generated catch block e.printStackTrace(); }
+				 */
+				// }
 			}
+
 		}
 
 		logger.info("Finishing the harvesting  ---------------------------------------------------------------------> ");
@@ -197,7 +212,6 @@ public class WikipediaHarvester {
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 			annotatedContent = termCandidatesFinder
 					.findTermCandidates(sectionContent);
-
 			context.getElements().put(annotatedContentURI, annotatedContent);
 		}
 
@@ -210,16 +224,19 @@ public class WikipediaHarvester {
 		return StringUtils.outerMatching(parsedText, templateRegExp, '[', ']');
 
 	}
-	
-	private void _introduceWikipediaPage(WikipediaPage page) {
-		Context context = new Context();
+
+	private void _introduceWikipediaPage(WikipediaPage page, Context context) {
+		context.clear();
 		_introduceAnnotatedContent(page, context);
 
 		String termDefinition = _createTermDefinition(page, context);
 
 		page.setTermDefinition(termDefinition);
-
-		core.getInformationHandler().put(page, context);
+		try {
+			core.getInformationHandler().put(page, context);
+		} catch (Exception e) {
+			System.out.println("This wikipedia page failed > " + page.getURI());
+		}
 		/*
 		 * System.out.println("The definition term of " +
 		 * wikipediaPage.getTerm() + " is " +
@@ -262,7 +279,7 @@ public class WikipediaHarvester {
 
 			WikipediaPage wikipediaPage = new WikipediaPage();
 			Context context = new Context();
-
+			
 			String cleanedPageTitle = page.getTitle().replaceAll("\\n", "")
 					.replaceAll("\\s+$", "");
 
@@ -281,17 +298,22 @@ public class WikipediaHarvester {
 				String sectionContent = "";
 
 				String parsedText;
+				String lineWithoutTemplates;
 				for (Content content : section.getContentList()) {
+
 					parsedText = content.getText();
+
 					if (!parsedText.equals(sectionName)) {
 
-						String lineWithoutTemplates = _cleanTemplates(parsedText);
+						lineWithoutTemplates = _cleanTemplates(parsedText);
 
 						lineWithoutTemplates = lineWithoutTemplates.replaceAll(
 								"\\s+", " ");
 
 						sectionContent = sectionContent + lineWithoutTemplates;
 					}
+
+					// sectionContent = sectionContent + parsedText;
 
 				}
 				wikipediaPage.addSectionContent(sectionName, sectionContent);
@@ -307,6 +329,5 @@ public class WikipediaHarvester {
 			harvestedWikipediaPages.add(wikipediaPage);
 		}
 
-	
 	}
 }

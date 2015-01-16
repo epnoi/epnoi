@@ -20,7 +20,7 @@ public class TermCandidatesFinder {
 
 	// ----------------------------------------------------------------------------------
 
-	public synchronized Document findTermCandidates(String content) {
+	public Document findTermCandidates(String content) {
 		Document doc = null;
 		try {
 			doc = Factory.newDocument(content);
@@ -44,7 +44,10 @@ public class TermCandidatesFinder {
 				doc = new DocumentImpl();
 			}
 			corpus.remove(0);
+			
+			
 		}
+		Factory.deleteResource(doc);
 		return doc;
 
 	}
@@ -91,6 +94,12 @@ public class TermCandidatesFinder {
 		System.out.println(documentAsString);
 		System.out.println("---");
 		Document document2 = null;
+		
+		Utils.featureMap(
+				gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+				documentAsString,
+				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
+				"text/xml");
 		try {
 			document2 = (Document) Factory
 					.createResource(

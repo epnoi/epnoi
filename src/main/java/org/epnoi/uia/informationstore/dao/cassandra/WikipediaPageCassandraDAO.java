@@ -1,7 +1,5 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import gate.Document;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,10 +13,7 @@ import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 
-import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -37,30 +32,33 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 	public void create(Resource resource, Context context) {
 		WikipediaPage wikipediaPage = (WikipediaPage) resource;
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
+		
 		super.createRow(wikipediaPage.getURI(),
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
+		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm());
+		/*
 		super.updateColumn(wikipediaPage.getURI(),
 				WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm(),
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+*/
 
 		String termDefinition = (wikipediaPage.getTermDefinition() == null) ? ""
 				: wikipediaPage.getTermDefinition();
 		// System.out.println("----------------------------->" +
 		// termDefinition);
+		
+		
+		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition);
+		/*
 		super.updateColumn(wikipediaPage.getURI(),
 				WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition,
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+			*/
 
-		/*
-		 * if (paper.getDescription() != null) {
-		 * 
-		 * super.updateColumn(paper.getURI(), PaperCassandraHelper.TITLE,
-		 * paper.getTitle(), PaperCassandraHelper.COLUMN_FAMILLY);
-		 * 
-		 * }
-		 */
-
+		
+/*REPLICADO
 		for (String section : wikipediaPage.getSections()) {
 
 			super.updateColumn(wikipediaPage.getURI(), section,
@@ -68,15 +66,15 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 					WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
 		}
+*/
+		
+	
 
-		Set<String> keys = new HashSet<String>();// KEYS OF THE ROWS
-		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
-
-		keys.add(wikipediaPage.getURI());
+		String sectionContent;
 
 		for (String section : wikipediaPage.getSections()) {
 
-			String sectionContent = wikipediaPage.getSectionsContent().get(
+			sectionContent = wikipediaPage.getSectionsContent().get(
 					section);
 			pairsOfNameValues.put("[" + section + "]" + sectionContent,
 					WikipediaPageCassandraHelper.SECTION_CONTENT);
@@ -87,6 +85,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 			 */
 		}
+		sectionContent=null;
 
 		for (Entry<String, Object> contextElement : context.getElements()
 				.entrySet()) {
@@ -102,8 +101,10 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 			 */
 		}
-		super.updateColumns(keys, pairsOfNameValues,
+		super.updateColumns(wikipediaPage.getURI(), pairsOfNameValues,
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		pairsOfNameValues.clear();
+		pairsOfNameValues=null;
 
 	}
 
