@@ -57,8 +57,7 @@ public class WikipediaPageWrapper implements Wrapper {
 		WikipediaPage cassandraWikipediaPage = (WikipediaPage) informationStore
 				.get(selector);
 
-		System.out
-				.println("joinPaper CASSANDRA----> " + cassandraWikipediaPage);
+		
 
 		return cassandraWikipediaPage;
 	}
@@ -96,7 +95,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	@Override
 	public boolean exists(String URI) {
 
-		System.out.println(" checking the existence > " + URI);
+		//System.out.println(" checking the existence > " + URI);
 
 		boolean exists;
 		InformationStore informationStore = this.core

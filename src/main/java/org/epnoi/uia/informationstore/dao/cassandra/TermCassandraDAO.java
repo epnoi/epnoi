@@ -240,4 +240,10 @@ public class TermCassandraDAO extends CassandraDAO {
 		System.out.println("-------> "
 				+ core.getInformationHandler().get("lauri"));
 	}
+
+	@Override
+	public boolean exists(Selector selector) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -76,7 +76,7 @@ public class CassandraInformationStore implements InformationStore {
 		CassandraDAO dao = this.daoFactory.build(selector);
 
 		Resource resource = dao.read(selector.getProperty(SelectorHelper.URI));
-		dao=null;
+		dao = null;
 		return resource;
 	}
 
@@ -87,7 +87,7 @@ public class CassandraInformationStore implements InformationStore {
 		CassandraDAO dao = this.daoFactory.build(selector);
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
-		dao=null;
+		dao = null;
 
 	}
 
@@ -104,7 +104,7 @@ public class CassandraInformationStore implements InformationStore {
 		CassandraDAO dao = this.daoFactory.build(resource);
 
 		dao.create(resource, context);
-		dao=null;
+		dao = null;
 
 	}
 
@@ -126,8 +126,8 @@ public class CassandraInformationStore implements InformationStore {
 	public Content<String> getContent(Selector selector) {
 		ContentCassandraDAO dao = new ContentCassandraDAO();
 		dao.init();
-		Content<String> content= dao.getAnnotatedContent(selector);
-		dao=null;
+		Content<String> content = dao.getAnnotatedContent(selector);
+		dao = null;
 		return content;
 	}
 
@@ -136,8 +136,8 @@ public class CassandraInformationStore implements InformationStore {
 	public Content<String> getAnnotatedContent(Selector selector) {
 		CassandraDAO dao = this.daoFactory.build(selector);
 		dao.init();
-		Content<String> content= dao.getAnnotatedContent(selector);
-		dao=null;
+		Content<String> content = dao.getAnnotatedContent(selector);
+		dao = null;
 		return content;
 	}
 
@@ -146,7 +146,7 @@ public class CassandraInformationStore implements InformationStore {
 	public void setContent(Selector selector, Content<String> content) {
 		CassandraDAO dao = this.daoFactory.build(selector);
 		dao.setContent(selector, content);
-		dao=null;
+		dao = null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -157,8 +157,7 @@ public class CassandraInformationStore implements InformationStore {
 		CassandraDAO dao = this.daoFactory.build(selector);
 		dao.init();
 		dao.setAnnotatedContent(selector, annotatedContent);
-		dao=null;
-		
+		dao = null;
 
 	}
 
@@ -166,9 +165,10 @@ public class CassandraInformationStore implements InformationStore {
 
 	@Override
 	public boolean exists(Selector selector) {
-		System.out.println("llama a exists > " + selector);
-		return this.queryResolver.exists(selector);
-		
+		CassandraDAO dao = this.daoFactory.build(selector);
+		dao.init();
+		return dao.exists(selector);
+
 	}
 
 	// ------------------------------------------------------------------------

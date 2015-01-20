@@ -47,7 +47,9 @@ public class TermCandidatesFinder {
 			
 			
 		}
-		Factory.deleteResource(doc);
+		//System.out.println("doc before delete-----> "+doc.toXml());
+		//Factory.deleteResource(doc);
+		//System.out.println("doc after delete-----> "+doc.toXml());
 		return doc;
 
 	}

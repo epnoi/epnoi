@@ -317,6 +317,7 @@ public abstract class CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> iterator = new ColumnSliceIterator<String, String, String>(
 				query, null, "\uFFFF", false);
+		
 		return iterator;
 
 	}
@@ -339,5 +340,9 @@ public abstract class CassandraDAO {
 		cassandraDAO.getAllCollumns("http://whatever", USER_CF);
 
 	}
+
+	public abstract boolean exists(Selector selector); 
+		
+	
 
 }

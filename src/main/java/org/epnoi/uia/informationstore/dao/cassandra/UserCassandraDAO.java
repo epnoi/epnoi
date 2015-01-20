@@ -234,6 +234,12 @@ public class UserCassandraDAO extends CassandraDAO {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public boolean exists(Selector selector) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 		
 		
 

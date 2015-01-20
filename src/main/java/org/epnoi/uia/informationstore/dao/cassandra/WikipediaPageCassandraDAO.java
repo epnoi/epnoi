@@ -3,17 +3,16 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -31,51 +30,50 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
+
 		WikipediaPage wikipediaPage = (WikipediaPage) resource;
+
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
-		
+
 		super.createRow(wikipediaPage.getURI(),
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
-		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm());
+		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM,
+				wikipediaPage.getTerm());
 		/*
-		super.updateColumn(wikipediaPage.getURI(),
-				WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm(),
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-*/
+		 * super.updateColumn(wikipediaPage.getURI(),
+		 * WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm(),
+		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		 */
 
 		String termDefinition = (wikipediaPage.getTermDefinition() == null) ? ""
 				: wikipediaPage.getTermDefinition();
 		// System.out.println("----------------------------->" +
 		// termDefinition);
-		
-		
-		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition);
+
+		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM_DEFINITION,
+				termDefinition);
 		/*
-		super.updateColumn(wikipediaPage.getURI(),
-				WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition,
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-			*/
+		 * super.updateColumn(wikipediaPage.getURI(),
+		 * WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition,
+		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		 */
 
-		
-/*REPLICADO
-		for (String section : wikipediaPage.getSections()) {
-
-			super.updateColumn(wikipediaPage.getURI(), section,
-					WikipediaPageCassandraHelper.SECTION,
-					WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-
-		}
-*/
-		
-	
+		/*
+		 * REPLICADO for (String section : wikipediaPage.getSections()) {
+		 * 
+		 * super.updateColumn(wikipediaPage.getURI(), section,
+		 * WikipediaPageCassandraHelper.SECTION,
+		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		 * 
+		 * }
+		 */
 
 		String sectionContent;
 
 		for (String section : wikipediaPage.getSections()) {
 
-			sectionContent = wikipediaPage.getSectionsContent().get(
-					section);
+			sectionContent = wikipediaPage.getSectionsContent().get(section);
 			pairsOfNameValues.put("[" + section + "]" + sectionContent,
 					WikipediaPageCassandraHelper.SECTION_CONTENT);
 
@@ -85,13 +83,15 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 			 */
 		}
-		sectionContent=null;
+		sectionContent = null;
 
 		for (Entry<String, Object> contextElement : context.getElements()
 				.entrySet()) {
-
-			pairsOfNameValues.put(contextElement.getKey(),
-					 contextElement.getValue().toString());
+			String annotatedContent = (contextElement.getValue() == null) ? ""
+					: "[" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE
+							+ "]" + contextElement.getValue();
+			// System.out.println("------- > "+annotatedContent);
+			pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
 
 			/*
 			 * super.updateColumn(wikipediaPage.getURI(),
@@ -101,10 +101,11 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 			 */
 		}
+
 		super.updateColumns(wikipediaPage.getURI(), pairsOfNameValues,
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 		pairsOfNameValues.clear();
-		pairsOfNameValues=null;
+		pairsOfNameValues = null;
 
 	}
 
@@ -128,6 +129,11 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			paper.setURI(URI);
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
+
+				/*
+				 * System.out.println("(" + column.getName() + "|" +
+				 * column.getValue() + ")");
+				 */
 				if (WikipediaPageCassandraHelper.TERM.equals(column.getName())) {
 					paper.setTerm(column.getValue());
 
@@ -142,7 +148,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 						.equals(column.getValue())) {
 
 					String columnName = column.getName();
-
+					// System.out.println("column name > " + columnName);
 					Matcher matcher = pattern.matcher(column.getName());
 
 					if (matcher.find()) {
@@ -153,6 +159,8 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 						String content = columnName.subSequence(matcher.end(),
 								columnName.length()).toString();
 
+						// System.out.println("(" +section + ")= " + content);
+						paper.getSections().add(section);
 						paper.getSectionsContent().put(section, content);
 					}
 
@@ -178,12 +186,16 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-		System.out.println("annotatedContent > " + selector);
+		// System.out.println("annotatedContent > " + selector);
 		String annotatedContent = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-		// System.out.println("annotatedContent > "+annotatedContent);
+
+		if (annotatedContent == null) {// http://en.wikipedia.org/wiki/Glossary_of_American_football
+										// bug
+			return null;
+		}
 		Matcher matcher = pattern.matcher(annotatedContent);
 
 		if (matcher.find()) {
@@ -213,7 +225,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
 
-		System.out.println("selector> " + selector);
+		// System.out.println("selector> " + selector);
 
 		super.updateColumn(
 				selector.getProperty(SelectorHelper.URI),
@@ -258,5 +270,32 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 		System.out.println(" >> "
 				+ wikipediaPageCassandraDAO.read("http://externalresourceuri"));
 
+		WikipediaPage page = (WikipediaPage) wikipediaPageCassandraDAO
+				.read("http://en.wikipedia.org/wiki/Glossary_of_American_football");
+
+		System.out.println("page> " + page);
+
+		for (String content : page.getSections()) {
+			System.out
+					.println("-----------------------------------------------------------------");
+			System.out.println("---> " + content);
+			System.out
+					.println("---> " + page.getSectionsContent().get(content));
+		}
+
+	}
+
+	// --------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(Selector selector) {
+		String annotationURI = selector.getProperty(SelectorHelper.URI)
+				+ "/first/" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
+		
+		String annotatedContent = super.readColumn(
+				selector.getProperty(SelectorHelper.URI), annotationURI,
+				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+
+		return (annotatedContent != null && annotatedContent.length() > 5);
 	}
 }

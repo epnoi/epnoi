@@ -61,7 +61,10 @@ public class CassandraQueryResolver extends CassandraDAO {
 		String URI = selector.getProperty(SelectorHelper.URI);
 
 		String resourceType = selector.getProperty(SelectorHelper.TYPE);
-		return super.getAllCollumns(URI, resourceType)!=null;
+		
+		System.out.println(" |------> "+super.getAllCollumns(URI, resourceType).hasNext());
+		
+		return super.getAllCollumns(URI, resourceType).hasNext();
 
 		
 
