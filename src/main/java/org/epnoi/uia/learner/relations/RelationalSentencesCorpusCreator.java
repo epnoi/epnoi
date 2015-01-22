@@ -3,14 +3,20 @@ package org.epnoi.uia.learner.relations;
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
+import gate.DocumentContent;
+import gate.Factory;
 import gate.util.InvalidOffsetException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.core.Core;
@@ -21,6 +27,8 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {
@@ -29,6 +37,7 @@ public class RelationalSentencesCorpusCreator {
 	private Core core;
 
 	private RelationalSentencesCorpus corpus;
+	private CuratedRelationsTable curatedRelationsTable;
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -37,6 +46,14 @@ public class RelationalSentencesCorpusCreator {
 			throws EpnoiInitializationException {
 		this.core = core;
 		this.corpus = new RelationalSentencesCorpus();
+
+		WordNetParameters wordNetParameters = (WordNetParameters) parameters
+				.getParameterValue(RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
+
+		CuratedRelationsTableCreator curatedRelationsTableCreator = new CuratedRelationsTableCreator();
+		curatedRelationsTableCreator.init(wordNetParameters);
+		this.curatedRelationsTable = curatedRelationsTableCreator.build();
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -66,29 +83,18 @@ public class RelationalSentencesCorpusCreator {
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 		int nullCounts = 1;
 		int count = 1;
-		
-		for (String uri : getWikipediaArticles()) {
-		if(!this.core.getInformationHandler().contains(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS)){
-			System.out.println("Este medio esta medio no esta "+uri);
-		}		
-		
-		
-		}
-		System.exit(0);
-		/*
+
 		for (String uri : getWikipediaArticles()) {
 
-			
-			
 			System.out.println(count++ + " Retrieving " + uri);
-			System.out.println(this.core.getInformationHandler().contains(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS));
+
 			WikipediaPage wikipediaPage = (WikipediaPage) this.core
 					.getInformationHandler().get(uri,
 							RDFHelper.WIKIPEDIA_PAGE_CLASS);
-			System.out.println(">" + wikipediaPage);
+			// System.out.println(">" + wikipediaPage);
 
 			selector.setProperty(SelectorHelper.URI, uri);
-			System.out.println("sections> " + wikipediaPage.getSections());
+			// System.out.println("sections> " + wikipediaPage.getSections());
 			for (String section : wikipediaPage.getSections()) {
 				selector.setProperty(
 						SelectorHelper.ANNOTATED_CONTENT_URI,
@@ -96,18 +102,21 @@ public class RelationalSentencesCorpusCreator {
 								uri,
 								section,
 								AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
-				System.out.println("selector >" + selector);
+				// System.out.println("selector >" + selector);
 				Content<String> annotatedContent = this.core
 						.getInformationHandler().getAnnotatedContent(selector);
 
 				if (annotatedContent != null) {
-					System.out.println("NOT NULL The section " + section
-							+ " of " + uri + " was not null");
-					
-					  Document annotatedContentDocument = GateUtils
-					  .deserializeGATEDocument(annotatedContent .getContent());
-					  _processDocument(annotatedContentDocument);
-					 
+					/*
+					 * System.out.println("NOT NULL The section " + section +
+					 * " of " + uri + " was not null");
+					 */
+					Document annotatedContentDocument = GateUtils
+							.deserializeGATEDocument(annotatedContent
+									.getContent());
+					_searchDocument(annotatedContentDocument);
+					Factory.deleteResource(annotatedContentDocument);
+
 				} else {
 					System.out.println("The section " + section + " of " + uri
 							+ " was null");
@@ -118,41 +127,136 @@ public class RelationalSentencesCorpusCreator {
 		}
 
 		System.out.println("The number of nulls is " + nullCounts);
-*/
+
 	}
 
 	// ----------------------------------------------------------------------
 
-	public void _processDocument(Document document) {
+	public void _searchDocument(Document document) {
 
 		AnnotationSet sentenceAnnotations = document.getAnnotations().get(
 				"Sentence");
-
+		DocumentContent sentenceContent = null;
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
-			String sentenceContent = "";
+
 			try {
-				sentenceContent = document
-						.getContent()
-						.getContent(
-								sentenceAnnotation.getStartNode().getOffset(),
-								sentenceAnnotation.getEndNode().getOffset())
-						.toString();
+				Long startOffset = sentenceAnnotation.getStartNode()
+						.getOffset();
+				Long endOffset = sentenceAnnotation.getEndNode().getOffset();
+				/*
+				 * System.out.println("SENtenCE startOffset >" + startOffset +
+				 * "| endOffset " + endOffset + ")");
+				 */
+				sentenceContent = document.getContent().getContent(startOffset,
+						endOffset);
+				AnnotationSet sentencesAnnotations = document.getAnnotations();
+				_testSentence(startOffset, sentenceContent,
+						sentencesAnnotations.getContained(startOffset,
+								endOffset));
 			} catch (InvalidOffsetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// System.out.println("Sentence content:> " + sentenceContent);
+			System.out.println("Sentence content:> "
+					+ sentenceContent.toString());
 		}
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
+	private void _testSentence(Long sentenceStartOffset,
+			DocumentContent sentenceContent,
+			AnnotationSet sentenceAnnotationsSet) {
+		Set<String> sentenceTerms = new java.util.HashSet<String>();
+		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<>();
+
+		for (Annotation termAnnotation : sentenceAnnotationsSet
+				.get(NLPAnnotationsHelper.TERM_CANDIDATE)) {
+			Long startOffset = termAnnotation.getStartNode().getOffset()
+					- sentenceStartOffset;
+			Long endOffset = termAnnotation.getEndNode().getOffset()
+					- sentenceStartOffset;
+
+			/*
+			 * System.out.println("startOffset >" + startOffset + "| endOffset "
+			 * + endOffset + ")");
+			 */
+			try {
+				String term = sentenceContent.getContent(
+						startOffset, endOffset).toString();
+				
+
+				String stemmedTerm = this.curatedRelationsTable
+						.stemTerm(term);
+
+				if (stemmedTerm == null) {
+					// System.out.println("--------------------Z EL QUE DA NULL ERA > "+termCandiateContet);
+				} else {
+					termsAnnotationsTable.put(stemmedTerm,
+							termAnnotation);
+					sentenceTerms.add(stemmedTerm);
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		for (String term : sentenceTerms) {
+			Set<String> termHypernyms = this.curatedRelationsTable
+					.getHypernyms(term);
+			termHypernyms.retainAll(sentenceTerms);
+			if (termHypernyms.size() > 0) {
+				/*
+				 * System.out .println(termCandidate +
+				 * "==============================================================================>>> "
+				 * + termCandidateHypernyms);
+				 */
+				Annotation sourceTermAnnotation = termsAnnotationsTable
+						.get(term);
+
+				// Note that the offset is relative to the beginning of the
+				// sentence
+				OffsetRangeSelector source = new OffsetRangeSelector(
+						sourceTermAnnotation.getStartNode().getOffset()
+								- sentenceStartOffset, sourceTermAnnotation
+								.getEndNode().getOffset() - sentenceStartOffset);
+				for (String destinationTerm : termHypernyms) {
+
+					Annotation destinationTermAnnotation = termsAnnotationsTable
+							.get(destinationTerm);
+
+					// Note that the offset is relative to the beginning of the
+					// sentence
+					OffsetRangeSelector target = new OffsetRangeSelector(
+							destinationTermAnnotation.getStartNode()
+									.getOffset() - sentenceStartOffset,
+							destinationTermAnnotation.getEndNode().getOffset()
+									- sentenceStartOffset);
+
+					RelationalSentence relationalSentence = new RelationalSentence(
+							source, target, sentenceContent.toString(),
+							RelationalSentenceHelper.HYPERNYM);
+
+					corpus.getSentences().put(relationalSentence.getSentence(),
+							relationalSentence);
+				}
+
+			}
+		}
+
+		// System.out.println("The set was " + termCandidates);
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
+
 	public List<String> getWikipediaArticles() {
 		logger.info("Retrieving the URIs of the Wikipedia articles ");
-
+		List<String> wikipediaArticlesURI = new ArrayList<>();
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
@@ -168,10 +272,20 @@ public class RelationalSentencesCorpusCreator {
 
 		List<String> queryResults = informationStore.query(queryExpression);
 
+		for (String uri : queryResults) {
+			if (this.core.getInformationHandler().contains(uri,
+					RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+				wikipediaArticlesURI.add(uri);
+			}
+
+		}
+
 		logger.info("The number of retrived Wikipeda articles are "
 				+ queryResults.size());
-		return queryResults;
+		return wikipediaArticlesURI;
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
 
 	private String _extractURI(String URI, String section, String annotationType) {
 
@@ -191,6 +305,16 @@ public class RelationalSentencesCorpusCreator {
 		Core core = CoreUtility.getUIACore();
 
 		RelationSentencesCorpusCreationParameters parameters = new RelationSentencesCorpusCreationParameters();
+
+		WordNetParameters wordnetParameters = new WordNetParameters();
+		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
+		wordnetParameters.setParameter(WordNetParameters.DICTIONARY_LOCATION,
+				filepath);
+
+		parameters.setParameter(
+				RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
+				wordnetParameters);
+
 		try {
 			relationSentencesCorpusCreator.init(core, parameters);
 		} catch (EpnoiInitializationException e) {

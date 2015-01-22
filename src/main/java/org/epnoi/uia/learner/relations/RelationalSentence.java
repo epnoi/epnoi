@@ -1,47 +1,61 @@
 package org.epnoi.uia.learner.relations;
 
-import gate.Document;
+import org.epnoi.model.OffsetRangeSelector;
 
 public class RelationalSentence {
-	
-	String source;
-	String target;
+	OffsetRangeSelector source;
+	OffsetRangeSelector target;
 	String sentence;
-	Document annotatedSentence;
 	String type;
 
-	// ---------------------------------------------------------------------------------------------------------------------
+	public RelationalSentence(OffsetRangeSelector source,
+			OffsetRangeSelector target, String sentence, String type) {
+		super();
+		this.source = source;
+		this.target = target;
+		this.sentence = sentence;
+		this.type = type;
+	}
+	
 
-	public String getSource() {
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	public OffsetRangeSelector getSource() {
 		return source;
 	}
 
-	public void setSource(String source) {
+
+	public void setSource(OffsetRangeSelector source) {
 		this.source = source;
 	}
 
-	public String getTarget() {
+
+	public OffsetRangeSelector getTarget() {
 		return target;
 	}
 
-	public void setTarget(String target) {
+
+	public void setTarget(OffsetRangeSelector target) {
 		this.target = target;
 	}
+
 
 	public String getSentence() {
 		return sentence;
 	}
 
+
 	public void setSentence(String sentence) {
 		this.sentence = sentence;
 	}
 
-	public Document getAnnotatedSentence() {
-		return annotatedSentence;
-	}
-
-	public void setAnnotatedSentence(Document annotatedSentence) {
-		this.annotatedSentence = annotatedSentence;
-	}
+	// ---------------------------------------------------------------------------------------------------------------------
 
 }

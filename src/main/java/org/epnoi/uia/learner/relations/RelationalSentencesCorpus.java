@@ -4,20 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RelationalSentencesCorpus {
-	private Map<String, Object> sentences = new HashMap<String, Object>();
+	
+	private Map<String, RelationalSentence> sentences = new HashMap<String, RelationalSentence>();
 
 	// --------------------------------------------------------------------------------------------
 
-	public Map<String, Object> getSentences() {
+	public Map<String, RelationalSentence> getSentences() {
 		return sentences;
 	}
 
 	// --------------------------------------------------------------------------------------------
 
-	public void setSentences(Map<String, Object> sentences) {
+	public void setSentences(Map<String, RelationalSentence> sentences) {
 		this.sentences = sentences;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	@Override
@@ -26,7 +27,5 @@ public class RelationalSentencesCorpus {
 	}
 
 	// --------------------------------------------------------------------------------------------
-	
-	
-	
+
 }

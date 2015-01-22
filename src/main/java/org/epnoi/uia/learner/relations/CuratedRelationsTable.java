@@ -1,12 +1,11 @@
 package org.epnoi.uia.learner.relations;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.epnoi.uia.learner.nlp.wordnet.WordNetHandler;
-
-import edu.mit.jwi.morph.WordnetStemmer;
 
 public class CuratedRelationsTable {
 	private Map<String, Set<String>> hypernyms;
@@ -24,9 +23,9 @@ public class CuratedRelationsTable {
 	public void addHypernym(String word, Set<String> wordHypernyms) {
 
 		if (wordHypernyms.size() > 0) {
-			
-				this.hypernyms.put(word, wordHypernyms);
-			
+
+			this.hypernyms.put(word, wordHypernyms);
+
 		}
 	}
 
@@ -39,6 +38,21 @@ public class CuratedRelationsTable {
 		return (sourceHypernyms != null && sourceHypernyms
 				.contains(stemmedTarget));
 
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	public Set<String> getHypernyms(String source) {
+		Set<String> sourceHypernyms = this.hypernyms.get(source);
+		return ((sourceHypernyms == null) ? new HashSet<String>()
+				: (HashSet<String>) ((HashSet<String>) sourceHypernyms).clone());
+	}
+	
+	// -----------------------------------------------------------------------------------------------
+
+	public String stemTerm(String term) {
+		System.out.println("TERM TO STEMM> "+term);
+		return (this.wordNetHandler.stemNoun(term));
 	}
 
 	// -----------------------------------------------------------------------------------------------
