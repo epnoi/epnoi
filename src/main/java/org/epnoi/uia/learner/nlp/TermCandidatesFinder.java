@@ -7,6 +7,7 @@ import gate.Corpus;
 import gate.Document;
 import gate.Factory;
 import gate.Utils;
+import gate.corpora.DocumentImpl;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
@@ -17,8 +18,8 @@ public class TermCandidatesFinder {
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
 
-	//----------------------------------------------------------------------------------	
-	
+	// ----------------------------------------------------------------------------------
+
 	public Document findTermCandidates(String content) {
 		Document doc = null;
 		try {
@@ -38,15 +39,23 @@ public class TermCandidatesFinder {
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println("---------------> " + content);
+				System.out.println("---------------> " + doc.toString());
+				doc = new DocumentImpl();
 			}
 			corpus.remove(0);
+			
+			
 		}
+		//System.out.println("doc before delete-----> "+doc.toXml());
+		//Factory.deleteResource(doc);
+		//System.out.println("doc after delete-----> "+doc.toXml());
 		return doc;
 
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	public void init() {
 		ControllerCreator controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
@@ -70,8 +79,8 @@ public class TermCandidatesFinder {
 		 */
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	public static void main(String[] args) {
 
 		System.out
@@ -87,6 +96,12 @@ public class TermCandidatesFinder {
 		System.out.println(documentAsString);
 		System.out.println("---");
 		Document document2 = null;
+		
+		Utils.featureMap(
+				gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+				documentAsString,
+				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
+				"text/xml");
 		try {
 			document2 = (Document) Factory
 					.createResource(
@@ -106,8 +121,8 @@ public class TermCandidatesFinder {
 				.println("TermCandidatesFinder test is over!================================================================");
 	}
 
-	//----------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------
+
 	private static void showTerms(Document document) {
 		for (Annotation annotation : document.getAnnotations().get(
 				"TermCandidate")) {

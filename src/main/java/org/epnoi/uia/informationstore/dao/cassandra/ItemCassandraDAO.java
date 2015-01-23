@@ -117,5 +117,11 @@ public class ItemCassandraDAO extends CassandraDAO {
 		
 	}
 
+	@Override
+	public boolean exists(Selector selector) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }

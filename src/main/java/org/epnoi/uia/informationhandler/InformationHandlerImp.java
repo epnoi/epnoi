@@ -49,6 +49,8 @@ public class InformationHandlerImp implements InformationHandler {
 	public void put(Resource resource, Context context) {
 		Wrapper wrapper = this.wrapperFactory.build(resource);
 		wrapper.put(resource, context);
+		resource=null;
+		context.clear();
 
 	}
 
@@ -143,6 +145,7 @@ public class InformationHandlerImp implements InformationHandler {
 	public Content<String> getAnnotatedContent(Selector selector) {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
+		
 		Content<String> content = wrapper.getAnnotatedContent(selector);
 		return content;
 	}

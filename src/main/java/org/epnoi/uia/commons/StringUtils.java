@@ -8,14 +8,22 @@ public class StringUtils {
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
 	public static String clean(String line, String regexp, String replacement) {
-
+		System.out.println();
+		System.out.println();
+		
 		Pattern pattern = Pattern.compile(regexp);
 		Matcher matcher = pattern.matcher(line);
 
 		while (matcher.find()) {
-		//	System.out.println("------> " + matcher.group());
+			// System.out.println("------> " + matcher.group());
 			line = line.replace(matcher.group(), replacement);
 		}
+
+		System.out.println("cleanedline > " + line);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
 		return line;
 	}
 
@@ -23,13 +31,15 @@ public class StringUtils {
 
 	public static String outerMatching(String line, String openingExp,
 			char openingSymbol, char closingSymbol) {
+	//	System.out		.println("-------------------------------------------------------");
+//System.out.println("line > " + line);
 		String matching = line;
 
 		Pattern pattern = Pattern.compile(openingExp);
 		Matcher matcher = pattern.matcher(line);
 
 		while (matcher.find()) {
-			//System.out.println("------> " + matcher.group());
+			// System.out.println("------> " + matcher.group());
 			int initPosition = matcher.start();
 			int endPosition = matcher.end() + 1;
 			int numberOfStillUnclosedOpeningSymbols = 1;
@@ -43,21 +53,17 @@ public class StringUtils {
 				endPosition++;
 			}
 
-			String detectedMatch = line.subSequence(initPosition, endPosition)
-					.toString();
-			//System.out.println("detected match! ---> " + detectedMatch);
+			String detectedMatch = line.substring(initPosition, endPosition);
+			// System.out.println("detected match! ---> " + detectedMatch);
 
 			matching = matching.replace(detectedMatch, "");
 
 		}
-
+		
+//System.out.println("cleaned line > " + matching);
 		return matching;
 	}
 
-	
-	
-	
-	
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -75,7 +81,7 @@ public class StringUtils {
 		 * System.out.println("The result line without templates is " +
 		 * lineWithoutTemplate);
 		 */
-		String line2 = "TEMPLATE[Infobox_Disease, Name = Autism, Image = [Autism-stacking-cans 2nd edit.jpg], Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = [3202], eMedicine_mult = (TEMPLATE), MeshID = D001321] Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. ";
+		String line2 = "whateverTEMPLATE[Infobox_Disease, Name = Autism, Image = [Autism-stacking-cans 2nd edit.jpg], Caption = Repetitively stacking or lining up objects may indicate autism.<ref name=Johnson/>, DiseasesDB = 1142, ICD10 = (TEMPLATE), ICD9 = (TEMPLATE), ICDO =, OMIM = 209850, MedlinePlus = 001526, eMedicineSubj = med, eMedicineTopic = [3202], eMedicine_mult = (TEMPLATE), MeshID = D001321]Autism is a brain development (whatever I don't care) disorder that impairs social interaction and communication, TEMPLATE[Ioprwprowk] and causes restricted and repetitive behavior, all starting before a child is three years old. ";
 		String regexp = "TEMPLATE\\[";
 		String lineWithoutTemplates = StringUtils.outerMatching(line2, regexp,
 				'[', ']');

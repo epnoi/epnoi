@@ -21,6 +21,7 @@ public class RDFHelper {
 	public static final String RESEARCH_OBJECT_CLASS = "http://www.epnoi.org/ontology#ResearchObject";
 	public static final String WIKIPEDIA_PAGE_CLASS = "http://www.epnoi.org/ontology#WikipediaPage";
 	public static final String TERM_CLASS = "http://www.epnoi.org/ontology#Term";
+	public static final String RELATIONAL_SENTECES_CORPUS_CLASS = "http://www.epnoi.org/ontology#RelationalSentencesCorpus";
 	
 	
 }
