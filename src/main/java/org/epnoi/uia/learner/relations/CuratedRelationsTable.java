@@ -51,7 +51,7 @@ public class CuratedRelationsTable {
 	// -----------------------------------------------------------------------------------------------
 
 	public String stemTerm(String term) {
-		System.out.println("TERM TO STEMM> "+term);
+		//System.out.println("TERM TO STEMM> "+term);
 		return (this.wordNetHandler.stemNoun(term));
 	}
 

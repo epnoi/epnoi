@@ -13,6 +13,7 @@ import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
+import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
@@ -49,6 +50,10 @@ public class CassandraDAOFactory {
 			TermCassandraDAO termDAO = new TermCassandraDAO();
 			termDAO.init();
 			return termDAO;
+		}else if (resource instanceof RelationalSentencesCorpus) {
+			RelationalSentencesCorpusCassandraDAO relationalSentenceDAO = new RelationalSentencesCorpusCassandraDAO();
+			relationalSentenceDAO.init();
+			return relationalSentenceDAO;
 		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
@@ -91,6 +96,10 @@ public class CassandraDAOFactory {
 			termDAO.init();
 			return termDAO;
 
+		}else if (typeSelector.equals(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS)) {
+			RelationalSentencesCorpusCassandraDAO relationalSentenceDAO = new RelationalSentencesCorpusCassandraDAO();
+			relationalSentenceDAO.init();
+			return relationalSentenceDAO;
 		}
 
 		else {

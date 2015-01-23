@@ -15,6 +15,7 @@ import org.epnoi.uia.informationstore.dao.cassandra.ContentCassandraDAO;
 import org.epnoi.uia.informationstore.dao.cassandra.FeedCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.ItemCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraHelper;
+import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -37,6 +38,8 @@ public class CassandraInformationStore implements InformationStore {
 				ItemCassandraHelper.COLUMN_FAMILLY);
 		typesTable.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
 				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		typesTable.put(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS,
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// ---------------------------------------------------------------------

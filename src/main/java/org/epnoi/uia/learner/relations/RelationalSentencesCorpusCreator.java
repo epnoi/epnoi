@@ -145,12 +145,13 @@ public class RelationalSentencesCorpusCreator {
 				Long startOffset = sentenceAnnotation.getStartNode()
 						.getOffset();
 				Long endOffset = sentenceAnnotation.getEndNode().getOffset();
-				/*
-				 * System.out.println("SENtenCE startOffset >" + startOffset +
-				 * "| endOffset " + endOffset + ")");
-				 */
+
+				System.out.println("SENtenCE startOffset >" + startOffset
+						+ "| endOffset " + endOffset + ")");
+
 				sentenceContent = document.getContent().getContent(startOffset,
 						endOffset);
+			System.out.println("_____> length >> "+sentenceContent.size());
 				AnnotationSet sentencesAnnotations = document.getAnnotations();
 				_testSentence(startOffset, sentenceContent,
 						sentencesAnnotations.getContained(startOffset,
@@ -159,8 +160,10 @@ public class RelationalSentencesCorpusCreator {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Sentence content:> "
-					+ sentenceContent.toString());
+			/*
+			 * System.out.println("Sentence content:> " +
+			 * sentenceContent.toString());
+			 */
 		}
 
 	}
@@ -185,18 +188,16 @@ public class RelationalSentencesCorpusCreator {
 			 * + endOffset + ")");
 			 */
 			try {
-				String term = sentenceContent.getContent(
-						startOffset, endOffset).toString();
+				String term = sentenceContent
+						.getContent(startOffset, endOffset).toString();
 				
 
-				String stemmedTerm = this.curatedRelationsTable
-						.stemTerm(term);
+				String stemmedTerm = this.curatedRelationsTable.stemTerm(term);
 
 				if (stemmedTerm == null) {
 					// System.out.println("--------------------Z EL QUE DA NULL ERA > "+termCandiateContet);
 				} else {
-					termsAnnotationsTable.put(stemmedTerm,
-							termAnnotation);
+					termsAnnotationsTable.put(stemmedTerm, termAnnotation);
 					sentenceTerms.add(stemmedTerm);
 				}
 
@@ -225,6 +226,8 @@ public class RelationalSentencesCorpusCreator {
 						sourceTermAnnotation.getStartNode().getOffset()
 								- sentenceStartOffset, sourceTermAnnotation
 								.getEndNode().getOffset() - sentenceStartOffset);
+				
+				
 				for (String destinationTerm : termHypernyms) {
 
 					Annotation destinationTermAnnotation = termsAnnotationsTable
@@ -239,11 +242,9 @@ public class RelationalSentencesCorpusCreator {
 									- sentenceStartOffset);
 
 					RelationalSentence relationalSentence = new RelationalSentence(
-							source, target, sentenceContent.toString(),
-							RelationalSentenceHelper.HYPERNYM);
+							source, target, sentenceContent.toString());
 
-					corpus.getSentences().put(relationalSentence.getSentence(),
-							relationalSentence);
+					corpus.getSentences().add(relationalSentence);
 				}
 
 			}
@@ -323,10 +324,10 @@ public class RelationalSentencesCorpusCreator {
 			System.exit(-1);
 		}
 
-		RelationalSentencesCorpus corpus = relationSentencesCorpusCreator
+		RelationalSentencesCorpus relationalSentencesCorpus = relationSentencesCorpusCreator
 				.createCorpus();
 
-		System.out.println("The result is " + corpus);
+		System.out.println("The result is " + relationalSentencesCorpus);
 
 		System.out.println("Stopping the Relation Sentences Corpus Creator");
 	}

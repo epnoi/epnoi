@@ -22,6 +22,7 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
+import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;
@@ -59,6 +60,11 @@ public class WrapperFactory {
 		
 		this.wrappersByClass.put(Term.class.getName(),
 				new TermWrapper(this.core));
+		
+		
+		this.wrappersByClass.put(RelationalSentencesCorpus.class.getName(),
+				new RelationalSentencesCorpusWrapper(this.core));
+
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -90,6 +96,9 @@ public class WrapperFactory {
 		
 		this.wrappersByType.put(RDFHelper.TERM_CLASS,
 				new TermWrapper(this.core));
+		
+		this.wrappersByType.put(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS,
+				new RelationalSentencesCorpusWrapper(this.core));
 
 	}
 
