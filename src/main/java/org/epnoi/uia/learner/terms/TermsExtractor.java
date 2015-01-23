@@ -104,19 +104,19 @@ public class TermsExtractor {
 					.println("Indexing the domain:> "
 							+ domain
 							+ " ----------------------------------------------------------------");
-			this.indexDomainResoures(domain);
+			this._indexDomainResoures(domain);
 		}
 
 	}
 
 	// -----------------------------------------------------------------------------------
 
-	private void indexDomainResoures(String domain) {
+	private void _indexDomainResoures(String domain) {
 		List<String> resourcesURIs = this.resourcePerConsideredDomain
 				.get(domain);
 		for (String resourceURI : resourcesURIs) {
 			System.out.println("Indexing the element " + resourceURI);
-			indexResource(domain, resourceURI);
+			_indexResource(domain, resourceURI);
 		}
 		long total = 0;
 		for (AnnotatedWord<ResourceMetadata> resource : this.resourcesIndex
@@ -130,7 +130,7 @@ public class TermsExtractor {
 
 	// -----------------------------------------------------------------------------------
 
-	private void indexResource(String domain, String URI) {
+	private void _indexResource(String domain, String URI) {
 		Document annotatedDocument = retrieveAnnotatedDocument(URI);
 		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 				annotatedDocument);

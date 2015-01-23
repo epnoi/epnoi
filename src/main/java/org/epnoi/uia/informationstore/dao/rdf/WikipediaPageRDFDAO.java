@@ -36,7 +36,7 @@ public class WikipediaPageRDFDAO extends RDFDAO {
 				.replace("{URI}", paperURI)
 				.replace("{WIKIPEDIA_PAGE_CLASS}",
 						RDFHelper.WIKIPEDIA_PAGE_CLASS);
-		System.out.println("----> " + queryExpression);
+		//System.out.println("----> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, graph);
 		vur.exec();

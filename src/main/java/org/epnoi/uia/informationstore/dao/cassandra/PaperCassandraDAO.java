@@ -139,6 +139,12 @@ public class PaperCassandraDAO extends CassandraDAO {
 				"The setAnnotatedContent method of the PaperCassandraDAO should not be invoked"));
 	}
 
+	@Override
+	public boolean exists(Selector selector) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	// --------------------------------------------------------------------------------
 
 }

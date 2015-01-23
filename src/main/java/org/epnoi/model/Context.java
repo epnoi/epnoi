@@ -55,4 +55,10 @@ public class Context {
 				+ "]";
 	}
 
+	public void clear() {
+		this.elements.clear();
+		
+		
+	}
+
 }

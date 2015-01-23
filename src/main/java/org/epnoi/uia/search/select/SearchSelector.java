@@ -20,6 +20,10 @@ public class SearchSelector {
 	// -------------------------------------------------------------------------------------------------
 	
 	public SearchSelectResult select(SelectExpression selectExpression, SearchContext searchContext) {
+		
+		if (selectExpression.getSparqlExpression()!=null&&selectExpression.getSparqlExpression().length()>0){
+			System.out.println("SPARQL handling should be here");
+		}
 		/*
 		InformationStore informationStore=core.getInformationStoresByType(InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		List<String> queryResult = informationStore.query(selectExpression.getSparqlExpression());
