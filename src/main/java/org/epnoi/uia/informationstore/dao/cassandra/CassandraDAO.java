@@ -247,13 +247,22 @@ public abstract class CassandraDAO {
 		}
 
 		colums.clear();
-		colums=null;
+		colums = null;
 		mutator.execute();
-		mutator =null;
+		mutator = null;
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
-
+	/**
+	 * 
+	 * @param key
+	 *            The URI of the element that we wish to access
+	 * @param name
+	 *            The name of the column
+	 * @param columnFamilyName
+	 *            The name of the Cassandra column family
+	 * @return
+	 */
 	protected String readColumn(String key, String name, String columnFamilyName) {
 		try {
 			ColumnFamilyResult<String, String> res = CassandraDAO.columnFamilyTemplates
@@ -318,7 +327,7 @@ public abstract class CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> iterator = new ColumnSliceIterator<String, String, String>(
 				query, null, "\uFFFF", false);
-		
+
 		return iterator;
 
 	}
@@ -342,8 +351,6 @@ public abstract class CassandraDAO {
 
 	}
 
-	public abstract boolean exists(Selector selector); 
-		
-	
+	public abstract boolean exists(Selector selector);
 
 }
