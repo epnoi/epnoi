@@ -1,5 +1,6 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
@@ -13,6 +14,7 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -64,8 +66,6 @@ public class PaperWrapper implements Wrapper {
 
 		Paper cassandraItem = (Paper) informationStore.get(selector);
 
-		
-
 		joinPaper.setTitle(cassandraItem.getTitle());
 		joinPaper.setAuthors(cassandraItem.getAuthors());
 		joinPaper.setDescription(cassandraItem.getDescription());
@@ -112,6 +112,8 @@ public class PaperWrapper implements Wrapper {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
+		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
+				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 		exists = informationStore.exists(selector);
 		if (exists) {
 
@@ -127,6 +129,13 @@ public class PaperWrapper implements Wrapper {
 				// exists = informationStore.exists(selector);
 
 				if (exists) {
+					
+					/*
+					System.out.println("------> " + selector);
+					System.out.println("AC--------> "
+							+ ((CassandraInformationStore) informationStore)
+									.getAnnotatedContent(selector));
+								*/
 					exists = /*
 							 * (!((CassandraInformationStore) informationStore)
 							 * .getContent(selector).isEmpty()) &&
@@ -138,42 +147,54 @@ public class PaperWrapper implements Wrapper {
 
 		return exists;
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(Selector selector) {
-		// TODO Auto-generated method stub
-		return null;
+		// System.out.println("Entra y este es el selector "+selector);
+
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+
+		return informationStore.getContent(selector);
+
 	}
 
 	// -------------------------------------------------------------------------------------
-	
+
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// -------------------------------------------------------------------------------------
-	
+
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-		// TODO Auto-generated method stub
-		return null;
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		return informationStore.getAnnotatedContent(selector);
 	}
 
 	// -------------------------------------------------------------------------------------
-	
+
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
-		// TODO Auto-generated method stub
-		
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
+		informationStore.setAnnotatedContent(selector, annotatedContent);
+
 	}
 
 	// -------------------------------------------------------------------------------------
-	
-	
 
 }
