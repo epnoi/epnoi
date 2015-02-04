@@ -6,11 +6,21 @@ import java.util.regex.Pattern;
 public class StringUtils {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param line
+	 *            The line of text where we want to apply the replacement
+	 * @param regexp
+	 *            The regular expression that indicates which are the parts of
+	 *            the line to be replaced
+	 * @param replacement
+	 *            The string that will replace the new content that will appear
+	 *            instead of the content matched by the regexp
+	 * @return
+	 */
 
-	public static String clean(String line, String regexp, String replacement) {
-		System.out.println();
-		System.out.println();
-		
+	public static String replace(String line, String regexp, String replacement) {
+
 		Pattern pattern = Pattern.compile(regexp);
 		Matcher matcher = pattern.matcher(line);
 
@@ -19,11 +29,6 @@ public class StringUtils {
 			line = line.replace(matcher.group(), replacement);
 		}
 
-		System.out.println("cleanedline > " + line);
-		System.out.println();
-		System.out.println();
-		System.out.println();
-
 		return line;
 	}
 
@@ -31,8 +36,9 @@ public class StringUtils {
 
 	public static String outerMatching(String line, String openingExp,
 			char openingSymbol, char closingSymbol) {
-	//	System.out		.println("-------------------------------------------------------");
-//System.out.println("line > " + line);
+		// System.out
+		// .println("-------------------------------------------------------");
+		// System.out.println("line > " + line);
 		String matching = line;
 
 		Pattern pattern = Pattern.compile(openingExp);
@@ -59,8 +65,8 @@ public class StringUtils {
 			matching = matching.replace(detectedMatch, "");
 
 		}
-		
-//System.out.println("cleaned line > " + matching);
+
+		// System.out.println("cleaned line > " + matching);
 		return matching;
 	}
 

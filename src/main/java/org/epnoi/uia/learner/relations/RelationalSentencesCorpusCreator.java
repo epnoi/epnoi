@@ -42,13 +42,13 @@ public class RelationalSentencesCorpusCreator {
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
-			RelationSentencesCorpusCreationParameters parameters)
+			RelationalSentencesCorpusCreationParameters parameters)
 			throws EpnoiInitializationException {
 		this.core = core;
 		this.corpus = new RelationalSentencesCorpus();
 
 		WordNetParameters wordNetParameters = (WordNetParameters) parameters
-				.getParameterValue(RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
 
 		CuratedRelationsTableCreator curatedRelationsTableCreator = new CuratedRelationsTableCreator();
 		curatedRelationsTableCreator.init(wordNetParameters);
@@ -146,24 +146,18 @@ public class RelationalSentencesCorpusCreator {
 						.getOffset();
 				Long endOffset = sentenceAnnotation.getEndNode().getOffset();
 
-				System.out.println("SENtenCE startOffset >" + startOffset
-						+ "| endOffset " + endOffset + ")");
-
 				sentenceContent = document.getContent().getContent(startOffset,
 						endOffset);
-			System.out.println("_____> length >> "+sentenceContent.size());
+
 				AnnotationSet sentencesAnnotations = document.getAnnotations();
 				_testSentence(startOffset, sentenceContent,
 						sentencesAnnotations.getContained(startOffset,
 								endOffset));
 			} catch (InvalidOffsetException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
-			/*
-			 * System.out.println("Sentence content:> " +
-			 * sentenceContent.toString());
-			 */
+
 		}
 
 	}
@@ -190,7 +184,6 @@ public class RelationalSentencesCorpusCreator {
 			try {
 				String term = sentenceContent
 						.getContent(startOffset, endOffset).toString();
-				
 
 				String stemmedTerm = this.curatedRelationsTable.stemTerm(term);
 
@@ -226,8 +219,7 @@ public class RelationalSentencesCorpusCreator {
 						sourceTermAnnotation.getStartNode().getOffset()
 								- sentenceStartOffset, sourceTermAnnotation
 								.getEndNode().getOffset() - sentenceStartOffset);
-				
-				
+
 				for (String destinationTerm : termHypernyms) {
 
 					Annotation destinationTermAnnotation = termsAnnotationsTable
@@ -305,7 +297,7 @@ public class RelationalSentencesCorpusCreator {
 
 		Core core = CoreUtility.getUIACore();
 
-		RelationSentencesCorpusCreationParameters parameters = new RelationSentencesCorpusCreationParameters();
+		RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
 		WordNetParameters wordnetParameters = new WordNetParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
@@ -313,7 +305,7 @@ public class RelationalSentencesCorpusCreator {
 				filepath);
 
 		parameters.setParameter(
-				RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
+				RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
 
 		try {

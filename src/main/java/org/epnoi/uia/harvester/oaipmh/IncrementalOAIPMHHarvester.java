@@ -141,9 +141,6 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 			String identifier = showIdentifier(recordElement);
 
-			System.out.println("Harvesting paper ------------------->"
-					+ identifier);
-
 			if (!core.getInformationHandler().contains(identifier,
 					RDFHelper.PAPER_CLASS)) {
 

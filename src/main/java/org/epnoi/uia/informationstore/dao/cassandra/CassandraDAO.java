@@ -193,6 +193,13 @@ public abstract class CassandraDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * 
+	 * @param key
+	 *            The URI of the resoruce to be created
+	 * @param columnFamilyName
+	 *            The columngFamilyName of the resource
+	 */
 	protected void createRow(String key, String columnFamilyName) {
 
 		ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates

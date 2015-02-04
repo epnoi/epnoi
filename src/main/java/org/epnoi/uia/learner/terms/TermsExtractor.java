@@ -320,7 +320,7 @@ public class TermsExtractor {
 				Term newTerm = new Term();
 				newTerm.setURI(aDomain.getWord()
 						+ "/"
-						+ StringUtils.clean(term.getWord(), "[^a-zA-Z0-9]", "_"));
+						+ StringUtils.replace(term.getWord(), "[^a-zA-Z0-9]", "_"));
 				newTerm.setAnnotatedTerm(term);
 				/*
 				 * System.out.println("Introducing--------> " +
