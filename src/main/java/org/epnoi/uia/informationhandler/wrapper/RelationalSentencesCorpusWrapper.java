@@ -24,6 +24,8 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		this.core = core;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void put(Resource resource, Context context) {
 		InformationStore informationStore = this.core
@@ -31,7 +33,15 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
+		
+		informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE)
+				.get(0);
+		informationStore.put(resource, context);
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public void remove(String URI) {
@@ -39,16 +49,21 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public Resource get(String URI) {
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		selector.setProperty(SelectorHelper.TYPE,
+				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
 		InformationStore informationStore = this.core
@@ -61,11 +76,15 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return cassandraItem;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public boolean exists(String URI) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(Selector selector) {
@@ -73,11 +92,15 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return null;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 		// TODO Auto-generated method stub
 
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
@@ -85,12 +108,16 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return null;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
 		// TODO Auto-generated method stub
 
 	}
+
+	// ------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();

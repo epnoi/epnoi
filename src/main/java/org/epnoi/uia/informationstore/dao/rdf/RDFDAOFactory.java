@@ -13,7 +13,9 @@ import org.epnoi.model.User;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.informationstore.dao.RelationalSentencesCorpusRDFDAO;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
+import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -42,7 +44,6 @@ public class RDFDAOFactory {
 		} else if (resource instanceof InformationSourceSubscription) {
 			RDFDAO dao = new InformationSourceSubscriptionRDFDAO();
 			dao.init(this.parameters);
-
 			return dao;
 		} else if (resource instanceof Feed) {
 			RDFDAO dao = new FeedRDFDAO();
@@ -74,6 +75,10 @@ public class RDFDAOFactory {
 			return dao;
 		} else if (resource instanceof Term) {
 			RDFDAO dao = new TermRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof RelationalSentencesCorpus) {
+			RDFDAO dao = new RelationalSentencesCorpusRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 		}
