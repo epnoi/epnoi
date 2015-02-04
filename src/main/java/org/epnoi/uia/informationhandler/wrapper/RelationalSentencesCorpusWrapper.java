@@ -19,6 +19,7 @@ import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;
+	
 
 	RelationalSentencesCorpusWrapper(Core core) {
 		this.core = core;
