@@ -58,11 +58,14 @@ public class RelationalSentence {
 
 	// --------------------------------------------------------------------------------------
 
+
 	@Override
 	public String toString() {
 		return "RelationalSentence [source=" + source + ", target=" + target
-				+ ", sentence=" + sentence + "]";
+				+ ", sentence=" + sentence + ", annotatedSentence="
+				+ annotatedSentence + "]";
 	}
+
 
 	// --------------------------------------------------------------------------------------
 

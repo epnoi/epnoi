@@ -19,7 +19,6 @@ import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;
-	
 
 	RelationalSentencesCorpusWrapper(Core core) {
 		this.core = core;
@@ -34,11 +33,9 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
-		
-		informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 	}
 
@@ -129,15 +126,17 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
-						15L), "Bla bla bla this is a relational sentence");
-
+						15L), "Bla bla bla this is a relational sentence",
+				"ANOTATED BLA BLA BLA");
+		core.getInformationHandler().remove("http://thetestcorpus/drinventor",
+				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		RelationalSentencesCorpusCassandraDAO relationalSentencesCorpusCassandraDAO = new RelationalSentencesCorpusCassandraDAO();
 		relationalSentencesCorpusCassandraDAO.init();
 		System.out.println(relationalSentencesCorpusCassandraDAO
 				._createRelationalSentenceRepresentation(relationalSentence));
 
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
-				._readRelationalSentenceRepresentation("[4,55][666,7777]Bla bla bla this is a relational sentence");
+				._readRelationalSentenceRepresentation("[4,55][666,7777][Bla bla bla this is a relational sentence][ANOTATED BLA BLA BLA]");
 		System.out.println("----> " + rs);
 
 		String representation = "[4444,555][66,7]Bla bla bla this is another relational sentence";

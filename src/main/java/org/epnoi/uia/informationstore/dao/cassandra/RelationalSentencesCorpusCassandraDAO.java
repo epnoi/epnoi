@@ -24,9 +24,21 @@ import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
+	private static final String annotatedSentenceSeparator = "<annotatedContent>";
+	private static final int annotatedSentenceSeparatorLength = annotatedSentenceSeparator
+			.length();
+
+	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI,
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+		System.out
+				.println("la que se deberia haber borrado> "
+						+ super.getAllCollumns(
+								URI,
+								RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY)
+								.hasNext());
 	}
 
 	// --------------------------------------------------------------------------------
@@ -68,11 +80,18 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	public String _createRelationalSentenceRepresentation(
 			RelationalSentence relationalSentence) {
 		String relationalSentenceRepresentation = "["
-				+ relationalSentence.getSource().getStart() + ","
-				+ relationalSentence.getSource().getEnd() + "]" + "["
-				+ relationalSentence.getTarget().getStart() + ","
-				+ relationalSentence.getTarget().getEnd() + "]"
-				+ relationalSentence.getSentence();
+				+ relationalSentence.getSource().getStart()
+				+ ","
+				+ relationalSentence.getSource().getEnd()
+				+ "]"
+				+ "["
+				+ relationalSentence.getTarget().getStart()
+				+ ","
+				+ relationalSentence.getTarget().getEnd()
+				+ "]"
+				+ relationalSentence.getSentence()
+				+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
+				+ relationalSentence.getAnnotatedSentence();
 
 		return relationalSentenceRepresentation;
 	}
@@ -102,14 +121,25 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		String targetEnd = relationalSentenceRepresentation.substring(
 				secondCommaOffset + 1, bracketOffset);
 
+		int annotatedContnetIndex = relationalSentenceRepresentation
+				.indexOf(RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator);
+		/*
+		System.out.println("the index " + annotatedContnetIndex
+				+ " and the length " + relationalSentenceRepresentation);
+	*/
 		String sentence = relationalSentenceRepresentation.substring(
-				bracketOffset + 1, relationalSentenceRepresentation.length());
+				bracketOffset + 1, annotatedContnetIndex);
+
+		String annotatedSentence = relationalSentenceRepresentation.substring(
+				annotatedContnetIndex+RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparatorLength,
+				relationalSentenceRepresentation.length());
 
 		OffsetRangeSelector originSelector = new OffsetRangeSelector(
 				Long.parseLong(sourceStart), Long.parseLong(sourceEnd));
 		OffsetRangeSelector targetSelector = new OffsetRangeSelector(
 				Long.parseLong(targetStart), Long.parseLong(targetEnd));
-		return new RelationalSentence(originSelector, targetSelector, sentence);
+		return new RelationalSentence(originSelector, targetSelector, sentence,
+				annotatedSentence);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -143,7 +173,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 				} else if (RelationalSentencesCorpusCassandraHelper.SENTENCE
 						.equals(column.getValue())) {
-
+					System.out.println("cNAME > " + column.getName());
 					RelationalSentence relationalSentenes = _readRelationalSentenceRepresentation(column
 							.getName());
 
@@ -228,25 +258,32 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		System.out.println("WikipediaPage Cassandra Test--------------");
 		System.out
 				.println("Initialization --------------------------------------------");
-
+		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
-		relationalSentencesCorpus.setURI("http://thetestcorpus/drinventor");
+		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
-						15L), "Bla bla bla this is a relational sentence");
+						15L), "Bla bla bla this is a relational sentence",
+				"annotatedcontent");
 
 		RelationalSentencesCorpusCassandraDAO relationalSentencesCorpusCassandraDAO = new RelationalSentencesCorpusCassandraDAO();
 		relationalSentencesCorpusCassandraDAO.init();
+		relationalSentencesCorpusCassandraDAO.remove(relationalSentenceURI);
+
 		System.out.println(relationalSentencesCorpusCassandraDAO
 				._createRelationalSentenceRepresentation(relationalSentence));
 
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
-				._readRelationalSentenceRepresentation("[4,55][666,7777]Bla bla bla this is a relational sentence");
+				._readRelationalSentenceRepresentation("[4,55][666,7777]Bla bla bla this is a relational sentence"
+						+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
+						+ "annotatedcontent");
 		System.out.println("----> " + rs);
 
-		String representation = "[4444,555][66,7]Bla bla bla this is another relational sentence";
+		String representation = "[4444,555][66,7]Bla bla bla this is another relational sentence"
+				+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
+				+ "more annotatedcontent";
 		rs = relationalSentencesCorpusCassandraDAO
 				._readRelationalSentenceRepresentation(representation);
 		System.out.println("----> " + rs);
@@ -310,13 +347,12 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	@Override
 	public boolean exists(Selector selector) {
-		String annotationURI = selector.getProperty(SelectorHelper.URI)
-				+ "/first/" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
+		String URI = selector.getProperty(SelectorHelper.URI);
 
-		String annotatedContent = super.readColumn(
-				selector.getProperty(SelectorHelper.URI), annotationURI,
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+		String content = super.readColumn(
+				selector.getProperty(SelectorHelper.URI), URI,
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
 
-		return (annotatedContent != null && annotatedContent.length() > 5);
+		return (content != null && content.length() > 5);
 	}
 }
