@@ -27,6 +27,7 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
@@ -35,20 +36,21 @@ public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger
 			.getLogger(RelationalSentencesCorpusCreator.class.getName());
 	private Core core;
-
+	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
 	private CuratedRelationsTable curatedRelationsTable;
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
-			RelationSentencesCorpusCreationParameters parameters)
+			RelationalSentencesCorpusCreationParameters parameters)
 			throws EpnoiInitializationException {
 		this.core = core;
 		this.corpus = new RelationalSentencesCorpus();
-
+		this.termCandidatesFinder = new TermCandidatesFinder();
+		this.termCandidatesFinder.init();
 		WordNetParameters wordNetParameters = (WordNetParameters) parameters
-				.getParameterValue(RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
 
 		CuratedRelationsTableCreator curatedRelationsTableCreator = new CuratedRelationsTableCreator();
 		curatedRelationsTableCreator.init(wordNetParameters);
@@ -137,33 +139,28 @@ public class RelationalSentencesCorpusCreator {
 		AnnotationSet sentenceAnnotations = document.getAnnotations().get(
 				"Sentence");
 		DocumentContent sentenceContent = null;
+		AnnotationSet sentencesAnnotations = document.getAnnotations();
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
 
 			try {
-				Long startOffset = sentenceAnnotation.getStartNode()
+				Long sentenceStartOffset = sentenceAnnotation.getStartNode()
 						.getOffset();
-				Long endOffset = sentenceAnnotation.getEndNode().getOffset();
+				Long sentenceEndOffset = sentenceAnnotation.getEndNode()
+						.getOffset();
 
-				System.out.println("SENtenCE startOffset >" + startOffset
-						+ "| endOffset " + endOffset + ")");
+				sentenceContent = document.getContent().getContent(
+						sentenceStartOffset, sentenceEndOffset);
 
-				sentenceContent = document.getContent().getContent(startOffset,
-						endOffset);
-			System.out.println("_____> length >> "+sentenceContent.size());
-				AnnotationSet sentencesAnnotations = document.getAnnotations();
-				_testSentence(startOffset, sentenceContent,
-						sentencesAnnotations.getContained(startOffset,
-								endOffset));
+				_testSentence(sentenceStartOffset, sentenceContent,
+						sentencesAnnotations.getContained(sentenceStartOffset,
+								sentenceEndOffset));
 			} catch (InvalidOffsetException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
-			/*
-			 * System.out.println("Sentence content:> " +
-			 * sentenceContent.toString());
-			 */
+
 		}
 
 	}
@@ -174,6 +171,8 @@ public class RelationalSentencesCorpusCreator {
 			DocumentContent sentenceContent,
 			AnnotationSet sentenceAnnotationsSet) {
 		Set<String> sentenceTerms = new java.util.HashSet<String>();
+		// This table stores the string representation of each sentence terms
+		// and their corresponding annotation
 		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<>();
 
 		for (Annotation termAnnotation : sentenceAnnotationsSet
@@ -190,7 +189,6 @@ public class RelationalSentencesCorpusCreator {
 			try {
 				String term = sentenceContent
 						.getContent(startOffset, endOffset).toString();
-				
 
 				String stemmedTerm = this.curatedRelationsTable.stemTerm(term);
 
@@ -208,15 +206,15 @@ public class RelationalSentencesCorpusCreator {
 
 		}
 		for (String term : sentenceTerms) {
+			// For each term we retrieve its well-known hypernyms
 			Set<String> termHypernyms = this.curatedRelationsTable
 					.getHypernyms(term);
 			termHypernyms.retainAll(sentenceTerms);
+
+			// If the intersection of the well-known hypernyms and the terms
+			// that belong to the sencence, this is a relational sentence
 			if (termHypernyms.size() > 0) {
-				/*
-				 * System.out .println(termCandidate +
-				 * "==============================================================================>>> "
-				 * + termCandidateHypernyms);
-				 */
+
 				Annotation sourceTermAnnotation = termsAnnotationsTable
 						.get(term);
 
@@ -226,8 +224,7 @@ public class RelationalSentencesCorpusCreator {
 						sourceTermAnnotation.getStartNode().getOffset()
 								- sentenceStartOffset, sourceTermAnnotation
 								.getEndNode().getOffset() - sentenceStartOffset);
-				
-				
+				// For each target term a relational sentence is created
 				for (String destinationTerm : termHypernyms) {
 
 					Annotation destinationTermAnnotation = termsAnnotationsTable
@@ -241,8 +238,11 @@ public class RelationalSentencesCorpusCreator {
 							destinationTermAnnotation.getEndNode().getOffset()
 									- sentenceStartOffset);
 
+					Document annotatedContent = termCandidatesFinder
+							.findTermCandidates(sentenceContent.toString());
+
 					RelationalSentence relationalSentence = new RelationalSentence(
-							source, target, sentenceContent.toString());
+							source, target, sentenceContent.toString(), annotatedContent.toXml());
 
 					corpus.getSentences().add(relationalSentence);
 				}
@@ -305,7 +305,7 @@ public class RelationalSentencesCorpusCreator {
 
 		Core core = CoreUtility.getUIACore();
 
-		RelationSentencesCorpusCreationParameters parameters = new RelationSentencesCorpusCreationParameters();
+		RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
 		WordNetParameters wordnetParameters = new WordNetParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
@@ -313,7 +313,7 @@ public class RelationalSentencesCorpusCreator {
 				filepath);
 
 		parameters.setParameter(
-				RelationSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
+				RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
 
 		try {

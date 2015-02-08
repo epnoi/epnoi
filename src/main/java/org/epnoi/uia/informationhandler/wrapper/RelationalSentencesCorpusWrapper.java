@@ -7,6 +7,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
@@ -16,6 +17,7 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.RelationalSentenceHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;
@@ -24,6 +26,8 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		this.core = core;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void put(Resource resource, Context context) {
 		InformationStore informationStore = this.core
@@ -31,7 +35,13 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+		informationStore.put(resource, context);
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public void remove(String URI) {
@@ -39,16 +49,21 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
 
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public Resource get(String URI) {
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		selector.setProperty(SelectorHelper.TYPE,
+				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
 		InformationStore informationStore = this.core
@@ -61,11 +76,15 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return cassandraItem;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public boolean exists(String URI) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(Selector selector) {
@@ -73,11 +92,15 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return null;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 		// TODO Auto-generated method stub
 
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
@@ -85,12 +108,16 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		return null;
 	}
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
 		// TODO Auto-generated method stub
 
 	}
+
+	// ------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
@@ -101,15 +128,17 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
-						15L), "Bla bla bla this is a relational sentence");
-
+						15L), "Bla bla bla this is a relational sentence",
+				"ANOTATED BLA BLA BLA");
+		core.getInformationHandler().remove("http://thetestcorpus/drinventor",
+				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		RelationalSentencesCorpusCassandraDAO relationalSentencesCorpusCassandraDAO = new RelationalSentencesCorpusCassandraDAO();
 		relationalSentencesCorpusCassandraDAO.init();
 		System.out.println(relationalSentencesCorpusCassandraDAO
 				._createRelationalSentenceRepresentation(relationalSentence));
 
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
-				._readRelationalSentenceRepresentation("[4,55][666,7777]Bla bla bla this is a relational sentence");
+				._readRelationalSentenceRepresentation("[4,55][666,7777][Bla bla bla this is a relational sentence][ANOTATED BLA BLA BLA]");
 		System.out.println("----> " + rs);
 
 		String representation = "[4444,555][66,7]Bla bla bla this is another relational sentence";
@@ -117,14 +146,20 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 				._readRelationalSentenceRepresentation(representation);
 		System.out.println("----> " + rs);
 
+		
+		/*
 		System.out.println("Are the same? "
 				+ representation.equals(relationalSentencesCorpusCassandraDAO
 						._createRelationalSentenceRepresentation(rs)));
-
+*/
+		
 		relationalSentencesCorpus.getSentences().add(relationalSentence);
 
 		relationalSentencesCorpus.getSentences().add(rs);
 
+		
+		
+		
 		core.getInformationHandler().put(relationalSentencesCorpus,
 				Context.getEmptyContext());
 
