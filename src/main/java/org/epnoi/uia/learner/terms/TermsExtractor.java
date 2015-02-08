@@ -27,6 +27,7 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.OntologyLearningParameters;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 
 public class TermsExtractor {
 	private static final Logger logger = Logger.getLogger(TermsExtractor.class
@@ -136,7 +137,7 @@ public class TermsExtractor {
 				annotatedDocument);
 
 		for (Annotation annotation : annotatedDocument.getAnnotations().get(
-				"TermCandidate")) {
+				NLPAnnotationsHelper.TERM_CANDIDATE)) {
 
 			AnnotatedWord<TermMetadata> termCandidate = termCandidateBuilder
 					.buildTermCandidate(annotation);
@@ -320,7 +321,8 @@ public class TermsExtractor {
 				Term newTerm = new Term();
 				newTerm.setURI(aDomain.getWord()
 						+ "/"
-						+ StringUtils.replace(term.getWord(), "[^a-zA-Z0-9]", "_"));
+						+ StringUtils.replace(term.getWord(), "[^a-zA-Z0-9]",
+								"_"));
 				newTerm.setAnnotatedTerm(term);
 				/*
 				 * System.out.println("Introducing--------> " +

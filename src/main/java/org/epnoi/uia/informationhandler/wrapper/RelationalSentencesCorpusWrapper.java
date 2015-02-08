@@ -7,6 +7,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
@@ -16,6 +17,7 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.RelationalSentenceHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;
@@ -144,14 +146,20 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 				._readRelationalSentenceRepresentation(representation);
 		System.out.println("----> " + rs);
 
+		
+		/*
 		System.out.println("Are the same? "
 				+ representation.equals(relationalSentencesCorpusCassandraDAO
 						._createRelationalSentenceRepresentation(rs)));
-
+*/
+		
 		relationalSentencesCorpus.getSentences().add(relationalSentence);
 
 		relationalSentencesCorpus.getSentences().add(rs);
 
+		
+		
+		
 		core.getInformationHandler().put(relationalSentencesCorpus,
 				Context.getEmptyContext());
 

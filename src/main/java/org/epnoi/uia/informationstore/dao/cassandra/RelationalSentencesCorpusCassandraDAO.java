@@ -1,8 +1,8 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import java.util.ArrayList;
+import gate.Document;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,17 +10,20 @@ import java.util.regex.Pattern;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 
-import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.Resource;
-import org.epnoi.model.WikipediaPage;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.RelationalSentenceHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
@@ -124,15 +127,17 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		int annotatedContnetIndex = relationalSentenceRepresentation
 				.indexOf(RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator);
 		/*
-		System.out.println("the index " + annotatedContnetIndex
-				+ " and the length " + relationalSentenceRepresentation);
-	*/
+		 * System.out.println("the index " + annotatedContnetIndex +
+		 * " and the length " + relationalSentenceRepresentation);
+		 */
 		String sentence = relationalSentenceRepresentation.substring(
 				bracketOffset + 1, annotatedContnetIndex);
 
-		String annotatedSentence = relationalSentenceRepresentation.substring(
-				annotatedContnetIndex+RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparatorLength,
-				relationalSentenceRepresentation.length());
+		String annotatedSentence = relationalSentenceRepresentation
+				.substring(
+						annotatedContnetIndex
+								+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparatorLength,
+						relationalSentenceRepresentation.length());
 
 		OffsetRangeSelector originSelector = new OffsetRangeSelector(
 				Long.parseLong(sourceStart), Long.parseLong(sourceEnd));
@@ -173,7 +178,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 				} else if (RelationalSentencesCorpusCassandraHelper.SENTENCE
 						.equals(column.getValue())) {
-					System.out.println("cNAME > " + column.getName());
+					// System.out.println("cNAME > " + column.getName());
 					RelationalSentence relationalSentenes = _readRelationalSentenceRepresentation(column
 							.getName());
 
@@ -258,40 +263,61 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		System.out.println("WikipediaPage Cassandra Test--------------");
 		System.out
 				.println("Initialization --------------------------------------------");
+
+		Core core = CoreUtility.getUIACore();
+		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+		termCandidatesFinder.init();
+
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
+
+		Document annotatedContent = termCandidatesFinder
+				.findTermCandidates("A dog is a canine");
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
-						15L), "Bla bla bla this is a relational sentence",
-				"annotatedcontent");
+						15L), "A dog is a canine",
+				annotatedContent.toXml());
 
 		RelationalSentencesCorpusCassandraDAO relationalSentencesCorpusCassandraDAO = new RelationalSentencesCorpusCassandraDAO();
 		relationalSentencesCorpusCassandraDAO.init();
 		relationalSentencesCorpusCassandraDAO.remove(relationalSentenceURI);
 
-		System.out.println(relationalSentencesCorpusCassandraDAO
-				._createRelationalSentenceRepresentation(relationalSentence));
-
+		/*
+		 * System.out.println(relationalSentencesCorpusCassandraDAO
+		 * ._createRelationalSentenceRepresentation(relationalSentence));
+		 */
+		annotatedContent = termCandidatesFinder
+				.findTermCandidates("A dog, is a canine (and other things!)");
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
-				._readRelationalSentenceRepresentation("[4,55][666,7777]Bla bla bla this is a relational sentence"
+				._readRelationalSentenceRepresentation("[2,5][12,18]A dog, is a canine (and other things!)"
 						+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
-						+ "annotatedcontent");
-		System.out.println("----> " + rs);
+						+ annotatedContent.toXml());
 
-		String representation = "[4444,555][66,7]Bla bla bla this is another relational sentence"
-				+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
-				+ "more annotatedcontent";
-		rs = relationalSentencesCorpusCassandraDAO
-				._readRelationalSentenceRepresentation(representation);
-		System.out.println("----> " + rs);
-
-		System.out.println("Are the same? "
-				+ representation.equals(relationalSentencesCorpusCassandraDAO
-						._createRelationalSentenceRepresentation(rs)));
-
+		/*
+		 * System.out.println("----> " + rs);
+		 * 
+		 * 
+		 * annotatedContent = termCandidatesFinder
+		 * .findTermCandidates("This is another relational sentence");
+		 * 
+		 * 
+		 * 
+		 * String representation =
+		 * "[4444,555][66,7]This is another relational sentence" +
+		 * RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator +
+		 * "more annotatedcontent";
+		 * 
+		 * rs = relationalSentencesCorpusCassandraDAO
+		 * ._readRelationalSentenceRepresentation(representation);
+		 * System.out.println("----> " + rs);
+		 * 
+		 * System.out.println("Are the same? " +
+		 * representation.equals(relationalSentencesCorpusCassandraDAO
+		 * ._createRelationalSentenceRepresentation(rs)));
+		 */
 		relationalSentencesCorpus.getSentences().add(relationalSentence);
 
 		relationalSentencesCorpus.getSentences().add(rs);
@@ -301,8 +327,26 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		RelationalSentencesCorpus readedCorpus = (RelationalSentencesCorpus) relationalSentencesCorpusCassandraDAO
 				.read(relationalSentencesCorpus.getURI());
-		System.out.println("The readed relational sentence corpus "
-				+ readedCorpus);
+		/*
+		 * System.out.println("The readed relational sentence corpus " +
+		 * readedCorpus);
+		 */
+		/*
+		 * System.out.println("lo leido " + GateUtils.deserializeGATEDocument(
+		 * readedCorpus.getSentences().get(1) .getAnnotatedSentence()).toXml());
+		 */
+		
+
+		LexicalRelationalPatternGenerator lexicalRelationalPatternGenerator = new LexicalRelationalPatternGenerator();
+		try {
+			lexicalRelationalPatternGenerator.init(core);
+			System.out.println("generated pattern > "
+					+ lexicalRelationalPatternGenerator.generate(readedCorpus
+							.getSentences().get(1)));
+		} catch (EpnoiInitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		/*
 		 * relationalSentencesCorpusCassandraDAO.init();

@@ -27,7 +27,16 @@ public class LexicalRelationalPatternNode {
 	public void setGeneratedToken(String generatedToken) {
 		this.generatedToken = generatedToken;
 	}
+	
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "LexicalRelationalPatternNode [originialToken=" + originialToken
+				+ ", generatedToken=" + generatedToken + "]";
+	}
 
 	// ---------------------------------------------------------------------------
 
+	
 }
