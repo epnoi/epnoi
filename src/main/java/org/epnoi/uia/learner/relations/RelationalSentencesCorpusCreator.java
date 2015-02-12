@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.GateUtils;
@@ -32,6 +33,8 @@ import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
+import scala.xml.PrettyPrinter.Para;
+
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger
 			.getLogger(RelationalSentencesCorpusCreator.class.getName());
@@ -39,6 +42,7 @@ public class RelationalSentencesCorpusCreator {
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
 	private CuratedRelationsTable curatedRelationsTable;
+	RelationalSentencesCorpusCreationParameters parameters;
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -46,6 +50,7 @@ public class RelationalSentencesCorpusCreator {
 			RelationalSentencesCorpusCreationParameters parameters)
 			throws EpnoiInitializationException {
 		this.core = core;
+		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.termCandidatesFinder.init();
@@ -63,15 +68,17 @@ public class RelationalSentencesCorpusCreator {
 	public RelationalSentencesCorpus createCorpus() {
 		// This should be done in parallel!!
 		_searchWikipediaCorpus();
-		searchReutersCorpus();
+		_searchReutersCorpus();
 
+		corpus.setURI((String)this.parameters
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
 		return this.corpus;
 
 	}
 
 	// ----------------------------------------------------------------------
 
-	private void searchReutersCorpus() {
+	private void _searchReutersCorpus() {
 		// TODO Auto-generated method stub
 
 	}
@@ -242,7 +249,8 @@ public class RelationalSentencesCorpusCreator {
 							.findTermCandidates(sentenceContent.toString());
 
 					RelationalSentence relationalSentence = new RelationalSentence(
-							source, target, sentenceContent.toString(), annotatedContent.toXml());
+							source, target, sentenceContent.toString(),
+							annotatedContent.toXml());
 
 					corpus.getSentences().add(relationalSentence);
 				}
@@ -309,12 +317,18 @@ public class RelationalSentencesCorpusCreator {
 
 		WordNetParameters wordnetParameters = new WordNetParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
+		String URI = "http://epnoi/testRelationalSentencesCorpus";
 		wordnetParameters.setParameter(WordNetParameters.DICTIONARY_LOCATION,
 				filepath);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
+
+		parameters
+				.setParameter(
+						RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+						URI);
 
 		try {
 			relationSentencesCorpusCreator.init(core, parameters);
@@ -326,7 +340,10 @@ public class RelationalSentencesCorpusCreator {
 
 		RelationalSentencesCorpus relationalSentencesCorpus = relationSentencesCorpusCreator
 				.createCorpus();
-
+/*
+		core.getInformationHandler().put(relationalSentencesCorpus,
+				Context.getEmptyContext());
+	*/
 		System.out.println("The result is " + relationalSentencesCorpus);
 
 		System.out.println("Stopping the Relation Sentences Corpus Creator");

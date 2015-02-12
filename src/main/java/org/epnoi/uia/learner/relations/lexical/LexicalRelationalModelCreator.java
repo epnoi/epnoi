@@ -12,7 +12,7 @@ public class LexicalRelationalModelCreator {
 	private Core core;
 	private LexicalRelationalPatternsCorpusCreator patternsCorpusCreator;
 	private RelationalPatternsCorpus patternsCorpus;
-	private BigramSoftPatternModel model;
+	private BigramSoftPatternModelBuilder model;
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -35,13 +35,13 @@ public class LexicalRelationalModelCreator {
 			patternsCorpus = patternsCorpusCreator
 					.buildCorpus(relationalSentencesCorpus);
 		}
-		model = new BigramSoftPatternModel(parameters);
+		model = new BigramSoftPatternModelBuilder(parameters);
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public BigramSoftPatternModel createModel() {
+	public BigramSoftPatternModelBuilder createModel() {
 
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
 			this.model.addPattern(((LexicalRelationalPattern) pattern));
@@ -62,6 +62,12 @@ public class LexicalRelationalModelCreator {
 				.setParameter(
 						LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
 						10L);
+		
+		parameters
+		.setParameter(
+				LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS,
+				"/JUNK");
+		
 		Core core = CoreUtility.getUIACore();
 
 		LexicalRelationalModelCreator modelCreator = new LexicalRelationalModelCreator();
@@ -71,9 +77,9 @@ public class LexicalRelationalModelCreator {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		BigramSoftPatternModel model = modelCreator.createModel();
+		BigramSoftPatternModelBuilder model = modelCreator.createModel();
 		String path = (String) parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.MODEL_PATH);
+				.getParameterValue(LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS);
 		if (path == null) {
 			System.out.println("--> " + model);
 		} else {
