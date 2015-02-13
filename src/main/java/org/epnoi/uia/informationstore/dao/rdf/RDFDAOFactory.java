@@ -151,6 +151,11 @@ public class RDFDAOFactory {
 			TermRDFDAO termDAO = new TermRDFDAO();
 			termDAO.init(this.parameters);
 			return termDAO;
+		} else if (typeSelector
+				.equals(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS)) {
+			RDFDAO dao = new RelationalSentencesCorpusRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 
 		} else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);

@@ -6,6 +6,7 @@ import java.util.List;
 public class BigramSoftPatternModelBuilder {
 
 	private HashMap<String, NodeInformation> nodesInformation;
+	private Long[] positionsCount;
 
 	private LexicalRelationalModelCreationParameters parameters;
 	private int maxPatternLenght;
@@ -19,12 +20,16 @@ public class BigramSoftPatternModelBuilder {
 		this.nodesInformation = new HashMap<>();
 		maxPatternLenght = (Integer) this.parameters
 				.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
-
+		this.positionsCount = new Long[maxPatternLenght];
+		for (int i = 0; i < positionsCount.length; i++) {
+			this.positionsCount[i] = 0L;
+		}
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void addPattern(LexicalRelationalPattern pattern) {
+		System.out.println("------> "+pattern);
 		List<LexicalRelationalPatternNode> nodes = pattern.getNodes();
 		int position = 0;
 		for (LexicalRelationalPatternNode node : pattern.getNodes()) {
@@ -39,12 +44,7 @@ public class BigramSoftPatternModelBuilder {
 		}
 	}
 
-	// ----------------------------------------------------------------------------------------------------------------
-
-	public double calculatePatternProbability(
-			LexicalRelationalModelCreationParameters parameters) {
-		return 0d;
-	}
+	
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -55,6 +55,7 @@ public class BigramSoftPatternModelBuilder {
 		nodeInformation.setCardinality(nodeInformation.getCardinality() + 1);
 		nodeInformation.getPositions()[position] = nodeInformation
 				.getPositions()[position] + 1;
+		this.positionsCount[position] = this.positionsCount[position] + 1;
 
 		if (position + 1 < nodes.size()) {
 			Long followerFrequency = nodeInformation.getFollowers().get(
@@ -90,6 +91,9 @@ public class BigramSoftPatternModelBuilder {
 			this.cardinality = 0;
 			this.followers = new HashMap<>();
 			this.positions = new Long[maxPatternLength];
+			for (int i = 0; i < positions.length; i++) {
+				this.positions[i] = 0L;
+			}
 
 		}
 

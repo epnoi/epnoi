@@ -45,8 +45,20 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	@Override
 	public void remove(String URI) {
-		// TODO Auto-generated method stub
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE,
+				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		selector.setProperty(SelectorHelper.URI, URI);
+		informationStore.remove(selector);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+
+		informationStore.remove(selector);
 	}
 
 	// ------------------------------------------------------------------------
@@ -146,20 +158,16 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 				._readRelationalSentenceRepresentation(representation);
 		System.out.println("----> " + rs);
 
-		
 		/*
-		System.out.println("Are the same? "
-				+ representation.equals(relationalSentencesCorpusCassandraDAO
-						._createRelationalSentenceRepresentation(rs)));
-*/
-		
+		 * System.out.println("Are the same? " +
+		 * representation.equals(relationalSentencesCorpusCassandraDAO
+		 * ._createRelationalSentenceRepresentation(rs)));
+		 */
+
 		relationalSentencesCorpus.getSentences().add(relationalSentence);
 
 		relationalSentencesCorpus.getSentences().add(rs);
 
-		
-		
-		
 		core.getInformationHandler().put(relationalSentencesCorpus,
 				Context.getEmptyContext());
 

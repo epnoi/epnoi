@@ -28,9 +28,11 @@ public class LexicalRelationalPatternsCorpusCreator {
 		RelationalPatternsCorpus patternsCorpus = new RelationalPatternsCorpus();
 		for (RelationalSentence relationalSentence : relationalSentencesCorpus
 				.getSentences()) {
+			System.out.println("-sent-> "+relationalSentence);
 			List<LexicalRelationalPattern> patterns = this.patternsGenerator
 					.generate(relationalSentence);
 			for (LexicalRelationalPattern pattern : patterns) {
+				System.out.println("--------pat-> "+pattern);	
 				patternsCorpus.getPatterns().add(pattern);
 			}
 		}

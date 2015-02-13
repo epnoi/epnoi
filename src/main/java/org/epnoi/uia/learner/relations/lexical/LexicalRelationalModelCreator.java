@@ -3,6 +3,7 @@ package org.epnoi.uia.learner.relations.lexical;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalPattern;
 import org.epnoi.uia.learner.relations.RelationalPatternsCorpus;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
@@ -23,8 +24,13 @@ public class LexicalRelationalModelCreator {
 		this.parameters = parameters;
 		String relationalSentencesCorpusURI = (String) this.parameters
 				.getParameterValue(LexicalRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
+		this.patternsCorpusCreator = new LexicalRelationalPatternsCorpusCreator();
+		this.patternsCorpusCreator.init(core);
+		
 		RelationalSentencesCorpus relationalSentencesCorpus = (RelationalSentencesCorpus) this.core
-				.getInformationHandler().get(relationalSentencesCorpusURI);
+				.getInformationHandler().get(relationalSentencesCorpusURI,RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		
+		System.out.println("has--> "+relationalSentencesCorpus.getSentences().size());
 		if (relationalSentencesCorpus == null) {
 			throw new EpnoiInitializationException(
 					"The Relational Sentences Corpus "
@@ -34,6 +40,8 @@ public class LexicalRelationalModelCreator {
 		} else {
 			patternsCorpus = patternsCorpusCreator
 					.buildCorpus(relationalSentencesCorpus);
+			
+			System.out.println(patternsCorpus);
 		}
 		model = new BigramSoftPatternModelBuilder(parameters);
 
@@ -57,11 +65,11 @@ public class LexicalRelationalModelCreator {
 		parameters
 				.setParameter(
 						LexicalRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
-						"");
+						"http://thetestcorpus/drinventor");
 		parameters
 				.setParameter(
 						LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
-						10L);
+						10);
 		
 		parameters
 		.setParameter(
