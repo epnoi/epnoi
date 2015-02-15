@@ -13,7 +13,7 @@ public class LexicalRelationalModelCreator {
 	private Core core;
 	private LexicalRelationalPatternsCorpusCreator patternsCorpusCreator;
 	private RelationalPatternsCorpus patternsCorpus;
-	private BigramSoftPatternModelBuilder model;
+	private BigramSoftPatternModelBuilder modelBuilder;
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -43,18 +43,19 @@ public class LexicalRelationalModelCreator {
 			
 			System.out.println(patternsCorpus);
 		}
-		model = new BigramSoftPatternModelBuilder(parameters);
+		modelBuilder = new BigramSoftPatternModelBuilder(parameters);
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public BigramSoftPatternModelBuilder createModel() {
+	public BigramSoftPatternModel createModel() {
 
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
-			this.model.addPattern(((LexicalRelationalPattern) pattern));
+			this.modelBuilder.addPattern(((LexicalRelationalPattern) pattern));
 		}
-		return this.model;
+		System.out.println("--"+this.modelBuilder);
+		return this.modelBuilder.build();
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -85,7 +86,7 @@ public class LexicalRelationalModelCreator {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		BigramSoftPatternModelBuilder model = modelCreator.createModel();
+		BigramSoftPatternModel model = modelCreator.createModel();
 		String path = (String) parameters
 				.getParameterValue(LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS);
 		if (path == null) {

@@ -1,10 +1,37 @@
 package org.epnoi.uia.learner.relations.lexical;
 
-public class BigramSoftPatternModel {
-	// ----------------------------------------------------------------------------------------------------------------
+import java.util.HashMap;
+import java.util.Map;
 
-	public double calculatePatternProbability(
+public class BigramSoftPatternModel implements SoftPatternModel {
+	private Double[] nodePositionProbability;
+	private Map<String, Double> nodeProbability;
+	private Map<String, Map<String, Double>> bigramProbability;
+	private LexicalRelationalModelCreationParameters parmeters;
+	private int maxPatternLength;
+	private LexicalRelationalModelCreationParameters parameters;
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	protected BigramSoftPatternModel(
 			LexicalRelationalModelCreationParameters parameters) {
-		return 0d;
+		this.parameters = parameters;
+		this.maxPatternLength = (Integer) this.parameters
+				.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+		this.nodePositionProbability = new Double[maxPatternLength];
+		this.nodeProbability = new HashMap<>();
+		this.bigramProbability = new HashMap<>();
 	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	@Override
+	public double calculatePatternProbability(
+			LexicalRelationalPattern relationalPattern) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
 }
