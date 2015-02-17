@@ -28,6 +28,12 @@ public class LexicalRelationalPattern implements RelationalPattern {
 
 	// ----------------------------------------------------------------------------------------------------
 
+	public int getLength(){
+		return ((this.nodes==null)? 0 : this.nodes.size());
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
 		return "LexicalRelationalPattern [nodes=" + nodes + "]";

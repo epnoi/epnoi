@@ -85,8 +85,15 @@ public class LexicalRelationalPatternGenerator {
 			} else if (insideWindow) {
 				node.setOriginialToken(annotation.getFeatures().get("string")
 						.toString());
-				node.setGeneratedToken(annotation.getFeatures().get("category")
-						.toString());
+				if (annotation.getFeatures().get("category")
+						.equals("VBZ")) {
+					node.setGeneratedToken(annotation.getFeatures()
+							.get("string").toString());
+				} else {
+					node.setGeneratedToken(annotation.getFeatures()
+							.get("category").toString());
+				}
+
 				lexicalRelationalPattern.getNodes().add(node);
 			}
 		}

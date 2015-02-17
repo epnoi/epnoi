@@ -27,7 +27,7 @@ import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
-	private static final String annotatedSentenceSeparator = "<annotatedContent>";
+	public static final String annotatedSentenceSeparator = "<annotatedContent>";
 	private static final int annotatedSentenceSeparatorLength = annotatedSentenceSeparator
 			.length();
 
@@ -36,12 +36,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	public void remove(String URI) {
 		super.deleteRow(URI,
 				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
-		System.out
-				.println("la que se deberia haber borrado> "
-						+ super.getAllCollumns(
-								URI,
-								RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY)
-								.hasNext());
+		
 	}
 
 	// --------------------------------------------------------------------------------

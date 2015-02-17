@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.GateUtils;
@@ -26,11 +27,14 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+
+import scala.xml.PrettyPrinter.Para;
 
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger
@@ -39,6 +43,7 @@ public class RelationalSentencesCorpusCreator {
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
 	private CuratedRelationsTable curatedRelationsTable;
+	RelationalSentencesCorpusCreationParameters parameters;
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -46,6 +51,7 @@ public class RelationalSentencesCorpusCreator {
 			RelationalSentencesCorpusCreationParameters parameters)
 			throws EpnoiInitializationException {
 		this.core = core;
+		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.termCandidatesFinder.init();
@@ -63,15 +69,17 @@ public class RelationalSentencesCorpusCreator {
 	public RelationalSentencesCorpus createCorpus() {
 		// This should be done in parallel!!
 		_searchWikipediaCorpus();
-		searchReutersCorpus();
+		_searchReutersCorpus();
 
+		corpus.setURI((String) this.parameters
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
 		return this.corpus;
 
 	}
 
 	// ----------------------------------------------------------------------
 
-	private void searchReutersCorpus() {
+	private void _searchReutersCorpus() {
 		// TODO Auto-generated method stub
 
 	}
@@ -242,7 +250,8 @@ public class RelationalSentencesCorpusCreator {
 							.findTermCandidates(sentenceContent.toString());
 
 					RelationalSentence relationalSentence = new RelationalSentence(
-							source, target, sentenceContent.toString(), annotatedContent.toXml());
+							source, target, sentenceContent.toString(),
+							annotatedContent.toXml());
 
 					corpus.getSentences().add(relationalSentence);
 				}
@@ -301,6 +310,8 @@ public class RelationalSentencesCorpusCreator {
 	public static void main(String[] args) {
 		System.out.println("Starting the Relation Sentences Corpus Creator");
 
+		boolean test = true;
+
 		RelationalSentencesCorpusCreator relationSentencesCorpusCreator = new RelationalSentencesCorpusCreator();
 
 		Core core = CoreUtility.getUIACore();
@@ -309,12 +320,18 @@ public class RelationalSentencesCorpusCreator {
 
 		WordNetParameters wordnetParameters = new WordNetParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
+		String URI = "http://epnoi/testRelationalSentencesCorpus";
 		wordnetParameters.setParameter(WordNetParameters.DICTIONARY_LOCATION,
 				filepath);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
+
+		parameters
+				.setParameter(
+						RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+						URI);
 
 		try {
 			relationSentencesCorpusCreator.init(core, parameters);
@@ -323,13 +340,53 @@ public class RelationalSentencesCorpusCreator {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		RelationalSentencesCorpus relationalSentencesCorpus;
+		if (test) {
+			core.getInformationHandler().remove(
+					"http://thetestcorpus/drinventor",
+					RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+			System.out.println("--> "+core.getInformationHandler().get("http://thetestcorpus/drinventor"));
+			relationalSentencesCorpus = relationSentencesCorpusCreator
+					.createTestCorpus();
 
-		RelationalSentencesCorpus relationalSentencesCorpus = relationSentencesCorpusCreator
-				.createCorpus();
+		} else {
+			relationalSentencesCorpus = relationSentencesCorpusCreator
+					.createCorpus();
+		}
 
-		System.out.println("The result is " + relationalSentencesCorpus);
+		core.getInformationHandler().put(relationalSentencesCorpus,
+				Context.getEmptyContext());
+
+		// System.out.println("The result is " + relationalSentencesCorpus);
 
 		System.out.println("Stopping the Relation Sentences Corpus Creator");
+	}
+
+	private RelationalSentencesCorpus createTestCorpus() {
+		String relationalSentenceURI = "http://thetestcorpus/drinventor";
+		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
+		relationalSentencesCorpus.setDescription("The test corpus");
+		relationalSentencesCorpus.setURI(relationalSentenceURI);
+		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
+
+		Document annotatedContentA = termCandidatesFinder
+				.findTermCandidates("A dog is a canine");
+		RelationalSentence relationalSentenceA = new RelationalSentence(
+				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(11L,
+						17L), "A dog is a canine", annotatedContentA.toXml());
+
+		Document annotatedContentB = termCandidatesFinder
+				.findTermCandidates("A dog, is a canine (and other things!)");
+
+		RelationalSentence relationalSentenceB = new RelationalSentence(
+				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(12L,
+						18L), "A dog, is a canine (and other things!)",
+				annotatedContentB.toXml());
+
+		relationalSentencesCorpus.getSentences().add(relationalSentenceA);
+
+		relationalSentencesCorpus.getSentences().add(relationalSentenceB);
+		return relationalSentencesCorpus;
 	}
 
 }

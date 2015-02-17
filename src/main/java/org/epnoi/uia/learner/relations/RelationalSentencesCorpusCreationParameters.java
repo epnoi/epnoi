@@ -6,6 +6,7 @@ import org.epnoi.uia.exceptions.EpnoiInitializationException;
 
 public class RelationalSentencesCorpusCreationParameters extends Parameters {
 
-	public static final String WORDNET_PARAMETERS ="WORDNET_PARAMETERS";
+	public static final String WORDNET_PARAMETERS = "WORDNET_PARAMETERS";
+	public static final String RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER = "RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER";
 
 }

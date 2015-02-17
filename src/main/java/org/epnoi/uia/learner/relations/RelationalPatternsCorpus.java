@@ -38,5 +38,12 @@ public class RelationalPatternsCorpus {
 		this.patterns = patterns;
 	}
 
+	@Override
+	public String toString() {
+		return "RelationalPatternsCorpus [type=" + type + ", patterns="
+				+ patterns + "]";
+	}
+
 	// ---------------------------------------------------------------------------------
+
 }

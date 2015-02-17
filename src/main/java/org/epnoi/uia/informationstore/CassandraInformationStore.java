@@ -91,7 +91,7 @@ public class CassandraInformationStore implements InformationStore {
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
 		dao = null;
-
+		
 	}
 
 	// ------------------------------------------------------------------------
