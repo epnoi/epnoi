@@ -1,6 +1,5 @@
 package org.epnoi.uia.learner.relations.lexical;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +14,9 @@ public class BigramSoftPatternModelBuilder {
 
 	private LexicalRelationalModelCreationParameters parameters;
 	private int maxPatternLenght;
-	private BigramSoftPatternModel model;
+	
 
 	private Map<String, Map<String, Double[]>> bigramProbability;
-	private Double[] nodePositionProbability;
 	private Map<String, Double[]> unigramProbability;
 	private final int LAPLACE_CONSTANT = 2;
 
@@ -37,7 +35,7 @@ public class BigramSoftPatternModelBuilder {
 		}
 
 		this.bigramProbability = new HashMap<>();
-		this.nodePositionProbability = new Double[maxPatternLenght];
+		//this.nodePositionProbability = new Double[maxPatternLenght];
 		this.unigramProbability = new HashMap<>();
 	}
 
@@ -170,7 +168,7 @@ public class BigramSoftPatternModelBuilder {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public BigramSoftPatternModel build() {
-		System.out.println("-> " + this.nodesInformation);
+		// System.out.println("-> " + this.nodesInformation);
 		for (Entry<String, NodeInformation> nodeInformationEntry : this.nodesInformation
 				.entrySet()) {
 			String nodeToken = nodeInformationEntry.getKey();
@@ -179,8 +177,12 @@ public class BigramSoftPatternModelBuilder {
 			_calculateBigramProbability(nodeToken, nodeInformation);
 
 		}
-
-		return this.model;
+		System.out.println("unigrams > " + this.unigramProbability);
+		System.out.println("bigrams >" + this.bigramProbability);
+		return new BigramSoftPatternModel(this.parameters,
+				this.unigramProbability, this.bigramProbability,0.5);
+		
+		
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -199,30 +201,41 @@ public class BigramSoftPatternModelBuilder {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
-	
+
 	private void _calculateBigramProbability(String nodeToken,
 			NodeInformation nodeInformation) {
+		HashMap<String, Double[]> followersBigramProbabilities = new HashMap<>();
 		for (Entry<String, Long[]> followerEntry : nodeInformation
 				.getFollowers().entrySet()) {
 			String followerToken = followerEntry.getKey();
 			Long[] followerCounts = followerEntry.getValue();
+			Double[] followerBigramProbability = new Double[maxPatternLenght];
 			for (int i = 0; i < maxPatternLenght; i++) {
 				if (nodeInformation.getPositions()[i] > 0) {
 					/*
-					System.out.println("For position" + i + " " + nodeToken
-							+ " appears " + nodeInformation.getPositions()[i]
-							+ "and is followed by " + followerToken + " "
-							+ followerCounts[i] + "times");*/
+					 * System.out.println("For position" + i + " " + nodeToken +
+					 * " appears " + nodeInformation.getPositions()[i] +
+					 * "and is followed by " + followerToken + " " +
+					 * followerCounts[i] + "times");
+					 */
 					Double bigramProbability = ((double) followerCounts[i] / (double) nodeInformation
 							.getPositions()[i]);
 					/*
-					System.out
-							.println("------------------------------------------:> "
-									+ bigramProbability);
-									*/
+					 * System.out
+					 * .println("------------------------------------------:> "
+					 * + bigramProbability);
+					 */
+					followerBigramProbability[i] = bigramProbability;
+				} else {
+					followerBigramProbability[i] = 0D;
 				}
+
 			}
+
+			followersBigramProbabilities.put(followerToken,
+					followerBigramProbability);
 		}
+		this.bigramProbability.put(nodeToken, followersBigramProbabilities);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
