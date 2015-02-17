@@ -97,7 +97,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			return Math.exp(probability);
 		}
 	}
-
+		
 	// ---------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -105,5 +105,17 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 		System.out.println("---> " + whatever);
 		whatever = Math.exp(whatever);
 		System.out.println("2---> " + whatever);
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "BigramSoftPatternModel [unigramProbability="
+				+ unigramProbability + ", bigramProbability="
+				+ bigramProbability + ", parmeters=" + parmeters
+				+ ", maxPatternLength=" + maxPatternLength + ", parameters="
+				+ parameters + ", interpolation_constant="
+				+ interpolation_constant + "]";
 	}
 }
