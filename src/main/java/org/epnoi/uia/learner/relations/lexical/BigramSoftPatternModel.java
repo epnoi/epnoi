@@ -1,15 +1,16 @@
 package org.epnoi.uia.learner.relations.lexical;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class BigramSoftPatternModel implements SoftPatternModel {
 
 	private Map<String, Double[]> unigramProbability;
 	private Map<String, Map<String, Double[]>> bigramProbability;
 	private LexicalRelationalModelCreationParameters parmeters;
-	private int maxPatternLength;
-	private LexicalRelationalModelCreationParameters parameters;
+	// private int maxPatternLength;
+	// private LexicalRelationalModelCreationParameters parameters;
 	private double interpolation_constant = 0.3d; // Set to this value using the
 													// experimental value set in
 													// Generic Soft Pattern
@@ -23,9 +24,8 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			Map<String, Double[]> unigramProbability,
 			Map<String, Map<String, Double[]>> bigramProbability,
 			double interpolationConstant) {
-		this.parameters = parameters;
-		this.maxPatternLength = (Integer) this.parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+		// this.maxPatternLength = (Integer) this.parameters
+		// .getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
 
 		this.bigramProbability = bigramProbability;
 		this.unigramProbability = unigramProbability;
@@ -97,7 +97,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			return Math.exp(probability);
 		}
 	}
-		
+
 	// ---------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -106,16 +106,40 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 		whatever = Math.exp(whatever);
 		System.out.println("2---> " + whatever);
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
 		return "BigramSoftPatternModel [unigramProbability="
-				+ unigramProbability + ", bigramProbability="
-				+ bigramProbability + ", parmeters=" + parmeters
-				+ ", maxPatternLength=" + maxPatternLength + ", parameters="
-				+ parameters + ", interpolation_constant="
-				+ interpolation_constant + "]";
+				+ _unigramProbabilityToString() + ", bigramProbability="
+				+ _bigramProbabilityToString() + ", parmeters=" + parmeters
+				+ ", interpolation_constant=" + interpolation_constant + "]";
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	private String _unigramProbabilityToString() {
+		String result = "";
+		for (Entry<String, Double[]> entry : this.unigramProbability.entrySet()) {
+			result += ", " + entry.getValue() + " "
+					+ Arrays.toString(entry.getValue());
+		}
+		return result;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	private String _bigramProbabilityToString() {
+		String result = "";
+		for (Entry<String, Map<String, Double[]>> entry : this.bigramProbability
+				.entrySet()) {
+			for (Entry<String, Double[]> innerEntry : entry.getValue()
+					.entrySet()) {
+				result += ",(" + entry.getValue() + "," + entry.getValue()
+						+ "]= " + Arrays.toString(innerEntry.getValue());
+			}
+		}
+		return result;
 	}
 }
