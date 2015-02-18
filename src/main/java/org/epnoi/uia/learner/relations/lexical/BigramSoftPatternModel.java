@@ -1,5 +1,6 @@
 package org.epnoi.uia.learner.relations.lexical;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,8 +9,8 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 	private Map<String, Double[]> unigramProbability;
 	private Map<String, Map<String, Double[]>> bigramProbability;
 	private LexicalRelationalModelCreationParameters parmeters;
-	private int maxPatternLength;
-	private LexicalRelationalModelCreationParameters parameters;
+	//private int maxPatternLength;
+//	private LexicalRelationalModelCreationParameters parameters;
 	private double interpolation_constant = 0.3d; // Set to this value using the
 													// experimental value set in
 													// Generic Soft Pattern
@@ -23,9 +24,8 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			Map<String, Double[]> unigramProbability,
 			Map<String, Map<String, Double[]>> bigramProbability,
 			double interpolationConstant) {
-		this.parameters = parameters;
-		this.maxPatternLength = (Integer) this.parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+		//this.maxPatternLength = (Integer) this.parameters
+			//	.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
 
 		this.bigramProbability = bigramProbability;
 		this.unigramProbability = unigramProbability;
@@ -114,8 +114,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 		return "BigramSoftPatternModel [unigramProbability="
 				+ unigramProbability + ", bigramProbability="
 				+ bigramProbability + ", parmeters=" + parmeters
-				+ ", maxPatternLength=" + maxPatternLength + ", parameters="
-				+ parameters + ", interpolation_constant="
+				+ ", interpolation_constant="
 				+ interpolation_constant + "]";
 	}
 }

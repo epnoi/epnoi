@@ -75,7 +75,7 @@ public class LexicalRelationalModelCreator {
 		parameters
 		.setParameter(
 				LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS,
-				"/JUNK");
+				"/JUNK/model.bin");
 		
 		Core core = CoreUtility.getUIACore();
 
@@ -92,7 +92,10 @@ public class LexicalRelationalModelCreator {
 		if (path == null) {
 			System.out.println("--> " + model);
 		} else {
+			System.out.println("--> " + model);
 			BigramSoftPatternModelSerializer.serialize(path, model);
+			BigramSoftPatternModel readedModel = BigramSoftPatternModelSerializer.deserialize(path);
+			System.out.println("r--> " + model);
 		}
 		System.out.println("Ending the Lexical Relational Model creation");
 	}
