@@ -202,7 +202,7 @@ class FilesystemHarvester {
 		Paper paper = new Paper();
 
 		String fileContent = _scanContent("file://" + filePath);
-		paper.setURI(filePath);
+		paper.setURI("file://" + filePath);
 		paper.setTitle(filePath);
 		paper.setDescription(fileContent);
 		return paper;
