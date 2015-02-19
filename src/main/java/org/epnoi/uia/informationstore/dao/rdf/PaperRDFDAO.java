@@ -32,12 +32,18 @@ public class PaperRDFDAO extends RDFDAO {
 	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 		String paperURI = paper.getURI();
-
-		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+		String queryExpression=null;
+		if(paper.getPubDate()!=null){
+		queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{PAPER_CLASS}> ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{PAPER_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{TITLE_PROPERTY}>  \"{PAPER_TITLE}\" . }";
-
+		}else{
+			queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+					+ "{ <{URI}> a <{PAPER_CLASS}> ; "
+					+ "<{TITLE_PROPERTY}>  \"{PAPER_TITLE}\" . }";
+		}
+		
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", paperURI)
