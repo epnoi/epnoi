@@ -95,7 +95,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 				paper.getDescription());
 
 		super.updateColumns(paper.getURI(), pairsOfNameValues,
-				ContentCassandraHelper.COLUMN_FAMILLY);
+				PaperCassandraHelper.COLUMN_FAMILLY);
 		/*
 		 * super.updateColumns(wikipediaPage.getURI(), pairsOfNameValues,
 		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);

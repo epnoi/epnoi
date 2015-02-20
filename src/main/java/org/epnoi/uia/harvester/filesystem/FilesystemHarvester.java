@@ -1,6 +1,9 @@
 package org.epnoi.uia.harvester.filesystem;
 
 import gate.Document;
+import gate.Utils;
+import gate.creole.ResourceInstantiationException;
+import gate.Factory;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -9,12 +12,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import org.apache.tika.metadata.Metadata;
@@ -26,22 +25,19 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
-import org.epnoi.model.Feed;
-import org.epnoi.model.InformationSource;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
-import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
+
+
 
 class FilesystemHarvester {
 	private Core core;
@@ -92,7 +88,11 @@ class FilesystemHarvester {
 			}
 		}
 
-		return handler.toString();
+		String content = handler.toString();
+		content = content.replaceAll("\\r\\n|\\r|\\n", " ");
+		content = content.replaceAll("\\s+", " ");
+		System.out.println("----> " + content);
+		return content;
 	}
 
 	// ----------------------------------------------------------------------------------------
@@ -128,7 +128,8 @@ class FilesystemHarvester {
 
 					Document annotatedContent = this.termCandidatesFinder
 							.findTermCandidates(paper.getDescription());
-					// System.out.println("------)> "+annotatedContent.toXml());
+
+					
 					Selector annotationSelector = new Selector();
 					annotationSelector.setProperty(SelectorHelper.URI,
 							paper.getURI());

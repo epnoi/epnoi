@@ -23,7 +23,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(Resource resource, Context context) {
+	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -32,7 +32,9 @@ public class PaperSOLRDAO extends SOLRDAO {
 		SolrInputDocument document = _indexPaper(paper, context);
 
 		try {
-			this.server.add(document);
+			
+				this.server.add(document);
+			
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
