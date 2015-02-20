@@ -19,29 +19,32 @@ public abstract class SOLRDAO {
 	private String solrURL = "http://localhost:8983";
 
 	protected SOLRInformationStoreParameters parameters;
-	protected HttpSolrServer server;
+	protected static HttpSolrServer server;
+	protected static boolean initialized = false;
 
 	abstract public void create(Resource resource);
 
 	abstract public void create(Resource resource, Context context);
-	
+
 	abstract public void remove(String URI);
 
 	// --------------------------------------------------------------------------------
 
-	public void init(InformationStoreParameters parameters) {
+	public synchronized void init(InformationStoreParameters parameters) {
+		if (!initialized) {
+			this.parameters = (SOLRInformationStoreParameters) parameters;
+			if ((this.parameters.getPort() != null)
+					&& (this.parameters.getHost() != null)) {
 
-		this.parameters = (SOLRInformationStoreParameters) parameters;
-		if ((this.parameters.getPort() != null)
-				&& (this.parameters.getHost() != null)) {
-
-			this.solrURL = "http://" + this.parameters.getHost() + ":"
-					+ this.parameters.getPort() + "/"
-					+ this.parameters.getPath() + "/"
-					+ this.parameters.getCore();
-			logger.info("Initializing in the URL " + this.solrURL+ "with the following paramters: "+this.parameters);
-			this.server = new HttpSolrServer(this.solrURL);
-
+				this.solrURL = "http://" + this.parameters.getHost() + ":"
+						+ this.parameters.getPort() + "/"
+						+ this.parameters.getPath() + "/"
+						+ this.parameters.getCore();
+				logger.info("Initializing in the URL " + this.solrURL
+						+ "with the following paramters: " + this.parameters);
+				server = new HttpSolrServer(this.solrURL);
+				initialized=true;
+			}
 		}
 	}
 
@@ -94,11 +97,10 @@ public abstract class SOLRDAO {
 		 * "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		 */
 		SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-				
-				Locale.ENGLISH);
+
+		Locale.ENGLISH);
 		return (dt1.format(date));
 
 	}
 
-	
 }

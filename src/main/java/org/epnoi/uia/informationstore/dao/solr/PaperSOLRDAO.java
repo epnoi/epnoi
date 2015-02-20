@@ -23,7 +23,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public void create(Resource resource, Context context) {
+	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -32,7 +32,9 @@ public class PaperSOLRDAO extends SOLRDAO {
 		SolrInputDocument document = _indexPaper(paper, context);
 
 		try {
-			this.server.add(document);
+			
+				this.server.add(document);
+			
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,13 +87,14 @@ public class PaperSOLRDAO extends SOLRDAO {
 		 */
 
 		String content = paper.getTitle() + " " + paper.getDescription();
-		//System.out.println("Contet> "+content);
-		
-		newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
-		
+		// System.out.println("Contet> "+content);
 
-		newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,
-				DateConverter.convertDateFormat(paper.getPubDate()));
+		newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY, content);
+
+		if (paper.getPubDate() != null) {
+			newDocument.addField(SOLRDAOHelper.DATE_PROPERTY,
+					DateConverter.convertDateFormat(paper.getPubDate()));
+		}
 		newDocument.addField(SOLRDAOHelper.INFORMATION_SOURCE_NAME_PROPERTY,
 				context.getParameters().get(Context.INFORMATION_SOURCE_NAME));
 

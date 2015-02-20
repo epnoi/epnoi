@@ -32,20 +32,26 @@ public class PaperRDFDAO extends RDFDAO {
 	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
 		String paperURI = paper.getURI();
-
-		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+		String queryExpression=null;
+		if(paper.getPubDate()!=null){
+		queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{PAPER_CLASS}> ; "
 				+ "<{PUB_DATE_PROPERTY}> \"{PAPER_PUB_DATE}\"^^xsd:dateTime ; "
 				+ "<{TITLE_PROPERTY}>  \"{PAPER_TITLE}\" . }";
-
+		}else{
+			queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
+					+ "{ <{URI}> a <{PAPER_CLASS}> ; "
+					+ "<{TITLE_PROPERTY}>  \"{PAPER_TITLE}\" . }";
+		}
+		
+		String datePubDate = (paper.getPubDate()==null)? "": convertDateFormat(paper.getPubDate());
 		queryExpression = queryExpression
 				.replace("{GRAPH}", this.parameters.getGraph())
 				.replace("{URI}", paperURI)
 				.replace("{PAPER_CLASS}", RDFHelper.PAPER_CLASS)
 				.replace("{PUB_DATE_PROPERTY}",
 						DublinCoreRDFHelper.DATE_PROPERTY)
-				.replace("{PAPER_PUB_DATE}",
-						convertDateFormat(paper.getPubDate()))
+				.replace("{PAPER_PUB_DATE}",datePubDate)
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
 				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
 		System.out.println("----> " + queryExpression);
@@ -125,7 +131,7 @@ public class PaperRDFDAO extends RDFDAO {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------
-	
+
 	String convertDateFormat(String dateExpression) {
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
 		knownPatterns.add(new SimpleDateFormat(
