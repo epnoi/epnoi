@@ -3,6 +3,7 @@ package org.epnoi.uia.learner.relations.lexical;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalPattern;
 import org.epnoi.uia.learner.relations.RelationalPatternsCorpus;
@@ -93,8 +94,13 @@ public class LexicalRelationalModelCreator {
 			System.out.println("--> " + model);
 		} else {
 			System.out.println("--> " + model);
-			BigramSoftPatternModelSerializer.serialize(path, model);
-			BigramSoftPatternModel readedModel = BigramSoftPatternModelSerializer.deserialize(path);
+			try {
+				BigramSoftPatternModelSerializer.serialize(path, model);
+				BigramSoftPatternModel readedModel = BigramSoftPatternModelSerializer.deserialize(path);
+			} catch (EpnoiResourceAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("r--> " + model);
 		}
 		System.out.println("Ending the Lexical Relational Model creation");

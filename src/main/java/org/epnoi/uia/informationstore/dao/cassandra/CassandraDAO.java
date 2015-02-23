@@ -235,7 +235,7 @@ public abstract class CassandraDAO {
 				trial++;
 				System.out.println("updateColumn " + e.getMessage());
 				try {
-					Thread.sleep(1000*trial);
+					Thread.sleep(5000*trial);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

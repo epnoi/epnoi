@@ -21,6 +21,8 @@ public class OntologyLearningParameters extends Parameters {
 	
 	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";
 	public static final String EXTRACT_TERMS = "EXTRACT_TERMS";
+	
+	public static final String HYPERNYM_MODEL_PATH = "/JUNK/drinventorcorpus/hypernymsmodel";
 
 	// ---------------------------------------------------------------------------------------------
 
