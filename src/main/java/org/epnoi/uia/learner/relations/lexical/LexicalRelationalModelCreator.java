@@ -97,6 +97,7 @@ public class LexicalRelationalModelCreator {
 			try {
 				BigramSoftPatternModelSerializer.serialize(path, model);
 				BigramSoftPatternModel readedModel = BigramSoftPatternModelSerializer.deserialize(path);
+				System.out.println("r--> " + readedModel);
 			} catch (EpnoiResourceAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

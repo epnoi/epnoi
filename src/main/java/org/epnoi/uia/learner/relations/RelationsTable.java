@@ -7,7 +7,7 @@ import org.epnoi.uia.learner.terms.TermVertice;
 
 public class RelationsTable {
 
-	public List<Relation> getRelations(TermVertice termToExpand, double probabilityThreshold) {
+	public List<Relation> getRelations(TermVertice termToExpand, double expansionProbabilityThreshold) {
 		// TODO Auto-generated method stub
 		return new ArrayList<Relation>();
 	}

@@ -599,7 +599,7 @@ public class TermsExtractor {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD,
+				OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 				hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);

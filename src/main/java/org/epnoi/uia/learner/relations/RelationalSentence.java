@@ -15,7 +15,7 @@ public class RelationalSentence {
 		super();
 		this.source = source;
 		this.target = target;
-		this.sentence = sentence;
+		this.sentence = sentence;	
 		this.annotatedSentence=annotatedSentence;
 
 	}

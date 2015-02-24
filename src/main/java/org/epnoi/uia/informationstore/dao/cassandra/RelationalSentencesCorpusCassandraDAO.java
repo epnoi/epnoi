@@ -36,7 +36,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	public void remove(String URI) {
 		super.deleteRow(URI,
 				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
-		
+
 	}
 
 	// --------------------------------------------------------------------------------
@@ -273,8 +273,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 				.findTermCandidates("A dog is a canine");
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
-						15L), "A dog is a canine",
-				annotatedContent.toXml());
+						15L), "A dog is a canine", annotatedContent.toXml());
 
 		RelationalSentencesCorpusCassandraDAO relationalSentencesCorpusCassandraDAO = new RelationalSentencesCorpusCassandraDAO();
 		relationalSentencesCorpusCassandraDAO.init();
@@ -330,18 +329,17 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		 * System.out.println("lo leido " + GateUtils.deserializeGATEDocument(
 		 * readedCorpus.getSentences().get(1) .getAnnotatedSentence()).toXml());
 		 */
-		
 
 		LexicalRelationalPatternGenerator lexicalRelationalPatternGenerator = new LexicalRelationalPatternGenerator();
-		try {
-			lexicalRelationalPatternGenerator.init(core);
-			System.out.println("generated pattern > "
-					+ lexicalRelationalPatternGenerator.generate(readedCorpus
-							.getSentences().get(1)));
-		} catch (EpnoiInitializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// lexicalRelationalPatternGenerator.init(core);
+		System.out.println("generated pattern > "
+				+ lexicalRelationalPatternGenerator.generate(readedCorpus
+						.getSentences().get(1)));
+		// } catch (EpnoiInitializationException e) {
+		// TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		/*
 		 * relationalSentencesCorpusCassandraDAO.init();

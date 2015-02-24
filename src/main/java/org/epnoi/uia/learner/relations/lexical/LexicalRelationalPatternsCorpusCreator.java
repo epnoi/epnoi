@@ -17,7 +17,7 @@ public class LexicalRelationalPatternsCorpusCreator {
 	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
 		this.patternsGenerator = new LexicalRelationalPatternGenerator();
-		this.patternsGenerator.init(core);
+		//this.patternsGenerator.init(core);
 
 	}
 

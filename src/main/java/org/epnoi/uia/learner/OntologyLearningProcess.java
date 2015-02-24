@@ -49,7 +49,7 @@ public class OntologyLearningProcess {
 
 		double hypernymRelationsThreshold = Double
 				.valueOf((String) this.ontologyLearningParameters
-						.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD));
+						.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD));
 		boolean extractTerms = (boolean) this.ontologyLearningParameters
 				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
 		if (extractTerms) {
@@ -58,7 +58,7 @@ public class OntologyLearningProcess {
 			this.termsTable = this.termExtractor.retrieve();
 		}
 
-		this.relationsTable = RelationsExtractor.extract();
+		this.relationsTable = this.relationsTableExtractor.extract();
 		
 		System.exit(0);
 
@@ -114,7 +114,7 @@ public class OntologyLearningProcess {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD,
+				OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 				hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
