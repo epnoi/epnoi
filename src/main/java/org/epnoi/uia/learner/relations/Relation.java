@@ -1,57 +1,70 @@
 package org.epnoi.uia.learner.relations;
 
 import org.epnoi.model.Term;
-import org.epnoi.uia.learner.terms.AnnotatedWord;
-import org.epnoi.uia.learner.terms.TermMetadata;
 
 public class Relation {
-	private Term origin;
-	private Term desination;
+	private String URI;
+	private Term source;
+	private Term target;
 	private String provenanceSentence;
+	private double relationhood;
 
-	//------------------------------------------------------------------------------------------------------------
-	
-	public Term getDestionation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	//------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------
 
-	public Term getOrigin() {
-		return origin;
+	public Term getSource() {
+		return source;
 	}
 
-	//------------------------------------------------------------------------------------------------------------
-	
-	public void setOrigin(Term origin) {
-		this.origin = origin;
+	// ------------------------------------------------------------------------------------------------------------
+
+	public void setSource(Term source) {
+		this.source = source;
 	}
 
-	//------------------------------------------------------------------------------------------------------------
-	
-	public Term getDesination() {
-		return desination;
-	}
+	// ------------------------------------------------------------------------------------------------------------
 
-	//------------------------------------------------------------------------------------------------------------
-
-	public void setDesination(Term desination) {
-		this.desination = desination;
-	}
-
-	//------------------------------------------------------------------------------------------------------------
-	
 	public String getProvenanceSentence() {
 		return provenanceSentence;
 	}
 
-	//------------------------------------------------------------------------------------------------------------
-	
+	// ------------------------------------------------------------------------------------------------------------
+
 	public void setProvenanceSentence(String provenanceSentence) {
 		this.provenanceSentence = provenanceSentence;
 	}
 
-	//------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------
+
+	public Term getTarget() {
+		return target;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public void setTarget(Term target) {
+		this.target = target;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public double getRelationhood() {
+		return relationhood;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public void setRelationhood(double relationhood) {
+		this.relationhood = relationhood;
+	}
+
+	public String getURI() {
+		return URI;
+	}
+
+	public void setURI(String uRI) {
+		URI = uRI;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
 
 }

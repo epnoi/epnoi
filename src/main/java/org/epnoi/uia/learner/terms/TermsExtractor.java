@@ -327,15 +327,10 @@ public class TermsExtractor {
 				// System.out.println("term(" + term.getWord() + ")> " + term);
 
 				Term newTerm = new Term();
-				newTerm.setURI(aDomain.getWord()
-						+ "/"
-						+ StringUtils.replace(term.getWord(), "[^a-zA-Z0-9]",
-								"_"));
+				//The term URI is obtained using an auxiliary function
+				newTerm.setURI(Term.buildURI(term.getWord(), aDomain.getWord()));
 				newTerm.setAnnotatedTerm(term);
-				/*
-				 * System.out.println("Introducing--------> " +
-				 * newTerm.getURI());
-				 */
+				
 				core.getInformationHandler().put(newTerm,
 						Context.getEmptyContext());
 				/*
@@ -598,9 +593,10 @@ public class TermsExtractor {
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
-				hyperymMinimumThreshold);
+		ontologyLearningParameters
+				.setParameter(
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
@@ -616,7 +612,7 @@ public class TermsExtractor {
 		domainGatherer.init(core, ontologyLearningParameters);
 
 		DomainsTable domainsTable = domainGatherer.gather();
-		
+
 		termExtractor.init(core, domainsTable, ontologyLearningParameters);
 		// termExtractor.removeTerms();
 		termExtractor.extractTerms();
