@@ -67,7 +67,7 @@ public abstract class CassandraDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public void init() {
+	public synchronized void init() {
 		if (!initialized) {
 			CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER,
 					"localhost:9160");
@@ -193,6 +193,13 @@ public abstract class CassandraDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * 
+	 * @param key
+	 *            The URI of the resoruce to be created
+	 * @param columnFamilyName
+	 *            The columngFamilyName of the resource
+	 */
 	protected void createRow(String key, String columnFamilyName) {
 
 		ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates
@@ -204,7 +211,7 @@ public abstract class CassandraDAO {
 
 		} catch (HectorException e) {
 
-			System.out.println(e.getMessage());
+			System.out.println("AQUI" + e.getMessage());
 		}
 	}
 
@@ -212,19 +219,31 @@ public abstract class CassandraDAO {
 
 	protected void updateColumn(String key, String name, String value,
 			String columnFamilyName) {
-		ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates
-				.get(columnFamilyName).createUpdater(key);
-		updater.setString(name, value);
+		int maxTrials = 3;
+		int trial = 0;
+		boolean success = false;
+		while (!success && trial < maxTrials) {
+			ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates
+					.get(columnFamilyName).createUpdater(key);
+			updater.setString(name, value);
 
-		try {
-			CassandraDAO.columnFamilyTemplates.get(columnFamilyName).update(
-					updater);
-
-		} catch (HectorException e) {
-
-			System.out.println(e.getMessage());
+			try {
+				CassandraDAO.columnFamilyTemplates.get(columnFamilyName)
+						.update(updater);
+				success = true;
+			} catch (HectorException e) {
+				trial++;
+				System.out.println("updateColumn " + e.getMessage());
+				try {
+					Thread.sleep(5000*trial);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			updater = null;
 		}
-		updater = null;
+		
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -247,13 +266,22 @@ public abstract class CassandraDAO {
 		}
 
 		colums.clear();
-		colums=null;
+		colums = null;
 		mutator.execute();
-		mutator =null;
+		mutator = null;
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
-
+	/**
+	 * 
+	 * @param key
+	 *            The URI of the element that we wish to access
+	 * @param name
+	 *            The name of the column
+	 * @param columnFamilyName
+	 *            The name of the Cassandra column family
+	 * @return
+	 */
 	protected String readColumn(String key, String name, String columnFamilyName) {
 		try {
 			ColumnFamilyResult<String, String> res = CassandraDAO.columnFamilyTemplates
@@ -318,7 +346,7 @@ public abstract class CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> iterator = new ColumnSliceIterator<String, String, String>(
 				query, null, "\uFFFF", false);
-		
+
 		return iterator;
 
 	}
@@ -342,8 +370,6 @@ public abstract class CassandraDAO {
 
 	}
 
-	public abstract boolean exists(Selector selector); 
-		
-	
+	public abstract boolean exists(Selector selector);
 
 }

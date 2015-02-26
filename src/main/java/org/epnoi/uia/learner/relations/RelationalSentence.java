@@ -6,15 +6,17 @@ public class RelationalSentence {
 	OffsetRangeSelector source;
 	OffsetRangeSelector target;
 	String sentence;
+	String annotatedSentence;
 
 	// --------------------------------------------------------------------------------------
 
 	public RelationalSentence(OffsetRangeSelector source,
-			OffsetRangeSelector target, String sentence) {
+			OffsetRangeSelector target, String sentence, String annotatedSentence) {
 		super();
 		this.source = source;
 		this.target = target;
-		this.sentence = sentence;
+		this.sentence = sentence;	
+		this.annotatedSentence=annotatedSentence;
 
 	}
 
@@ -56,10 +58,28 @@ public class RelationalSentence {
 
 	// --------------------------------------------------------------------------------------
 
+
 	@Override
 	public String toString() {
 		return "RelationalSentence [source=" + source + ", target=" + target
-				+ ", sentence=" + sentence + "]";
+				+ ", sentence=" + sentence+"]";
+				/*
+				+ ", annotatedSentence="
+				+ annotatedSentence + "]";
+*/
+	}
+
+
+	// --------------------------------------------------------------------------------------
+
+	public String getAnnotatedSentence() {
+		return annotatedSentence;
+	}
+
+	// --------------------------------------------------------------------------------------
+
+	public void setAnnotatedSentence(String annotatedSentence) {
+		this.annotatedSentence = annotatedSentence;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------

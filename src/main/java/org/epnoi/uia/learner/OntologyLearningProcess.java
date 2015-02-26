@@ -9,6 +9,7 @@ import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.relations.Relation;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
 import org.epnoi.uia.learner.relations.RelationsTable;
@@ -21,33 +22,49 @@ public class OntologyLearningProcess {
 	private TermsExtractor termExtractor;
 	private TermsTable termsTable;
 	private RelationsTable relationsTable;
+	private RelationsExtractor relationsTableExtractor;
+
+	private DomainsGatherer domainsGatherer;
+	private DomainsTable domainsTable;
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void init(Core core, Parameters ontologyLearningParameters) {
+	public void init(Core core, Parameters ontologyLearningParameters)
+			throws EpnoiInitializationException {
+		this.ontologyLearningParameters = ontologyLearningParameters;
+
+		this.domainsGatherer = new DomainsGatherer();
+		this.domainsTable = this.domainsGatherer.gather();
+
 		this.termExtractor = new TermsExtractor();
-		this.termExtractor.init(core,ontologyLearningParameters);
+		this.termExtractor.init(core, this.domainsTable,
+				ontologyLearningParameters);
+
+		this.relationsTableExtractor = new RelationsExtractor();
+		this.relationsTableExtractor.init(core, this.domainsTable,
+				ontologyLearningParameters);
 
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void execute(Parameters ontologyLearningParameters) {
-
-		this.ontologyLearningParameters = ontologyLearningParameters;
+	public void execute() {
 
 		double hypernymRelationsThreshold = Double
 				.valueOf((String) this.ontologyLearningParameters
-						.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD));
+						.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD));
 		boolean extractTerms = (boolean) this.ontologyLearningParameters
 				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
 		if (extractTerms) {
-			this.termsTable = this.termExtractor.extract();	 
+			this.termsTable = this.termExtractor.extract();
 		} else {
 			this.termsTable = this.termExtractor.retrieve();
 		}
 
-		this.relationsTable = RelationsExtractor.extract();
+		this.relationsTable = this.relationsTableExtractor
+				.extract(this.termsTable);
+
+		System.exit(0);
 
 		OntologyGraph ontologyNoisyGraph = OntologyGraphFactory.build(
 				this.ontologyLearningParameters, this.termsTable,
@@ -62,8 +79,7 @@ public class OntologyLearningProcess {
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
 						termVerticeToExpand, hypernymRelationsThreshold)) {
-					Term destinationTerm = relation
-							.getDestionation();
+					Term destinationTerm = relation.getTarget();
 					TermVertice destinationTermVertice = new TermVertice(
 							destinationTerm);
 					ontologyNoisyGraph.addEdge(termVerticeToExpand,
@@ -101,9 +117,10 @@ public class OntologyLearningProcess {
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD,
-				hyperymMinimumThreshold);
+		ontologyLearningParameters
+				.setParameter(
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
@@ -111,13 +128,16 @@ public class OntologyLearningProcess {
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();
-		
+
 		OntologyLearningProcess ontologyLearningProcess = new OntologyLearningProcess();
 
-		ontologyLearningProcess.init(core, ontologyLearningParameters);
-		
-		
-		
+		try {
+			ontologyLearningProcess.init(core, ontologyLearningParameters);
+		} catch (EpnoiInitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ontologyLearningProcess.execute();
 		System.out.println("Ending the Ontology Learning Process!");
 	}
 

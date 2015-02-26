@@ -232,7 +232,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				"[" + annotatedContent.getType() + "]"
 						+ annotatedContent.getContent(),
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
 	}
 

@@ -91,7 +91,7 @@ public class CassandraInformationStore implements InformationStore {
 
 		dao.remove(selector.getProperty(SelectorHelper.URI));
 		dao = null;
-
+		
 	}
 
 	// ------------------------------------------------------------------------
@@ -129,7 +129,7 @@ public class CassandraInformationStore implements InformationStore {
 	public Content<String> getContent(Selector selector) {
 		ContentCassandraDAO dao = new ContentCassandraDAO();
 		dao.init();
-		Content<String> content = dao.getAnnotatedContent(selector);
+		Content<String> content = dao.getContent(selector);
 		dao = null;
 		return content;
 	}

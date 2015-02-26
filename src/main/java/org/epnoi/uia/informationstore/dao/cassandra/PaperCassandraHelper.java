@@ -8,5 +8,6 @@ public interface PaperCassandraHelper {
 	public static final String TITLE = "TITLE";
 
 	public static final String AUTHORS = "AUTHORS";
+	public static final String CONTENT = "CONTENT";
 
 }

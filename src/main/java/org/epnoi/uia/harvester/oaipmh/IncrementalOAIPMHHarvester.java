@@ -141,9 +141,6 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 			String identifier = showIdentifier(recordElement);
 
-			System.out.println("Harvesting paper ------------------->"
-					+ identifier);
-
 			if (!core.getInformationHandler().contains(identifier,
 					RDFHelper.PAPER_CLASS)) {
 
@@ -157,20 +154,25 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				Content<String> content = core.getInformationHandler()
 						.getContent(selector);
-
+				//System.out.println("The content is >" + content);
 				Document annotatedContent = this.termCandidatesFinder
 						.findTermCandidates(content.getContent());
 				// System.out.println("------)> " + annotatedContent.toXml());
 
-				
-				
 				Selector annotationSelector = new Selector();
-				annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
-				annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, paper.getURI()+"/"+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-				annotationSelector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
-				
-				
-				core.getInformationHandler().setAnnotatedContent(annotationSelector,
+				annotationSelector.setProperty(SelectorHelper.URI,
+						paper.getURI());
+				annotationSelector
+						.setProperty(
+								SelectorHelper.ANNOTATED_CONTENT_URI,
+								paper.getURI()
+										+ "/"
+										+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				annotationSelector.setProperty(SelectorHelper.TYPE,
+						RDFHelper.PAPER_CLASS);
+
+				core.getInformationHandler().setAnnotatedContent(
+						annotationSelector,
 						new Content<>(annotatedContent.toXml(),
 								ContentHelper.CONTENT_TYPE_TEXT_XML));
 
