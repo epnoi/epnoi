@@ -41,15 +41,26 @@ public class TermsTable {
 	// --------------------------------------------------------------------
 
 	public void addTerm(Term term) {
-
 		this.orderedTerms.put(term, term.getURI());
+		this.terms.put(term.getURI(), term);
+	}
 
+	// --------------------------------------------------------------------
+
+	public Term getTerm(String URI) {
+		return this.terms.get(URI);
+	}
+
+	// --------------------------------------------------------------------
+
+	public boolean hasTerm(String URI) {
+		return (this.terms.get(URI) != null);
 	}
 
 	// --------------------------------------------------------------------
 
 	public int size() {
-		return orderedTerms.size();
+		return terms.size();
 	}
 
 	// --------------------------------------------------------------------

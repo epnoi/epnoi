@@ -26,6 +26,8 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.DomainsGatherer;
+import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningParameters;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 
@@ -33,28 +35,36 @@ public class TermsExtractor {
 	private static final Logger logger = Logger.getLogger(TermsExtractor.class
 			.getName());
 	private Core core;
-	private List<String> consideredDomains;
-	private String targetDomain;
-	String consideredResources;
-	Map<String, List<String>> resourcePerConsideredDomain;
-	TermsIndex termsIndex;
-	ResourcesIndex resourcesIndex;
-	DomainsIndex domainsIndex;
-	double cValueWeight = 0.5;
-	double domainPertinenceWeight = 0.3;
-	double domainConsensusWeight = 1 - cValueWeight - domainPertinenceWeight;
+	// private List<String> consideredDomains;
+	// private String targetDomain;
+	private String consideredResources;
+	// private Map<String, List<String>> resourcePerConsideredDomain;
+	private TermsIndex termsIndex;
+	private ResourcesIndex resourcesIndex;
+	private DomainsIndex domainsIndex;
+	private double cValueWeight = 0.5;
+	private double domainPertinenceWeight = 0.3;
+	private double domainConsensusWeight = 1 - cValueWeight
+			- domainPertinenceWeight;
+
 	Parameters parameters;
+
+	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
-	public void init(Core core, Parameters parameters) {
+	public void init(Core core, DomainsTable domainsTable, Parameters parameters) {
 		logger.info("Initializing the TermExtractor for the domains ");
 		this.core = core;
 		this.parameters = parameters;
 
-		this.resourcePerConsideredDomain = new HashMap<>();
-		this.consideredDomains = (List<String>) parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
+		// this.resourcePerConsideredDomain = new HashMap<>();
+		/*
+		 * this.consideredDomains = (List<String>) parameters
+		 * .getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
+		 */
+
+		this.domainsTable = domainsTable;
 		this.consideredResources = (String) parameters
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
 		this.termsIndex = new TermsIndex();
@@ -70,14 +80,13 @@ public class TermsExtractor {
 	public void gatherResourcesPerConsideredDomain() {
 
 		System.out.print("Considered---> " + this.core);
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
 					domain, this.consideredResources);
 
-			this.resourcePerConsideredDomain.put(domain,
+			this.domainsTable.getDomains().put(domain,
 					_cleanResources(foundURIs));
-			System.out.println("The considered domain " + domain + " has "
-					+ foundURIs.size() + " elements");
+
 		}
 
 		// System.out.println("----> "+this.resourcePerConsideredDomain);
@@ -99,8 +108,8 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void indexResources() {
-		this.gatherResourcesPerConsideredDomain();
-		for (String domain : this.consideredDomains) {
+
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 			System.out
 					.println("Indexing the domain:> "
 							+ domain
@@ -113,8 +122,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexDomainResoures(String domain) {
-		List<String> resourcesURIs = this.resourcePerConsideredDomain
-				.get(domain);
+		List<String> resourcesURIs = this.domainsTable.getDomains().get(domain);
 		for (String resourceURI : resourcesURIs) {
 			System.out.println("Indexing the element " + resourceURI);
 			_indexResource(domain, resourceURI);
@@ -210,7 +218,7 @@ public class TermsExtractor {
 	private void normalizeAnDeriveMeasures() {
 
 		logger.info("Starting the normalization of cValue and Domain Consensus values");
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 			double maxCValue = this.domainsIndex.lookUp(domain).getAnnotation()
 					.getMaxCValue();
 			double minCValue = this.domainsIndex.lookUp(domain).getAnnotation()
@@ -261,7 +269,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void showResult() {
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 
 			System.out
 					.println("Domains----------------------------------------------------------");
@@ -319,15 +327,10 @@ public class TermsExtractor {
 				// System.out.println("term(" + term.getWord() + ")> " + term);
 
 				Term newTerm = new Term();
-				newTerm.setURI(aDomain.getWord()
-						+ "/"
-						+ StringUtils.replace(term.getWord(), "[^a-zA-Z0-9]",
-								"_"));
+				//The term URI is obtained using an auxiliary function
+				newTerm.setURI(Term.buildURI(term.getWord(), aDomain.getWord()));
 				newTerm.setAnnotatedTerm(term);
-				/*
-				 * System.out.println("Introducing--------> " +
-				 * newTerm.getURI());
-				 */
+				
 				core.getInformationHandler().put(newTerm,
 						Context.getEmptyContext());
 				/*
@@ -356,7 +359,7 @@ public class TermsExtractor {
 	private void calculateCValues() {
 
 		logger.info("Starting the calculation of the cValues");
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 			TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 					null);
 			for (AnnotatedWord<TermMetadata> termCandidate : this.termsIndex
@@ -396,7 +399,7 @@ public class TermsExtractor {
 
 	private void calculateDomainPertinence() {
 		logger.info("Calculating the domain pertinence");
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 			long totalOcurrences = this.domainsIndex.lookUp(domain)
 					.getAnnotation().getNumberOfTerms();
 
@@ -409,7 +412,8 @@ public class TermsExtractor {
 										.getOcurrences())
 										/ ((double) totalOcurrences));
 				List<Double> ocurrencesInOtherDomains = new ArrayList<>();
-				for (String otherDomain : this.consideredDomains) {
+				for (String otherDomain : this.domainsTable
+						.getConsideredDomains()) {
 					AnnotatedWord<TermMetadata> term = this.termsIndex.lookUp(
 							otherDomain, termCandidate.getWord());
 
@@ -439,7 +443,7 @@ public class TermsExtractor {
 
 	private void calculateDomainConsensus() {
 		logger.info("Calculating the domain pertinence");
-		for (String domain : this.consideredDomains) {
+		for (String domain : this.domainsTable.getConsideredDomains()) {
 
 			for (String resourceURI : this.domainsIndex.getDomain(domain)
 					.getAnnotation().getResources()) {
@@ -589,9 +593,10 @@ public class TermsExtractor {
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_RELATION_THRESHOLD,
-				hyperymMinimumThreshold);
+		ontologyLearningParameters
+				.setParameter(
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
@@ -603,8 +608,12 @@ public class TermsExtractor {
 				consideredResources);
 
 		Core core = CoreUtility.getUIACore();
+		DomainsGatherer domainGatherer = new DomainsGatherer();
+		domainGatherer.init(core, ontologyLearningParameters);
 
-		termExtractor.init(core, ontologyLearningParameters);
+		DomainsTable domainsTable = domainGatherer.gather();
+
+		termExtractor.init(core, domainsTable, ontologyLearningParameters);
 		// termExtractor.removeTerms();
 		termExtractor.extractTerms();
 		termExtractor.storeResult();

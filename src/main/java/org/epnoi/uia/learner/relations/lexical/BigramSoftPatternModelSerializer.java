@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.epnoi.uia.exceptions.EpnoiResourceAccessException;
+
 public class BigramSoftPatternModelSerializer {
 	// ------------------------------------------------------------------------------------
-	public static void serialize(String filename, BigramSoftPatternModel model) {
+	public static void serialize(String filename, BigramSoftPatternModel model) throws EpnoiResourceAccessException {
 		
 		// save the object to file
 		
@@ -29,7 +31,7 @@ public class BigramSoftPatternModelSerializer {
 
 	// ------------------------------------------------------------------------------------
 
-	public static BigramSoftPatternModel deserialize(String filename) {
+	public static BigramSoftPatternModel deserialize(String filename) throws EpnoiResourceAccessException {
 		BigramSoftPatternModel model = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
@@ -39,7 +41,7 @@ public class BigramSoftPatternModelSerializer {
 			model = (BigramSoftPatternModel) in.readObject();
 			in.close();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new EpnoiResourceAccessException(ex.getMessage());
 		}
 		return model;
 	}

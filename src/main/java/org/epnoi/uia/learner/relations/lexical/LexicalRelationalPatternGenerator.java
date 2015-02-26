@@ -85,8 +85,7 @@ public class LexicalRelationalPatternGenerator {
 			} else if (insideWindow) {
 				node.setOriginialToken(annotation.getFeatures().get("string")
 						.toString());
-				if (annotation.getFeatures().get("category")
-						.equals("VBZ")) {
+				if (annotation.getFeatures().get("category").equals("VBZ")) {
 					node.setGeneratedToken(annotation.getFeatures()
 							.get("string").toString());
 				} else {
@@ -104,9 +103,87 @@ public class LexicalRelationalPatternGenerator {
 
 	// --------------------------------------------------------------------------------------------------------
 
-	public void init(Core core) throws EpnoiInitializationException {
+	public List<LexicalRelationalPattern> generate(Annotation source,
+			Annotation target, Document document) {
+		// LexicalRelationalPattern pattern = new LexicalRelationalPattern();
+		// return pattern;
+		List<LexicalRelationalPattern> generatedPatterns = new ArrayList<>();
 
+		Long sourceStartOffset = source.getStartNode().getOffset();
+		Long targetStartOffset = target.getStartNode().getOffset();
+
+		Long sourceEndOffset = source.getEndNode().getOffset();
+		Long targetEndOffset = target.getEndNode().getOffset();
+		
+		Long windowStartOffset;
+		Long windowEndOffset;
+		if (sourceEndOffset< targetStartOffset){
+			windowStartOffset=sourceStartOffset;
+			windowEndOffset=targetEndOffset;
+		}else{
+			windowStartOffset=targetStartOffset;
+			windowEndOffset= sourceEndOffset;
+		}
+
+		LexicalRelationalPattern lexicalRelationalPattern = new LexicalRelationalPattern();
+
+		List<Annotation> orderedAnnotations = new ArrayList<>();
+
+		for (Annotation annotation : document.getAnnotations()
+				.get(NLPAnnotationsHelper.TOKEN).get(windowStartOffset, windowEndOffset)) {
+			orderedAnnotations.add(annotation);
+
+		}
+		Collections.sort(orderedAnnotations, this.annotationsComparator);
+
+		for (Annotation annotation : orderedAnnotations) {
+
+			LexicalRelationalPatternNode node = new LexicalRelationalPatternNode();
+
+		
+
+			if (annotation.getStartNode().getOffset().equals(source.getStartNode().getOffset())
+					&& annotation.getEndNode().getOffset()
+							.equals(source.getEndNode().getOffset())) {
+				System.out.println("IT WAS SOURCE! "
+						+ annotation.getFeatures().get("string"));
+				
+				node.setOriginialToken(annotation.getFeatures().get("string")
+						.toString());
+				node.setGeneratedToken("<SOURCE>");
+				lexicalRelationalPattern.getNodes().add(node);
+
+			} else if (annotation.getStartNode().getOffset()
+					.equals(target.getStartNode().getOffset())
+					&& annotation.getEndNode().getOffset()
+							.equals(target.getEndNode().getOffset())) {
+				System.out.println("IT WAS TARGET! "
+						+ annotation.getFeatures().get("string"));
+				node.setOriginialToken(annotation.getFeatures().get("string")
+						.toString());
+				node.setGeneratedToken("<TARGET>");
+				
+				lexicalRelationalPattern.getNodes().add(node);
+			} else {
+				node.setOriginialToken(annotation.getFeatures().get("string")
+						.toString());
+				if (annotation.getFeatures().get("category").equals("VBZ")) {
+					node.setGeneratedToken(annotation.getFeatures()
+							.get("string").toString());
+				} else {
+					node.setGeneratedToken(annotation.getFeatures()
+							.get("category").toString());
+				}
+
+				lexicalRelationalPattern.getNodes().add(node);
+			}
+		}
+
+		generatedPatterns.add(lexicalRelationalPattern);
+		return generatedPatterns;
 	}
+
+	// --------------------------------------------------------------------------------------------------------
 
 	class AnnotationsComparator implements Comparator<Annotation> {
 
