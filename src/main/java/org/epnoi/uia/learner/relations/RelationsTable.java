@@ -15,6 +15,7 @@ public class RelationsTable {
 
 	private Map<String, Relation> relations;
 	private Map<Relation, String> orderedRelations;
+	private Map<Term, List<Relation>> relationsBySource;
 
 	// --------------------------------------------------------------------
 
@@ -22,14 +23,15 @@ public class RelationsTable {
 
 		this.orderedRelations = new TreeMap<Relation, String>(
 				new RelationsComparator());
-		this.relations = new HashMap<String, Relation>();
+		this.relations = new HashMap<>();
+		this.relationsBySource = new HashMap<>();
 	}
 
 	// --------------------------------------------------------------------
 
 	public List<Relation> getRelations(TermVertice termToExpand,
 			double expansionProbabilityThreshold) {
-		// TODO Auto-generated method stub
+		this.relationsBySource.get(termToExpand.getTerm());
 		return new ArrayList<Relation>();
 	}
 
@@ -42,8 +44,8 @@ public class RelationsTable {
 		int i = 0;
 		while (i < initialNumberOfRelations && relationsIt.hasNext()) {
 
-			Relation term = relationsIt.next();
-			mostProblableRelations.add(term);
+			Relation relation = relationsIt.next();
+			mostProblableRelations.add(relation);
 			i++;
 		}
 
@@ -69,9 +71,44 @@ public class RelationsTable {
 
 	// --------------------------------------------------------------------
 
-	public void addRelation(Relation relation) {
-		this.orderedRelations.put(relation, relation.getURI());
-		this.relations.put(relation.getURI(), relation);
+	public void addRelation(String domain, Term source, Term target,
+			String type, String provenanceSentence, double relationhood) {
+
+		String relationURI = Relation.buildURI(source.getAnnotatedTerm()
+				.getWord(), source.getAnnotatedTerm().getWord(), type, domain);
+
+		if (this.hasRelation(relationURI)) {
+			// If the relation is already in the Relations Table, we have to
+			// update just
+			// add the new provenance sentence along with its relationhood
+			Relation storedRelation = this.getRelation(relationURI);
+			storedRelation.addProvenanceSentence(provenanceSentence,
+					relationhood);
+
+			// Since the relationhood of the relation has been update, we must
+			// update its position in the ordered MapTree
+			this.orderedRelations.remove(relationURI);
+			this.orderedRelations.put(storedRelation, relationURI);
+
+		} else {
+			// If the relation is not already stored, we simply add it
+			Relation relation = new Relation();
+
+			relation.setSource(source);
+			relation.setTarget(target);
+
+			relation.addProvenanceSentence(provenanceSentence, relationhood);
+
+			this.orderedRelations.put(relation, relation.getURI());
+			this.relations.put(relation.getURI(), relation);
+			List<Relation> relations = this.relationsBySource.get(relation
+					.getSource());
+			if (relations == null) {
+				relations = new ArrayList<>();
+				this.relationsBySource.put(relation.getSource(), relations);
+			}
+			relations.add(relation);
+		}
 	}
 
 	// --------------------------------------------------------------------

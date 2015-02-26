@@ -12,6 +12,7 @@ import gate.util.InvalidOffsetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
@@ -33,7 +34,8 @@ import org.epnoi.uia.learner.relations.lexical.SoftPatternModel;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class RelationsExtractor {
-
+	private static final Logger logger = Logger
+			.getLogger(RelationsExtractor.class.getName());
 	private Core core;
 	private SoftPatternModel softPatternModel;
 	private Parameters parameters;
@@ -48,6 +50,10 @@ public class RelationsExtractor {
 
 	public void init(Core core, DomainsTable domainsTable, Parameters parameters)
 			throws EpnoiInitializationException {
+		logger.info("Initializing the Relations Extractor");
+		logger.info("core: " + core);
+		logger.info("domainsTable: " + domainsTable);
+		logger.info("parameters: " + parameters);
 		this.core = core;
 		this.parameters = parameters;
 		String hypernymModelPath = (String) parameters
@@ -67,6 +73,7 @@ public class RelationsExtractor {
 	// ------------------------------------------------------------------------------------------------------------------------------------
 
 	public RelationsTable extract(TermsTable termsTable) {
+		logger.info("Extracting the Relations Table");
 		this.termsTable = termsTable;
 		RelationsTable relationsTable = new RelationsTable();
 		// The relations finding task is only performed in the target domain,
@@ -83,7 +90,7 @@ public class RelationsExtractor {
 	private void _findRelationsInResource(String domainResourceURI) {
 		Document annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
 		AnnotationSet sentenceAnnotations = annotatedResource.getAnnotations()
-				.get("Sentence");
+				.get(NLPAnnotationsHelper.SENTENCE);
 		DocumentContent sentenceContent = null;
 		AnnotationSet resourceAnnotations = annotatedResource.getAnnotations();
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
@@ -126,7 +133,7 @@ public class RelationsExtractor {
 					.getContent(sentenceStartOffset, sentenceEndOffset)
 					.toString();
 		} catch (InvalidOffsetException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -134,7 +141,7 @@ public class RelationsExtractor {
 			for (int j = i + 1; j < termAnnotations.size(); j++) {
 				Annotation source = termAnnotations.get(i);
 				Annotation target = termAnnotations.get(j);
-				//For each pair of terms we check both as target and as source
+				// For each pair of terms we check both as target and as source
 				_extractProbableRelationsFromSentence(source, target,
 						annotatedResource, sentenceContent);
 				_extractProbableRelationsFromSentence(target, source,
@@ -153,7 +160,6 @@ public class RelationsExtractor {
 			double relationProbability = this.softPatternModel
 					.calculatePatternProbability(pattern);
 			if (relationProbability > this.hypernymExtractionThreshold) {
-				Relation relation = new Relation();
 
 				String sourceToken = (String) source.getFeatures()
 						.get("string");
@@ -165,13 +171,10 @@ public class RelationsExtractor {
 				Term targetTerm = this.termsTable.getTerm(Term.buildURI(
 						targetToken, this.targetDomain));
 
-				relation.setSource(sourceTerm);
-				relation.setTarget(targetTerm);
+				this.relationsTable.addRelation(this.targetDomain, sourceTerm,
+						targetTerm, RelationHelper.HYPERNYM, sentenceContent,
+						relationProbability);
 
-				relation.setProvenanceSentence(sentenceContent);
-				relation.setRelationhood(relationProbability);
-
-				this.relationsTable.addRelation(relation);
 			}
 		}
 	}

@@ -137,7 +137,7 @@ public class OntologyLearningProcess {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		ontologyLearningProcess.execute();
 		System.out.println("Ending the Ontology Learning Process!");
 	}
 

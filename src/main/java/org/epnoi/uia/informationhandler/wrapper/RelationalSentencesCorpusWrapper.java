@@ -15,7 +15,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationalSentenceHelper;
+import org.epnoi.uia.learner.relations.RelationHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 
@@ -137,7 +137,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI("http://thetestcorpus/drinventor");
-		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
+		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
 						15L), "Bla bla bla this is a relational sentence",
