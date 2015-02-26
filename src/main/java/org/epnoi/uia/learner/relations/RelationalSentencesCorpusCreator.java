@@ -367,7 +367,7 @@ public class RelationalSentencesCorpusCreator {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
-		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
+		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
 		Document annotatedContentA = termCandidatesFinder
 				.findTermCandidates("A dog is a canine");

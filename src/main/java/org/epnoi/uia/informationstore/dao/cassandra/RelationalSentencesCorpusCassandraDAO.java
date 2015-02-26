@@ -21,7 +21,7 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationalSentenceHelper;
+import org.epnoi.uia.learner.relations.RelationHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 
@@ -267,7 +267,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
-		relationalSentencesCorpus.setType(RelationalSentenceHelper.HYPERNYM);
+		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
 		Document annotatedContent = termCandidatesFinder
 				.findTermCandidates("A dog is a canine");
