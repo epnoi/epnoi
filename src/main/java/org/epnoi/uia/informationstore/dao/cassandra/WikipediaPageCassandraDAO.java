@@ -91,7 +91,8 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 					: "[" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE
 							+ "]" + contextElement.getValue();
 			// System.out.println("------- > "+annotatedContent);
-			pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
+		//AQUI METIAMOS EL DOCUMENTO ANOTADO	
+		//	pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
 
 			/*
 			 * super.updateColumn(wikipediaPage.getURI(),

@@ -17,14 +17,16 @@ public class ParametersModel {
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
 	private ArrayList<CassandraInformationStoreParameters> cassandraInformationStores;
+	private ArrayList<MapInformationStoreParameters> mapInformationStores;
 
 	private RSSHoarderParameters rssHoarder;
 	private RSSHarvesterParameters rssHarvester;
 
 	public ParametersModel() {
-		this.virtuosoInformationStores = new ArrayList<VirtuosoInformationStoreParameters>();
-		this.solrInformationStores = new ArrayList<SOLRInformationStoreParameters>();
-		this.cassandraInformationStores = new ArrayList<CassandraInformationStoreParameters>();
+		this.virtuosoInformationStores = new ArrayList<>();
+		this.solrInformationStores = new ArrayList<>();
+		this.cassandraInformationStores = new ArrayList<>();
+		this.mapInformationStores = new ArrayList<>();
 	}
 
 	public ArrayList<VirtuosoInformationStoreParameters> getVirtuosoInformationStore() {
@@ -105,12 +107,26 @@ public class ParametersModel {
 
 	// ---------------------------------------------------------------------------------
 
+	public ArrayList<MapInformationStoreParameters> getMapInformationStore() {
+		return this.mapInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setMapInformationStore(
+			ArrayList<MapInformationStoreParameters> mapInformationStores) {
+		this.mapInformationStores = mapInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
 		return "ParametersModel [hostname=" + hostname + ", port=" + port
 				+ ", path=" + path + ", virtuosoInformationStores="
 				+ virtuosoInformationStores + ", solrInformationStores="
-				+ solrInformationStores + ", rssHoarder=" + rssHoarder
+				+ solrInformationStores + ", mapInformationStores="
+				+ mapInformationStores + ", rssHoarder=" + rssHoarder
 				+ ", rssHarvester=" + rssHarvester + "]";
 	}
 
