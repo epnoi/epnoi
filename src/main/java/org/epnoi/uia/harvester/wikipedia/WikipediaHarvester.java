@@ -263,6 +263,7 @@ public class WikipediaHarvester {
 			Factory.deleteResource(annotatedContent);
 			context.getElements().put(annotatedContentURI,
 					serializedAnnotatedContent);
+			//core.getInformationHandler().setAnnotatedContent(ann, annotatedContent);
 		}
 
 	}
