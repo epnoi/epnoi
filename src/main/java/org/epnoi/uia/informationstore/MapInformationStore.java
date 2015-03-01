@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.informationstore.dao.map.MapDAOFactory;
+import org.epnoi.uia.informationstore.dao.map.WikipediaPageMapDAO;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
+import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 import org.epnoi.uia.search.SearchContext;
 import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SelectExpression;
@@ -12,54 +15,79 @@ import org.epnoi.uia.search.select.SelectExpression;
 public class MapInformationStore implements InformationStore {
 	private InformationStoreParameters parameters;
 
+	private MapDAOFactory daoFactory;
+	private WikipediaPageMapDAO testDAO;
+
+	// -------------------------------------------------------------------------------------------------------------------
+
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
-		
+
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public void init(InformationStoreParameters parameters) {
-		// TODO Auto-generated method stub
-		
+
+		this.parameters = parameters;
+		this.testDAO = new WikipediaPageMapDAO();
+		this.testDAO.init((MapInformationStoreParameters) parameters);
+
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public boolean test() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public Resource get(Selector selector) {
-		// TODO Auto-generated method stub
-		return null;
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));	
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public List<String> query(String queryExpression) {
-		// TODO Auto-generated method stub
-		return null;
+
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public SearchSelectResult query(SelectExpression selectionExpression,
 			SearchContext searchContext) {
-		// TODO Auto-generated method stub
-		return null;
+
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public void put(Resource resource, Context context) {
-		// TODO Auto-generated method stub
-		
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
+
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public void remove(Selector selector) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public boolean exists(Selector selector) {
@@ -67,11 +95,15 @@ public class MapInformationStore implements InformationStore {
 		return false;
 	}
 
+	// -------------------------------------------------------------------------------------------------------------------
+
 	@Override
 	public void update(Resource resource) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	// -------------------------------------------------------------------------------------------------------------------
 
 	@Override
 	public InformationStoreParameters getParameters() {
