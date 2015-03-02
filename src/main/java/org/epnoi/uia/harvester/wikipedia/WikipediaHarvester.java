@@ -261,9 +261,12 @@ public class WikipediaHarvester {
 			// Once it has been serialized, we must free the associated GATE
 			// resources
 			Factory.deleteResource(annotatedContent);
+			/*
 			context.getElements().put(annotatedContentURI,
-					serializedAnnotatedContent);
-			//core.getInformationHandler().setAnnotatedContent(ann, annotatedContent);
+				serializedAnnotatedContent);
+			*/
+			//AQUI
+			//core.getInformationHandler().setAnnotatedContent(selector, annotatedContent);
 		}
 
 	}

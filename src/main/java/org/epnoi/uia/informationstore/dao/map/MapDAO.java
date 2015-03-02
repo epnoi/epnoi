@@ -11,7 +11,7 @@ import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 public abstract class MapDAO implements DAO {
-	private static DB database;
+	protected static DB database;
 	private static File databaseFile;
 	private static boolean initialized = false;
 	private static final String ANNOTATED_CONTENT_COLLECTION = "ANNOTATED_CONTENT_COLLECTION";
@@ -22,7 +22,7 @@ public abstract class MapDAO implements DAO {
 
 	public abstract void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent);
-	
+
 	public synchronized void init(MapInformationStoreParameters parameters) {
 		if (!initialized) {
 			databaseFile = new File(parameters.getPath());

@@ -32,7 +32,7 @@ public class MapInformationStore implements InformationStore {
 
 	@Override
 	public void init(InformationStoreParameters parameters) {
-
+		this.daoFactory = new MapDAOFactory(parameters);
 		this.parameters = parameters;
 		this.testDAO = new WikipediaPageMapDAO();
 		this.testDAO.init((MapInformationStoreParameters) parameters);

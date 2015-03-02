@@ -16,7 +16,8 @@ public class WikipediaPageMapDAO extends MapDAO {
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
 
-		String annotatedContent = map.get(SelectorHelper.ANNOTATED_CONTENT_URI);
+		System.out.println("GET===================> "+map.keySet());
+		String annotatedContent = map.get(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI));
 		/*
 		 * String annotatedContent = super.readColumn(
 		 * selector.getProperty(SelectorHelper.URI),
@@ -27,7 +28,7 @@ public class WikipediaPageMapDAO extends MapDAO {
 										// bug
 			return null;
 		}
-
+		
 		Matcher matcher = pattern.matcher(annotatedContent);
 
 		if (matcher.find()) {
@@ -51,6 +52,8 @@ public class WikipediaPageMapDAO extends MapDAO {
 		String annotatedContentSerialized = "[" + annotatedContent.getType()
 				+ "]" + annotatedContent.getContent();
 		map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI), annotatedContentSerialized);
+		System.out.println("SET===================> "+map.keySet());
+		database.commit();
 		// System.out.println("selector> " + selector);
 		/*
 		 * super.updateColumn( selector.getProperty(SelectorHelper.URI),

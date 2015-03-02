@@ -1,8 +1,13 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import gate.Document;
+import gate.Factory;
+
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -218,6 +223,5 @@ public class WikipediaPageWrapper implements Wrapper {
 		}
 
 	}
-
-
+	
 }
