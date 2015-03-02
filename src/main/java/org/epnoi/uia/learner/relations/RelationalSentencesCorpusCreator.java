@@ -310,7 +310,7 @@ public class RelationalSentencesCorpusCreator {
 	public static void main(String[] args) {
 		System.out.println("Starting the Relation Sentences Corpus Creator");
 
-		boolean test = true;
+		boolean test = false;
 
 		RelationalSentencesCorpusCreator relationSentencesCorpusCreator = new RelationalSentencesCorpusCreator();
 
@@ -353,9 +353,10 @@ public class RelationalSentencesCorpusCreator {
 			relationalSentencesCorpus = relationSentencesCorpusCreator
 					.createCorpus();
 		}
-
-		core.getInformationHandler().put(relationalSentencesCorpus,
-				Context.getEmptyContext());
+System.out.println(relationalSentencesCorpus);
+		
+		//core.getInformationHandler().put(relationalSentencesCorpus,
+	//			Context.getEmptyContext());
 
 		// System.out.println("The result is " + relationalSentencesCorpus);
 

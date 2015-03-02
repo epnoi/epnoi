@@ -4,8 +4,6 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
 import gate.util.InvalidOffsetException;
 
 import java.io.File;
@@ -31,6 +29,8 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbac
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParser;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
+import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
@@ -106,8 +106,9 @@ public class WikipediaHarvester {
 			Context context = new Context();
 			while (harvestedWikipediaPagesIt.hasNext()) {
 				WikipediaPage wikipediaPage = harvestedWikipediaPagesIt.next();
-				System.out.println(count++ + "||> " + wikipediaPage.getURI());
+				System.out.println(count++ + "Introducing  " + wikipediaPage.getURI());
 				try {
+					
 					_introduceWikipediaPage(wikipediaPage, context);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -236,7 +237,9 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	private void _introduceAnnotatedContent(WikipediaPage wikipediaPage,
+	// -------------------------------------------------------------------------------------------------------------------
+
+	public void _introduceAnnotatedContent(WikipediaPage wikipediaPage,
 			Context context) {
 		String serializedAnnotatedContent = null;
 		List<String> sections = wikipediaPage.getSections();
@@ -254,19 +257,25 @@ public class WikipediaHarvester {
 			String annotatedContentURI = _extractURI(wikipediaPage.getURI(),
 					sections.get(i),
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-			Document annotatedContent = termCandidatesFinder
+			Document annotatedContent = this.termCandidatesFinder
 					.findTermCandidates(sectionContent);
 			serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE
 			// resources
 			Factory.deleteResource(annotatedContent);
-			/*
-			context.getElements().put(annotatedContentURI,
-				serializedAnnotatedContent);
-			*/
-			//AQUI
-			//core.getInformationHandler().setAnnotatedContent(selector, annotatedContent);
+
+			Selector selector = new Selector();
+			selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
+			selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
+					annotatedContentURI);
+			selector.setProperty(SelectorHelper.TYPE,
+					RDFHelper.WIKIPEDIA_PAGE_CLASS);
+
+			core.getInformationHandler().setAnnotatedContent(
+					selector,
+					new org.epnoi.model.Content<>(serializedAnnotatedContent,
+							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
 		}
 
 	}
@@ -286,11 +295,12 @@ public class WikipediaHarvester {
 
 	private void _introduceWikipediaPage(WikipediaPage page, Context context) {
 
-		_introduceAnnotatedContent(page, context);
+		
 
-		String termDefinition = _createTermDefinition(page, context);
-		System.out.println("----> " + termDefinition);
-		page.setTermDefinition(termDefinition);
+		String termDefinition = "";
+		//String termDefinition = _createTermDefinition(page, context);
+		//System.out.println("----> " + termDefinition);
+		//page.setTermDefinition(termDefinition);
 
 		/*
 		 * System.out .println(
@@ -301,7 +311,12 @@ public class WikipediaHarvester {
 		 */
 		if (!core.getInformationHandler().contains(page.getURI(),
 				RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+			long currenttime = System.currentTimeMillis();
+			_introduceAnnotatedContent(page, context);
 			core.getInformationHandler().put(page, context);
+			long time = System.currentTimeMillis() - currenttime;
+			System.out.println(page.getURI()				+ " took "
+					+ time);
 		}
 
 	}

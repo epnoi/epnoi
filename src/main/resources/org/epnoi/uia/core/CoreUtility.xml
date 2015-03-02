@@ -24,7 +24,7 @@
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>
-		<path>/JUNK/mapdb/mapdb</path>
+		<path>/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
 		<host>localhost</host>
 		<port>0</port>
 	</mapInformationStore>

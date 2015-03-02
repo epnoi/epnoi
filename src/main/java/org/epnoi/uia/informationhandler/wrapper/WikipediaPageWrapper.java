@@ -1,27 +1,17 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
-import gate.Document;
-import gate.Factory;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 public class WikipediaPageWrapper implements Wrapper {
 	Core core;
@@ -116,21 +106,21 @@ public class WikipediaPageWrapper implements Wrapper {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		exists = informationStore.exists(selector);
+		System.out.println("exi> " + exists);
 
 		if (exists) {
-			informationStore = this.core.getInformationStoresByType(
-					InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
-			exists = informationStore.exists(selector);
-			if (exists) {
-				/*
-				 * exists = !this.core .getInformationHandler()
-				 * .getAnnotatedContent( URI, URI + "/first/" +
-				 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE)
-				 * .isEmpty();
-				 */
-			}
 
+			String annotatedContentURI = URI + "/first/"
+					+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
+
+			selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
+					annotatedContentURI);
+
+			exists = this.core.getInformationHandler()
+					.getAnnotatedContent(selector)!=null;
+			System.out.println(".."+exists);
 		}
+
 		selector = null;
 		return exists;
 	}
@@ -175,53 +165,4 @@ public class WikipediaPageWrapper implements Wrapper {
 
 	}
 
-	// -------------------------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		System.out.println("WikipediaPage Cassandra Test--------------");
-		System.out
-				.println("Initialization --------------------------------------------");
-		WikipediaPageCassandraDAO wikipediaPageCassandraDAO = new WikipediaPageCassandraDAO();
-
-		wikipediaPageCassandraDAO.init();
-
-		System.out.println(" --------------------------------------------");
-
-		WikipediaPage wikipediaPage = new WikipediaPage();
-		wikipediaPage.setURI("http://externalresourceuri");
-		wikipediaPage.setTerm("Proof Term");
-		wikipediaPage.setTermDefinition("Proof Term is whatever bla bla bla");
-		wikipediaPage.setSections(Arrays.asList("first", "middle section",
-				"references"));
-		wikipediaPage.setSectionsContent(new HashMap<String, String>());
-		wikipediaPage.getSectionsContent().put("first",
-				"This is the content of the first section");
-		wikipediaPage.getSectionsContent().put("middle section",
-				"This is the content of the middle section");
-		wikipediaPage.getSectionsContent().put("references",
-				"This is the content for the references");
-
-		wikipediaPageCassandraDAO.create(wikipediaPage,
-				Context.getEmptyContext());
-
-		System.out
-				.println("Reading the wikipedia page-------------------------------------------");
-		System.out.println(" >> "
-				+ wikipediaPageCassandraDAO.read("http://externalresourceuri"));
-
-		WikipediaPage page = (WikipediaPage) wikipediaPageCassandraDAO
-				.read("http://en.wikipedia.org/wiki/Glossary_of_American_football");
-
-		System.out.println("page> " + page);
-
-		for (String content : page.getSections()) {
-			System.out
-					.println("-----------------------------------------------------------------");
-			System.out.println("---> " + content);
-			System.out
-					.println("---> " + page.getSectionsContent().get(content));
-		}
-
-	}
-	
 }

@@ -26,7 +26,7 @@ public abstract class MapDAO implements DAO {
 	public synchronized void init(MapInformationStoreParameters parameters) {
 		if (!initialized) {
 			databaseFile = new File(parameters.getPath());
-			database = DBMaker.newFileDB(databaseFile).closeOnJvmShutdown()
+			database = DBMaker.newFileDB(databaseFile).transactionDisable().closeOnJvmShutdown()
 					.make();
 			map = database.getTreeMap(ANNOTATED_CONTENT_COLLECTION);
 			initialized = true;
