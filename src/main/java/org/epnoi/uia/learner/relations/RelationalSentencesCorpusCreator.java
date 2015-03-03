@@ -93,51 +93,55 @@ public class RelationalSentencesCorpusCreator {
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 		int nullCounts = 1;
 		int count = 1;
+		List<String> wikipediaPages = getWikipediaArticles();
+		System.out.println(wikipediaPages.size()
+				+ " wikipedia pages were retrieved");
+		for (String uri : wikipediaPages) {
+			logger.info(">" + uri);
+			if (this.core.getInformationHandler().contains(uri,
+					RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
 
-		for (String uri : getWikipediaArticles()) {
+				System.out.println(count++ + " Retrieving " + uri);
 
-			System.out.println(count++ + " Retrieving " + uri);
+				WikipediaPage wikipediaPage = (WikipediaPage) this.core
+						.getInformationHandler().get(uri,
+								RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
-			WikipediaPage wikipediaPage = (WikipediaPage) this.core
-					.getInformationHandler().get(uri,
-							RDFHelper.WIKIPEDIA_PAGE_CLASS);
-			// System.out.println(">" + wikipediaPage);
+				selector.setProperty(SelectorHelper.URI, uri);
+				for (String section : wikipediaPage.getSections()) {
+					selector.setProperty(
+							SelectorHelper.ANNOTATED_CONTENT_URI,
+							_extractURI(
+									uri,
+									section,
+									AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
+					// System.out.println("selector >" + selector);
+					Content<String> annotatedContent = this.core
+							.getInformationHandler().getAnnotatedContent(
+									selector);
 
-			selector.setProperty(SelectorHelper.URI, uri);
-			// System.out.println("sections> " + wikipediaPage.getSections());
-			for (String section : wikipediaPage.getSections()) {
-				selector.setProperty(
-						SelectorHelper.ANNOTATED_CONTENT_URI,
-						_extractURI(
-								uri,
-								section,
-								AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
-				// System.out.println("selector >" + selector);
-				Content<String> annotatedContent = this.core
-						.getInformationHandler().getAnnotatedContent(selector);
+					if (annotatedContent != null) {
+						/*
+						 * System.out.println("NOT NULL The section " + section
+						 * + " of " + uri + " was not null");
+						 */
+						Document annotatedContentDocument = GateUtils
+								.deserializeGATEDocument(annotatedContent
+										.getContent());
+						_searchDocument(annotatedContentDocument);
+						Factory.deleteResource(annotatedContentDocument);
 
-				if (annotatedContent != null) {
-					/*
-					 * System.out.println("NOT NULL The section " + section +
-					 * " of " + uri + " was not null");
-					 */
-					Document annotatedContentDocument = GateUtils
-							.deserializeGATEDocument(annotatedContent
-									.getContent());
-					_searchDocument(annotatedContentDocument);
-					Factory.deleteResource(annotatedContentDocument);
-
-				} else {
-					System.out.println("The section " + section + " of " + uri
-							+ " was null");
-					nullCounts++;
+					} else {
+						System.out.println("The section " + section + " of "
+								+ uri + " was null");
+						nullCounts++;
+					}
 				}
+
 			}
 
 		}
-
 		System.out.println("The number of nulls is " + nullCounts);
-
 	}
 
 	// ----------------------------------------------------------------------
@@ -266,7 +270,7 @@ public class RelationalSentencesCorpusCreator {
 
 	public List<String> getWikipediaArticles() {
 		logger.info("Retrieving the URIs of the Wikipedia articles ");
-		List<String> wikipediaArticlesURI = new ArrayList<>();
+
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
@@ -281,18 +285,11 @@ public class RelationalSentencesCorpusCreator {
 				"{WIKIPEDIA_PAPER_CLASS}", RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
 		List<String> queryResults = informationStore.query(queryExpression);
-
-		for (String uri : queryResults) {
-			if (this.core.getInformationHandler().contains(uri,
-					RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
-				wikipediaArticlesURI.add(uri);
-			}
-
-		}
+		System.out.println("-----------" + queryResults);
 
 		logger.info("The number of retrived Wikipeda articles are "
 				+ queryResults.size());
-		return wikipediaArticlesURI;
+		return queryResults;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -345,7 +342,9 @@ public class RelationalSentencesCorpusCreator {
 			core.getInformationHandler().remove(
 					"http://thetestcorpus/drinventor",
 					RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
-			System.out.println("--> "+core.getInformationHandler().get("http://thetestcorpus/drinventor"));
+			System.out.println("--> "
+					+ core.getInformationHandler().get(
+							"http://thetestcorpus/drinventor"));
 			relationalSentencesCorpus = relationSentencesCorpusCreator
 					.createTestCorpus();
 
@@ -353,10 +352,11 @@ public class RelationalSentencesCorpusCreator {
 			relationalSentencesCorpus = relationSentencesCorpusCreator
 					.createCorpus();
 		}
-System.out.println(relationalSentencesCorpus);
-		
-		//core.getInformationHandler().put(relationalSentencesCorpus,
-	//			Context.getEmptyContext());
+		System.out.println(relationalSentencesCorpus);
+		System.out.println("There were "
+				+ relationalSentencesCorpus.getSentences().size());
+		// core.getInformationHandler().put(relationalSentencesCorpus,
+		// Context.getEmptyContext());
 
 		// System.out.println("The result is " + relationalSentencesCorpus);
 

@@ -106,9 +106,10 @@ public class WikipediaHarvester {
 			Context context = new Context();
 			while (harvestedWikipediaPagesIt.hasNext()) {
 				WikipediaPage wikipediaPage = harvestedWikipediaPagesIt.next();
-				System.out.println(count++ + "Introducing  " + wikipediaPage.getURI());
+				System.out.println(count++ + "Introducing  "
+						+ wikipediaPage.getURI());
 				try {
-					
+
 					_introduceWikipediaPage(wikipediaPage, context);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -295,12 +296,10 @@ public class WikipediaHarvester {
 
 	private void _introduceWikipediaPage(WikipediaPage page, Context context) {
 
-		
-
 		String termDefinition = "";
-		//String termDefinition = _createTermDefinition(page, context);
-		//System.out.println("----> " + termDefinition);
-		//page.setTermDefinition(termDefinition);
+		// String termDefinition = _createTermDefinition(page, context);
+		// System.out.println("----> " + termDefinition);
+		// page.setTermDefinition(termDefinition);
 
 		/*
 		 * System.out .println(
@@ -315,8 +314,7 @@ public class WikipediaHarvester {
 			_introduceAnnotatedContent(page, context);
 			core.getInformationHandler().put(page, context);
 			long time = System.currentTimeMillis() - currenttime;
-			System.out.println(page.getURI()				+ " took "
-					+ time);
+			System.out.println(page.getURI() + " took " + time);
 		}
 
 	}
@@ -455,6 +453,7 @@ public class WikipediaHarvester {
 		WikipediaHarvester wikipediaHarvester = new WikipediaHarvester();
 		// Core core = null;
 		Core core = CoreUtility.getUIACore();
+
 		try {
 			wikipediaHarvester.init(core);
 		} catch (EpnoiInitializationException e) {
