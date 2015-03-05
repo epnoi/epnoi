@@ -3,10 +3,10 @@ package org.epnoi.uia.learner.relations;
 import org.epnoi.model.OffsetRangeSelector;
 
 public class RelationalSentence {
-	OffsetRangeSelector source;
-	OffsetRangeSelector target;
-	String sentence;
-	String annotatedSentence;
+	private OffsetRangeSelector source;
+	private OffsetRangeSelector target;
+	private String sentence;
+	private String annotatedSentence;
 
 	// --------------------------------------------------------------------------------------
 

@@ -2,20 +2,20 @@ package org.epnoi.uia.commons;
 
 import java.util.HashMap;
 
-public class Parameters {
+public class Parameters<T> {
 
-	private HashMap<String, Object> parameters = new HashMap<String, Object>();
+	protected HashMap<String, T> parameters = new HashMap<String, T>();
 
 	public Parameters() {
 		super();
 	}
 
-	public void setParameter(String parameter, Object value) {
+	public void setParameter(String parameter, T value) {
 		this.parameters.put(parameter, value);
-	
+
 	}
 
-	public Object getParameterValue(String parameter) {
+	public T getParameterValue(String parameter) {
 		return this.parameters.get(parameter);
 	}
 
