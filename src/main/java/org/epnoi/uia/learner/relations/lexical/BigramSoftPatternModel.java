@@ -106,6 +106,23 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 		whatever = Math.exp(whatever);
 		System.out.println("2---> " + whatever);
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+
+	public void show() {
+		/*
+		 * 
+		 * private Map<String, Map<String, Double[]>> bigramProbability; private
+		 * Map<String, Double[]> unigramProbability;
+		 */
+		System.out.println();
+		for (Entry<String, Double[]> unigramProbability : this.unigramProbability
+				.entrySet()) {
+			System.out.println("<" + unigramProbability.getKey() + "|"
+					+ unigramProbability.getValue() + ">");
+		}
+
+	}
 
 	// ---------------------------------------------------------------------------------------------------------
 

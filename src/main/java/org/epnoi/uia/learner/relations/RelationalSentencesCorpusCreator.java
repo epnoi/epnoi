@@ -35,7 +35,7 @@ import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger
 			.getLogger(RelationalSentencesCorpusCreator.class.getName());
-	
+
 	private Core core;
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
@@ -435,12 +435,11 @@ public class RelationalSentencesCorpusCreator {
 				.setParameter(
 						RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
 						relationalCorpusURI);
-		
-		
+
 		parameters
-		.setParameter(
-				RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER,
-				1000);
+				.setParameter(
+						RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER,
+						1000);
 
 		parameters
 				.setParameter(
