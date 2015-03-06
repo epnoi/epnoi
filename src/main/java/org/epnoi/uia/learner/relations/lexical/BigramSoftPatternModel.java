@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 public class BigramSoftPatternModel implements SoftPatternModel {
 
+	private static final long serialVersionUID = 9103308220708737439L;
 	private Map<String, Double[]> unigramProbability;
 	private Map<String, Map<String, Double[]>> bigramProbability;
 	private LexicalRelationalModelCreationParameters parmeters;
@@ -98,28 +99,30 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 		}
 	}
 
-	// ---------------------------------------------------------------------------------------------------------
-
-	public static void main(String[] args) {
-		double whatever = Math.log(0.5d);
-		System.out.println("---> " + whatever);
-		whatever = Math.exp(whatever);
-		System.out.println("2---> " + whatever);
-	}
-	
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void show() {
-		/*
-		 * 
-		 * private Map<String, Map<String, Double[]>> bigramProbability; private
-		 * Map<String, Double[]> unigramProbability;
-		 */
-		System.out.println();
+		System.out.println("The model's vocabulary cardinality is "+this.unigramProbability.size());
+		System.out.println("They are "+this.unigramProbability.keySet());
+		System.out
+				.println("Unigrams=========================================================================================");
 		for (Entry<String, Double[]> unigramProbability : this.unigramProbability
 				.entrySet()) {
 			System.out.println("<" + unigramProbability.getKey() + "|"
-					+ unigramProbability.getValue() + ">");
+					+ Arrays.toString(unigramProbability.getValue()) + ">");
+		}
+		System.out.println();
+		System.out
+				.println("Bigrams=========================================================================================");
+		System.out.println();
+		for (Entry<String, Map<String, Double[]>> entry : this.bigramProbability
+				.entrySet()) {
+			for (Entry<String, Double[]> innerEntry : entry.getValue()
+					.entrySet()) {
+				System.out.println("<" + entry.getKey() + ","
+						+ innerEntry.getKey() + ">= "
+						+ Arrays.toString(innerEntry.getValue()));
+			}
 		}
 
 	}

@@ -76,12 +76,16 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public BigramSoftPatternModel buildModel() {
+		long startingTime = System.currentTimeMillis();
 		logger.info("Adding all the patterns to the model");
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
 			this.modelBuilder.addPattern(((LexicalRelationalPattern) pattern));
 		}
-
-		return this.modelBuilder.build();
+		logger.info("Building the model");
+		BigramSoftPatternModel model = this.modelBuilder.build();
+		long totalTime = startingTime - System.currentTimeMillis();
+		logger.info("It took " + Math.abs(totalTime) + " ms to build the model");
+		return model;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -93,12 +97,14 @@ public class LexicalRelationalModelCreator {
 			this.model.show();
 		}
 		if (this.store) {
-
+			logger.info("Storing the model at "+path);
 			try {
 				BigramSoftPatternModelSerializer.serialize(path, model);
 
 			} catch (EpnoiResourceAccessException e) {
-				e.printStackTrace();
+				logger.severe("There was a problem trying to serialize the BigramSoftPatternModel at "
+						+ path);
+				logger.severe(e.getMessage());
 			}
 
 		}
@@ -107,7 +113,7 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		logger.info("Starting the Lexical Relational Model creation");
+		System.out.println("Starting the Lexical Relational Model creation");
 		LexicalRelationalModelCreationParameters parameters = new LexicalRelationalModelCreationParameters();
 		parameters
 				.setParameter(
@@ -129,7 +135,7 @@ public class LexicalRelationalModelCreator {
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER,
-				true);
+				false);
 
 		Core core = CoreUtility.getUIACore();
 
