@@ -1,9 +1,6 @@
 package org.epnoi.uia.harvester.filesystem;
 
 import gate.Document;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
-import gate.Factory;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -22,8 +19,6 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
@@ -34,19 +29,16 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
-import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
-
-
 
 class FilesystemHarvester {
 	private Core core;
-	private Manifest manifest;
-	private String directoryPath;
 	private String datePattern = "MM/dd/yyyy";
+	private FilesystemHarvesterParameters parameters;
 
-	public static final String path = "/JUNK/drinventorcorpus/corpus";
-	public static final String FIRST_REVIEW_CORPUS = "FirstReviewCorpus";
+	public String path = "/JUNK/drinventorcorpus/corpus";
+	private boolean verbose;
+	private String corpusLabel;
 
 	private static final Logger logger = Logger
 			.getLogger(FilesystemHarvester.class.getName());
@@ -57,8 +49,6 @@ class FilesystemHarvester {
 	public FilesystemHarvester() {
 
 	}
-
-	// ----------------------------------------------------------------------------------------
 
 	// ----------------------------------------------------------------------------------------
 
@@ -91,15 +81,15 @@ class FilesystemHarvester {
 		String content = handler.toString();
 		content = content.replaceAll("\\r\\n|\\r|\\n", " ");
 		content = content.replaceAll("\\s+", " ");
-		System.out.println("----> " + content);
+		// System.out.println("----> " + content);
 		return content;
 	}
 
 	// ----------------------------------------------------------------------------------------
 
 	public void run() {
-		logger.info("Starting a harversting task " + this.manifest);
-		harvest(this.directoryPath);
+
+		harvest(this.path);
 	}
 
 	// ----------------------------------------------------------------------------------------
@@ -114,22 +104,34 @@ class FilesystemHarvester {
 			// System.out.println("..........> "
 			// + Arrays.toString(filesToHarvest));
 			for (String fileToHarvest : filesToHarvest) {
-				System.out.println(">Harvesting :"
+				logger.info("Harvesting the file "
 						+ harvestDirectoy.getAbsolutePath() + "/"
 						+ fileToHarvest);
 				Context context = new Context();
 				Paper paper = _harvestFile(directoryToHarvest + "/"
 						+ fileToHarvest);
 				if (this.core != null) {
+					// First the paper is added to the UIA
 					core.getInformationHandler().put(paper,
 							Context.getEmptyContext());
-					core.getAnnotationHandler().label(paper.getURI(),
-							FilesystemHarvester.FIRST_REVIEW_CORPUS);
 
+					// Later it is annotated as belonging to the harvested
+					// corpus
+					long startTme = System.currentTimeMillis();
+					core.getAnnotationHandler().label(paper.getURI(),
+							this.corpusLabel);
+
+					long totalTime = Math.abs(startTme
+							- System.currentTimeMillis());
+					logger.info("It took " + totalTime
+							+ " ms to add it to the UIA and label it");
+					// The annotated version of the paper is also stored in the
+					// UIA
+
+					startTme = System.currentTimeMillis();
 					Document annotatedContent = this.termCandidatesFinder
 							.findTermCandidates(paper.getDescription());
 
-					
 					Selector annotationSelector = new Selector();
 					annotationSelector.setProperty(SelectorHelper.URI,
 							paper.getURI());
@@ -142,19 +144,20 @@ class FilesystemHarvester {
 					annotationSelector.setProperty(SelectorHelper.TYPE,
 							RDFHelper.PAPER_CLASS);
 
-					core.getInformationHandler().put(paper,
-							Context.getEmptyContext());
-
 					core.getInformationHandler().setAnnotatedContent(
 							annotationSelector,
 							new Content<>(annotatedContent.toXml(),
 									ContentHelper.CONTENT_TYPE_TEXT_XML));
 
+					logger.info("It took "
+							+ totalTime
+							+ "ms to add it to annotate its content and add it to the UIA");
+
 				} else {
 
-					System.out.println("Result: Paper> " + paper);
+					logger.info("Paper: " + paper);
 
-					System.out.println("Result: Context> " + context);
+					logger.info("Result: " + context);
 				}
 
 			}
@@ -234,30 +237,52 @@ class FilesystemHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public void init(Core core) throws EpnoiInitializationException {
+	public void init(Core core, FilesystemHarvesterParameters parameters)
+			throws EpnoiInitializationException {
 
 		this.core = core;
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.termCandidatesFinder.init();
+
+		this.path = (String) parameters
+				.getParameterValue(FilesystemHarvesterParameters.FILEPATH_PARAMETER);
+
+		this.verbose = (boolean) parameters
+				.getParameterValue(FilesystemHarvesterParameters.VERBOSE_PARAMETER);
+
+		this.corpusLabel = (String) parameters
+				.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER);
 
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		System.out.println("Starting the harvesting!");
+		logger.info("Starting the harvesting!");
 
 		FilesystemHarvester harvester = new FilesystemHarvester();
+		FilesystemHarvesterParameters parameters = new FilesystemHarvesterParameters();
+
+		parameters.setParameter(
+				FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER,
+				"CGTestCorpus");
+		parameters.setParameter(
+				FilesystemHarvesterParameters.VERBOSE_PARAMETER, true);
+
+		parameters.setParameter(
+				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
+				"//epnoi/epnoideployment/firstReviewResources/CGCorpus");
+
 		Core core = CoreUtility.getUIACore();
 		try {
-			harvester.init(core);
+			harvester.init(core, parameters);
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		harvester.harvest(FilesystemHarvester.path);
+		harvester.run();
 
-		System.out.println("Ending the harvesting!");
+		logger.info("Ending the harvesting!");
 	}
 
 }
