@@ -150,6 +150,7 @@ class FilesystemHarvester {
 							annotationSelector,
 							new Content<>(annotatedContent.toXml(),
 									ContentHelper.CONTENT_TYPE_TEXT_XML));
+					
 					totalTime = Math.abs(startTme
 							- System.currentTimeMillis());
 					logger.info("It took "

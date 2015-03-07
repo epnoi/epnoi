@@ -9,25 +9,25 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.learner.terms.TermsExtractor;
 
 public class DomainsGatherer {
-	private static final Logger logger = Logger.getLogger(TermsExtractor.class
+	private static final Logger logger = Logger.getLogger(DomainsGatherer.class
 			.getName());
 	private Core core;
 	private List<String> consideredDomains;
 	private String targetDomain;
 	private String consideredResources;
-	private Parameters parameters;
+	private OntologyLearningParameters parameters;
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
-	public void init(Core core, Parameters parameters) {
+	public void init(Core core, OntologyLearningParameters parameters) {
 		logger.info("Initializing the TermExtractor for the domains ");
 		this.core = core;
 		this.parameters = parameters;
 
-		this.consideredDomains = (List<String>) parameters
+		this.consideredDomains = (List<String>) this.parameters
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
-		this.consideredResources = (String) parameters
+		this.consideredResources = (String) this.parameters
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
 
 		this.domainsTable = new DomainsTable();
@@ -40,7 +40,7 @@ public class DomainsGatherer {
 		for (String domain : this.consideredDomains) {
 			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
 					domain, this.consideredResources);
-
+System.out.println("FOUND> "+foundURIs.size());
 			this.domainsTable.getDomains().put(domain,
 					_cleanResources(foundURIs));
 		}

@@ -120,23 +120,23 @@ public class PaperWrapper implements Wrapper {
 			if (exists) {
 
 				informationStore = this.core.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+						InformationStoreHelper.MAP_INFORMATION_STORE)
 						.get(0);
 				// exists = informationStore.exists(selector);
 
 				if (exists) {
-					
+
 					/*
-					System.out.println("------> " + selector);
-					System.out.println("AC--------> "
-							+ ((CassandraInformationStore) informationStore)
-									.getAnnotatedContent(selector));
-								*/
-					exists = /*
-							 * (!((CassandraInformationStore) informationStore)
-							 * .getContent(selector).isEmpty()) &&
-							 */(!((CassandraInformationStore) informationStore)
-							.getAnnotatedContent(selector).isEmpty());
+					 * System.out.println("------> " + selector);
+					 * System.out.println("AC--------> " +
+					 * ((CassandraInformationStore) informationStore)
+					 * .getAnnotatedContent(selector));
+					 */
+
+					Content<String> annotatedContent = (((MapInformationStore) informationStore)
+							.getAnnotatedContent(selector));
+					exists = annotatedContent != null
+							&& !annotatedContent.isEmpty();
 				}
 			}
 		}
@@ -173,8 +173,7 @@ public class PaperWrapper implements Wrapper {
 	public Content<String> getAnnotatedContent(Selector selector) {
 		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.MAP_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		return informationStore.getAnnotatedContent(selector);
 	}
 
@@ -185,8 +184,7 @@ public class PaperWrapper implements Wrapper {
 			Content<String> annotatedContent) {
 		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.MAP_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		informationStore.setAnnotatedContent(selector, annotatedContent);
 
 	}

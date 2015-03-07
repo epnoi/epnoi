@@ -15,9 +15,14 @@ public class PaperMapDAO extends MapDAO {
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-
+	
 		String annotatedContent = map.get(selector
 				.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI));
+	
+		
+		//System.out.println(">> "+map.keySet());
+//System.out.println("_---> "+map.get("file:///epnoi/epnoideployment/firstReviewResources/CGCorpus/A01_S01_A_Powell_Optimization_Approach__for_Example-Based_Skinning__CORPUS__v3.xml/text/xml/gate"));
+		
 		if (annotatedContent != null) {
 
 			Matcher matcher = pattern.matcher(annotatedContent);
@@ -42,9 +47,10 @@ public class PaperMapDAO extends MapDAO {
 
 		String annotatedContentSerialized = "[" + annotatedContent.getType()
 				+ "]" + annotatedContent.getContent();
-
+		//System.out.println("p>"+selector);
 		map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				annotatedContentSerialized);
+//	System.out.println(">> "+map.keySet());
 		database.commit();
 
 	}

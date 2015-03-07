@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TermCandidateBuilder {
-
+	private final String symbolPatter="[^\\w\\s]";
+	private static final List<String> stopwords = Arrays.asList(new String[] {
+			"comment", "comments","proceedings","example","examples", "symposium","conference","copyright","approach" });
 	private Document document;
 
 	static final Comparator<Annotation> ANNOTATION_ORDER = new Comparator<Annotation>() {
@@ -30,8 +32,7 @@ public class TermCandidateBuilder {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public AnnotatedWord<TermMetadata> buildTermCandidate(
-			Annotation annotation) {
+	public AnnotatedWord<TermMetadata> buildTermCandidate(Annotation annotation) {
 		AnnotatedWord<TermMetadata> termCandidate = new AnnotatedWord<TermMetadata>(
 				new TermMetadata());
 
@@ -40,37 +41,21 @@ public class TermCandidateBuilder {
 
 		AnnotationSet annotations = this.document.getAnnotations();
 
-		/*
-		 * try {
-		 * 
-		 * System.out.println(this.document.getContent().getContent(
-		 * annotation.getStartNode().getOffset(),
-		 * annotation.getEndNode().getOffset()));
-		 * 
-		 * } catch (InvalidOffsetException e) {
-		 * 
-		 * e.printStackTrace(); }
-		 */
-		// length calculation
-		// int length = annotations.get("Token", startOffset, endOffset).size();
-		// System.out.println("La longitud seria > " + length);
-		// termCandidate.getAnnotation().setLength(length);
-		// words
-
 		ArrayList<String> words = new ArrayList<String>();
 
-		List<Annotation> tokeAnnotations = new ArrayList<Annotation>();
+		List<Annotation> tokenAnnotations = new ArrayList<Annotation>();
 		for (Annotation tokenAnnotation : annotations.get("Token", startOffset,
 				endOffset)) {
-			tokeAnnotations.add(tokenAnnotation);
+			tokenAnnotations.add(tokenAnnotation);
 		}
 
-		Collections.sort(tokeAnnotations, ANNOTATION_ORDER);
+		Collections.sort(tokenAnnotations, ANNOTATION_ORDER);
 
-		for (Annotation tokenAnnotation : tokeAnnotations) {
-
-			words.add(((String) tokenAnnotation.getFeatures().get("string"))
-					.toLowerCase());
+		for (Annotation tokenAnnotation : tokenAnnotations) {
+			if (!isNoise(tokenAnnotation)) {
+				words.add(((String) tokenAnnotation.getFeatures().get("string"))
+						.toLowerCase());
+			}
 		}
 		termCandidate.getAnnotation().setWords(
 				Arrays.copyOf(words.toArray(), words.size(), String[].class));
@@ -87,6 +72,18 @@ public class TermCandidateBuilder {
 		 */
 
 		return termCandidate;
+	}
+	
+	// ------------------------------------------------------------------------------------------------------------
+
+	private boolean isNoise(Annotation annotation) {
+
+		String surfaceForm = (String) annotation.getFeatures().get("string");
+		//System.out.println(surfaceForm);
+		
+		
+		return surfaceForm.matches(this.symbolPatter);
+
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
@@ -105,8 +102,7 @@ public class TermCandidateBuilder {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public AnnotatedWord<TermMetadata> generateSubTermCandidate(
-			String[] words) {
+	public AnnotatedWord<TermMetadata> generateSubTermCandidate(String[] words) {
 		AnnotatedWord<TermMetadata> termCandidate = new AnnotatedWord<TermMetadata>(
 				new TermMetadata());
 		termCandidate.getAnnotation().setLength(words.length);
@@ -160,10 +156,9 @@ public class TermCandidateBuilder {
 		termCandidate.getAnnotation().setWords(
 				new String[] { "a", "b", "c", "d" });
 		System.out.println(termBuilder.splitTermCandidate(termCandidate));
-		
-		for(int i =0; i<100; i++){
-		System.out.println(i+"->"+(Math.log(i) / Math
-				.log(2)) );
+
+		for (int i = 0; i < 100; i++) {
+			System.out.println(i + "->" + (Math.log(i) / Math.log(2)));
 		}
 	}
 }

@@ -18,7 +18,7 @@ import org.epnoi.uia.learner.terms.TermsExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class OntologyLearningProcess {
-	private Parameters ontologyLearningParameters;
+	private OntologyLearningParameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
 	private TermsTable termsTable;
 	private RelationsTable relationsTable;
@@ -29,7 +29,8 @@ public class OntologyLearningProcess {
 
 	// ---------------------------------------------------------------------------------------------------------
 
-	public void init(Core core, Parameters ontologyLearningParameters)
+	public void init(Core core,
+			OntologyLearningParameters ontologyLearningParameters)
 			throws EpnoiInitializationException {
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
@@ -105,13 +106,14 @@ public class OntologyLearningProcess {
 	public static void main(String[] args) {
 		System.out.println("Starting the Ontology Learning Process!");
 
-		List<String> consideredDomains = Arrays.asList("cs", "math");
-		String targetDomain = "cs";
+		// List<String> consideredDomains = Arrays.asList("cs", "math");
+		List<String> consideredDomains = Arrays.asList("CGTestCorpus");
+		String targetDomain = "CGTestCorpus";
 		Double hyperymMinimumThreshold = 0.7;
-		boolean extractTerms = false;
+		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
 
-		Parameters ontologyLearningParameters = new OntologyLearningParameters();
+		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
