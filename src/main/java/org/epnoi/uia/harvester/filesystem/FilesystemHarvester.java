@@ -19,6 +19,8 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.model.AnnotatedContentHelper;
+import org.epnoi.model.Content;
+import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
@@ -148,7 +150,8 @@ class FilesystemHarvester {
 							annotationSelector,
 							new Content<>(annotatedContent.toXml(),
 									ContentHelper.CONTENT_TYPE_TEXT_XML));
-
+					totalTime = Math.abs(startTme
+							- System.currentTimeMillis());
 					logger.info("It took "
 							+ totalTime
 							+ "ms to add it to annotate its content and add it to the UIA");
@@ -271,7 +274,7 @@ class FilesystemHarvester {
 
 		parameters.setParameter(
 				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
-				"//epnoi/epnoideployment/firstReviewResources/CGCorpus");
+				"/epnoi/epnoideployment/firstReviewResources/CGCorpus");
 
 		Core core = CoreUtility.getUIACore();
 		try {

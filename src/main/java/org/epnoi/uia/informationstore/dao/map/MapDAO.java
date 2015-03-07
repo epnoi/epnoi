@@ -15,6 +15,7 @@ public abstract class MapDAO implements DAO {
 	private static File databaseFile;
 	private static boolean initialized = false;
 	private static final String ANNOTATED_CONTENT_COLLECTION = "ANNOTATED_CONTENT_COLLECTION";
+	private static final String OTHER_ANNOTATED_CONTENT_COLLECTION = "OTHER_ANNOTATED_CONTENT_COLLECTION";
 
 	protected static ConcurrentNavigableMap<String, String> map;
 
@@ -26,8 +27,9 @@ public abstract class MapDAO implements DAO {
 	public synchronized void init(MapInformationStoreParameters parameters) {
 		if (!initialized) {
 			databaseFile = new File(parameters.getPath());
-			database = DBMaker.newFileDB(databaseFile).transactionDisable().closeOnJvmShutdown()
+			database = DBMaker.newFileDB(databaseFile).transactionDisable().compressionEnable().closeOnJvmShutdown()
 					.make();
+			
 			map = database.getTreeMap(ANNOTATED_CONTENT_COLLECTION);
 			initialized = true;
 		}
