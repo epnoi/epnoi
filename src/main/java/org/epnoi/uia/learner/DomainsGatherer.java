@@ -21,7 +21,8 @@ public class DomainsGatherer {
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, OntologyLearningParameters parameters) {
-		logger.info("Initializing the TermExtractor for the domains ");
+		logger.info("Initializing the DomainsGatherer with the following parameters: ");
+		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 
@@ -36,11 +37,13 @@ public class DomainsGatherer {
 	// -----------------------------------------------------------------------------------
 
 	public DomainsTable gather() {
-
+		logger.info("Gathering the DomainsTable");
 		for (String domain : this.consideredDomains) {
+			logger.info("Gathering the domain " + domain);
 			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
 					domain, this.consideredResources);
-System.out.println("FOUND> "+foundURIs.size());
+			logger.info("Found initially " + foundURIs.size()
+					+ " elements in the domain");
 			this.domainsTable.getDomains().put(domain,
 					_cleanResources(foundURIs));
 		}

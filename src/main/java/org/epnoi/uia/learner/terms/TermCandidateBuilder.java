@@ -13,8 +13,7 @@ import java.util.List;
 
 public class TermCandidateBuilder {
 	private final String symbolPatter="[^\\w\\s]";
-	private static final List<String> stopwords = Arrays.asList(new String[] {
-			"comment", "comments","proceedings","example","examples", "symposium","conference","copyright","approach" });
+	
 	private Document document;
 
 	static final Comparator<Annotation> ANNOTATION_ORDER = new Comparator<Annotation>() {
