@@ -132,7 +132,7 @@ public class OntologyLearningProcess {
 		String targetDomain = "CGTestCorpus";
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
-		boolean extractTerms = true;
+		boolean extractTerms = false;
 		Integer numberInitialTerms = 10;
 		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 

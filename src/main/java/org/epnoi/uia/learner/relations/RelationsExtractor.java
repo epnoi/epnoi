@@ -94,8 +94,11 @@ public class RelationsExtractor {
 		Document annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
 		AnnotationSet sentenceAnnotations = annotatedResource.getAnnotations()
 				.get(NLPAnnotationsHelper.SENTENCE);
+		
+		System.out.println("There are "+sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
 		AnnotationSet resourceAnnotations = annotatedResource.getAnnotations();
+		
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
