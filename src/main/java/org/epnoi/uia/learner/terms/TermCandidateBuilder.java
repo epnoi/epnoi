@@ -56,6 +56,9 @@ public class TermCandidateBuilder {
 						.toLowerCase());
 			}
 		}
+		
+		
+		
 		termCandidate.getAnnotation().setWords(
 				Arrays.copyOf(words.toArray(), words.size(), String[].class));
 		termCandidate.getAnnotation().setLength(words.size());

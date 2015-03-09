@@ -1,6 +1,7 @@
 package org.epnoi.uia.learner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,6 +33,8 @@ public class DomainsGatherer {
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
 
 		this.domainsTable = new DomainsTable();
+		this.targetDomain = (String) this.parameters
+				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -44,8 +47,13 @@ public class DomainsGatherer {
 					domain, this.consideredResources);
 			logger.info("Found initially " + foundURIs.size()
 					+ " elements in the domain");
+
+			/* LO QUE ES */
 			this.domainsTable.getDomains().put(domain,
 					_cleanResources(foundURIs));
+
+			// this.domainsTable.getDomains().put(domain, foundURIs.subList(0,
+			// 1));
 		}
 		this.domainsTable.setTargetDomain(targetDomain);
 		return this.domainsTable;
@@ -61,6 +69,8 @@ public class DomainsGatherer {
 				cleanedURIs.add(uri);
 			}
 		}
+
+		// return Arrays.asList(cleanedURIs.get(0));
 		return cleanedURIs;
 	}
 }

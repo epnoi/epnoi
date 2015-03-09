@@ -113,7 +113,7 @@ public class TermCassandraDAO extends CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILLY);
-		System.out.println("------------------------------READING " + URI);
+		//System.out.println("------------------------------READING " + URI);
 		if (columnsIterator.hasNext()) {
 			Term term = new Term();
 			TermMetadata termMetadata = term.getAnnotatedTerm().getAnnotation();

@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.Relation;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
 import org.epnoi.uia.learner.relations.RelationsTable;
@@ -18,6 +20,8 @@ import org.epnoi.uia.learner.terms.TermsExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class OntologyLearningProcess {
+	private static final Logger logger = Logger
+			.getLogger(OntologyLearningProcess.class.getName());
 	private OntologyLearningParameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
 	private TermsTable termsTable;
@@ -27,14 +31,28 @@ public class OntologyLearningProcess {
 	private DomainsGatherer domainsGatherer;
 	private DomainsTable domainsTable;
 
+	private double hypernymRelationsThreshold;
+	private boolean extractTerms;
+
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
 			OntologyLearningParameters ontologyLearningParameters)
 			throws EpnoiInitializationException {
+
+		logger.info("Initializing the OntologyLearningProcess with the following parameters");
+		logger.info(ontologyLearningParameters.toString());
+
+		this.ontologyLearningParameters = ontologyLearningParameters;
+		this.hypernymRelationsThreshold = (double) this.ontologyLearningParameters
+				.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
+		this.extractTerms = (boolean) this.ontologyLearningParameters
+				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
+
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
 		this.domainsGatherer = new DomainsGatherer();
+		this.domainsGatherer.init(core, ontologyLearningParameters);
 		this.domainsTable = this.domainsGatherer.gather();
 
 		this.termExtractor = new TermsExtractor();
@@ -50,23 +68,26 @@ public class OntologyLearningProcess {
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void execute() {
+		logger.info("Starting the execution of a Ontology Learning Process");
 
-		double hypernymRelationsThreshold = Double
-				.valueOf((String) this.ontologyLearningParameters
-						.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD));
-		boolean extractTerms = (boolean) this.ontologyLearningParameters
-				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
 		if (extractTerms) {
 			this.termsTable = this.termExtractor.extract();
 		} else {
 			this.termsTable = this.termExtractor.retrieve();
 		}
 
+		termsTable.show(30);
+
+
+		System.out.println("Extracting relations table");
+
 		this.relationsTable = this.relationsTableExtractor
 				.extract(this.termsTable);
 
-		System.exit(0);
+		System.out.println("Relations Table> " + this.relationsTable);
 
+		System.out.println("end");
+		System.exit(0);
 		OntologyGraph ontologyNoisyGraph = OntologyGraphFactory.build(
 				this.ontologyLearningParameters, this.termsTable,
 				this.relationsTable);
@@ -109,25 +130,40 @@ public class OntologyLearningProcess {
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
 		List<String> consideredDomains = Arrays.asList("CGTestCorpus");
 		String targetDomain = "CGTestCorpus";
-		Double hyperymMinimumThreshold = 0.7;
+		Double hyperymExpansionMinimumThreshold = 0.7;
+		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
+		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
+
+		ontologyLearningParameters.setParameter(
+				OntologyLearningParameters.CONSIDERED_RESOURCES,
+				RDFHelper.PAPER_CLASS);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
-						hyperymMinimumThreshold);
+						hyperymExpansionMinimumThreshold);
+
+		ontologyLearningParameters
+				.setParameter(
+						OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+						hyperymExpansionMinimumThreshold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
+
+		ontologyLearningParameters.setParameter(
+				OntologyLearningParameters.HYPERNYM_MODEL_PATH,
+				hypernymsModelPath);
 
 		Core core = CoreUtility.getUIACore();
 

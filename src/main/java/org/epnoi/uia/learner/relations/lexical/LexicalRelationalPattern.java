@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.uia.learner.relations.RelationalPattern;
+import org.hibernate.hql.internal.ast.tree.Node;
 
 public class LexicalRelationalPattern implements RelationalPattern {
 	private List<LexicalRelationalPatternNode> nodes;
@@ -28,17 +29,22 @@ public class LexicalRelationalPattern implements RelationalPattern {
 
 	// ----------------------------------------------------------------------------------------------------
 
-	public int getLength(){
-		return ((this.nodes==null)? 0 : this.nodes.size());
+	public int getLength() {
+		return ((this.nodes == null) ? 0 : this.nodes.size());
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "LexicalRelationalPattern [nodes=" + nodes + "]";
-	}
+		String nodesRepresentation = "";
+		for (LexicalRelationalPatternNode node : nodes) {
+			nodesRepresentation = nodesRepresentation + "|"
+					+ node.getGeneratedToken();
+		}
+		return "LexicalRelationalPattern [" + nodesRepresentation + "]";
 
+	}
 	// ----------------------------------------------------------------------------------------------------
 
 }

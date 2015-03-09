@@ -61,7 +61,8 @@ public class TermsExtractor {
 
 	public void init(Core core, DomainsTable domainsTable,
 			OntologyLearningParameters parameters) {
-		logger.info("Initializing the TermExtractor");
+		logger.info("Initializing the TermExtractor with the following parameters");
+		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 
@@ -94,7 +95,7 @@ public class TermsExtractor {
 	private void _indexDomainResoures(String domain) {
 		List<String> resourcesURIs = this.domainsTable.getDomains().get(domain);
 		for (String resourceURI : resourcesURIs) {
-			logger.info("Indexing the element " + resourceURI);
+			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
 		}
 		long total = 0;
@@ -317,6 +318,21 @@ public class TermsExtractor {
 
 	// -----------------------------------------------------------------------------------
 
+	public void storeTable(TermsTable termsTable) {
+		System.out.println("Storing a Terms Table");
+
+		for (Term term : termsTable.getTerms()) {
+			System.out.println("Storing " + term);
+			core.getInformationHandler().put(term, Context.getEmptyContext());
+
+			core.getAnnotationHandler().label(term.getURI(), this.targetDomain);
+		}
+		System.out
+				.println("=========================================================================================================================");
+	}
+
+	// -----------------------------------------------------------------------------------
+
 	private void calculateCValues() {
 
 		logger.info("Starting the calculation of the cValues");
@@ -496,6 +512,7 @@ public class TermsExtractor {
 			newTerm.setAnnotatedTerm(term);
 			termsTable.addTerm(newTerm);
 		}
+
 		return termsTable;
 	}
 
@@ -581,21 +598,8 @@ public class TermsExtractor {
 		termExtractor.init(core, domainsTable, ontologyLearningParameters);
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
-		System.out
-				.println("Extracted terms table--------------------------------------- ");
-
-		System.out
-				.println("----------------------------------------------------------------- ");
-
-		System.out.println("# of candidate terms---> " + termsTable.size());
-		int i = 1;
-		for (Term term : termsTable.getMostProbable(30)) {
-			System.out.println(i + ")" + term.getAnnotatedTerm().getWord()
-					+ " > "
-					+ term.getAnnotatedTerm().getAnnotation().getTermhood()
-					+ " " + term);
-		}
-
+		termExtractor.storeTable(termsTable);
+		
 	}
 
 }

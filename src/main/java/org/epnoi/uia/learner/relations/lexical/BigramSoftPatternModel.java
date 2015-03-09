@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 public class BigramSoftPatternModel implements SoftPatternModel {
 
 	private static final long serialVersionUID = 9103308220708737439L;
+	private static final int MAX_PATTERN_LENGTH = 20;
 	private Map<String, Double[]> unigramProbability;
 	private Map<String, Map<String, Double[]>> bigramProbability;
 	private LexicalRelationalModelCreationParameters parmeters;
@@ -69,8 +70,8 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 	@Override
 	public double calculatePatternProbability(
 			LexicalRelationalPattern relationalPattern) {
-
-		if (relationalPattern.getLength() < 2) {
+	//System.out.println(relationalPattern);
+		if ((relationalPattern.getLength() < 2)||(relationalPattern.getLength()>MAX_PATTERN_LENGTH)) {
 			return 0d;
 		} else {// Generic case...
 			String pastNodeToken;
@@ -95,6 +96,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			probability = probability / relationalPattern.getLength();
 
 			// And finally brought back to the [0,1] range
+			//System.out.println(Math.exp(probability));
 			return Math.exp(probability);
 		}
 	}
@@ -102,8 +104,9 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void show() {
-		System.out.println("The model's vocabulary cardinality is "+this.unigramProbability.size());
-		System.out.println("They are "+this.unigramProbability.keySet());
+		System.out.println("The model's vocabulary cardinality is "
+				+ this.unigramProbability.size());
+		System.out.println("They are " + this.unigramProbability.keySet());
 		System.out
 				.println("Unigrams=========================================================================================");
 		for (Entry<String, Double[]> unigramProbability : this.unigramProbability
