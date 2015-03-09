@@ -56,13 +56,14 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		pairsOfNameValues.put(RelationalSentencesCorpusCassandraHelper.TYPE,
 				relationalSentencesCorpus.getType());
-
+		int sentenceIndex = 0;
 		for (RelationalSentence relationalSentence : relationalSentencesCorpus
 				.getSentences()) {
 
 			pairsOfNameValues
-					.put(_createRelationalSentenceRepresentation(relationalSentence),
-							RelationalSentencesCorpusCassandraHelper.SENTENCE);
+					.put(RelationalSentencesCorpusCassandraHelper.SENTENCE
+							+ sentenceIndex++,
+							_createRelationalSentenceRepresentation(relationalSentence));
 		}
 
 		super.updateColumns(relationalSentencesCorpus.getURI(),
@@ -171,11 +172,11 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 						.equals(column.getName())) {
 					relationalSentencesCorpus.setType(column.getValue());
 
-				} else if (RelationalSentencesCorpusCassandraHelper.SENTENCE
-						.equals(column.getValue())) {
+				} else if (column.getName().contains(
+						RelationalSentencesCorpusCassandraHelper.SENTENCE)) {
 					// System.out.println("cNAME > " + column.getName());
 					RelationalSentence relationalSentenes = _readRelationalSentenceRepresentation(column
-							.getName());
+							.getValue());
 
 					relationalSentencesCorpus.getSentences().add(
 							relationalSentenes);
@@ -202,28 +203,8 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-		// System.out.println("annotatedContent > " + selector);
-		String annotatedContent = super.readColumn(
-				selector.getProperty(SelectorHelper.URI),
-				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-
-		if (annotatedContent == null) {// http://en.wikipedia.org/wiki/Glossary_of_American_football
-										// bug
-			return null;
-		}
-		Matcher matcher = pattern.matcher(annotatedContent);
-
-		if (matcher.find()) {
-			String type = annotatedContent.subSequence(matcher.start() + 1,
-					matcher.end() - 1).toString();
-
-			String content = annotatedContent.subSequence(matcher.end(),
-					annotatedContent.length()).toString();
-			return new Content<>(content, type);
-
-		}
-		return null;
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
@@ -240,16 +221,8 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
-
-		// System.out.println("selector> " + selector);
-
-		super.updateColumn(
-				selector.getProperty(SelectorHelper.URI),
-				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
-				"[" + annotatedContent.getType() + "]"
-						+ annotatedContent.getContent(),
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
-
+		throw (new RuntimeException(
+				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
@@ -321,10 +294,10 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		RelationalSentencesCorpus readedCorpus = (RelationalSentencesCorpus) relationalSentencesCorpusCassandraDAO
 				.read(relationalSentencesCorpus.getURI());
-		/*
-		 * System.out.println("The readed relational sentence corpus " +
-		 * readedCorpus);
-		 */
+
+		System.out.println("The readed relational sentence corpus "
+				+ readedCorpus);
+
 		/*
 		 * System.out.println("lo leido " + GateUtils.deserializeGATEDocument(
 		 * readedCorpus.getSentences().get(1) .getAnnotatedSentence()).toXml());
@@ -333,9 +306,11 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		LexicalRelationalPatternGenerator lexicalRelationalPatternGenerator = new LexicalRelationalPatternGenerator();
 		// try {
 		// lexicalRelationalPatternGenerator.init(core);
-		System.out.println("generated pattern > "
-				+ lexicalRelationalPatternGenerator.generate(readedCorpus
-						.getSentences().get(1)));
+		/*
+		 * System.out.println("generated pattern > " +
+		 * lexicalRelationalPatternGenerator.generate(readedCorpus
+		 * .getSentences().get(1)));
+		 */
 		// } catch (EpnoiInitializationException e) {
 		// TODO Auto-generated catch block
 		// e.printStackTrace();

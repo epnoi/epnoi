@@ -1,13 +1,14 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
+import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -57,8 +58,6 @@ public class WikipediaPageWrapper implements Wrapper {
 		WikipediaPage cassandraWikipediaPage = (WikipediaPage) informationStore
 				.get(selector);
 
-		
-
 		return cassandraWikipediaPage;
 	}
 
@@ -95,7 +94,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	@Override
 	public boolean exists(String URI) {
 
-		//System.out.println(" checking the existence > " + URI);
+		// System.out.println(" checking the existence > " + URI);
 
 		boolean exists;
 		InformationStore informationStore = this.core
@@ -107,24 +106,31 @@ public class WikipediaPageWrapper implements Wrapper {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		exists = informationStore.exists(selector);
-
+	
 		if (exists) {
 			informationStore = this.core.getInformationStoresByType(
 					InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 			exists = informationStore.exists(selector);
+			
 			if (exists) {
-				/*
-				 * exists = !this.core .getInformationHandler()
-				 * .getAnnotatedContent( URI, URI + "/first/" +
-				 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE)
-				 * .isEmpty();
-				 */
-			}
 
+				String annotatedContentURI = URI + "/first/"
+						+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
+
+				selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
+						annotatedContentURI);
+
+				exists = this.core.getInformationHandler().getAnnotatedContent(
+						selector) != null;
+				
+			}
 		}
+
 		selector = null;
 		return exists;
 	}
+
+	// -------------------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(Selector selector) {
@@ -132,30 +138,36 @@ public class WikipediaPageWrapper implements Wrapper {
 		return null;
 	}
 
+	// -------------------------------------------------------------------------------------
+
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 		// TODO Auto-generated method stub
 
 	}
 
+	// -------------------------------------------------------------------------------------
+
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
 
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 
 		return informationStore.getAnnotatedContent(selector);
 	}
 
+	// -------------------------------------------------------------------------------------
+
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
-		// TODO Auto-generated method stub
+		MapInformationStore informationStore = (MapInformationStore) this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
+		informationStore.setAnnotatedContent(selector, annotatedContent);
 
 	}
-
-	// -------------------------------------------------------------------------------------
 
 }

@@ -25,6 +25,7 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
+import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.RSSHarvesterParameters;
 import org.epnoi.uia.parameterization.RSSHoarderParameters;
@@ -157,6 +158,25 @@ public class Core {
 					+ newInformationStore.test());
 
 		}
+		logger.info("Initializing map information stores");
+		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
+			logger.info(mapInformationStoreParameters.toString());
+
+			InformationStore newInformationStore = InformationStoreFactory
+					.buildInformationStore(mapInformationStoreParameters,
+							parametersModel);
+
+			this.informationStores.put(
+					mapInformationStoreParameters.getURI(),
+					newInformationStore);
+
+			_addInformationStoreByType(newInformationStore,
+					InformationStoreHelper.MAP_INFORMATION_STORE);
+			logger.info("The status of the information source is "
+					+ newInformationStore.test());
+
+		}
+
 
 	}
 
@@ -241,11 +261,15 @@ public class Core {
 	public InformationSourcesHandler getInformationSourcesHandler() {
 		return informationSourcesHandler;
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
 
 	public void setInformationSourcesHandler(
 			InformationSourcesHandler informationSourcesHandler) {
 		this.informationSourcesHandler = informationSourcesHandler;
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
 
 	public SearchHandler getSearchHandler() {
 		return searchHandler;

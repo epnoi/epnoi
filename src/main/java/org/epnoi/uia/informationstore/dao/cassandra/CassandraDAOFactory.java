@@ -104,7 +104,7 @@ public class CassandraDAOFactory {
 
 		else {
 			throw new DAONotFoundException(
-					"Unknown wrapper for the resource class " + typeSelector);
+					"Unknown dao for the resource class " + typeSelector);
 		}
 	}
 }

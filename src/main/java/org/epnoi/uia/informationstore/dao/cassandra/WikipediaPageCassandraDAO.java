@@ -91,7 +91,8 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 					: "[" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE
 							+ "]" + contextElement.getValue();
 			// System.out.println("------- > "+annotatedContent);
-			pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
+			// AQUI METIAMOS EL DOCUMENTO ANOTADO
+			// pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
 
 			/*
 			 * super.updateColumn(wikipediaPage.getURI(),
@@ -289,13 +290,9 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 	@Override
 	public boolean exists(Selector selector) {
-		String annotationURI = selector.getProperty(SelectorHelper.URI)
-				+ "/first/" + AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
-		
-		String annotatedContent = super.readColumn(
-				selector.getProperty(SelectorHelper.URI), annotationURI,
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
 
-		return (annotatedContent != null && annotatedContent.length() > 5);
+		return (super.getAllCollumns(selector.getProperty(SelectorHelper.URI),
+				WikipediaPageCassandraHelper.COLUMN_FAMILLY).hasNext());
+
 	}
 }

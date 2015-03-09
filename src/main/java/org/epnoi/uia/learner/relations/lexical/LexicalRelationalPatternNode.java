@@ -1,8 +1,8 @@
 package org.epnoi.uia.learner.relations.lexical;
 
 public class LexicalRelationalPatternNode {
-	String originialToken;
-	String generatedToken;
+	private String originialToken;
+	private String generatedToken;
 
 	// ---------------------------------------------------------------------------
 

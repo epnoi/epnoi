@@ -14,6 +14,7 @@ import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ILexFile;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.ISynsetID;
 import edu.mit.jwi.item.IWord;
@@ -94,6 +95,7 @@ public class WordNetHandler {
 	// ---------------------------------------------------------------------------------------------------------------
 
 	public String stemNoun(String noun) {
+		try{
 		List<String> stemmerResult = this.wordnetStemmer.findStems(noun,
 				POS.NOUN);
 		if (stemmerResult.size() > 0) {
@@ -101,7 +103,9 @@ public class WordNetHandler {
 		} else {
 			return null;
 		}
-
+		}catch(IllegalArgumentException e){
+			return null;
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------

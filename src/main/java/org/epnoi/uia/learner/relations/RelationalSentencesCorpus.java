@@ -63,7 +63,7 @@ public class RelationalSentencesCorpus implements Resource {
 	@Override
 	public String toString() {
 		return "RelationalSentencesCorpus [URI=" + URI + ", description="
-				+ description + ", type=" + type + ", sentences=" + sentences
+				+ description + ", type=" + type + ", #sentences=" + sentences.size()
 				+ "]";
 	}
 
