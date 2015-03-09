@@ -75,7 +75,7 @@ public class RelationsTable {
 			String type, String provenanceSentence, double relationhood) {
 
 		String relationURI = Relation.buildURI(source.getAnnotatedTerm()
-				.getWord(), source.getAnnotatedTerm().getWord(), type, domain);
+				.getWord(), target.getAnnotatedTerm().getWord(), type, domain);
 
 		if (this.hasRelation(relationURI)) {
 			// If the relation is already in the Relations Table, we have to
@@ -87,13 +87,13 @@ public class RelationsTable {
 
 			// Since the relationhood of the relation has been update, we must
 			// update its position in the ordered MapTree
-			this.orderedRelations.remove(relationURI);
+			this.orderedRelations.remove(storedRelation);
 			this.orderedRelations.put(storedRelation, relationURI);
 
 		} else {
 			// If the relation is not already stored, we simply add it
 			Relation relation = new Relation();
-
+			relation.setURI(relationURI);
 			relation.setSource(source);
 			relation.setTarget(target);
 
@@ -108,6 +108,7 @@ public class RelationsTable {
 				this.relationsBySource.put(relation.getSource(), relations);
 			}
 			relations.add(relation);
+			System.out.println("RELATION-----------------> " + relation);
 		}
 	}
 
@@ -128,5 +129,14 @@ public class RelationsTable {
 	public int size() {
 		return this.relations.size();
 	}
+
+	// --------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "RelationsTable [relations=" + relations + "]";
+	}
+
+	// --------------------------------------------------------------------
 
 }

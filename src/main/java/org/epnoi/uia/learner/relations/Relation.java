@@ -97,4 +97,17 @@ public class Relation {
 
 	}
 
+	// ------------------------------------------------------------------------------------------------------------
+	
+	@Override
+	public String toString() {
+		return "Relation [URI=" + URI + ", source=" + source.getAnnotatedTerm().getWord() + ", target="
+				+ target.getAnnotatedTerm().getWord() + ", type=" + type + ", provenanceRelationhoodTable="
+				+ provenanceRelationhoodTable + "]";
+	}
+	
+	// ------------------------------------------------------------------------------------------------------------
+	
+		
+
 }

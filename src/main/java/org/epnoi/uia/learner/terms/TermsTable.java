@@ -1,6 +1,7 @@
 package org.epnoi.uia.learner.terms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -88,4 +89,37 @@ public class TermsTable {
 		return "TermsTable [terms=" + orderedTerms + "]";
 	}
 
+	// --------------------------------------------------------------------
+
+	public Collection<Term> getTerms() {
+		return this.terms.values();
+	}
+	
+	// --------------------------------------------------------------------
+
+	public void show(int numberOfDeatiledTerms) {
+
+		System.out
+				.println("=====================================================================================================================");
+		System.out.println("Terms Table");
+
+		System.out
+				.println("=====================================================================================================================");
+
+		System.out.println("# of candidate terms: " + this.size());
+		System.out.println("The top most "+numberOfDeatiledTerms+" probable terms are: ");
+		int i = 1;
+		for (Term term : this.getMostProbable(30)) {
+			System.out.println("(" + i + ")"
+					+ term.getAnnotatedTerm().getWord() + " > "
+					+ term.getAnnotatedTerm().getAnnotation().getTermhood()
+					+ " " + term);
+			System.out.println(term);
+		}
+
+		System.out
+				.println("=====================================================================================================================");
+		System.out
+				.println("=====================================================================================================================");
+	}
 }

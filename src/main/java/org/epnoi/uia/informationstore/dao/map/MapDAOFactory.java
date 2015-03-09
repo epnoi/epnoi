@@ -1,11 +1,10 @@
 package org.epnoi.uia.informationstore.dao.map;
 
+import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
-import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraDAO;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
@@ -29,6 +28,11 @@ public class MapDAOFactory {
 			wikipediaPageDAO.init(parameters);
 			return wikipediaPageDAO;
 		}
+		if (resource instanceof Paper) {
+			PaperMapDAO paperDAO = new PaperMapDAO();
+			paperDAO.init(parameters);
+			return paperDAO;
+		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
 	}
@@ -43,6 +47,10 @@ public class MapDAOFactory {
 			WikipediaPageMapDAO wikipediaPaperDAO = new WikipediaPageMapDAO();
 			wikipediaPaperDAO.init(parameters);
 			return wikipediaPaperDAO;
+		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
+			PaperMapDAO paperDAO = new PaperMapDAO();
+			paperDAO.init(parameters);
+			return paperDAO;
 		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);

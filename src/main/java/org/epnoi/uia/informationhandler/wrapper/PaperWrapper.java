@@ -3,20 +3,16 @@ package org.epnoi.uia.informationhandler.wrapper;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
-import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
-
-import com.hp.hpl.jena.vocabulary.RDF;
 
 public class PaperWrapper implements Wrapper {
 	Core core;
@@ -124,23 +120,23 @@ public class PaperWrapper implements Wrapper {
 			if (exists) {
 
 				informationStore = this.core.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+						InformationStoreHelper.MAP_INFORMATION_STORE)
 						.get(0);
 				// exists = informationStore.exists(selector);
 
 				if (exists) {
-					
+
 					/*
-					System.out.println("------> " + selector);
-					System.out.println("AC--------> "
-							+ ((CassandraInformationStore) informationStore)
-									.getAnnotatedContent(selector));
-								*/
-					exists = /*
-							 * (!((CassandraInformationStore) informationStore)
-							 * .getContent(selector).isEmpty()) &&
-							 */(!((CassandraInformationStore) informationStore)
-							.getAnnotatedContent(selector).isEmpty());
+					 * System.out.println("------> " + selector);
+					 * System.out.println("AC--------> " +
+					 * ((CassandraInformationStore) informationStore)
+					 * .getAnnotatedContent(selector));
+					 */
+
+					Content<String> annotatedContent = (((MapInformationStore) informationStore)
+							.getAnnotatedContent(selector));
+					exists = annotatedContent != null
+							&& !annotatedContent.isEmpty();
 				}
 			}
 		}
@@ -175,10 +171,9 @@ public class PaperWrapper implements Wrapper {
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		return informationStore.getAnnotatedContent(selector);
 	}
 
@@ -187,10 +182,9 @@ public class PaperWrapper implements Wrapper {
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<String> annotatedContent) {
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
+						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		informationStore.setAnnotatedContent(selector, annotatedContent);
 
 	}
