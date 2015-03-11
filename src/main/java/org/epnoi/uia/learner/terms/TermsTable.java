@@ -110,11 +110,14 @@ public class TermsTable {
 		System.out.println("The top most "+numberOfDeatiledTerms+" probable terms are: ");
 		int i = 1;
 		for (Term term : this.getMostProbable(30)) {
-			System.out.println("(" + i + ")"
-					+ term.getAnnotatedTerm().getWord() + " > "
-					+ term.getAnnotatedTerm().getAnnotation().getTermhood()
-					+ " " + term);
+			System.out.println("(" + i++ + ")"
+					+ term.getAnnotatedTerm().getWord() + " with termhood "
+					+ term.getAnnotatedTerm().getAnnotation().getTermhood());
+			
+			System.out.println("------------------------------------------------------");
 			System.out.println(term);
+			System.out.println("------------------------------------------------------");
+			
 		}
 
 		System.out
@@ -123,3 +126,4 @@ public class TermsTable {
 				.println("=====================================================================================================================");
 	}
 }
+ 

@@ -37,7 +37,7 @@ import org.epnoi.uia.learner.terms.TermsTable;
 public class RelationsExtractor {
 	private static final Logger logger = Logger
 			.getLogger(RelationsExtractor.class.getName());
-	private static final long MAX_DISTANCE = 50;
+	private static final long MAX_DISTANCE = 20;
 	private Core core;
 	private SoftPatternModel softPatternModel;
 	private Parameters parameters;
@@ -94,11 +94,11 @@ public class RelationsExtractor {
 		Document annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
 		AnnotationSet sentenceAnnotations = annotatedResource.getAnnotations()
 				.get(NLPAnnotationsHelper.SENTENCE);
-		
-		System.out.println("There are "+sentenceAnnotations.size());
+
+		System.out.println("There are " + sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
 		AnnotationSet resourceAnnotations = annotatedResource.getAnnotations();
-		
+
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
@@ -144,7 +144,8 @@ public class RelationsExtractor {
 
 			e.printStackTrace();
 		}
-
+		int combinations = 0;
+		long time = System.currentTimeMillis();
 		for (int i = 0; i < termAnnotations.size(); i++)
 			for (int j = i + 1; j < termAnnotations.size(); j++) {
 				Annotation source = termAnnotations.get(i);
@@ -152,18 +153,22 @@ public class RelationsExtractor {
 				if (!_areFar(source, target)) {
 					// For each pair of terms we check both as target and as
 					// source
+					
 					_extractProbableRelationsFromSentence(source, target,
 							annotatedResource, sentenceContent,
 							termCandidateBuilder);
-					/*
+
 					_extractProbableRelationsFromSentence(target, source,
 							annotatedResource, sentenceContent,
 							termCandidateBuilder);
-							*/
-				}else{
-					//System.out.println("Are far:"+source+" > "+target);
+					combinations++;
+
+				} else {
+					// System.out.println("Are far:"+source+" > "+target);
 				}
 			}
+		//System.out.println("Sentence took "+ Math.abs(time - System.currentTimeMillis())+ " consisting of "+combinations);
+
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------------------
