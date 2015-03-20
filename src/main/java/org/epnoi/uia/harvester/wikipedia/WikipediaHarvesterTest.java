@@ -34,7 +34,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
-public class WikipediaHarvester {
+public class WikipediaHarvesterTest {
 	// -Xmx1g
 	private static String wikipediaDumpPath = "/epnoi/epnoideployment/firstReviewResources/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
@@ -45,7 +45,7 @@ public class WikipediaHarvester {
 	private int count = 0;
 	private Core core;
 	private static final Logger logger = Logger
-			.getLogger(WikipediaHarvester.class.getName());
+			.getLogger(WikipediaHarvesterTest.class.getName());
 
 	private static final String templateRegExp = "TEMPLATE\\[";
 	public static final int MIN_SECTIONS = 2;
@@ -55,7 +55,7 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public WikipediaHarvester() {
+	public WikipediaHarvesterTest() {
 
 	}
 
@@ -74,7 +74,7 @@ public class WikipediaHarvester {
 	public void harvest() {
 		logger.info("Starting the harvesting ----------------------------------------------------------------------");
 
-		File folder = new File(WikipediaHarvester.wikipediaDumpPath);
+		File folder = new File(WikipediaHarvesterTest.wikipediaDumpPath);
 
 		File[] listOfFiles = folder.listFiles();
 		logger.info("Harvesting the directory/repository "
@@ -360,7 +360,7 @@ public class WikipediaHarvester {
 			String localPartOfTermURI = page.getTitle().replaceAll("\\n", "")
 					.replaceAll("\\s+$", "").replaceAll("\\s+", "_");
 
-			wikipediaPage.setURI(WikipediaHarvester.wikipediaPath
+			wikipediaPage.setURI(WikipediaHarvesterTest.wikipediaPath
 					+ localPartOfTermURI);
 			wikipediaPage.setTerm(cleanedPageTitle);
 
@@ -412,8 +412,8 @@ public class WikipediaHarvester {
 				wikipediaPage.getSections().add("first");
 				wikipediaPage.getSectionsContent().put("first", "");
 			}
-			if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
-				if (WikipediaHarvester.INCREMENTAL) {
+			if (wikipediaPage.getSections().size() > WikipediaHarvesterTest.MIN_SECTIONS) {
+				if (WikipediaHarvesterTest.INCREMENTAL) {
 					if (!core.getInformationHandler().contains(
 							wikipediaPage.getURI(),
 							RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
@@ -450,7 +450,7 @@ public class WikipediaHarvester {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		WikipediaHarvester wikipediaHarvester = new WikipediaHarvester();
+		WikipediaHarvesterTest wikipediaHarvester = new WikipediaHarvesterTest();
 		// Core core = null;
 		Core core = CoreUtility.getUIACore();
 

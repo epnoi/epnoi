@@ -212,7 +212,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 				annotationSelector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				
 			
-				core.getInformationHandler().setAnnotatedContent(annotationSelector, new Content<>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
+				core.getInformationHandler().setAnnotatedContent(annotationSelector, new Content<Object>(annotatedContent.toXml(), ContentHelper.CONTENT_TYPE_TEXT_XML));
 				
 				//System.out.println("-----|>"+core.getInformationAccess().getAnnotatedContent(paper.getURI(), RDFHelper.PAPER_CLASS));
 

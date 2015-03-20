@@ -146,7 +146,7 @@ public class TermsExtractor {
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
 				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 
-		Content<String> annotatedContent = core.getInformationHandler()
+		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
 		Document document = null;
 		try {
@@ -155,7 +155,7 @@ public class TermsExtractor {
 							"gate.corpora.DocumentImpl",
 							Utils.featureMap(
 									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									annotatedContent.getContent(),
+									(String)annotatedContent.getContent(),
 									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
 									"text/xml"));
 

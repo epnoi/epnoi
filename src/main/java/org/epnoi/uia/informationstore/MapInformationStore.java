@@ -116,10 +116,10 @@ public class MapInformationStore implements InformationStore {
 
 	// ------------------------------------------------------------------------
 
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 		MapDAO dao = this.daoFactory.build(selector);
 
-		Content<String> content = dao.getAnnotatedContent(selector);
+		Content<Object> content = dao.getAnnotatedContent(selector);
 		dao = null;
 		return content;
 	}
@@ -127,7 +127,7 @@ public class MapInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 
 		MapDAO dao = this.daoFactory.build(selector);
 		dao.setAnnotatedContent(selector, annotatedContent);

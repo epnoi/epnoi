@@ -149,7 +149,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 
 		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
@@ -162,7 +162,7 @@ public class WikipediaPageWrapper implements Wrapper {
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 		MapInformationStore informationStore = (MapInformationStore) this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);

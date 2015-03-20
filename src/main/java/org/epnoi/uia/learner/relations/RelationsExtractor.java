@@ -153,7 +153,7 @@ public class RelationsExtractor {
 				if (!_areFar(source, target)) {
 					// For each pair of terms we check both as target and as
 					// source
-					
+
 					_extractProbableRelationsFromSentence(source, target,
 							annotatedResource, sentenceContent,
 							termCandidateBuilder);
@@ -167,7 +167,8 @@ public class RelationsExtractor {
 					// System.out.println("Are far:"+source+" > "+target);
 				}
 			}
-		//System.out.println("Sentence took "+ Math.abs(time - System.currentTimeMillis())+ " consisting of "+combinations);
+		// System.out.println("Sentence took "+ Math.abs(time -
+		// System.currentTimeMillis())+ " consisting of "+combinations);
 
 	}
 
@@ -233,7 +234,7 @@ public class RelationsExtractor {
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
 				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 
-		Content<String> annotatedContent = core.getInformationHandler()
+		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
 		Document document = null;
 		try {
@@ -242,7 +243,7 @@ public class RelationsExtractor {
 							"gate.corpora.DocumentImpl",
 							Utils.featureMap(
 									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									annotatedContent.getContent(),
+									(String) annotatedContent.getContent(),
 									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
 									"text/xml"));
 

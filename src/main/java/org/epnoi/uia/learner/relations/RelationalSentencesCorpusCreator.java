@@ -190,7 +190,7 @@ public class RelationalSentencesCorpusCreator {
 									section,
 									AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
 					// System.out.println("selector >" + selector);
-					Content<String> annotatedContent = this.core
+					Content<Object> annotatedContent = this.core
 							.getInformationHandler().getAnnotatedContent(
 									selector);
 
@@ -200,7 +200,7 @@ public class RelationalSentencesCorpusCreator {
 						 * + " of " + uri + " was not null");
 						 */
 						Document annotatedContentDocument = GateUtils
-								.deserializeGATEDocument(annotatedContent
+								.deserializeGATEDocument((String)annotatedContent
 										.getContent());
 						_searchDocument(annotatedContentDocument);
 						Factory.deleteResource(annotatedContentDocument);

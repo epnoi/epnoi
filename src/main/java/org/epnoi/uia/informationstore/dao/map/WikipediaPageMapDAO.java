@@ -14,33 +14,30 @@ public class WikipediaPageMapDAO extends MapDAO {
 	// --------------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 
-		// System.out.println("GET===================> "+map.keySet());
-		String annotatedContent = map.get(selector
+		Content annotatedContent = (Content)map.get(selector
 				.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI));
-		/*
-		 * String annotatedContent = super.readColumn(
-		 * selector.getProperty(SelectorHelper.URI),
-		 * selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
-		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-		 */
-		if (annotatedContent == null) {// http://en.wikipedia.org/wiki/Glossary_of_American_football
-										// bug
-			return null;
-		}
 
-		Matcher matcher = pattern.matcher(annotatedContent);
+		// System.out.println(">> "+map.keySet());
+		// System.out.println("_---> "+map.get("file:///epnoi/epnoideployment/firstReviewResources/CGCorpus/A01_S01_A_Powell_Optimization_Approach__for_Example-Based_Skinning__CORPUS__v3.xml/text/xml/gate"));
 
-		if (matcher.find()) {
-			String type = annotatedContent.subSequence(matcher.start() + 1,
-					matcher.end() - 1).toString();
+		if (annotatedContent != null) {
 
-			String content = annotatedContent.subSequence(matcher.end(),
-					annotatedContent.length()).toString();
-			return new Content<>(content, type);
+		//	Matcher matcher = pattern.matcher(annotatedContent);
 
-		}
+			//if (matcher.find()) {
+				//String type = annotatedContent.subSequence(matcher.start() + 1,
+					//	matcher.end() - 1).toString();
+			String type = annotatedContent.getType();
+			/*
+				String content = annotatedContent.subSequence(matcher.end(),
+						annotatedContent.length()).toString();
+				*/
+			Object content = annotatedContent.getContent();
+				return new Content<Object>(content, type);
+			}
+		//}
 		return null;
 	}
 
@@ -48,19 +45,16 @@ public class WikipediaPageMapDAO extends MapDAO {
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
-
+			Content<Object> annotatedContent) {
+/*
 		String annotatedContentSerialized = "[" + annotatedContent.getType()
 				+ "]" + annotatedContent.getContent();
-
-		
+		// System.out.println("p>"+selector);
+*/
 		map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
-				annotatedContentSerialized);
-
-		// System.out.println("SET===================> "+map.keySet());
+				annotatedContent.getContent());
+		// System.out.println(">> "+map.keySet());
 		database.commit();
-		
-		
 
 	}
 	// --------------------------------------------------------------------------------

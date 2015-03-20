@@ -143,7 +143,7 @@ public class WikipediaPageWrapperTester {
 
 			core.getInformationHandler().setAnnotatedContent(
 					selector,
-					new Content<>(serializedAnnotatedContent,
+					new Content<Object>(serializedAnnotatedContent,
 							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
 		}
 
