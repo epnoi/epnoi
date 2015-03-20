@@ -20,7 +20,7 @@ import com.rits.cloning.Cloner;
 public class TestMapDAO extends MapDAO {
 
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
-	private static 	Cloner cloner = new Cloner();
+	private static Cloner cloner = new Cloner();
 
 	@Override
 	public Content<Object> getAnnotatedContent(Selector selector) {
@@ -42,13 +42,14 @@ public class TestMapDAO extends MapDAO {
 	public void setAnnotatedContent(Selector selector,
 			Content<Object> annotatedContent) {
 
-		// System.out.println("p>"+selector);
-
-	
+		System.out.println("puting >"
+				+ selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI));
 
 		Content<Object> clonedAnnotatedContent = cloner
 				.deepClone(annotatedContent);
-
+	//	System.out.println("==========================================================================================================================");
+	//	System.out.println("==========================================================================================================================");
+		//System.out.println("......:> " + clonedAnnotatedContent.toString());
 		map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				clonedAnnotatedContent);
 		// System.out.println(">> "+map.keySet());

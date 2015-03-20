@@ -260,11 +260,11 @@ public class WikipediaHarvesterTest {
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 			Document annotatedContent = this.termCandidatesFinder
 					.findTermCandidates(sectionContent);
-			serializedAnnotatedContent = annotatedContent.toXml();
+			//serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE
 			// resources
-			Factory.deleteResource(annotatedContent);
+			
 
 			Selector selector = new Selector();
 			selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
@@ -275,8 +275,9 @@ public class WikipediaHarvesterTest {
 
 			core.getInformationHandler().setAnnotatedContent(
 					selector,
-					new org.epnoi.model.Content<Object>(serializedAnnotatedContent,
+					new org.epnoi.model.Content<Object>(annotatedContent,
 							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
+			Factory.deleteResource(annotatedContent);
 		}
 
 	}

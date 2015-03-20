@@ -89,7 +89,7 @@ public class RDFDAOQueryResolver {
 
 		Node classNode = Node.createURI(selector
 				.getProperty(SelectorHelper.TYPE));
-
+		// System.out.println("selector > "+selector);
 		return this.graph.find(
 				new Triple(uriNode, RDFDAOQueryResolver.typePropertyNode,
 						classNode)).hasNext();
