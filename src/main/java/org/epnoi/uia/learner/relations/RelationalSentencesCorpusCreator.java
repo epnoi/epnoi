@@ -199,11 +199,15 @@ public class RelationalSentencesCorpusCreator {
 						 * System.out.println("NOT NULL The section " + section
 						 * + " of " + uri + " was not null");
 						 */
+						
+						/*
 						Document annotatedContentDocument = GateUtils
 								.deserializeGATEDocument((String)annotatedContent
 										.getContent());
+						*/
+						Document annotatedContentDocument = (Document)annotatedContent.getContent();
 						_searchDocument(annotatedContentDocument);
-						Factory.deleteResource(annotatedContentDocument);
+						//Factory.deleteResource(annotatedContentDocument);
 
 					} else {
 						System.out.println("The section " + section + " of "
@@ -444,7 +448,7 @@ public class RelationalSentencesCorpusCreator {
 		parameters
 				.setParameter(
 						RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER,
-						true);
+						false);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER,

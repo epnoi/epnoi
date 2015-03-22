@@ -31,9 +31,9 @@ public class MapDAOFactory {
 			return wikipediaPageDAO;
 		}
 		if (resource instanceof Paper) {
-			PaperMapDAO paperDAO = new PaperMapDAO();
-			paperDAO.init(parameters);
-			return paperDAO;
+			TestMapDAO wikipediaPageDAO = new TestMapDAO();
+			wikipediaPageDAO.init(parameters);
+			return wikipediaPageDAO;
 		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
@@ -51,9 +51,9 @@ public class MapDAOFactory {
 			wikipediaPaperDAO.init(parameters);
 			return wikipediaPaperDAO;
 		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
-			PaperMapDAO paperDAO = new PaperMapDAO();
-			paperDAO.init(parameters);
-			return paperDAO;
+			TestMapDAO wikipediaPaperDAO = new TestMapDAO();
+			wikipediaPaperDAO.init(parameters);
+			return wikipediaPaperDAO;
 		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);
