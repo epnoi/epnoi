@@ -40,11 +40,11 @@ public interface InformationHandler {
 	
 	public Content<String> getContent(Selector selector);
 	
-	public Content<String> getAnnotatedContent(Selector selector);
+	public Content<Object> getAnnotatedContent(Selector selector);
 
 	public void  setContent(Selector selector, Content<String> content);
 	
-	public void  setAnnotatedContent(Selector selector, Content<String> annotatedContent);
+	public void  setAnnotatedContent(Selector selector, Content<Object> annotatedContent);
 
 	
 }

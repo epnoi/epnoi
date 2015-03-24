@@ -142,14 +142,14 @@ class FilesystemHarvester {
 									SelectorHelper.ANNOTATED_CONTENT_URI,
 									paper.getURI()
 											+ "/"
-											+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+											+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 					annotationSelector.setProperty(SelectorHelper.TYPE,
 							RDFHelper.PAPER_CLASS);
 
 					core.getInformationHandler().setAnnotatedContent(
 							annotationSelector,
-							new Content<>(annotatedContent.toXml(),
-									ContentHelper.CONTENT_TYPE_TEXT_XML));
+							new Content<Object>(annotatedContent,
+									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
 					
 					totalTime = Math.abs(startTme
 							- System.currentTimeMillis());
@@ -273,6 +273,11 @@ class FilesystemHarvester {
 		parameters.setParameter(
 				FilesystemHarvesterParameters.VERBOSE_PARAMETER, true);
 
+		parameters.setParameter(
+				FilesystemHarvesterParameters.OVERWRITE_PARAMETER, true);
+
+		
+		
 		parameters.setParameter(
 				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
 				"/epnoi/epnoideployment/firstReviewResources/CGCorpus");

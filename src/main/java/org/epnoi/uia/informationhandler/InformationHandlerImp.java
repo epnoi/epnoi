@@ -142,11 +142,11 @@ public class InformationHandlerImp implements InformationHandler {
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
 		
-		Content<String> content = wrapper.getAnnotatedContent(selector);
+		Content<Object> content = wrapper.getAnnotatedContent(selector);
 		return content;
 	}
 
@@ -164,7 +164,7 @@ public class InformationHandlerImp implements InformationHandler {
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
 

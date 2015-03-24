@@ -14,7 +14,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.harvester.wikipedia.WikipediaHarvester;
+import org.epnoi.uia.harvester.wikipedia.WikipediaHarvesterOld;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
@@ -143,7 +143,7 @@ public class WikipediaPageWrapperTester {
 
 			core.getInformationHandler().setAnnotatedContent(
 					selector,
-					new Content<>(serializedAnnotatedContent,
+					new Content<Object>(serializedAnnotatedContent,
 							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
 		}
 

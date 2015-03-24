@@ -1,6 +1,8 @@
 package org.epnoi.model;
 
-public class Content<T> {
+import java.io.Serializable;
+
+public class Content<T> implements Serializable {
 	private T content;
 	private String type;
 
@@ -37,7 +39,7 @@ public class Content<T> {
 	// ----------------------------------------------------------------------------------------------
 
 	public boolean isEmpty() {
-		return ((this.content == null)||(this.type == null));
+		return ((this.content == null) || (this.type == null));
 	}
 
 	// ----------------------------------------------------------------------------------------------

@@ -4,9 +4,6 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 import gate.DocumentContent;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
 import gate.util.InvalidOffsetException;
 
 import java.util.ArrayList;
@@ -91,13 +88,15 @@ public class RelationsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _findRelationsInResource(String domainResourceURI) {
-		Document annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
-		AnnotationSet sentenceAnnotations = annotatedResource.getAnnotations()
+		Content<Object> annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
+		Document annotatedResourceDocument = (Document)annotatedResource.getContent();
+		
+		AnnotationSet sentenceAnnotations = annotatedResourceDocument.getAnnotations()
 				.get(NLPAnnotationsHelper.SENTENCE);
 
 		System.out.println("There are " + sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
-		AnnotationSet resourceAnnotations = annotatedResource.getAnnotations();
+		AnnotationSet resourceAnnotations = annotatedResourceDocument.getAnnotations();
 
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
@@ -108,9 +107,9 @@ public class RelationsExtractor {
 			Long sentenceEndOffset = sentenceAnnotation.getEndNode()
 					.getOffset();
 			TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
-					annotatedResource);
+					annotatedResourceDocument);
 			_testSentence(sentenceStartOffset, sentenceEndOffset,
-					annotatedResource, termCandidateBuilder);
+					annotatedResourceDocument, termCandidateBuilder);
 			/*
 			 * _testSentence(sentenceStartOffset, sentenceContent,
 			 * annotatedResourceAnnotations.getContained( sentenceStartOffset,
@@ -153,7 +152,7 @@ public class RelationsExtractor {
 				if (!_areFar(source, target)) {
 					// For each pair of terms we check both as target and as
 					// source
-					
+
 					_extractProbableRelationsFromSentence(source, target,
 							annotatedResource, sentenceContent,
 							termCandidateBuilder);
@@ -167,7 +166,8 @@ public class RelationsExtractor {
 					// System.out.println("Are far:"+source+" > "+target);
 				}
 			}
-		//System.out.println("Sentence took "+ Math.abs(time - System.currentTimeMillis())+ " consisting of "+combinations);
+		// System.out.println("Sentence took "+ Math.abs(time -
+		// System.currentTimeMillis())+ " consisting of "+combinations);
 
 	}
 
@@ -225,34 +225,29 @@ public class RelationsExtractor {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------
 
-	private Document retrieveAnnotatedDocument(String URI) {
+	private Content<Object> retrieveAnnotatedDocument(String URI) {
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.URI, URI);
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
-				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 
-		Content<String> annotatedContent = core.getInformationHandler()
+		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
-		Document document = null;
-		try {
-			document = (Document) Factory
-					.createResource(
-							"gate.corpora.DocumentImpl",
-							Utils.featureMap(
-									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									annotatedContent.getContent(),
-									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-									"text/xml"));
-
-		} catch (ResourceInstantiationException e) { // TODO Auto-generated
-			System.out
-					.println("Couldn't retrieve the GATE document that represents the annotated content of "
-							+ URI);
-			e.printStackTrace();
-		}
-		return document;
+		/*
+		 * Document document = null; try { document = (Document) Factory
+		 * .createResource( "gate.corpora.DocumentImpl", Utils.featureMap(
+		 * gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME, (String)
+		 * annotatedContent.getContent(),
+		 * gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
+		 * 
+		 * } catch (ResourceInstantiationException e) { // TODO Auto-generated
+		 * System.out .println(
+		 * "Couldn't retrieve the GATE document that represents the annotated content of "
+		 * + URI); e.printStackTrace(); }
+		 */
+		return annotatedContent;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------------------

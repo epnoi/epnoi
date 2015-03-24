@@ -24,6 +24,8 @@ public class MapDAOFactory {
 
 	public MapDAO build(Resource resource) throws DAONotFoundException {
 		if (resource instanceof WikipediaPage) {
+			//WikipediaPageMapDAO wikipediaPageDAO = new WikipediaPageMapDAO();
+			
 			WikipediaPageMapDAO wikipediaPageDAO = new WikipediaPageMapDAO();
 			wikipediaPageDAO.init(parameters);
 			return wikipediaPageDAO;
@@ -44,13 +46,14 @@ public class MapDAOFactory {
 		if (typeSelector == null) {
 			throw new DAONotFoundException("No type specified");
 		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+			//WikipediaPageMapDAO wikipediaPaperDAO = new WikipediaPageMapDAO();
 			WikipediaPageMapDAO wikipediaPaperDAO = new WikipediaPageMapDAO();
 			wikipediaPaperDAO.init(parameters);
 			return wikipediaPaperDAO;
 		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
-			PaperMapDAO paperDAO = new PaperMapDAO();
-			paperDAO.init(parameters);
-			return paperDAO;
+			PaperMapDAO paperMapDAO = new PaperMapDAO();
+			paperMapDAO.init(parameters);
+			return paperMapDAO;
 		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);

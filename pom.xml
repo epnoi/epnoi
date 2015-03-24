@@ -223,6 +223,11 @@
 			<artifactId>mapdb</artifactId>
 			<version>1.0.7</version>
 		</dependency>
+		<dependency>
+			<groupId>uk.com.robust-it</groupId>
+			<artifactId>cloning</artifactId>
+			<version>1.9.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>epnoi</finalName>
