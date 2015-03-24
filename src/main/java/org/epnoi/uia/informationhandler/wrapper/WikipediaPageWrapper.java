@@ -106,23 +106,23 @@ public class WikipediaPageWrapper implements Wrapper {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		exists = informationStore.exists(selector);
-	
+
 		if (exists) {
 			informationStore = this.core.getInformationStoresByType(
 					InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 			exists = informationStore.exists(selector);
-			
+
 			if (exists) {
 
 				String annotatedContentURI = URI + "/first/"
-						+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
+						+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE;
 
 				selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
 						annotatedContentURI);
-
+				//System.out.println("Exists selector " + selector);
 				exists = this.core.getInformationHandler().getAnnotatedContent(
 						selector) != null;
-				
+
 			}
 		}
 

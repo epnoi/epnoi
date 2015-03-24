@@ -123,7 +123,7 @@ public class RelationalSentencesCorpusCreator {
 		}
 		System.out.println("The average length is " + average
 				/ this.corpus.getSentences().size());
-
+		
 		System.out
 				.println("------------------------------------------------------------------------------------------");
 
@@ -166,6 +166,7 @@ public class RelationalSentencesCorpusCreator {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 		int nullCounts = 1;
+		int sectionsCount = 1;
 		int count = 1;
 		List<String> wikipediaPages = getWikipediaArticles();
 		System.out.println(wikipediaPages.size()
@@ -183,31 +184,23 @@ public class RelationalSentencesCorpusCreator {
 
 				selector.setProperty(SelectorHelper.URI, uri);
 				for (String section : wikipediaPage.getSections()) {
+					logger.info("				Section:  " + section);
 					selector.setProperty(
 							SelectorHelper.ANNOTATED_CONTENT_URI,
 							_extractURI(
 									uri,
 									section,
-									AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
-					// System.out.println("selector >" + selector);
+									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
+					//System.out.println("selector >" + selector);
 					Content<Object> annotatedContent = this.core
 							.getInformationHandler().getAnnotatedContent(
 									selector);
-
 					if (annotatedContent != null) {
-						/*
-						 * System.out.println("NOT NULL The section " + section
-						 * + " of " + uri + " was not null");
-						 */
-						
-						/*
-						Document annotatedContentDocument = GateUtils
-								.deserializeGATEDocument((String)annotatedContent
-										.getContent());
-						*/
-						Document annotatedContentDocument = (Document)annotatedContent.getContent();
+						Document annotatedContentDocument = (Document) annotatedContent
+								.getContent();
+
 						_searchDocument(annotatedContentDocument);
-						//Factory.deleteResource(annotatedContentDocument);
+						sectionsCount++;
 
 					} else {
 						System.out.println("The section " + section + " of "
@@ -219,7 +212,8 @@ public class RelationalSentencesCorpusCreator {
 			}
 
 		}
-		logger.info("The number of nulls is " + nullCounts);
+		logger.info("The number of not nulls is " + sectionsCount
+				+ " of nulls is " + nullCounts);
 	}
 
 	public boolean _isValid(Annotation sentenceAnnotation) {

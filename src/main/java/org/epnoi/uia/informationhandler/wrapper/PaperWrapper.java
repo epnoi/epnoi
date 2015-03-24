@@ -109,7 +109,7 @@ public class PaperWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
-				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 		exists = informationStore.exists(selector);
 		if (exists) {
 

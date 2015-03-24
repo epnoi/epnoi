@@ -77,7 +77,7 @@ public class OntologyLearningProcess {
 		}
 
 		termsTable.show(30);
-		System.exit(0);
+		
 
 		System.out.println("Extracting relations table");
 
@@ -87,7 +87,7 @@ public class OntologyLearningProcess {
 		System.out.println("Relations Table> " + this.relationsTable);
 
 		System.out.println("end");
-		
+		System.exit(0);
 		OntologyGraph ontologyNoisyGraph = OntologyGraphFactory.build(
 				this.ontologyLearningParameters, this.termsTable,
 				this.relationsTable);
@@ -132,7 +132,7 @@ public class OntologyLearningProcess {
 		String targetDomain = "CGTestCorpus";
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
-		boolean extractTerms = false;
+		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
 		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 

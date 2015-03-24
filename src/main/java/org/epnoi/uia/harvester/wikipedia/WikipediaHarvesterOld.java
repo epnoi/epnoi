@@ -34,7 +34,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
-public class WikipediaHarvesterTest {
+public class WikipediaHarvesterOld {
 	// -Xmx1g
 	private static String wikipediaDumpPath = "/epnoi/epnoideployment/firstReviewResources/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
@@ -45,7 +45,7 @@ public class WikipediaHarvesterTest {
 	private int count = 0;
 	private Core core;
 	private static final Logger logger = Logger
-			.getLogger(WikipediaHarvesterTest.class.getName());
+			.getLogger(WikipediaHarvesterOld.class.getName());
 
 	private static final String templateRegExp = "TEMPLATE\\[";
 	public static final int MIN_SECTIONS = 2;
@@ -55,7 +55,7 @@ public class WikipediaHarvesterTest {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public WikipediaHarvesterTest() {
+	public WikipediaHarvesterOld() {
 
 	}
 
@@ -74,7 +74,7 @@ public class WikipediaHarvesterTest {
 	public void harvest() {
 		logger.info("Starting the harvesting ----------------------------------------------------------------------");
 
-		File folder = new File(WikipediaHarvesterTest.wikipediaDumpPath);
+		File folder = new File(WikipediaHarvesterOld.wikipediaDumpPath);
 
 		File[] listOfFiles = folder.listFiles();
 		logger.info("Harvesting the directory/repository "
@@ -260,11 +260,11 @@ public class WikipediaHarvesterTest {
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 			Document annotatedContent = this.termCandidatesFinder
 					.findTermCandidates(sectionContent);
-			//serializedAnnotatedContent = annotatedContent.toXml();
+			serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE
 			// resources
-			
+			Factory.deleteResource(annotatedContent);
 
 			Selector selector = new Selector();
 			selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
@@ -275,9 +275,8 @@ public class WikipediaHarvesterTest {
 
 			core.getInformationHandler().setAnnotatedContent(
 					selector,
-					new org.epnoi.model.Content<Object>(annotatedContent,
+					new org.epnoi.model.Content<Object>(serializedAnnotatedContent,
 							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
-			Factory.deleteResource(annotatedContent);
 		}
 
 	}
@@ -361,7 +360,7 @@ public class WikipediaHarvesterTest {
 			String localPartOfTermURI = page.getTitle().replaceAll("\\n", "")
 					.replaceAll("\\s+$", "").replaceAll("\\s+", "_");
 
-			wikipediaPage.setURI(WikipediaHarvesterTest.wikipediaPath
+			wikipediaPage.setURI(WikipediaHarvesterOld.wikipediaPath
 					+ localPartOfTermURI);
 			wikipediaPage.setTerm(cleanedPageTitle);
 
@@ -413,8 +412,8 @@ public class WikipediaHarvesterTest {
 				wikipediaPage.getSections().add("first");
 				wikipediaPage.getSectionsContent().put("first", "");
 			}
-			if (wikipediaPage.getSections().size() > WikipediaHarvesterTest.MIN_SECTIONS) {
-				if (WikipediaHarvesterTest.INCREMENTAL) {
+			if (wikipediaPage.getSections().size() > WikipediaHarvesterOld.MIN_SECTIONS) {
+				if (WikipediaHarvesterOld.INCREMENTAL) {
 					if (!core.getInformationHandler().contains(
 							wikipediaPage.getURI(),
 							RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
@@ -451,7 +450,7 @@ public class WikipediaHarvesterTest {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		WikipediaHarvesterTest wikipediaHarvester = new WikipediaHarvesterTest();
+		WikipediaHarvesterOld wikipediaHarvester = new WikipediaHarvesterOld();
 		// Core core = null;
 		Core core = CoreUtility.getUIACore();
 

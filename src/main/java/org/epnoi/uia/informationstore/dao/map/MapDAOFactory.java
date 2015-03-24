@@ -26,14 +26,14 @@ public class MapDAOFactory {
 		if (resource instanceof WikipediaPage) {
 			//WikipediaPageMapDAO wikipediaPageDAO = new WikipediaPageMapDAO();
 			
-			TestMapDAO wikipediaPageDAO = new TestMapDAO();
+			WikipediaPageMapDAO wikipediaPageDAO = new WikipediaPageMapDAO();
 			wikipediaPageDAO.init(parameters);
 			return wikipediaPageDAO;
 		}
 		if (resource instanceof Paper) {
-			TestMapDAO wikipediaPageDAO = new TestMapDAO();
-			wikipediaPageDAO.init(parameters);
-			return wikipediaPageDAO;
+			PaperMapDAO paperDAO = new PaperMapDAO();
+			paperDAO.init(parameters);
+			return paperDAO;
 		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
@@ -47,13 +47,13 @@ public class MapDAOFactory {
 			throw new DAONotFoundException("No type specified");
 		} else if (typeSelector.equals(RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
 			//WikipediaPageMapDAO wikipediaPaperDAO = new WikipediaPageMapDAO();
-			TestMapDAO wikipediaPaperDAO = new TestMapDAO();
+			WikipediaPageMapDAO wikipediaPaperDAO = new WikipediaPageMapDAO();
 			wikipediaPaperDAO.init(parameters);
 			return wikipediaPaperDAO;
 		} else if (typeSelector.equals(RDFHelper.PAPER_CLASS)) {
-			TestMapDAO wikipediaPaperDAO = new TestMapDAO();
-			wikipediaPaperDAO.init(parameters);
-			return wikipediaPaperDAO;
+			PaperMapDAO paperMapDAO = new PaperMapDAO();
+			paperMapDAO.init(parameters);
+			return paperMapDAO;
 		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);

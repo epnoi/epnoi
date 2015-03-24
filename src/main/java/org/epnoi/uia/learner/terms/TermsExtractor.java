@@ -94,6 +94,7 @@ public class TermsExtractor {
 
 	private void _indexDomainResoures(String domain) {
 		List<String> resourcesURIs = this.domainsTable.getDomains().get(domain);
+		System.out.println(" resourceURIS"+ resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
@@ -111,7 +112,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexResource(String domain, String URI) {
-		Document annotatedDocument = retrieveAnnotatedDocument(URI);
+		Document annotatedDocument = (Document)retrieveAnnotatedDocument(URI).getContent();
 		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 				annotatedDocument);
 
@@ -138,16 +139,17 @@ public class TermsExtractor {
 
 	// -----------------------------------------------------------------------------------
 
-	private Document retrieveAnnotatedDocument(String URI) {
+	private Content<Object> retrieveAnnotatedDocument(String URI) {
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.URI, URI);
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
-				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 
 		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
+	/*
 		Document document = null;
 		try {
 			document = (Document) Factory
@@ -164,7 +166,8 @@ public class TermsExtractor {
 					+ URI);
 			logger.severe(e.getMessage());
 		}
-		return document;
+		*/
+		return annotatedContent;
 	}
 
 	// -----------------------------------------------------------------------------------

@@ -119,62 +119,12 @@ public class WikipediaHarvester {
 				harvestedWikipediaPagesIt.remove();
 				context.clear();
 
-				/*
-				 * WikipediaPage resouce = (WikipediaPage) this.core
-				 * .getInformationHandler().get(wikipediaPage.getURI(),
-				 * RDFHelper.WIKIPEDIA_PAGE_CLASS);
-				 * 
-				 * System.out .println(
-				 * "LO QUE SALE ============================================================="
-				 * ); if(resouce.getSections().size()>3){
-				 * System.out.println(wikipediaPage.getURI()+
-				 * "----------------------------------------------------------------------"
-				 * ); for(String section: resouce.getSections()){
-				 * System.out.println("The section is "+ section);
-				 * System.out.println
-				 * ("---------------------------------------");
-				 * System.out.println
-				 * (resouce.getSectionsContent().get(section));
-				 * System.out.println
-				 * ("---------------------------------------");
-				 * 
-				 * } }
-				 * 
-				 * 
-				 * System.out
-				 * 
-				 * 
-				 * .println(
-				 * "=========================================================================="
-				 * );
-				 * 
-				 * Selector selector = new Selector();
-				 * selector.setProperty(SelectorHelper.URI,
-				 * wikipediaPage.getURI()); selector.setProperty(
-				 * SelectorHelper.ANNOTATED_CONTENT_URI, wikipediaPage.getURI()
-				 * + "/first/" +
-				 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-				 * selector.setProperty(SelectorHelper.TYPE,
-				 * RDFHelper.WIKIPEDIA_PAGE_CLASS);
-				 */
-				/*
-				 * System.out.println("-----> " +
-				 * core.getInformationHandler().getAnnotatedContent( selector));
-				 */
-				// if(count % 20==0){
-				/*
-				 * try { Thread.sleep(5000); } catch (InterruptedException e) {
-				 * // TODO Auto-generated catch block e.printStackTrace(); }
-				 */
-				// }
 			}
 
 		}
 
 		logger.info("Finishing the harvesting  ---------------------------------------------------------------------> ");
 	}
-
-	// -------------------------------------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -190,13 +140,7 @@ public class WikipediaHarvester {
 
 	private String _createTermDefinition(WikipediaPage wikipediaPage,
 			Context context) {
-		// System.out.println("URI> " + wikipediaPage.getURI());
-		/*
-		 * LO DE ANTES Document annotatedFirstSection =
-		 * retrieveAnnotatedDocument( wikipediaPage.getURI(),
-		 * wikipediaPage.getURI() + "/first" +
-		 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-		 */
+
 		String annotatedFirstSectionSerialized = (String) context.getElements()
 				.get(wikipediaPage.getURI() + "/first/"
 						+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
@@ -257,26 +201,29 @@ public class WikipediaHarvester {
 
 			String annotatedContentURI = _extractURI(wikipediaPage.getURI(),
 					sections.get(i),
-					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+					AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 			Document annotatedContent = this.termCandidatesFinder
 					.findTermCandidates(sectionContent);
-			serializedAnnotatedContent = annotatedContent.toXml();
+			// serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE
 			// resources
-			Factory.deleteResource(annotatedContent);
 
 			Selector selector = new Selector();
 			selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
 			selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
 					annotatedContentURI);
+
 			selector.setProperty(SelectorHelper.TYPE,
 					RDFHelper.WIKIPEDIA_PAGE_CLASS);
-
-			core.getInformationHandler().setAnnotatedContent(
-					selector,
-					new org.epnoi.model.Content<Object>(serializedAnnotatedContent,
-							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE));
+		//	System.out.println("selector--------> " + selector);
+			core.getInformationHandler()
+					.setAnnotatedContent(
+							selector,
+							new org.epnoi.model.Content<Object>(
+									annotatedContent,
+									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
+			Factory.deleteResource(annotatedContent);
 		}
 
 	}
@@ -422,29 +369,38 @@ public class WikipediaHarvester {
 
 						System.out.println("Introducing "
 								+ wikipediaPage.getURI());
-						try {
-							_introduceWikipediaPage(wikipediaPage,
-									Context.getEmptyContext());
-
-						} catch (Exception e) {
-							e.printStackTrace();
-							System.out.println("This wikipedia page failed > "
-									+ wikipediaPage.getURI());
-						}
+						_introduce(wikipediaPage);
 					} else {
 						System.out.println("The WikipediaPage "
 								+ wikipediaPage.getURI()
 								+ " was already stored");
 					}
-				} else {
-					_introduceWikipediaPage(wikipediaPage,
-							Context.getEmptyContext());
 				}
+
+				else {
+
+					System.out.println("Introducing " + wikipediaPage.getURI());
+					_introduce(wikipediaPage);
+				}
+
 			}
 			// _introduceWikipediaPage(wikipediaPage, context);
 			// harvestedWikipediaPages.add(wikipediaPage);
 		}
 
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------
+
+	private void _introduce(WikipediaPage wikipediaPage) {
+		try {
+			_introduceWikipediaPage(wikipediaPage, Context.getEmptyContext());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("This wikipedia page failed > "
+					+ wikipediaPage.getURI());
+		}
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
