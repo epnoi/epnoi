@@ -10,9 +10,6 @@ public class OntologyLearningParameters extends Parameters<Object> {
 	// The domains considered in the ontology learning process. It includes the
 	// target domain plus the ones used as a reference.
 
-	public static final String CONSIDERED_RESOURCES = "CONSIDERED_RESOURCES";
-	// RDF class of the resources that we consider in the ontology learning
-	// process
 
 	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";
 	// Domain that is the target of the ontology learning process, the learned

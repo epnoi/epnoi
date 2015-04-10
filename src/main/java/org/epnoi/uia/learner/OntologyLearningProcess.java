@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.epnoi.model.Domain;
 import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
@@ -78,7 +79,6 @@ public class OntologyLearningProcess {
 		}
 
 		termsTable.show(30);
-		
 
 		System.out.println("Extracting relations table");
 
@@ -128,9 +128,13 @@ public class OntologyLearningProcess {
 	public static void main(String[] args) {
 		System.out.println("Starting the Ontology Learning Process!");
 
-		// List<String> consideredDomains = Arrays.asList("cs", "math");
-		List<String> consideredDomains = Arrays.asList("CGTestCorpus");
+		Domain domain = new Domain();
+		domain.setURI("CGTestCorpus");
+		domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+		
+		List<Domain> consideredDomains = Arrays.asList(domain);
 		String targetDomain = "CGTestCorpus";
+		
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
@@ -142,9 +146,7 @@ public class OntologyLearningProcess {
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_RESOURCES,
-				RDFHelper.PAPER_CLASS);
+
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters

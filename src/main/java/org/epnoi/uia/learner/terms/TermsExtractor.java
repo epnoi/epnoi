@@ -68,8 +68,7 @@ public class TermsExtractor {
 		this.parameters = parameters;
 
 		this.domainsTable = domainsTable;
-		this.consideredResources = (String) parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
+		
 		this.targetDomain = (String) parameters
 				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
@@ -589,9 +588,6 @@ public class TermsExtractor {
 				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_RESOURCES,
-				consideredResources);
 
 		Core core = CoreUtility.getUIACore();
 		DomainsGatherer domainGatherer = new DomainsGatherer();
