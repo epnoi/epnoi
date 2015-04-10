@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
+import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationhandler.InformationHandler;
@@ -49,6 +50,7 @@ public class Core {
 
 	private SearchHandler searchHandler = null;
 	private AnnotationHandler annotationHandler = null;
+	private DomainsHandler domainsHandler = null;
 	private EventBus eventBus = null;
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -86,9 +88,8 @@ public class Core {
 		logger.info("Initializing the Event Bus");
 		this.eventBus = new EventBus();
 	}
-	
-	// ----------------------------------------------------------------------------------------------------------
 
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initAnnotationsHandler() {
 		this.annotationHandler = new AnnotationHandlerImpl(this);
@@ -159,15 +160,15 @@ public class Core {
 
 		}
 		logger.info("Initializing map information stores");
-		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
+		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel
+				.getMapInformationStore()) {
 			logger.info(mapInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
 					.buildInformationStore(mapInformationStoreParameters,
 							parametersModel);
 
-			this.informationStores.put(
-					mapInformationStoreParameters.getURI(),
+			this.informationStores.put(mapInformationStoreParameters.getURI(),
 					newInformationStore);
 
 			_addInformationStoreByType(newInformationStore,
@@ -176,7 +177,6 @@ public class Core {
 					+ newInformationStore.test());
 
 		}
-
 
 	}
 
@@ -261,14 +261,14 @@ public class Core {
 	public InformationSourcesHandler getInformationSourcesHandler() {
 		return informationSourcesHandler;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public void setInformationSourcesHandler(
 			InformationSourcesHandler informationSourcesHandler) {
 		this.informationSourcesHandler = informationSourcesHandler;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public SearchHandler getSearchHandler() {
@@ -349,13 +349,25 @@ public class Core {
 					.toURL();
 
 			Gate.getCreoleRegister().registerDirectories(anniePlugin);
-			
+
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
+	// ----------------------------------------------------------------------------------------------------------
+
+	public DomainsHandler getDomainsHandler() {
+		return domainsHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setDomainsHandler(DomainsHandler domainsHandler) {
+		this.domainsHandler = domainsHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
 }

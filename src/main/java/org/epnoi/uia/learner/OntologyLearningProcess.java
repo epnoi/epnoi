@@ -10,6 +10,7 @@ import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.Relation;

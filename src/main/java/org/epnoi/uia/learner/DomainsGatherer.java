@@ -1,21 +1,19 @@
 package org.epnoi.uia.learner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.Domain;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.learner.terms.TermsExtractor;
 
 public class DomainsGatherer {
 	private static final Logger logger = Logger.getLogger(DomainsGatherer.class
 			.getName());
 	private Core core;
-	private List<String> consideredDomains;
+	private List<Domain> consideredDomains;
 	private String targetDomain;
-	private String consideredResources;
+
 	private OntologyLearningParameters parameters;
 	private DomainsTable domainsTable;
 
@@ -27,10 +25,8 @@ public class DomainsGatherer {
 		this.core = core;
 		this.parameters = parameters;
 
-		this.consideredDomains = (List<String>) this.parameters
+		this.consideredDomains = (List<Domain>) this.parameters
 				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
-		this.consideredResources = (String) this.parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
 
 		this.domainsTable = new DomainsTable();
 		this.targetDomain = (String) this.parameters
@@ -41,36 +37,18 @@ public class DomainsGatherer {
 
 	public DomainsTable gather() {
 		logger.info("Gathering the DomainsTable");
-		for (String domain : this.consideredDomains) {
+		for (Domain domain : this.consideredDomains) {
 			logger.info("Gathering the domain " + domain);
-			List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
-					domain, this.consideredResources);
+
+			List<String> foundURIs = core.getDomainsHandler().gather(domain);
 			logger.info("Found initially " + foundURIs.size()
 					+ " elements in the domain");
 
-			/* LO QUE ES */
-			this.domainsTable.getDomains().put(domain,
-					_cleanResources(foundURIs));
+			this.domainsTable.getDomains().put(domain.getURI(), foundURIs);
 
-			// this.domainsTable.getDomains().put(domain, foundURIs.subList(0,
-			// 1));
 		}
 		this.domainsTable.setTargetDomain(targetDomain);
 		return this.domainsTable;
 	}
 
-	// -----------------------------------------------------------------------------------
-
-	private List<String> _cleanResources(List<String> foundURIs) {
-		List<String> cleanedURIs = new ArrayList<String>();
-		for (String uri : foundURIs) {
-			if (core.getInformationHandler().contains(uri,
-					this.consideredResources)) {
-				cleanedURIs.add(uri);
-			}
-		}
-
-		// return Arrays.asList(cleanedURIs.get(0));
-		return cleanedURIs;
-	}
 }

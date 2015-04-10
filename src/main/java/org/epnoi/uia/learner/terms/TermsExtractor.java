@@ -23,6 +23,7 @@ import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
