@@ -11,6 +11,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class DomainCassandraDAO extends CassandraDAO {
 
@@ -29,11 +30,13 @@ public class DomainCassandraDAO extends CassandraDAO {
 		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.NAME,
-				domain.getName(), DomainCassandraHelper.NAME);
+				domain.getName(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
-				domain.getExpression(), DomainCassandraHelper.EXPRESSION);
-
+				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
+		
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.CONSIDERED_RESOURCES,
+				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -67,6 +70,10 @@ public class DomainCassandraDAO extends CassandraDAO {
 
 				case DomainCassandraHelper.EXPRESSION:
 					term.setExpression(columnValue);
+					break;
+
+				case DomainCassandraHelper.CONSIDERED_RESOURCES:
+					term.setConsideredResource(columnValue);
 					break;
 				}
 
@@ -123,6 +130,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 		domain.setURI("lauri");
 		domain.setExpression("sparqlexpression");
 		domain.setName("name");
+		domain.setConsideredResource(RDFHelper.DOMAIN_CLASS);
 
 		core.getInformationHandler().put(domain, Context.getEmptyContext());
 

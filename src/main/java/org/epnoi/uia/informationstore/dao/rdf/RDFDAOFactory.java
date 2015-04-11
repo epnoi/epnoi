@@ -1,6 +1,7 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
 import org.epnoi.model.Annotation;
+import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
@@ -81,6 +82,10 @@ public class RDFDAOFactory {
 			RDFDAO dao = new RelationalSentencesCorpusRDFDAO();
 			dao.init(this.parameters);
 			return dao;
+		}else if (resource instanceof Domain) {
+			RDFDAO dao = new DomainRDFDAO();
+			dao.init(this.parameters);
+			return dao;
 		}
 
 		else {
@@ -157,7 +162,13 @@ public class RDFDAOFactory {
 			dao.init(this.parameters);
 			return dao;
 
-		} else {
+		} else if (typeSelector
+				.equals(RDFHelper.DOMAIN_CLASS)) {
+			RDFDAO dao = new DomainRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+
+		}else {
 			throw new DAONotFoundException("Unknown type " + typeSelector);
 		}
 	}

@@ -49,7 +49,7 @@ public class InformationHandlerImp implements InformationHandler {
 	public void put(Resource resource, Context context) {
 		Wrapper wrapper = this.wrapperFactory.build(resource);
 		wrapper.put(resource, context);
-		resource=null;
+		resource = null;
 		context.clear();
 
 	}
@@ -145,7 +145,7 @@ public class InformationHandlerImp implements InformationHandler {
 	public Content<Object> getAnnotatedContent(Selector selector) {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
-		
+
 		Content<Object> content = wrapper.getAnnotatedContent(selector);
 		return content;
 	}
@@ -168,7 +168,6 @@ public class InformationHandlerImp implements InformationHandler {
 		Wrapper wrapper = this.wrapperFactory.build(selector
 				.getProperty(SelectorHelper.TYPE));
 
-		
 		wrapper.setAnnotatedContent(selector, annotatedContent);
 
 	}
@@ -192,8 +191,6 @@ public class InformationHandlerImp implements InformationHandler {
 		VirtuosoInformationStore informationStore = (VirtuosoInformationStore) this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-		System.out.println("==================================>>>> "
-				+ informationStore.getType(URI));
 
 		return informationStore.getType(URI);
 	}

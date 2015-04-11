@@ -84,7 +84,8 @@ public abstract class CassandraDAO {
 					AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
 					ContentCassandraHelper.COLUMN_FAMILLY,
 					TermCassandraHelper.COLUMN_FAMILLY,
-					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
+					DomainCassandraHelper.COLUMN_FAMILLY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				System.out.println("Intializing columnFamilyDefinitions");
@@ -118,8 +119,8 @@ public abstract class CassandraDAO {
 								.createColumnFamilyDefinition(KEYSPACE,
 										columnFamilyName,
 										ComparatorType.UTF8TYPE);
-						System.out.println("Initializing > "
-								+ columnFamilyDefinition);
+						System.out.println("Initializing" + columnFamilyName
+								+ " > " + columnFamilyDefinition);
 					}
 					CassandraDAO.columnFamilyDefinitions
 							.add(columnFamilyDefinition);
@@ -182,7 +183,8 @@ public abstract class CassandraDAO {
 					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
 							CassandraDAO.keyspace, columnFamilyName,
 							StringSerializer.get(), StringSerializer.get());
-
+					System.out.println("(" + columnFamilyName + ","
+							+ columnFamilyTemplate + ")");
 					CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
 							columnFamilyTemplate);
 				}
@@ -223,6 +225,7 @@ public abstract class CassandraDAO {
 		int trial = 0;
 		boolean success = false;
 		while (!success && trial < maxTrials) {
+			
 			ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates
 					.get(columnFamilyName).createUpdater(key);
 			updater.setString(name, value);
@@ -235,7 +238,7 @@ public abstract class CassandraDAO {
 				trial++;
 				System.out.println("updateColumn " + e.getMessage());
 				try {
-					Thread.sleep(5000*trial);
+					Thread.sleep(5000 * trial);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -243,7 +246,7 @@ public abstract class CassandraDAO {
 			}
 			updater = null;
 		}
-		
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -320,12 +323,7 @@ public abstract class CassandraDAO {
 		} catch (HectorException e) {
 			System.out.println("Not possible to delete row with key " + key);
 		}
-		/*
-		 * Esto estaba antes, mirar si vale para algo try {
-		 * columnFamilyTemplates.get(columnFamilyName).deleteRow(key); } catch
-		 * (HectorException e) {
-		 * System.out.println("Not possible to delete row with key " + key); }
-		 */
+	
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------

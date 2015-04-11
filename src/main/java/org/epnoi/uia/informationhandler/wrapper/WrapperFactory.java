@@ -3,6 +3,7 @@ package org.epnoi.uia.informationhandler.wrapper;
 import java.util.HashMap;
 
 import org.epnoi.model.Annotation;
+import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
@@ -57,14 +58,15 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(WikipediaPage.class.getName(),
 				new WikipediaPageWrapper(this.core));
-		
-		this.wrappersByClass.put(Term.class.getName(),
-				new TermWrapper(this.core));
-		
-		
+
+		this.wrappersByClass.put(Term.class.getName(), new TermWrapper(
+				this.core));
+
 		this.wrappersByClass.put(RelationalSentencesCorpus.class.getName(),
 				new RelationalSentencesCorpusWrapper(this.core));
 
+		this.wrappersByClass.put(Domain.class.getName(), new DomainWrapper(
+				this.core));
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,12 +95,15 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
 				new WikipediaPageWrapper(this.core));
-		
+
 		this.wrappersByType.put(RDFHelper.TERM_CLASS,
 				new TermWrapper(this.core));
-		
+
 		this.wrappersByType.put(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS,
 				new RelationalSentencesCorpusWrapper(this.core));
+
+		this.wrappersByType.put(RDFHelper.DOMAIN_CLASS, new DomainWrapper(
+				this.core));
 
 	}
 

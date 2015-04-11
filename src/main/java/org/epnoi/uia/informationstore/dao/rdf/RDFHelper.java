@@ -23,5 +23,5 @@ public class RDFHelper {
 	public static final String TERM_CLASS = "http://www.epnoi.org/ontology#Term";
 	public static final String RELATIONAL_SENTECES_CORPUS_CLASS = "http://www.epnoi.org/ontology#RelationalSentencesCorpus";
 	
-	
+	public static final String DOMAIN_CLASS = "http://www.epnoi.org/ontology#Domain";
 }
