@@ -9,9 +9,9 @@ import org.epnoi.uia.commons.StringUtils;
 
 public class Relation {
 	private String URI;
-	private Term source;
-	private Term target;
-	private Term type;
+	private String source;
+	private String target;
+	private String 	type;
 	// This table contains the probability
 	private Map<String, Double> provenanceRelationhoodTable;
 
@@ -21,25 +21,25 @@ public class Relation {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public Term getSource() {
+	public String getSource() {
 		return source;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public void setSource(Term source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public Term getTarget() {
+	public String getTarget() {
 		return target;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public void setTarget(Term target) {
+	public void setTarget(String target) {
 		this.target = target;
 	}
 
@@ -101,8 +101,8 @@ public class Relation {
 	
 	@Override
 	public String toString() {
-		return "Relation [URI=" + URI + ", source=" + source.getAnnotatedTerm().getWord() + ", target="
-				+ target.getAnnotatedTerm().getWord() + ", type=" + type + ", provenanceRelationhoodTable="
+		return "Relation [URI=" + URI + ", source=" + source + ", target="
+				+ target + ", type=" + type + ", provenanceRelationhoodTable="
 				+ provenanceRelationhoodTable + "]";
 	}
 	

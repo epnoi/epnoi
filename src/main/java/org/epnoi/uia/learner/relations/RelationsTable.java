@@ -15,7 +15,7 @@ public class RelationsTable {
 
 	private Map<String, Relation> relations;
 	private Map<Relation, String> orderedRelations;
-	private Map<Term, List<Relation>> relationsBySource;
+	private Map<String, List<Relation>> relationsBySource;
 
 	// --------------------------------------------------------------------
 
@@ -94,8 +94,8 @@ public class RelationsTable {
 			// If the relation is not already stored, we simply add it
 			Relation relation = new Relation();
 			relation.setURI(relationURI);
-			relation.setSource(source);
-			relation.setTarget(target);
+			relation.setSource(source.getURI());
+			relation.setTarget(target.getURI());
 
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 

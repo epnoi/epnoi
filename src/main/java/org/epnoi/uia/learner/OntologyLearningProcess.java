@@ -102,7 +102,7 @@ public class OntologyLearningProcess {
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
 						termVerticeToExpand, hypernymRelationsThreshold)) {
-					Term destinationTerm = relation.getTarget();
+					Term destinationTerm = this.termsTable.getTerm(relation.getTarget());
 					TermVertice destinationTermVertice = new TermVertice(
 							destinationTerm);
 					ontologyNoisyGraph.addEdge(termVerticeToExpand,
