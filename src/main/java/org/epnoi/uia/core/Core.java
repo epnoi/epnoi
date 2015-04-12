@@ -74,14 +74,22 @@ public class Core {
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();
+		
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
+		this._initDomainsHandler();
 		this._hoardersInitialization();
 		this._harvestersInitialization();
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	private void _initDomainsHandler() {
+		this.domainsHandler = new DomainsHandler();
+		this.domainsHandler.init(this);
+		
+	}
 
 	private void _initEventBus() {
 

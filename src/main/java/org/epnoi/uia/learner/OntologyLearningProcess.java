@@ -128,13 +128,27 @@ public class OntologyLearningProcess {
 	public static void main(String[] args) {
 		System.out.println("Starting the Ontology Learning Process!");
 
-		Domain domain = new Domain();
-		domain.setURI("CGTestCorpus");
-		domain.setConsideredResource(RDFHelper.PAPER_CLASS);
-		
+		// Core initialization
+		Core core = CoreUtility.getUIACore();
+
+		String corpusURI = "http://CGTestCorpus";
+
+		Domain domain = null;
+
+		if (core.getInformationHandler().contains(corpusURI,
+				RDFHelper.DOMAIN_CLASS)) {
+			domain = (Domain) core.getInformationHandler().get(corpusURI,
+					RDFHelper.DOMAIN_CLASS);
+		} else {
+			domain = new Domain();
+			domain.setLabel("CGTestCorpus");
+			domain.setURI(corpusURI);
+			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+		}
+
 		List<Domain> consideredDomains = Arrays.asList(domain);
-		String targetDomain = "CGTestCorpus";
-		
+		String targetDomain = corpusURI;
+
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
@@ -145,7 +159,6 @@ public class OntologyLearningProcess {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
-
 
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
@@ -167,8 +180,6 @@ public class OntologyLearningProcess {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
-
-		Core core = CoreUtility.getUIACore();
 
 		OntologyLearningProcess ontologyLearningProcess = new OntologyLearningProcess();
 

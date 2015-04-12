@@ -30,7 +30,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.NAME,
-				domain.getName(), DomainCassandraHelper.COLUMN_FAMILLY);
+				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
 				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
@@ -65,7 +65,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 				String columnValue = column.getValue();
 				switch (columnName) {
 				case DomainCassandraHelper.NAME:
-					term.setName(columnValue);
+					term.setLabel(columnValue);
 					break;
 
 				case DomainCassandraHelper.EXPRESSION:
@@ -129,7 +129,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 		Domain domain = new Domain();
 		domain.setURI("lauri");
 		domain.setExpression("sparqlexpression");
-		domain.setName("name");
+		domain.setLabel("name");
 		domain.setConsideredResource(RDFHelper.DOMAIN_CLASS);
 
 		core.getInformationHandler().put(domain, Context.getEmptyContext());
