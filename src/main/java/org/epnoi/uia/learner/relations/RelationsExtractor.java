@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.RelationHelper;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;
@@ -208,7 +210,7 @@ public class RelationsExtractor {
 						targetTermWord, this.targetDomain));
 
 				if (sourceTerm != null && targetTerm != null) {
-					this.relationsTable.addRelation(this.targetDomain,
+					this.relationsTable.introduceRelation(this.targetDomain,
 							sourceTerm, targetTerm, RelationHelper.HYPERNYM,
 							sentenceContent, relationProbability);
 				} else {

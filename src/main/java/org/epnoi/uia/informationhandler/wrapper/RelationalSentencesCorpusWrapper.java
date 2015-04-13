@@ -3,6 +3,7 @@ package org.epnoi.uia.informationhandler.wrapper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
@@ -15,7 +16,6 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationHelper;
 import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
 

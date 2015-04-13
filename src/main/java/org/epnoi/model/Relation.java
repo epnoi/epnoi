@@ -1,17 +1,16 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.model;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.epnoi.model.Term;
 import org.epnoi.uia.commons.StringUtils;
 
-public class Relation {
+public class Relation implements Resource {
 	private String URI;
 	private String source;
 	private String target;
-	private String 	type;
+	private String type;
 	// This table contains the probability
 	private Map<String, Double> provenanceRelationhoodTable;
 
@@ -98,16 +97,36 @@ public class Relation {
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
-	
+
+	public String getType() {
+		return type;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public Map<String, Double> getProvenanceRelationhoodTable() {
+		return provenanceRelationhoodTable;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public void setProvenanceRelationhoodTable(
+			Map<String, Double> provenanceRelationhoodTable) {
+		this.provenanceRelationhoodTable = provenanceRelationhoodTable;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
 	@Override
 	public String toString() {
 		return "Relation [URI=" + URI + ", source=" + source + ", target="
 				+ target + ", type=" + type + ", provenanceRelationhoodTable="
 				+ provenanceRelationhoodTable + "]";
 	}
-	
-	// ------------------------------------------------------------------------------------------------------------
-	
-		
-
 }
