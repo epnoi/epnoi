@@ -170,7 +170,7 @@ public class RelationsTable implements Resource {
 
 	@Override
 	public String toString() {
-		return "RelationsTable [relations=" + relations + "]";
+		return "RelationsTable [uri= "+URI+", relations=" + relations + "]";
 	}
 
 	// --------------------------------------------------------------------

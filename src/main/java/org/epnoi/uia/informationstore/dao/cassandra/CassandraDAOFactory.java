@@ -3,6 +3,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Paper;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.model.User;
@@ -59,6 +60,10 @@ public class CassandraDAOFactory {
 			DomainCassandraDAO domainDAO = new DomainCassandraDAO();
 			domainDAO.init();
 			return domainDAO;
+		} else if (resource instanceof RelationsTable) {
+			RelationsTableCassandraDAO relationsTableDAO = new RelationsTableCassandraDAO();
+			relationsTableDAO.init();
+			return relationsTableDAO;
 		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
@@ -110,9 +115,12 @@ public class CassandraDAOFactory {
 			DomainCassandraDAO domainDAO = new DomainCassandraDAO();
 			domainDAO.init();
 			return domainDAO;
-		}
+		} else if (typeSelector.equals(RDFHelper.RELATIONS_TABLE_CLASS)) {
 
-		else {
+			RelationsTableCassandraDAO relationsTableDAO = new RelationsTableCassandraDAO();
+			relationsTableDAO.init();
+			return relationsTableDAO;
+		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);
 		}

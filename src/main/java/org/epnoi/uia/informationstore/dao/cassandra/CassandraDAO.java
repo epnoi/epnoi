@@ -85,7 +85,9 @@ public abstract class CassandraDAO {
 					ContentCassandraHelper.COLUMN_FAMILLY,
 					TermCassandraHelper.COLUMN_FAMILLY,
 					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
-					DomainCassandraHelper.COLUMN_FAMILLY);
+					DomainCassandraHelper.COLUMN_FAMILLY,
+					RelationsTableCassandraHelper.COLUMN_FAMILLY,
+					RelationCassandraHelper.COLUMN_FAMILLY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				System.out.println("Intializing columnFamilyDefinitions");
@@ -330,8 +332,8 @@ public abstract class CassandraDAO {
 
 	/**
 	 * 
-	 * @param key
-	 * @param columnFamilyKey
+	 * @param key: The URI of the item
+	 * @param columnFamilyKey: The column family name of the item
 	 * @return
 	 */
 	protected ColumnSliceIterator<String, String, String> getAllCollumns(

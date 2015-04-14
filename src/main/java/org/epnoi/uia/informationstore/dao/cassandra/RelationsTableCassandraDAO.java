@@ -10,13 +10,15 @@ import me.prettyprint.hector.api.beans.HColumn;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Feed;
-import org.epnoi.model.Item;
 import org.epnoi.model.Relation;
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Search;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class RelationsTableCassandraDAO extends CassandraDAO {
 
@@ -27,6 +29,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
+		
 		RelationsTable relationsTable = (RelationsTable) resource;
 		super.createRow(relationsTable.getURI(),
 				RelationsTableCassandraHelper.COLUMN_FAMILLY);
@@ -35,6 +38,12 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 			_createRelation(relationsTable.getURI(), relation);
 		}
+
+		
+		ColumnSliceIterator<String, String, String> columnsIterator = super
+				.getAllCollumns(relationsTable.getURI(),
+						RelationsTableCassandraHelper.COLUMN_FAMILLY);
+
 
 	}
 
@@ -51,7 +60,10 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI,
 						RelationsTableCassandraHelper.COLUMN_FAMILLY);
+
+	
 		if (columnsIterator.hasNext()) {
+
 			RelationsTable relationsTable = new RelationsTable();
 			relationsTable.setURI(URI);
 			while (columnsIterator.hasNext()) {
@@ -145,11 +157,15 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 					RelationCassandraHelper.PROVENANCE_SENTENCES);
 
 		}
-
+		
 		super.updateColumns(relation.getURI(), pairsOfNameValues,
 				RelationCassandraHelper.COLUMN_FAMILLY);
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
+		super.updateColumn(relationsTableURI, relation.getURI(),
+				RelationsTableCassandraHelper.RELATIONS,
+				RelationsTableCassandraHelper.COLUMN_FAMILLY);
+
 	}
 
 	// --------------------------------------------------------------------------------
@@ -158,16 +174,6 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	public Content<String> getContent(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	
-
-	public static void main(String[] args) {
-		RelationsTableCassandraDAO dao = new RelationsTableCassandraDAO();
-		dao.init();
-		Feed feed = (Feed) dao
-				.read("http://www.epnoi.org/informationSources/slashdot");
-		System.out.println(">>> " + feed.getItems().get(0).toString());
 	}
 
 	@Override
@@ -193,6 +199,41 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	public boolean exists(Selector selector) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public static void main(String[] args) {
+		RelationsTable relationsTable = new RelationsTable();
+		relationsTable.setURI("http://relationsTableForADomain");
+		Relation relationA = new Relation();
+		relationA.setURI("http://relationA/source/target");
+		relationA.setSource("http://relationA/source");
+		relationA.setTarget("http://relationA/target");
+		relationA.setType(RelationHelper.HYPERNYM);
+		relationA.addProvenanceSentence("blablablaA", 0.5);
+		relationA.addProvenanceSentence("loqueseaA", 0.75);
+
+		relationsTable.addRelation(relationA);
+
+		Relation relationB = new Relation();
+		relationB.setURI("http://relationB/source/target");
+		relationB.setSource("http://relationB/source");
+		relationB.setTarget("http://relationB/target");
+		relationB.setType(RelationHelper.HYPERNYM);
+		relationB.addProvenanceSentence("blablablaB", 0.5);
+		relationB.addProvenanceSentence("loqueseaB", 0.75);
+		relationB.addProvenanceSentence("pozipoziB", 0.75);
+
+		relationsTable.addRelation(relationB);
+
+		Core core = CoreUtility.getUIACore();
+		core.getInformationHandler().put(relationsTable,
+				Context.getEmptyContext());
+
+		System.out.println("Relations Table "
+				+ core.getInformationHandler().get(
+						"http://relationsTableForADomain",
+						RDFHelper.RELATIONS_TABLE_CLASS));
+
 	}
 
 }
