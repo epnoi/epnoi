@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.lexical;
+package org.epnoi.uia.learner.relations.patterns.lexical;
 
 import java.util.logging.Logger;
 
@@ -7,11 +7,11 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.relations.RelationalPattern;
-import org.epnoi.uia.learner.relations.RelationalPatternsCorpus;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpusCreator;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreator;
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpus;
 
 public class LexicalRelationalModelCreator {
 	private static final Logger logger = Logger

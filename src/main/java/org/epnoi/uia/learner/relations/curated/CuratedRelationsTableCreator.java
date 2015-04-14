@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.curated;
 
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetHandler;

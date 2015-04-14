@@ -1,9 +1,9 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.patterns;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
 
 public class RelationalPatternsCorpus {
 	private String type;

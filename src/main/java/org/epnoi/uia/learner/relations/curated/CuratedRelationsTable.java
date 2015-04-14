@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.curated;
 
 import java.util.HashMap;
 import java.util.HashSet;

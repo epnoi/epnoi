@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.corpus;
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -31,6 +31,9 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
+import org.epnoi.uia.learner.relations.RelationalSentence;
+import org.epnoi.uia.learner.relations.curated.CuratedRelationsTable;
+import org.epnoi.uia.learner.relations.curated.CuratedRelationsTableCreator;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {

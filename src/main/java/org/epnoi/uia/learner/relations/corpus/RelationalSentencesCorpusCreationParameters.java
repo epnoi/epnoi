@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.corpus;
 
 import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.core.Core;

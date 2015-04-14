@@ -16,7 +16,7 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.RelationalSentencesCorpusRDFDAO;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 

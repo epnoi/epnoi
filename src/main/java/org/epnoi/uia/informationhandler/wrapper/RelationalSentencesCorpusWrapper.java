@@ -16,8 +16,8 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;

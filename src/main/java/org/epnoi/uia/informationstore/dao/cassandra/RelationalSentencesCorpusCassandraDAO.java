@@ -22,8 +22,8 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");

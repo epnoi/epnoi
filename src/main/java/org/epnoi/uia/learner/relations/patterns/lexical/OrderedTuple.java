@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.lexical;
+package org.epnoi.uia.learner.relations.patterns.lexical;
 
 public class OrderedTuple {
 	private String first;

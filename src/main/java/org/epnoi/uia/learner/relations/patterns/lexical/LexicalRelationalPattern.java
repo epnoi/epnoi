@@ -1,9 +1,9 @@
-package org.epnoi.uia.learner.relations.lexical;
+package org.epnoi.uia.learner.relations.patterns.lexical;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.epnoi.uia.learner.relations.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.hibernate.hql.internal.ast.tree.Node;
 
 public class LexicalRelationalPattern implements RelationalPattern {

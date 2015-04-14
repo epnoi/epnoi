@@ -26,10 +26,10 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningParameters;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
-import org.epnoi.uia.learner.relations.lexical.BigramSoftPatternModelSerializer;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPattern;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
-import org.epnoi.uia.learner.relations.lexical.SoftPatternModel;
+import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModelSerializer;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.learner.relations.patterns.lexical.SoftPatternModel;
 import org.epnoi.uia.learner.terms.TermCandidateBuilder;
 import org.epnoi.uia.learner.terms.TermsTable;
 
