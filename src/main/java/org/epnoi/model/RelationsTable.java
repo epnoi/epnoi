@@ -1,6 +1,7 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.epnoi.model.Term;
 import org.epnoi.uia.learner.terms.TermVertice;
 
-public class RelationsTable {
+public class RelationsTable implements Resource {
 
+	private String URI;
 	private Map<String, Relation> relations;
 	private Map<Relation, String> orderedRelations;
-	private Map<Term, List<Relation>> relationsBySource;
+	private Map<String, List<Relation>> relationsBySource;
 
 	// --------------------------------------------------------------------
 
@@ -71,7 +72,7 @@ public class RelationsTable {
 
 	// --------------------------------------------------------------------
 
-	public void addRelation(String domain, Term source, Term target,
+	public void introduceRelation(String domain, Term source, Term target,
 			String type, String provenanceSentence, double relationhood) {
 
 		String relationURI = Relation.buildURI(source.getAnnotatedTerm()
@@ -94,8 +95,8 @@ public class RelationsTable {
 			// If the relation is not already stored, we simply add it
 			Relation relation = new Relation();
 			relation.setURI(relationURI);
-			relation.setSource(source);
-			relation.setTarget(target);
+			relation.setSource(source.getURI());
+			relation.setTarget(target.getURI());
 
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 
@@ -114,8 +115,31 @@ public class RelationsTable {
 
 	// --------------------------------------------------------------------
 
+	public void addRelation(Relation relation) {
+
+		this.orderedRelations.put(relation, relation.getURI());
+		this.relations.put(relation.getURI(), relation);
+
+		List<Relation> relations = this.relationsBySource.get(relation
+				.getSource());
+		if (relations == null) {
+			relations = new ArrayList<>();
+			this.relationsBySource.put(relation.getSource(), relations);
+		}
+		relations.add(relation);
+
+	}
+
+	// --------------------------------------------------------------------
+
 	public Relation getRelation(String URI) {
 		return this.relations.get(URI);
+	}
+
+	// --------------------------------------------------------------------
+
+	public Collection<Relation> getRelations() {
+		return this.relations.values();
 	}
 
 	// --------------------------------------------------------------------
@@ -132,9 +156,21 @@ public class RelationsTable {
 
 	// --------------------------------------------------------------------
 
+	public String getURI() {
+		return URI;
+	}
+
+	// --------------------------------------------------------------------
+
+	public void setURI(String uRI) {
+		URI = uRI;
+	}
+
+	// --------------------------------------------------------------------
+
 	@Override
 	public String toString() {
-		return "RelationsTable [relations=" + relations + "]";
+		return "RelationsTable [uri= "+URI+", relations=" + relations + "]";
 	}
 
 	// --------------------------------------------------------------------

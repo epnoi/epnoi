@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.epnoi.uia.learner.relations;
+package org.epnoi.model;
 
 public interface RelationHelper {
 

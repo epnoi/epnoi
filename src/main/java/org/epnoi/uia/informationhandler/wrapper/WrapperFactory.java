@@ -9,6 +9,7 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
@@ -67,6 +68,9 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(Domain.class.getName(), new DomainWrapper(
 				this.core));
+		
+		this.wrappersByClass.put(RelationsTable.class.getName(), new RelationsTableWrapper(
+				this.core));
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -104,7 +108,8 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(RDFHelper.DOMAIN_CLASS, new DomainWrapper(
 				this.core));
-
+		this.wrappersByType.put(RDFHelper.RELATIONS_TABLE_CLASS, new RelationsTableWrapper(
+				this.core));
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

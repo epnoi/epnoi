@@ -17,6 +17,7 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.core.Core;
