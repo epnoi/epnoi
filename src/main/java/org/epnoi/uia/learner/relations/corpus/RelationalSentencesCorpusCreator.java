@@ -32,8 +32,8 @@ import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.curated.CuratedRelationsTable;
-import org.epnoi.uia.learner.relations.curated.CuratedRelationsTableCreator;
+import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBase;
+import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseCreator;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {
@@ -43,7 +43,7 @@ public class RelationalSentencesCorpusCreator {
 	private Core core;
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
-	private CuratedRelationsTable curatedRelationsTable;
+	private KnowledgeBase curatedRelationsTable;
 	RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
@@ -62,7 +62,7 @@ public class RelationalSentencesCorpusCreator {
 		WordNetParameters wordNetParameters = (WordNetParameters) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
 
-		CuratedRelationsTableCreator curatedRelationsTableCreator = new CuratedRelationsTableCreator();
+		KnowledgeBaseCreator curatedRelationsTableCreator = new KnowledgeBaseCreator();
 		curatedRelationsTableCreator.init(wordNetParameters);
 		this.curatedRelationsTable = curatedRelationsTableCreator.build();
 

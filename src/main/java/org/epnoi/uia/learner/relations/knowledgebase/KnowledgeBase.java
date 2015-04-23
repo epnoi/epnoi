@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.curated;
+package org.epnoi.uia.learner.relations.knowledgebase;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,13 +7,13 @@ import java.util.Set;
 
 import org.epnoi.uia.learner.nlp.wordnet.WordNetHandler;
 
-public class CuratedRelationsTable {
+public class KnowledgeBase {
 	private Map<String, Set<String>> hypernyms;
 	WordNetHandler wordNetHandler;
 
 	// -----------------------------------------------------------------------------------------------
 
-	public CuratedRelationsTable(WordNetHandler wordNetHandler) {
+	public KnowledgeBase(WordNetHandler wordNetHandler) {
 		this.hypernyms = new HashMap<String, Set<String>>();
 		this.wordNetHandler = wordNetHandler;
 	}
@@ -59,7 +59,7 @@ public class CuratedRelationsTable {
 
 	@Override
 	public String toString() {
-		return "CuratedRelationsTable [hypernyms=" + hypernyms + "]";
+		return "KnowledgeBase [hypernyms=" + hypernyms + "]";
 	}
 
 	// -----------------------------------------------------------------------------------------------

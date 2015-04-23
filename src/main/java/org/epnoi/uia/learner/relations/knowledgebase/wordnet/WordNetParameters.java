@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.nlp.wordnet;
+package org.epnoi.uia.learner.relations.knowledgebase.wordnet;
 
 import org.epnoi.uia.commons.Parameters;
 
