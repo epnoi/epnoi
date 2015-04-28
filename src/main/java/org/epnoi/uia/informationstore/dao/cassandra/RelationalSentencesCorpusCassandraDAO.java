@@ -4,7 +4,6 @@ import gate.Document;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
@@ -17,7 +16,6 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;

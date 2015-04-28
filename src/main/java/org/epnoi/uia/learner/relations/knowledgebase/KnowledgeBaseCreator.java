@@ -1,6 +1,6 @@
 package org.epnoi.uia.learner.relations.knowledgebase;
 
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetParameters;
 

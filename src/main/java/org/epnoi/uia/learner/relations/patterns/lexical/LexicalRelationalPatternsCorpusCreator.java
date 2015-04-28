@@ -3,11 +3,10 @@ package org.epnoi.uia.learner.relations.patterns.lexical;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreator;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpus;
 
 public class LexicalRelationalPatternsCorpusCreator {

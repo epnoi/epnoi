@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.epnoi.uia.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 
 public class BigramSoftPatternModelSerializer {
 	// ------------------------------------------------------------------------------------

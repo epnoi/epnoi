@@ -10,8 +10,6 @@ import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 

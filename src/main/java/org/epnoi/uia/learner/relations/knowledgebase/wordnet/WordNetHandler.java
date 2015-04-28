@@ -8,13 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 
 import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.item.IIndexWord;
-import edu.mit.jwi.item.ILexFile;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.ISynsetID;
 import edu.mit.jwi.item.IWord;

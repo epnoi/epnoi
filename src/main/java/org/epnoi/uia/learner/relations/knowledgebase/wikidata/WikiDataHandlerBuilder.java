@@ -3,12 +3,11 @@ package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
@@ -193,7 +192,7 @@ public class WikiDataHandlerBuilder {
 
 		@Override
 		public Set<String> getRelated(String source, String type) {
-			
+
 			Map<String, Set<String>> consideredRelations = relations.get(type);
 
 			// Firstly we retrieve the IRIs

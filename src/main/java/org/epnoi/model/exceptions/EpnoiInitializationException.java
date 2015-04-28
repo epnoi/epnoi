@@ -1,4 +1,4 @@
-package org.epnoi.uia.exceptions;
+package org.epnoi.model.exceptions;
 
 public class EpnoiInitializationException extends Exception {
 
