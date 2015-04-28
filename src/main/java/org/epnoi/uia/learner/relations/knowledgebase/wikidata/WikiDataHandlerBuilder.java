@@ -191,18 +191,28 @@ public class WikiDataHandlerBuilder {
 		}
 
 		@Override
-		public Set<String> getRelated(String source, String type) {
+		public Set<String> getRelated(String sourceLabel, String type) {
+			Set<String> targetLabels=new HashSet<String>();
 
 			Map<String, Set<String>> consideredRelations = relations.get(type);
 
 			// Firstly we retrieve the IRIs
-			Set<String> sourceIRIs = this.labelsDictionary.get(source);
+			Set<String> sourceIRIs = this.labelsDictionary.get(sourceLabel);
 
 			// For each of them we must retrieve
 
-			labelsDictionary.get(source);
+			for (String sourceIRI : sourceIRIs) {
+				for (String targetIRI : consideredRelations
+						.get(sourceIRI)) {
+					
+					for (String destinationTarget:this.labelsReverseDictionary.get(targetIRI)){
+						targetLabels.add(destinationTarget);
+					}
 
-			return this.relations.get(type).get(source);
+				}
+			}
+
+			return targetLabels;
 		}
 	}
 
