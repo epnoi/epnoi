@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.epnoi.uia.learner.nlp.wordnet.WordNetHandler;
+import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandler;
 
 public class KnowledgeBase {
 	private Map<String, Set<String>> hypernyms;

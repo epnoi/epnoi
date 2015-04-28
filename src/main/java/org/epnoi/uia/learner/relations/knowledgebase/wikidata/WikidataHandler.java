@@ -1,5 +1,7 @@
 package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
 
-public class WikidataHandler {
+import java.util.Set;
 
+public interface WikidataHandler {
+	public Set<String> getRelated(String source, String type);
 }

@@ -4,7 +4,6 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 import gate.DocumentContent;
-import gate.Factory;
 import gate.util.InvalidOffsetException;
 
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikipediaPage;
-import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.exceptions.EpnoiInitializationException;
@@ -30,10 +28,10 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
-import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBase;
 import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseCreator;
+import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {
