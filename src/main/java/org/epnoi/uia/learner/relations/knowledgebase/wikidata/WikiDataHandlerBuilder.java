@@ -8,6 +8,9 @@ import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
@@ -25,11 +28,14 @@ import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor.TimeoutException;
 
 public class WikiDataHandlerBuilder {
 
+	private Core core;
 	private WikidataHandlerParameters parameters;
 	private boolean offlineMode;
 	private String dumpPath;
 	private DumpProcessingMode dumpProcessingMode;
 	private int timeout;
+	private boolean retrieve;
+	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
 
@@ -38,8 +44,9 @@ public class WikiDataHandlerBuilder {
 
 	// --------------------------------------------------------------------------------------------------
 
-	public void init(WikidataHandlerParameters parameters)
+	public void init(Core core, WikidataHandlerParameters parameters)
 			throws EpnoiInitializationException {
+		this.core = core;
 		this.parameters = parameters;
 
 		this.dumpPath = (String) this.parameters
@@ -52,6 +59,11 @@ public class WikiDataHandlerBuilder {
 				.getParameterValue(WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER);
 		this.timeout = (int) this.parameters
 				.getParameterValue(WikidataHandlerParameters.TIMEOUT_PARAMETER);
+
+		this.retrieve = (boolean) this.parameters
+				.getParameterValue(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW_PARAMETER);
+		this.wikidataViewURI = (String) this.parameters
+				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER);
 
 		// Controller object for processing dumps:
 		this.dumpProcessingController = new DumpProcessingController(
@@ -96,14 +108,22 @@ public class WikiDataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	public WikidataHandler build() {
+		WikidataView wikidataView = null;
+		if (this.retrieve) {
+			wikidataView = (WikidataView) this.core.getInformationHandler()
+					.get(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
+		} else {
+			processEntitiesFromWikidataDump();
 
-		processEntitiesFromWikidataDump();
+			Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
+			relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
 
-		Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
-		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
+			wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
+					labelsReverseDictionary, relationsTable);
+		}
 
-		return new WikidataHandlerImpl(labelsDictionary,
-				labelsReverseDictionary, relationsTable);
+		return new WikidataHandlerImpl(wikidataView);
+
 	}
 
 	// --------------------------------------------------------------------------------------------------
@@ -124,7 +144,11 @@ public class WikiDataHandlerBuilder {
 				dumpProcessingController.processAllRecentRevisionDumps();
 				break;
 			case JSON:
+				// MwDumpFile dumpFile
+				// =dumpProcessingController.getMostRecentDump(DumpContentType.JSON);
+
 				dumpProcessingController.processMostRecentJsonDump();
+
 				break;
 			case JUST_ONE_DAILY_FOR_TEST:
 				dumpProcessingController.processDump(dumpProcessingController
@@ -145,75 +169,95 @@ public class WikiDataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Starting the EntityStatisticsProcessor");
+		System.out.println("Starting the WikiDataHandlerBuilder");
+
+		Core core = CoreUtility.getUIACore();
 
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
+		parameters.setParameter(
+				WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER,
+				"http://wikidataView");
+		parameters.setParameter(
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW_PARAMETER,
+				false);
 		parameters.setParameter(
 				WikidataHandlerParameters.OFFLINE_MODE_PARAMETER, true);
 		parameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER,
 				DumpProcessingMode.JSON);
-		parameters
-				.setParameter(WikidataHandlerParameters.TIMEOUT_PARAMETER, 10);
+		parameters.setParameter(WikidataHandlerParameters.TIMEOUT_PARAMETER,
+				100);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH_PARAMETER,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
 		WikiDataHandlerBuilder wikidataBuilder = new WikiDataHandlerBuilder();
 		try {
-			wikidataBuilder.init(parameters);
+			wikidataBuilder.init(core, parameters);
 		} catch (EpnoiInitializationException e) {
 
 			e.printStackTrace();
 		}
-		wikidataBuilder.processEntitiesFromWikidataDump();
-		System.out.println("Ending the EntityStatisticsProcessor");
+		WikidataHandler wikidataHandler = wikidataBuilder.build();
+		System.out.println("dog -----> "
+				+ wikidataHandler.getRelated("dog", RelationHelper.HYPERNYM));
+
+		System.out.println("Ending the WikiDataHandlerBuilder");
 	}
 
 	// --------------------------------------------------------------------------------------------------
 
 	private class WikidataHandlerImpl implements WikidataHandler {
 
-		private Map<String, Set<String>> labelsDictionary;
-
-		private Map<String, Set<String>> labelsReverseDictionary;
-		private Map<String, Map<String, Set<String>>> relations;
+		private WikidataView wikidataView;
 
 		// --------------------------------------------------------------------------------------------------
 
-		private WikidataHandlerImpl(Map<String, Set<String>> labelsDictionary,
-				Map<String, Set<String>> labelsReverseDictionary,
-				Map<String, Map<String, Set<String>>> relations) {
-			super();
-			this.labelsDictionary = labelsDictionary;
-			this.labelsReverseDictionary = labelsReverseDictionary;
-			this.relations = relations;
+		private WikidataHandlerImpl(WikidataView wikidataView) {
+			this.wikidataView = wikidataView;
 		}
+
+		// --------------------------------------------------------------------------------------------------
 
 		@Override
 		public Set<String> getRelated(String sourceLabel, String type) {
-			Set<String> targetLabels=new HashSet<String>();
 
-			Map<String, Set<String>> consideredRelations = relations.get(type);
+			Set<String> targetLabels = new HashSet<String>();
+
+			Map<String, Set<String>> consideredRelations = this.wikidataView
+					.getRelations().get(type);
+
+			System.out.println("considered relations # "
+					+ consideredRelations.size());
 
 			// Firstly we retrieve the IRIs
-			Set<String> sourceIRIs = this.labelsDictionary.get(sourceLabel);
-
+			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
+					.get(sourceLabel);
+			// System.out.println("sourceIRIs >>>> " + sourceIRIs);
 			// For each of them we must retrieve
 
 			for (String sourceIRI : sourceIRIs) {
-				for (String targetIRI : consideredRelations
-						.get(sourceIRI)) {
-					
-					for (String destinationTarget:this.labelsReverseDictionary.get(targetIRI)){
-						targetLabels.add(destinationTarget);
+				// System.out.println("sourceIRI " + sourceIRI);
+				for (String targetIRI : consideredRelations.get(sourceIRI)) {
+					if (targetIRI != null) {
+						for (String destinationTarget : this.wikidataView
+								.getLabelsReverseDictionary().get(targetIRI)) {
+							targetLabels.add(destinationTarget);
+						}
 					}
-
 				}
 			}
 
 			return targetLabels;
 		}
+
+		@Override
+		public String toString() {
+			return "WikidataHandlerImpl [wikidataView=" + wikidataView + "]";
+		}
+
+		// --------------------------------------------------------------------------------------------------
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------

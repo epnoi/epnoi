@@ -3,6 +3,8 @@ package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
 import org.epnoi.uia.commons.Parameters;
 
 public class WikidataHandlerParameters extends Parameters<Object> {
+	public static String WIKIDATA_VIEW_URI_PARAMETER = "URI_PARAMETER";
+	
 	public static String DUMP_PATH_PARAMETER = "DUMP_PATH_PARAMETER";
 
 	/**
@@ -34,6 +36,8 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	 * having to wait for a whole dump file to process.
 	 */
 	public static final String TIMEOUT_PARAMETER = "TIMEOUT_PARAMETER";
+
+	public static final String RETRIEVE_WIKIDATA_VIEW_PARAMETER = "RETRIEVE_WIKIDATA_VIEW_PARAMETER";
 
 	// public static final int TIMEOUT_SEC = 10;
 
