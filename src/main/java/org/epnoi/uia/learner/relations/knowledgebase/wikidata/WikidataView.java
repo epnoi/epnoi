@@ -1,5 +1,6 @@
 package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,14 @@ public class WikidataView implements Resource {
 		this.relations = relations;
 	}
 
+	// ------------------------------------------------------------------------------------------------------
+
+	public WikidataView() {
+		this.labelsDictionary = new HashMap<>();
+		this.labelsReverseDictionary = new HashMap<>();
+		this.relations = new HashMap<>();
+	}
+	
 	// ------------------------------------------------------------------------------------------------------
 
 	public String getURI() {
@@ -71,5 +80,16 @@ public class WikidataView implements Resource {
 	public void setRelations(Map<String, Map<String, Set<String>>> relations) {
 		this.relations = relations;
 	}
+
+	// ------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "WikidataView [URI=" + URI + ", labelsDictionary="
+				+ labelsDictionary + ", labelsReverseDictionary="
+				+ labelsReverseDictionary + ", relations=" + relations + "]";
+	}
+
+	// ------------------------------------------------------------------------------------------------------
 
 }
