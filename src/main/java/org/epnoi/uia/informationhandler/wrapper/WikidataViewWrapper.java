@@ -63,7 +63,7 @@ public class WikidataViewWrapper implements Wrapper {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIDATA_VIEW_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
-		System.out.println("ENTRA AQUI > " + selector);
+		
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)

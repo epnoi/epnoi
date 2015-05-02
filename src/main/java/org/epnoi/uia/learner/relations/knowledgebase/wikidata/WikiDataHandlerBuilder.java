@@ -317,7 +317,7 @@ public class WikiDataHandlerBuilder {
 			Set<String> values = dictionary.get(key);
 			if (values == null) {
 				values = new HashSet<>();
-				labelsDictionary.put(key, values);
+				dictionary.put(key, values);
 			}
 			values.add(value);
 		}

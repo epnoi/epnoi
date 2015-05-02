@@ -2,6 +2,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -20,6 +21,9 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataView;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 
 public class WikidataViewCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
@@ -64,6 +68,19 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 			}
 		}
+
+		Joiner joiner = Joiner.on(";").skipNulls();
+
+		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView
+				.getLabelsDictionary().entrySet()) {
+			Set<String> labelIRIsSet = labelDictionaryEntry.getValue();
+			String labelIRIs = joiner.join(labelIRIsSet);
+			String serializedLabelDictionaryEntry = labelDictionaryEntry
+					.getKey() + ";" + labelIRIs;
+			pairsOfNameValues.put(serializedLabelDictionaryEntry,
+					WikidataViewCassandraHelper.DICTIONARY);
+		}
+
 		System.out.println("------------------------------> "
 				+ pairsOfNameValues);
 
@@ -84,10 +101,10 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	private Relation _deserializeRelation(String relationExpression) {
-		System.out.println("Expression >" + relationExpression);
+		// System.out.println("Expression >" + relationExpression);
 		int offset = relationExpression.indexOf(">");
 		String sourceIRI = relationExpression.substring(0, offset);
-		System.out.println(">>>>" + sourceIRI);
+		// System.out.println(">>>>" + sourceIRI);
 		int secondOffset = relationExpression.indexOf(">", offset + 1);
 		String targetIRI = relationExpression.substring(offset + 1,
 				secondOffset);
@@ -95,6 +112,8 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 				relationExpression.length());
 		return new Relation(relationType, sourceIRI, targetIRI);
 	}
+
+	//
 
 	// --------------------------------------------------------------------------------
 
@@ -153,8 +172,13 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, WikidataViewCassandraHelper.COLUMN_FAMILLY);
 
 		if (columnsIterator.hasNext()) {
-			WikidataView wikidataView = new WikidataView();
-			wikidataView.setURI(URI);
+
+			Map<String, Set<String>> labelsDictionary = new HashMap<>();
+
+			Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
+
+			Map<String, Map<String, Set<String>>> relations = new HashMap<>();
+
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
 
@@ -164,48 +188,61 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 					System.out.println("The readed relation "
 							+ _deserializeRelation(columnName));
 					Relation relation = _deserializeRelation(columnName);
-					_addRelation(wikidataView, relation);
+					_addRelation(relations, relation);
 				}
-				/*
-				 * switch (columnName) { case RelationCassandraHelper.SOURCE:
-				 * relation.setSource(columnValue); break; case
-				 * RelationCassandraHelper.TARGET:
-				 * relation.setTarget(columnValue); break; case
-				 * RelationCassandraHelper.TYPE: relation.setType(columnValue);
-				 * break; default: if
-				 * (RelationCassandraHelper.PROVENANCE_SENTENCES
-				 * .equals(columnValue)) { int commaOffset =
-				 * columnName.indexOf(";");
-				 * 
-				 * String probability = columnName.substring(1, commaOffset);
-				 * String provenanceSentence = columnName.subSequence(
-				 * commaOffset + 1, columnName.length()).toString();
-				 * relation.addProvenanceSentence(provenanceSentence,
-				 * Double.parseDouble(probability)); } break; }
-				 */
+				if (WikidataViewCassandraHelper.DICTIONARY.equals(columnValue)) {
+					List<String> labelIRIS = Splitter.on(';').splitToList(
+							columnName);
+					System.out.println("labelIRIS> " + labelIRIS);
+
+					String label = labelIRIS.get(0);
+					List<String> IRIs = labelIRIS.subList(1, labelIRIS.size());
+					for (String IRI : IRIs) {
+						System.out.println("We should add " + IRI + " -> "
+								+ label);
+						_addToDictionary(IRI, label, labelsDictionary);
+						_addToDictionary(label, IRI, labelsReverseDictionary);
+					}
+
+				}
+
 			}
+			WikidataView wikidataView = new WikidataView(URI, labelsDictionary,
+					labelsReverseDictionary, relations);
+
 			return wikidataView;
 		}
 
 		return null;
 	}
 
+	private void _addToDictionary(String value, String key,
+			Map<String, Set<String>> dictionary) {
+		Set<String> values = dictionary.get(key);
+		if (values == null) {
+			values = new HashSet<>();
+			dictionary.put(key, values);
+		}
+		values.add(value);
+	}
+
 	// --------------------------------------------------------------------------------
 
-	private void _addRelation(WikidataView wikidataView, Relation relation) {
-		Map<String, Set<String>> relations = wikidataView.getRelations().get(
-				relation.getRelationType());
+	private void _addRelation(Map<String, Map<String, Set<String>>> relations,
+			Relation relation) {
+		Map<String, Set<String>> typeRelations = relations.get(relation
+				.getRelationType());
 
-		if (relations == null) {
-			relations = new HashMap<>();
-			wikidataView.getRelations().put(relation.getRelationType(), relations);
-	
+		if (typeRelations == null) {
+			typeRelations = new HashMap<>();
+			relations.put(relation.getRelationType(), typeRelations);
+
 		}
-		
-		Set<String> targets = relations.get(relation.getSource());
+
+		Set<String> targets = typeRelations.get(relation.getSource());
 		if (targets == null) {
 			targets = new HashSet<String>();
-			relations.put(relation.getSource(), targets);
+			typeRelations.put(relation.getSource(), targets);
 		}
 		targets.add(relation.getTarget());
 
@@ -280,6 +317,11 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		destionationSet.add("http://testTargetB");
 		hypernymRelations.put("http://testSource", destionationSet);
 		relations.put(RelationHelper.HYPERNYM, hypernymRelations);
+
+		Set<String> labelDictionary = new HashSet<String>();
+		labelDictionary.add("http://testTargetA");
+		labelDictionary.add("http://testTargetB");
+		labelsDictionary.put("test label", labelDictionary);
 
 		WikidataView wikidataView = new WikidataView("http://wikidataView",
 				labelsDictionary, labelsReverseDictionary, relations);
