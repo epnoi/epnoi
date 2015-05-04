@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
@@ -26,15 +28,23 @@ import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor.TimeoutException;
 
-public class WikiDataHandlerBuilder {
-
+/**
+ * A factory that creates WikidataHandlers
+ * 
+ * @author Rafael Gonzalez-Cabero {@link http://www.github.com/fitash}
+ * 
+ *
+ */
+public class WikidataHandlerBuilder {
+	private static final Logger logger = Logger
+			.getLogger(WikidataHandlerBuilder.class.getName());
 	private Core core;
 	private WikidataHandlerParameters parameters;
 	private boolean offlineMode;
 	private String dumpPath;
 	private DumpProcessingMode dumpProcessingMode;
 	private int timeout;
-	private boolean retrieve;
+	private boolean store;
 	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
@@ -60,8 +70,8 @@ public class WikiDataHandlerBuilder {
 		this.timeout = (int) this.parameters
 				.getParameterValue(WikidataHandlerParameters.TIMEOUT_PARAMETER);
 
-		this.retrieve = (boolean) this.parameters
-				.getParameterValue(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW_PARAMETER);
+		this.store = (boolean) this.parameters
+				.getParameterValue(WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER);
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER);
 
@@ -107,20 +117,41 @@ public class WikiDataHandlerBuilder {
 
 	// --------------------------------------------------------------------------------------------------
 
+	/**
+	 * Builds a WikidataHandler. If the parameter
+	 * WikidataHandlerParameters.STORE_PARAMETER (see
+	 * {@link WikidataHandlerParameters}) is set to true, the associated
+	 * WikidataView is stored in the UIA for later use
+	 * 
+	 * @return A WikidataHandler with its associated WikidataView
+	 */
 	public WikidataHandler build() {
+		logger.info("Building a WikidataHandler");
 		WikidataView wikidataView = null;
-		if (this.retrieve) {
-			wikidataView = (WikidataView) this.core.getInformationHandler()
-					.get(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
-		} else {
-			processEntitiesFromWikidataDump();
+		processEntitiesFromWikidataDump();
 
-			Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
-			relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
+		Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
+		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
 
-			wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
-					labelsReverseDictionary, relationsTable);
+		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
+				labelsReverseDictionary, relationsTable);
+
+		if (this.store) {
+			logger.info("Storing the new built WikidataView, since the store flag was activated");
+			this.core.getInformationHandler().put(wikidataView,
+					Context.getEmptyContext());
 		}
+		return new WikidataHandlerImpl(wikidataView);
+	}
+
+	// --------------------------------------------------------------------------------------------------
+
+	public WikidataHandler retrieve() {
+		logger.info("Retrieving a WikidataHandler");
+		WikidataView wikidataView = null;
+
+		wikidataView = (WikidataView) this.core.getInformationHandler().get(
+				this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
 
 		return new WikidataHandlerImpl(wikidataView);
 
@@ -129,6 +160,7 @@ public class WikiDataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	private void processEntitiesFromWikidataDump() {
+
 		// Also add a timer that reports some basic progress information:
 		EntityTimerProcessor entityTimerProcessor = new EntityTimerProcessor(
 				this.timeout);
@@ -191,17 +223,24 @@ public class WikiDataHandlerBuilder {
 		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH_PARAMETER,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
-		WikiDataHandlerBuilder wikidataBuilder = new WikiDataHandlerBuilder();
+		parameters.setParameter(
+				WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER, true);
+
+		WikidataHandlerBuilder wikidataBuilder = new WikidataHandlerBuilder();
 		try {
 			wikidataBuilder.init(core, parameters);
 		} catch (EpnoiInitializationException e) {
 
 			e.printStackTrace();
 		}
-		WikidataHandler wikidataHandler = wikidataBuilder.build();
-		System.out.println("dog -----> "
-				+ wikidataHandler.getRelated("dog", RelationHelper.HYPERNYM));
+		// WikidataHandler wikidataHandler = wikidataBuilder.build();
 
+		WikidataHandler handler = wikidataBuilder.retrieve();
+
+		/*
+		 * System.out.println("dog -----> " + wikidataHandler.getRelated("dog",
+		 * RelationHelper.HYPERNYM));
+		 */
 		System.out.println("Ending the WikiDataHandlerBuilder");
 	}
 
@@ -215,6 +254,11 @@ public class WikiDataHandlerBuilder {
 
 		private WikidataHandlerImpl(WikidataView wikidataView) {
 			this.wikidataView = wikidataView;
+		}
+
+		@Override
+		public WikidataView getView() {
+			return this.wikidataView;
 		}
 
 		// --------------------------------------------------------------------------------------------------
@@ -306,7 +350,6 @@ public class WikiDataHandlerBuilder {
 							labelsReverseDictionary);
 				}
 			}
-			// aliasesResolutionTable.put(itemDocument.getAliases(EN));
 
 		}
 
@@ -345,19 +388,11 @@ public class WikiDataHandlerBuilder {
 
 					for (Statement statement : statementGroup.getStatements()) {
 
-						// if (statement.getClaim().getMainSnak() instanceof
-						// ValueSnak) {
-
 						String object = ((ItemIdValue) ((ValueSnak) statement
 								.getClaim().getMainSnak()).getValue()).getIri();
 
 						hyponyms.add(object);
 
-						/*
-						 * System.out.println("Adding :> (" + subject + ", " +
-						 * object + ")");
-						 */
-						// }
 					}
 					hypernymRelations.put(subject, hyponyms);
 				}

@@ -26,11 +26,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 public class WikidataViewCassandraDAO extends CassandraDAO {
-	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
-	public static final String annotatedSentenceSeparator = "<annotatedContent>";
-	private static final int annotatedSentenceSeparatorLength = annotatedSentenceSeparator
-			.length();
-
+	
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
@@ -82,10 +78,11 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		}
 
 		System.out.println("------------------------------> "
-				+ pairsOfNameValues);
+			+ pairsOfNameValues.size());
 
 		super.updateColumns(wikidataView.getURI(), pairsOfNameValues,
 				WikidataViewCassandraHelper.COLUMN_FAMILLY);
+		System.out.println("Clear!!!");
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -113,26 +110,24 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		return new Relation(relationType, sourceIRI, targetIRI);
 	}
 
-	//
-
 	// --------------------------------------------------------------------------------
 
 	private class Relation {
-		private String relationType;
+		private String type;
 		private String source;
 		private String target;
 
 		public Relation(String relationType, String source, String target) {
 			super();
-			this.relationType = relationType;
+			this.type = relationType;
 			this.source = source;
 			this.target = target;
 		}
 
 		// ------------------------------------------------------------------------------
 
-		public String getRelationType() {
-			return relationType;
+		public String getType() {
+			return type;
 		}
 
 		// ------------------------------------------------------------------------------
@@ -151,7 +146,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 		@Override
 		public String toString() {
-			return "Relation [relationType=" + relationType + ", source="
+			return "Relation [relationType=" + type + ", source="
 					+ source + ", target=" + target + "]";
 		}
 
@@ -185,21 +180,21 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 				String columnName = column.getName();
 				String columnValue = column.getValue();
 				if (WikidataViewCassandraHelper.RELATIONS.equals(columnValue)) {
-					System.out.println("The readed relation "
-							+ _deserializeRelation(columnName));
+				//	System.out.println("The readed relation "
+					//		+ _deserializeRelation(columnName));
 					Relation relation = _deserializeRelation(columnName);
 					_addRelation(relations, relation);
 				}
 				if (WikidataViewCassandraHelper.DICTIONARY.equals(columnValue)) {
 					List<String> labelIRIS = Splitter.on(';').splitToList(
 							columnName);
-					System.out.println("labelIRIS> " + labelIRIS);
+					//System.out.println("labelIRIS> " + labelIRIS);
 
 					String label = labelIRIS.get(0);
 					List<String> IRIs = labelIRIS.subList(1, labelIRIS.size());
 					for (String IRI : IRIs) {
-						System.out.println("We should add " + IRI + " -> "
-								+ label);
+						//System.out.println("We should add " + IRI + " -> "
+						//		+ label);
 						_addToDictionary(IRI, label, labelsDictionary);
 						_addToDictionary(label, IRI, labelsReverseDictionary);
 					}
@@ -231,11 +226,11 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	private void _addRelation(Map<String, Map<String, Set<String>>> relations,
 			Relation relation) {
 		Map<String, Set<String>> typeRelations = relations.get(relation
-				.getRelationType());
+				.getType());
 
 		if (typeRelations == null) {
 			typeRelations = new HashMap<>();
-			relations.put(relation.getRelationType(), typeRelations);
+			relations.put(relation.getType(), typeRelations);
 
 		}
 

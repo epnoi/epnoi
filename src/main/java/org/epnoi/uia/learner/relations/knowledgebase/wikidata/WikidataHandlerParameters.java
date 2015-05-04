@@ -5,6 +5,9 @@ import org.epnoi.uia.commons.Parameters;
 public class WikidataHandlerParameters extends Parameters<Object> {
 	public static String WIKIDATA_VIEW_URI_PARAMETER = "URI_PARAMETER";
 	
+	/**
+	 * Path where the Wikidata dump can be found
+	 */
 	public static String DUMP_PATH_PARAMETER = "DUMP_PATH_PARAMETER";
 
 	/**
@@ -38,6 +41,8 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	public static final String TIMEOUT_PARAMETER = "TIMEOUT_PARAMETER";
 
 	public static final String RETRIEVE_WIKIDATA_VIEW_PARAMETER = "RETRIEVE_WIKIDATA_VIEW_PARAMETER";
+	
+	public static final String STORE_WIKIDATA_VIEW_PARAMETER = "STORE_WIKIDATA_VIEW_PARAMETER";
 
 	// public static final int TIMEOUT_SEC = 10;
 
