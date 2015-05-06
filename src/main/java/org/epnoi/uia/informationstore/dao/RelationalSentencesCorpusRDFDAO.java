@@ -5,7 +5,7 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
 import virtuoso.jena.driver.VirtuosoUpdateRequest;

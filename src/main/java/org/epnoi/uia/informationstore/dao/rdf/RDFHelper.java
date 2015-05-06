@@ -25,4 +25,5 @@ public class RDFHelper {
 	
 	public static final String DOMAIN_CLASS = "http://www.epnoi.org/ontology#Domain";
 	public static final String RELATIONS_TABLE_CLASS = "http://www.epnoi.org/ontology#RelationsTable";
+	public static final String WIKIDATA_VIEW_CLASS = "http://www.epnoi.org/ontology#WikidataView";
 }

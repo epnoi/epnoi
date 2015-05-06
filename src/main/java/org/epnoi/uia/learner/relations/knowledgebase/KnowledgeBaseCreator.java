@@ -1,10 +1,10 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.knowledgebase;
 
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.learner.nlp.wordnet.WordNetHandler;
-import org.epnoi.uia.learner.nlp.wordnet.WordNetParameters;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetParameters;
 
-public class CuratedRelationsTableCreator {
+public class KnowledgeBaseCreator {
 	private WordNetHandler wordnetHandler;
 
 	// ------------------------------------------------------------------------------------
@@ -17,19 +17,19 @@ public class CuratedRelationsTableCreator {
 
 	// ------------------------------------------------------------------------------------
 
-	public CuratedRelationsTable build() {
-		CuratedRelationsTable curatedRealtionsTable = new CuratedRelationsTable(
+	public KnowledgeBase build() {
+		KnowledgeBase knowledgeBase = new KnowledgeBase(
 				this.wordnetHandler);
 		for (String noun : wordnetHandler.getNouns()) {
 			/*
 			 * Set<String> nounHypernyms = wordnetHandler
 			 * .getNounFirstMeaningHypernyms(noun);
 			 */
-			curatedRealtionsTable.addHypernym(noun,
+			knowledgeBase.addHypernym(noun,
 					wordnetHandler.getNounFirstMeaningHypernyms(noun));
 
 		}
-		return curatedRealtionsTable;
+		return knowledgeBase;
 	}
 
 	// ------------------------------------------------------------------------------------
@@ -42,14 +42,14 @@ public class CuratedRelationsTableCreator {
 		parameters
 				.setParameter(WordNetParameters.DICTIONARY_LOCATION, filepath);
 
-		CuratedRelationsTableCreator curatedRelationsTableCreator = new CuratedRelationsTableCreator();
+		KnowledgeBaseCreator curatedRelationsTableCreator = new KnowledgeBaseCreator();
 		try {
 			curatedRelationsTableCreator.init(parameters);
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		CuratedRelationsTable curatedRelationsTable = curatedRelationsTableCreator
+		KnowledgeBase curatedRelationsTable = curatedRelationsTableCreator
 				.build();
 		System.out
 				.println("Testing for dog-canine-------------------------------------------------------");

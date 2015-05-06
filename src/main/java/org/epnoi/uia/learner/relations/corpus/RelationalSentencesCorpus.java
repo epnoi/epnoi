@@ -1,9 +1,10 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.corpus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.model.Resource;
+import org.epnoi.uia.learner.relations.RelationalSentence;
 
 public class RelationalSentencesCorpus implements Resource {
 

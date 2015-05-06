@@ -1,8 +1,6 @@
-package org.epnoi.uia.learner.relations;
+package org.epnoi.uia.learner.relations.corpus;
 
 import org.epnoi.uia.commons.Parameters;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 
 public class RelationalSentencesCorpusCreationParameters extends
 		Parameters<Object> {

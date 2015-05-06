@@ -1,8 +1,6 @@
 package org.epnoi.uia.harvester.filesystem;
 
 import org.epnoi.uia.commons.Parameters;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 
 public class FilesystemHarvesterParameters extends Parameters<Object> {
 

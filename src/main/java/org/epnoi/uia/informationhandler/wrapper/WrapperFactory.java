@@ -24,7 +24,8 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataView;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;
@@ -68,9 +69,12 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(Domain.class.getName(), new DomainWrapper(
 				this.core));
-		
-		this.wrappersByClass.put(RelationsTable.class.getName(), new RelationsTableWrapper(
-				this.core));
+
+		this.wrappersByClass.put(RelationsTable.class.getName(),
+				new RelationsTableWrapper(this.core));
+
+		this.wrappersByClass.put(WikidataView.class.getName(),
+				new WikidataViewWrapper(this.core));
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -108,8 +112,11 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(RDFHelper.DOMAIN_CLASS, new DomainWrapper(
 				this.core));
-		this.wrappersByType.put(RDFHelper.RELATIONS_TABLE_CLASS, new RelationsTableWrapper(
-				this.core));
+		this.wrappersByType.put(RDFHelper.RELATIONS_TABLE_CLASS,
+				new RelationsTableWrapper(this.core));
+
+		this.wrappersByType.put(RDFHelper.WIKIDATA_VIEW_CLASS,
+				new WikidataViewWrapper(this.core));
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

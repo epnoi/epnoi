@@ -4,7 +4,6 @@ import gate.Document;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
@@ -17,13 +16,12 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
