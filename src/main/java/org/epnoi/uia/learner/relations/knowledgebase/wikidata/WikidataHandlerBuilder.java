@@ -50,7 +50,9 @@ public class WikidataHandlerBuilder {
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
 
 	private Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
+
 	private Map<String, Set<String>> hypernymRelations = new HashMap<>();
+	Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
 
 	// --------------------------------------------------------------------------------------------------
 
@@ -126,11 +128,11 @@ public class WikidataHandlerBuilder {
 	 * @return A WikidataHandler with its associated WikidataView
 	 */
 	public WikidataHandler build() {
-		logger.info("Building a WikidataHandler");
+		logger.info("Building a WikidataHandler with the following parameters: "
+				+ parameters);
 		WikidataView wikidataView = null;
 		processEntitiesFromWikidataDump();
 
-		Map<String, Map<String, Set<String>>> relationsTable = new HashMap<>();
 		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
 
 		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
@@ -138,6 +140,9 @@ public class WikidataHandlerBuilder {
 
 		if (this.store) {
 			logger.info("Storing the new built WikidataView, since the store flag was activated");
+			//First we remove the WikidataWiew if there is one with the same URI
+			this.core.getInformationHandler().remove(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
+			
 			this.core.getInformationHandler().put(wikidataView,
 					Context.getEmptyContext());
 		}
@@ -191,9 +196,9 @@ public class WikidataHandlerBuilder {
 						+ this.dumpProcessingMode);
 			}
 		} catch (TimeoutException e) {
-			// The timer caused a time out. Continue and finish normally.
-		}
 
+		}
+		System.out.println("Aqui deberia ir el processing 2");
 		// Print final timer results:
 		entityTimerProcessor.close();
 	}
@@ -211,20 +216,16 @@ public class WikidataHandlerBuilder {
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER,
 				"http://wikidataView");
 		parameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW_PARAMETER,
-				false);
+				WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER, true);
 		parameters.setParameter(
 				WikidataHandlerParameters.OFFLINE_MODE_PARAMETER, true);
 		parameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER,
 				DumpProcessingMode.JSON);
 		parameters.setParameter(WikidataHandlerParameters.TIMEOUT_PARAMETER,
-				100);
+				10);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH_PARAMETER,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
-
-		parameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER, true);
 
 		WikidataHandlerBuilder wikidataBuilder = new WikidataHandlerBuilder();
 		try {
@@ -233,14 +234,38 @@ public class WikidataHandlerBuilder {
 
 			e.printStackTrace();
 		}
-		// WikidataHandler wikidataHandler = wikidataBuilder.build();
+
+		Long startTime = System.currentTimeMillis();
+
+		WikidataHandler wikidataHandler = wikidataBuilder.build();
+		System.out.println("(size)---------------> "
+				+ wikidataHandler.getView());
+
+		Long endTime = System.currentTimeMillis();
+		System.out.println("It took " + ((endTime - startTime)/1000)
+				+ " to create and store the wikidata curated table");
+
+		startTime = System.currentTimeMillis();
 
 		WikidataHandler handler = wikidataBuilder.retrieve();
+		System.out.println("---------------> "
+				+ handler.getView());
 
+		endTime = System.currentTimeMillis();
+
+		System.out.println("It took " + ((endTime - startTime)/1000)
+				+ " to load the wikidata curated table");
 		/*
 		 * System.out.println("dog -----> " + wikidataHandler.getRelated("dog",
 		 * RelationHelper.HYPERNYM));
 		 */
+		
+		
+		for(String label: wikidataHandler.getView().getLabelsDictionary().keySet()){
+			if (!handler.getView().getLabelsDictionary().keySet().contains(label)){
+				System.out.println("....> este no esta "+label);
+			}
+		}
 		System.out.println("Ending the WikiDataHandlerBuilder");
 	}
 
@@ -328,7 +353,7 @@ public class WikidataHandlerBuilder {
 		 */
 
 		private void processItem(ItemDocument itemDocument) {
-			String itemIRI = itemDocument.getEntityId().getIri();
+			String itemIRI = itemDocument.getEntityId().getId();
 
 			// First we add the label->IRI relation
 			if (itemDocument.getLabels().get(
@@ -336,8 +361,8 @@ public class WikidataHandlerBuilder {
 				String label = itemDocument.getLabels()
 						.get(HypernymRelationsEntityProcessor.EN).getText();
 
-				_addToDictionary(itemIRI, label, labelsDictionary);
-				_addToDictionary(label, itemIRI, labelsReverseDictionary);
+				_addToDictionary(label, itemIRI, labelsDictionary);
+				_addToDictionary(itemIRI, label, labelsReverseDictionary);
 			}
 			// Now, for each alias of the label we also add the relation
 			// alias->IRI
@@ -345,8 +370,8 @@ public class WikidataHandlerBuilder {
 					HypernymRelationsEntityProcessor.EN) != null) {
 				for (MonolingualTextValue alias : itemDocument.getAliases()
 						.get(HypernymRelationsEntityProcessor.EN)) {
-					_addToDictionary(itemIRI, alias.getText(), labelsDictionary);
-					_addToDictionary(alias.getText(), itemIRI,
+					_addToDictionary(alias.getText(), itemIRI, labelsDictionary);
+					_addToDictionary(itemIRI, alias.getText(),
 							labelsReverseDictionary);
 				}
 			}
@@ -355,7 +380,13 @@ public class WikidataHandlerBuilder {
 
 		// ---------------------------------------------------------------------
 
-		private void _addToDictionary(String value, String key,
+		/**
+		 * 
+		 * @param value
+		 * @param key
+		 * @param dictionary
+		 */
+		private void _addToDictionary(String key, String value,
 				Map<String, Set<String>> dictionary) {
 			Set<String> values = dictionary.get(key);
 			if (values == null) {
@@ -382,14 +413,14 @@ public class WikidataHandlerBuilder {
 				String property = statementGroup.getProperty().getIri();
 
 				if (INSTANCE_OF.equals(property)) {
-					String subject = statementGroup.getSubject().getIri();
+					String subject = statementGroup.getSubject().getId();
 
 					Set<String> hyponyms = new HashSet<String>();
 
 					for (Statement statement : statementGroup.getStatements()) {
 
 						String object = ((ItemIdValue) ((ValueSnak) statement
-								.getClaim().getMainSnak()).getValue()).getIri();
+								.getClaim().getMainSnak()).getValue()).getId();
 
 						hyponyms.add(object);
 
@@ -399,7 +430,6 @@ public class WikidataHandlerBuilder {
 
 			}
 		}
-
 		// --------------------------------------------------------------------------------------------------
 
 	}
