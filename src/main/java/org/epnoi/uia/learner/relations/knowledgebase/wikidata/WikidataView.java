@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 
 public class WikidataView implements Resource {
@@ -31,7 +32,7 @@ public class WikidataView implements Resource {
 		this.labelsReverseDictionary = new HashMap<>();
 		this.relations = new HashMap<>();
 	}
-	
+
 	// ------------------------------------------------------------------------------------------------------
 
 	public String getURI() {
@@ -86,8 +87,9 @@ public class WikidataView implements Resource {
 	@Override
 	public String toString() {
 		return "WikidataView [URI=" + URI + ", labelsDictionary="
-				+ labelsDictionary + ", labelsReverseDictionary="
-				+ labelsReverseDictionary + ", relations=" + relations + "]";
+				+ labelsDictionary.size() + ", labelsReverseDictionary="
+				+ labelsReverseDictionary.size() + ", relations="
+				+ relations.get(RelationHelper.HYPERNYM).size() + "]";
 	}
 
 	// ------------------------------------------------------------------------------------------------------
