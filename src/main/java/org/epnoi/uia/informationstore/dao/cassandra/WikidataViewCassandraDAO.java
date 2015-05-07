@@ -80,7 +80,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		System.out.println("------------------------------> "
 			+ pairsOfNameValues.size());
 
-		super.updateColumns(wikidataView.getURI(), pairsOfNameValues,
+		super.updateManyColumns(wikidataView.getURI(), pairsOfNameValues,
 				WikidataViewCassandraHelper.COLUMN_FAMILLY);
 		System.out.println("Clear!!!");
 		pairsOfNameValues.clear();

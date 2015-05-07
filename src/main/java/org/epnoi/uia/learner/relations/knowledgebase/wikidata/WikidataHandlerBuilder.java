@@ -223,7 +223,7 @@ public class WikidataHandlerBuilder {
 				WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER,
 				DumpProcessingMode.JSON);
 		parameters.setParameter(WikidataHandlerParameters.TIMEOUT_PARAMETER,
-				10);
+				100);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH_PARAMETER,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
