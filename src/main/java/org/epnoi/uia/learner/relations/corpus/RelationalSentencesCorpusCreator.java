@@ -30,8 +30,9 @@ import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBase;
-import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseCreator;
-import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetParameters;
+import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseBuilder;
+import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {
@@ -42,7 +43,7 @@ public class RelationalSentencesCorpusCreator {
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
 	private KnowledgeBase curatedRelationsTable;
-	RelationalSentencesCorpusCreationParameters parameters;
+	private RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
 	private int MAX_SENTENCE_LENGTH = 600;
@@ -57,12 +58,12 @@ public class RelationalSentencesCorpusCreator {
 		this.corpus = new RelationalSentencesCorpus();
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.termCandidatesFinder.init();
-		WordNetParameters wordNetParameters = (WordNetParameters) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS);
+		KnowledgeBaseParameters wordNetParameters = (KnowledgeBaseParameters) parameters
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER);
 
-		KnowledgeBaseCreator curatedRelationsTableCreator = new KnowledgeBaseCreator();
-		curatedRelationsTableCreator.init(wordNetParameters);
-		this.curatedRelationsTable = curatedRelationsTableCreator.build();
+		KnowledgeBaseBuilder knowledgeBaseBuilder = new KnowledgeBaseBuilder();
+		knowledgeBaseBuilder.init(core, wordNetParameters);
+		this.curatedRelationsTable = knowledgeBaseBuilder.build();
 
 		this.storeResult = (boolean) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER);
@@ -125,7 +126,7 @@ public class RelationalSentencesCorpusCreator {
 		}
 		System.out.println("The average length is " + average
 				/ this.corpus.getSentences().size());
-		
+
 		System.out
 				.println("------------------------------------------------------------------------------------------");
 
@@ -193,7 +194,7 @@ public class RelationalSentencesCorpusCreator {
 									uri,
 									section,
 									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
-					//System.out.println("selector >" + selector);
+					// System.out.println("selector >" + selector);
 					Content<Object> annotatedContent = this.core
 							.getInformationHandler().getAnnotatedContent(
 									selector);
@@ -405,16 +406,20 @@ public class RelationalSentencesCorpusCreator {
 		Core core = CoreUtility.getUIACore();
 
 		RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
+		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
 
-		WordNetParameters wordnetParameters = new WordNetParameters();
+		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
 		String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
-		wordnetParameters.setParameter(WordNetParameters.DICTIONARY_LOCATION,
+		wordnetParameters.setParameter(WordNetHandlerParameters.DICTIONARY_LOCATION,
 				filepath);
+		
+		
+		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER, wordnetParameters);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.WORDNET_PARAMETERS,
-				wordnetParameters);
+				RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER,
+				knowledgeBaseParameters);
 
 		parameters
 				.setParameter(
