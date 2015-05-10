@@ -9,8 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerBuilder;
 
 import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;
@@ -29,11 +31,13 @@ public class WordNetHandler {
 	private IRAMDictionary wordNetDictionary;
 	private WordnetStemmer wordnetStemmer;
 	private Map<String, Set<String>> hypernyms;
-
+	private static final Logger logger = Logger
+			.getLogger(WordNetHandler.class.getName());
 	// ---------------------------------------------------------------------------------------------------------------
 
 	public void init(WordNetHandlerParameters parameters)
 			throws EpnoiInitializationException {
+		logger.info("Initializing the WordNetHandler with the following parameters "+parameters);
 		this.parameters = parameters;
 		String filePath = (String) this.parameters
 				.getParameterValue(WordNetHandlerParameters.DICTIONARY_LOCATION);
