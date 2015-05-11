@@ -5,7 +5,7 @@ import org.epnoi.uia.commons.Parameters;
 public class RelationalSentencesCorpusCreationParameters extends
 		Parameters<Object> {
 
-	public static final String WORDNET_PARAMETERS = "WORDNET_PARAMETERS";
+	public static final String KNOWLEDGE_BASE_PARAMETERS_PARAMETER = "KNOWLEDGE_BASE_PARAMETERS_PARAMETER";
 	public static final String RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER = "RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER";
 	public static final String IS_TEST_PARAMETER = "IS_TEST_PARAMETER";
 	public static final String STORE_RESULT_PARAMETER = "IS_STORED_PARAMETER";

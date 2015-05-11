@@ -228,11 +228,23 @@
 			<artifactId>cloning</artifactId>
 			<version>1.9.1</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>org.wikidata.wdtk</groupId>
 			<artifactId>wdtk-dumpfiles</artifactId>
 			<version>0.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>4.10.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>4.10.4</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<finalName>epnoi</finalName>
@@ -260,7 +272,7 @@
 			</plugin>
 
 		</plugins>
-	
+
 	</build>
 </project>
 

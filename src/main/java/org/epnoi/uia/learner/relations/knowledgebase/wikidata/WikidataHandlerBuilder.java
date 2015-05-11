@@ -14,6 +14,7 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.tartarus.snowball.ext.EnglishStemmer;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.datamodel.interfaces.ItemIdValue;
@@ -58,6 +59,8 @@ public class WikidataHandlerBuilder {
 
 	public void init(Core core, WikidataHandlerParameters parameters)
 			throws EpnoiInitializationException {
+		logger.info("Initialiazing the WikidataHandler with the following parameters: "
+				+ parameters);
 		this.core = core;
 		this.parameters = parameters;
 
@@ -140,9 +143,11 @@ public class WikidataHandlerBuilder {
 
 		if (this.store) {
 			logger.info("Storing the new built WikidataView, since the store flag was activated");
-			//First we remove the WikidataWiew if there is one with the same URI
-			this.core.getInformationHandler().remove(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
-			
+			// First we remove the WikidataWiew if there is one with the same
+			// URI
+			this.core.getInformationHandler().remove(this.wikidataViewURI,
+					RDFHelper.WIKIDATA_VIEW_CLASS);
+
 			this.core.getInformationHandler().put(wikidataView,
 					Context.getEmptyContext());
 		}
@@ -152,12 +157,12 @@ public class WikidataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	public WikidataHandler retrieve() {
-		logger.info("Retrieving a WikidataHandler");
+		logger.info("Retrieving a WikidataHandler from a WikidataView stored in the UIA");
 		WikidataView wikidataView = null;
-
-		wikidataView = (WikidataView) this.core.getInformationHandler().get(
-				this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
-
+		/*
+		 * wikidataView = (WikidataView) this.core.getInformationHandler().get(
+		 * this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
+		 */
 		return new WikidataHandlerImpl(wikidataView);
 
 	}
@@ -237,33 +242,37 @@ public class WikidataHandlerBuilder {
 
 		Long startTime = System.currentTimeMillis();
 
-		WikidataHandler wikidataHandler = wikidataBuilder.build();
+		System.out.print("");
+		WikidataHandler wikidataHandler = wikidataBuilder.retrieve();
+		System.out.println("------> " + wikidataHandler.stem("thieves"));
+
+		System.exit(0);
 		System.out.println("(size)---------------> "
 				+ wikidataHandler.getView());
 
 		Long endTime = System.currentTimeMillis();
-		System.out.println("It took " + ((endTime - startTime)/1000)
+		System.out.println("It took " + ((endTime - startTime) / 1000)
 				+ " to create and store the wikidata curated table");
 
 		startTime = System.currentTimeMillis();
 
 		WikidataHandler handler = wikidataBuilder.retrieve();
-		System.out.println("---------------> "
-				+ handler.getView());
+		System.out.println("---------------> " + handler.getView());
 
 		endTime = System.currentTimeMillis();
 
-		System.out.println("It took " + ((endTime - startTime)/1000)
+		System.out.println("It took " + ((endTime - startTime) / 1000)
 				+ " to load the wikidata curated table");
 		/*
 		 * System.out.println("dog -----> " + wikidataHandler.getRelated("dog",
 		 * RelationHelper.HYPERNYM));
 		 */
-		
-		
-		for(String label: wikidataHandler.getView().getLabelsDictionary().keySet()){
-			if (!handler.getView().getLabelsDictionary().keySet().contains(label)){
-				System.out.println("....> este no esta "+label);
+
+		for (String label : wikidataHandler.getView().getLabelsDictionary()
+				.keySet()) {
+			if (!handler.getView().getLabelsDictionary().keySet()
+					.contains(label)) {
+				System.out.println("....> este no esta " + label);
 			}
 		}
 		System.out.println("Ending the WikiDataHandlerBuilder");
@@ -272,7 +281,7 @@ public class WikidataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	private class WikidataHandlerImpl implements WikidataHandler {
-
+		private WikidataStemmer stemmer = new WikidataStemmer();
 		private WikidataView wikidataView;
 
 		// --------------------------------------------------------------------------------------------------
@@ -296,9 +305,6 @@ public class WikidataHandlerBuilder {
 			Map<String, Set<String>> consideredRelations = this.wikidataView
 					.getRelations().get(type);
 
-			System.out.println("considered relations # "
-					+ consideredRelations.size());
-
 			// Firstly we retrieve the IRIs
 			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
 					.get(sourceLabel);
@@ -319,6 +325,14 @@ public class WikidataHandlerBuilder {
 
 			return targetLabels;
 		}
+
+		// --------------------------------------------------------------------------------------------------
+		@Override
+		public String stem(String term) {
+			return this.stemmer.stem(term);
+		}
+
+		// --------------------------------------------------------------------------------------------------
 
 		@Override
 		public String toString() {
