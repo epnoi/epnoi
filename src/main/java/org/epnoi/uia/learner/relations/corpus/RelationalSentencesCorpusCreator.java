@@ -7,6 +7,7 @@ import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +43,7 @@ public class RelationalSentencesCorpusCreator {
 	private Core core;
 	private TermCandidatesFinder termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
-	private KnowledgeBase curatedRelationsTable;
+	private KnowledgeBase knowledgeBase;
 	private RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
@@ -63,7 +64,7 @@ public class RelationalSentencesCorpusCreator {
 
 		KnowledgeBaseBuilder knowledgeBaseBuilder = new KnowledgeBaseBuilder();
 		knowledgeBaseBuilder.init(core, wordNetParameters);
-		this.curatedRelationsTable = knowledgeBaseBuilder.build();
+		this.knowledgeBase = knowledgeBaseBuilder.build();
 
 		this.storeResult = (boolean) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER);
@@ -239,10 +240,17 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Method that scans all the sentences in a document testing if they are
+	 * definitional or not
+	 * 
+	 * @param document
+	 */
+
 	public void _searchDocument(Document document) {
 
 		AnnotationSet sentenceAnnotations = document.getAnnotations().get(
-				"Sentence");
+				NLPAnnotationsHelper.SENTENCE);
 		DocumentContent sentenceContent = null;
 		AnnotationSet sentencesAnnotations = document.getAnnotations();
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
@@ -278,7 +286,7 @@ public class RelationalSentencesCorpusCreator {
 	private void _testSentence(Long sentenceStartOffset,
 			DocumentContent sentenceContent,
 			AnnotationSet sentenceAnnotationsSet) {
-		Set<String> sentenceTerms = new java.util.HashSet<String>();
+		Set<String> sentenceTerms = new HashSet<String>();
 		// This table stores the string representation of each sentence terms
 		// and their corresponding annotation
 		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<>();
@@ -295,16 +303,18 @@ public class RelationalSentencesCorpusCreator {
 			 * + endOffset + ")");
 			 */
 			try {
+				// First of all we retrieve the surface form of the term
 				String term = sentenceContent
 						.getContent(startOffset, endOffset).toString();
 
-				String stemmedTerm = this.curatedRelationsTable.stemTerm(term);
+				// We stem the surface form (we left open the possibility of
+				// different stemming results so we consider a set of stemmed
+				// forms)
+				for (String stemmedTerm : this.knowledgeBase.stem(term)) {
 
-				if (stemmedTerm == null) {
-					// System.out.println("--------------------Z EL QUE DA NULL ERA > "+termCandiateContet);
-				} else {
 					termsAnnotationsTable.put(stemmedTerm, termAnnotation);
 					sentenceTerms.add(stemmedTerm);
+
 				}
 
 			} catch (Exception e) {
@@ -315,12 +325,11 @@ public class RelationalSentencesCorpusCreator {
 		}
 		for (String term : sentenceTerms) {
 			// For each term we retrieve its well-known hypernyms
-			Set<String> termHypernyms = this.curatedRelationsTable
-					.getHypernyms(term);
+			Set<String> termHypernyms = this.knowledgeBase.getHypernyms(term);
 			termHypernyms.retainAll(sentenceTerms);
 
 			// If the intersection of the well-known hypernyms and the terms
-			// that belong to the sencence, this is a relational sentence
+			// that belong to the sentence, this is a relational sentence
 			if (termHypernyms.size() > 0) {
 
 				Annotation sourceTermAnnotation = termsAnnotationsTable
@@ -411,15 +420,17 @@ public class RelationalSentencesCorpusCreator {
 		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
 		String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
-		wordnetParameters.setParameter(WordNetHandlerParameters.DICTIONARY_LOCATION,
-				filepath);
-		
-		
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER, wordnetParameters);
+		wordnetParameters.setParameter(
+				WordNetHandlerParameters.DICTIONARY_LOCATION, filepath);
 
-		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER,
-				knowledgeBaseParameters);
+		knowledgeBaseParameters.setParameter(
+				KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER,
+				wordnetParameters);
+
+		parameters
+				.setParameter(
+						RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER,
+						knowledgeBaseParameters);
 
 		parameters
 				.setParameter(

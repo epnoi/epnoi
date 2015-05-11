@@ -14,14 +14,26 @@ import org.tartarus.snowball.ext.EnglishStemmer;
 
 import com.google.common.base.Joiner;
 
+/**
+ * An stemmer for the WikidataHandler (currently just for english!)
+ * 
+ * @author Rafael Gonzalez-Cabero {@link http://www.github.com/fitash}
+ * 
+ *
+ */
+
 public class WikidataStemmer {
 	private EnglishStemmer stemmer = new EnglishStemmer();
-	Joiner joiner = Joiner.on(" ").skipNulls();
+	private Joiner joiner = Joiner.on(" ").skipNulls();
 
+	//---------------------------------------------------------------------------------------------------------------------------
 	/**
-	 * A method that given an expression of may be multiple words, returns an expression where this words have been stemmed
-	 *(currently just for english!)
-	 * @param expression a possibly multiword term
+	 * A method that given an expression of may be multiple words, returns an
+	 * expression where this words have been stemmed (currently just for
+	 * english!)
+	 * 
+	 * @param expression
+	 *            a possibly multiword term
 	 * @return
 	 */
 
@@ -41,13 +53,15 @@ public class WikidataStemmer {
 				result.add(this.stemmer.getCurrent());
 			}
 		} catch (IOException e) {
-			// not thrown b/c we're using a string reader...
+			
 			throw new RuntimeException(e);
 		}
 		analyzer.close();
 
 		return this.joiner.join(result);
 	}
+	
+	//---------------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		WikidataStemmer stemmer = new WikidataStemmer();
@@ -55,7 +69,9 @@ public class WikidataStemmer {
 
 		while (i < 500) {
 			long currentTime = System.currentTimeMillis();
-			stemmer.stem("Matrix Michele Bachmann amenities pressed her allegations that the former head of her Iowa presidential bid was bribed by the campaign of rival Ron Paul to endorse him, even as one of her own aides denied the charge.");
+			System.out
+					.println(stemmer
+							.stem("Matrix Michele Bachmann amenities pressed her allegations that the former head of her Iowa presidential bid was bribed by the campaign of rival Ron Paul to endorse him, even as one of her own aides denied the charge."));
 			i++;
 
 			System.out.println("It took "

@@ -159,10 +159,10 @@ public class WikidataHandlerBuilder {
 	public WikidataHandler retrieve() {
 		logger.info("Retrieving a WikidataHandler from a WikidataView stored in the UIA");
 		WikidataView wikidataView = null;
-/*
-		wikidataView = (WikidataView) this.core.getInformationHandler().get(
-				this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
-*/
+		/*
+		 * wikidataView = (WikidataView) this.core.getInformationHandler().get(
+		 * this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
+		 */
 		return new WikidataHandlerImpl(wikidataView);
 
 	}
@@ -281,8 +281,7 @@ public class WikidataHandlerBuilder {
 	// --------------------------------------------------------------------------------------------------
 
 	private class WikidataHandlerImpl implements WikidataHandler {
-		private EnglishStemmer stemmer = new EnglishStemmer();
-
+		private WikidataStemmer stemmer = new WikidataStemmer();
 		private WikidataView wikidataView;
 
 		// --------------------------------------------------------------------------------------------------
@@ -305,9 +304,6 @@ public class WikidataHandlerBuilder {
 
 			Map<String, Set<String>> consideredRelations = this.wikidataView
 					.getRelations().get(type);
-
-			System.out.println("considered relations # "
-					+ consideredRelations.size());
 
 			// Firstly we retrieve the IRIs
 			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
@@ -332,10 +328,8 @@ public class WikidataHandlerBuilder {
 
 		// --------------------------------------------------------------------------------------------------
 		@Override
-		public String stem(String word) {
-			this.stemmer.setCurrent(word);
-			System.out.println("----" + this.stemmer.stem());
-			return this.stemmer.getCurrent();
+		public String stem(String term) {
+			return this.stemmer.stem(term);
 		}
 
 		// --------------------------------------------------------------------------------------------------
