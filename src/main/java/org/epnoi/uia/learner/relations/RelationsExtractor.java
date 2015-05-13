@@ -24,7 +24,7 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsTable;
-import org.epnoi.uia.learner.OntologyLearningParameters;
+import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModelSerializer;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
@@ -57,9 +57,9 @@ public class RelationsExtractor {
 		this.core = core;
 		this.parameters = parameters;
 		String hypernymModelPath = (String) parameters
-				.getParameterValue(OntologyLearningParameters.HYPERNYM_MODEL_PATH);
+				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH);
 		this.targetDomain = (String) parameters
-				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 		this.patternsGenerator = new LexicalRelationalPatternGenerator();
 		this.domainsTable = domainsTable;
 		this.relationsTable = new RelationsTable();

@@ -24,8 +24,8 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataView;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;

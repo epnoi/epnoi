@@ -27,13 +27,13 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.knowledgebase.KnowledgeBase;
+import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseBuilder;
+import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBase;
-import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseBuilder;
-import org.epnoi.uia.learner.relations.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class RelationalSentencesCorpusCreator {

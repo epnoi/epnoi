@@ -15,17 +15,19 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
+import org.epnoi.uia.learner.relations.RelationsHandler;
 import org.epnoi.uia.learner.terms.TermVertice;
 import org.epnoi.uia.learner.terms.TermsExtractor;
 import org.epnoi.uia.learner.terms.TermsTable;
 
-public class OntologyLearningProcess {
+public class OntologyLearningWorkflow {
 	private static final Logger logger = Logger
-			.getLogger(OntologyLearningProcess.class.getName());
-	private OntologyLearningParameters ontologyLearningParameters;
+			.getLogger(OntologyLearningWorkflow.class.getName());
+	private OntologyLearningWorkflowParameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
 	private TermsTable termsTable;
 	private RelationsTable relationsTable;
+	private RelationsHandler relationsHandler;
 	private RelationsExtractor relationsTableExtractor;
 
 	private DomainsGatherer domainsGatherer;
@@ -37,17 +39,17 @@ public class OntologyLearningProcess {
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
-			OntologyLearningParameters ontologyLearningParameters)
+			OntologyLearningWorkflowParameters ontologyLearningParameters)
 			throws EpnoiInitializationException {
 
-		logger.info("Initializing the OntologyLearningProcess with the following parameters");
+		logger.info("Initializing the OntologyLearningWorlow with the following parameters: ");
 		logger.info(ontologyLearningParameters.toString());
 
 		this.ontologyLearningParameters = ontologyLearningParameters;
 		this.hypernymRelationsThreshold = (double) this.ontologyLearningParameters
-				.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
+				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
 		this.extractTerms = (boolean) this.ontologyLearningParameters
-				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
+				.getParameterValue(OntologyLearningWorkflowParameters.EXTRACT_TERMS);
 
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
@@ -71,6 +73,7 @@ public class OntologyLearningProcess {
 		logger.info("Starting the execution of a Ontology Learning Process");
 
 		if (extractTerms) {
+			
 			this.termsTable = this.termExtractor.extract();
 		} else {
 			this.termsTable = this.termExtractor.retrieve();
@@ -82,6 +85,8 @@ public class OntologyLearningProcess {
 
 		this.relationsTable = this.relationsTableExtractor
 				.extract(this.termsTable);
+		
+		
 
 		System.out.println("Relations Table> " + this.relationsTable);
 
@@ -99,7 +104,7 @@ public class OntologyLearningProcess {
 
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
-						termVerticeToExpand, hypernymRelationsThreshold)) {
+						termVerticeToExpand.getTerm().getURI(), hypernymRelationsThreshold)) {
 					Term destinationTerm = this.termsTable.getTerm(relation.getTarget());
 					TermVertice destinationTermVertice = new TermVertice(
 							destinationTerm);
@@ -153,33 +158,33 @@ public class OntologyLearningProcess {
 		Integer numberInitialTerms = 10;
 		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
+		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_DOMAINS,
+				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
 
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_MODEL_PATH,
+				OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
 
-		OntologyLearningProcess ontologyLearningProcess = new OntologyLearningProcess();
+		OntologyLearningWorkflow ontologyLearningProcess = new OntologyLearningWorkflow();
 
 		try {
 			ontologyLearningProcess.init(core, ontologyLearningParameters);

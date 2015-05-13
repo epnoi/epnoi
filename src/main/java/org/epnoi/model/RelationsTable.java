@@ -30,10 +30,23 @@ public class RelationsTable implements Resource {
 
 	// --------------------------------------------------------------------
 
-	public List<Relation> getRelations(TermVertice termToExpand,
+	/**
+	 * 
+	 * @param sourceTerm
+	 * @param expansionProbabilityThreshold
+	 * @return
+	 */
+	
+	public List<Relation> getRelations(String sourceTerm,
 			double expansionProbabilityThreshold) {
-		this.relationsBySource.get(termToExpand.getTerm());
-		return new ArrayList<Relation>();
+		List<Relation> relations = new ArrayList<>();
+		for (Relation relationFromSource : this.relationsBySource
+				.get(sourceTerm)) {
+			if (relationFromSource.getRelationhood() >= expansionProbabilityThreshold) {
+				relations.add(relationFromSource);
+			}
+		}
+		return relations;
 	}
 
 	// --------------------------------------------------------------------
@@ -170,7 +183,7 @@ public class RelationsTable implements Resource {
 
 	@Override
 	public String toString() {
-		return "RelationsTable [uri= "+URI+", relations=" + relations + "]";
+		return "RelationsTable [uri= " + URI + ", relations=" + relations + "]";
 	}
 
 	// --------------------------------------------------------------------

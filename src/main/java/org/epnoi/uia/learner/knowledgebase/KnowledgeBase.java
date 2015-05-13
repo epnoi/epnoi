@@ -1,11 +1,11 @@
-package org.epnoi.uia.learner.relations.knowledgebase;
+package org.epnoi.uia.learner.knowledgebase;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
 
 import com.google.common.collect.Sets;
 
@@ -27,8 +27,8 @@ public class KnowledgeBase {
 
 	public boolean areRelated(String source, String target) {
 
-		return (areRelatedInWordNet(source, target)
-				|| areRelatedInWikidata(source, target));
+		return (areRelatedInWordNet(source, target) || areRelatedInWikidata(
+				source, target));
 
 	}
 

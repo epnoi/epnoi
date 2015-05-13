@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.solr.common.util.Hash;
 import org.epnoi.uia.commons.StringUtils;
 
 public class Relation implements Resource {
@@ -14,8 +15,26 @@ public class Relation implements Resource {
 	// This table contains the probability
 	private Map<String, Double> provenanceRelationhoodTable;
 
+	//
+
 	public Relation() {
 		this.provenanceRelationhoodTable = new HashMap<String, Double>();
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	public static Relation buildKnowledgeBaseRelation(String source,
+			String target, String type) {
+		Relation relation = new Relation();
+		relation.setSource(source);
+		relation.setTarget(target);
+		relation.setType(type);
+		relation.setURI(Relation.buildURI(source, target, type,
+				"http://www.epnoi.org/knowldegeBase/"));
+		Map<String, Double> provenance = new HashMap<>();
+		provenance.put("knowledge base", 1D);
+		relation.setProvenanceRelationhoodTable(provenance);
+		return relation;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------

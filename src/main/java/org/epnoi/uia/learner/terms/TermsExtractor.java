@@ -29,7 +29,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsGatherer;
 import org.epnoi.uia.learner.DomainsTable;
-import org.epnoi.uia.learner.OntologyLearningParameters;
+import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 
 public class TermsExtractor {
@@ -54,14 +54,14 @@ public class TermsExtractor {
 	private final double domainConsensusWeight = 1 - cValueWeight
 			- domainPertinenceWeight;
 
-	OntologyLearningParameters parameters;
+	OntologyLearningWorkflowParameters parameters;
 
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, DomainsTable domainsTable,
-			OntologyLearningParameters parameters) {
+			OntologyLearningWorkflowParameters parameters) {
 		logger.info("Initializing the TermExtractor with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
@@ -70,7 +70,7 @@ public class TermsExtractor {
 		this.domainsTable = domainsTable;
 		
 		this.targetDomain = (String) parameters
-				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -487,7 +487,7 @@ public class TermsExtractor {
 				.getAnnotationHandler()
 				.getLabeledAs(
 						(String) this.parameters
-								.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN),
+								.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN),
 						RDFHelper.TERM_CLASS);
 
 		for (String termURI : foundURIs) {
@@ -526,7 +526,7 @@ public class TermsExtractor {
 				.getAnnotationHandler()
 				.getLabeledAs(
 						(String) this.parameters
-								.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN),
+								.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN),
 						RDFHelper.TERM_CLASS);
 		System.out.println("Found " + foundURIs.size() + " to get removed ");
 		for (String termURI : foundURIs) {
@@ -572,20 +572,20 @@ public class TermsExtractor {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
+		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_DOMAINS,
+				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 

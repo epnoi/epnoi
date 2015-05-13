@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import org.epnoi.model.Domain;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.learner.DomainsTable;
-import org.epnoi.uia.learner.OntologyLearningParameters;
+import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
 
 public class DomainsHandler {
 	private static final Logger logger = Logger.getLogger(DomainsHandler.class

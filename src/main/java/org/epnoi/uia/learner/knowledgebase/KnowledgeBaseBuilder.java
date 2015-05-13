@@ -1,14 +1,14 @@
-package org.epnoi.uia.learner.relations.knowledgebase;
+package org.epnoi.uia.learner.knowledgebase;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerBuilder;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandler;
-import org.epnoi.uia.learner.relations.knowledgebase.wordnet.WordNetHandlerParameters;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerBuilder;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 
 public class KnowledgeBaseBuilder {
 	private Core core;
@@ -19,6 +19,7 @@ public class KnowledgeBaseBuilder {
 
 	public void init(Core core, KnowledgeBaseParameters parameters)
 			throws EpnoiInitializationException {
+		this.core = core;
 		this.wordnetHandler = new WordNetHandler();
 		this.wordnetHandler
 				.init((WordNetHandlerParameters) parameters
