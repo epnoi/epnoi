@@ -26,23 +26,46 @@ public class RelationsTable implements Resource {
 				new RelationsComparator());
 		this.relations = new HashMap<>();
 		this.relationsBySource = new HashMap<>();
+		
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
 	 * 
-	 * @param sourceTerm
+	 * @param sourceURI
 	 * @param expansionProbabilityThreshold
 	 * @return
 	 */
-	
-	public List<Relation> getRelations(String sourceTerm,
+
+	public List<Relation> getRelations(String sourceURI,
 			double expansionProbabilityThreshold) {
 		List<Relation> relations = new ArrayList<>();
 		for (Relation relationFromSource : this.relationsBySource
-				.get(sourceTerm)) {
+				.get(sourceURI)) {
 			if (relationFromSource.getRelationhood() >= expansionProbabilityThreshold) {
+				relations.add(relationFromSource);
+			}
+		}
+		return relations;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * 
+	 * @param sourceURI
+	 * @param expansionProbabilityThreshold
+	 * @return
+	 */
+
+	public List<Relation> getRelations(String sourceURI, String type,
+			double expansionProbabilityThreshold) {
+		List<Relation> relations = new ArrayList<>();
+		for (Relation relationFromSource : this.relationsBySource
+				.get(sourceURI)) {
+			if (type.equals(relationFromSource.getType())
+					&& relationFromSource.getRelationhood() >= expansionProbabilityThreshold) {
 				relations.add(relationFromSource);
 			}
 		}
@@ -85,11 +108,11 @@ public class RelationsTable implements Resource {
 
 	// --------------------------------------------------------------------
 
-	public void introduceRelation(String domain, Term source, Term target,
+	public void introduceRelation(String domain, Term sourceTerm, Term targetTerm,
 			String type, String provenanceSentence, double relationhood) {
 
-		String relationURI = Relation.buildURI(source.getAnnotatedTerm()
-				.getWord(), target.getAnnotatedTerm().getWord(), type, domain);
+		String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
+				.getWord(), targetTerm.getAnnotatedTerm().getWord(), type, domain);
 
 		if (this.hasRelation(relationURI)) {
 			// If the relation is already in the Relations Table, we have to
@@ -108,8 +131,8 @@ public class RelationsTable implements Resource {
 			// If the relation is not already stored, we simply add it
 			Relation relation = new Relation();
 			relation.setURI(relationURI);
-			relation.setSource(source.getURI());
-			relation.setTarget(target.getURI());
+			relation.setSource(sourceTerm.getURI());
+			relation.setTarget(targetTerm.getURI());
 
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 
@@ -121,8 +144,9 @@ public class RelationsTable implements Resource {
 				relations = new ArrayList<>();
 				this.relationsBySource.put(relation.getSource(), relations);
 			}
+
 			relations.add(relation);
-			System.out.println("RELATION-----------------> " + relation);
+			
 		}
 	}
 
@@ -153,6 +177,18 @@ public class RelationsTable implements Resource {
 
 	public Collection<Relation> getRelations() {
 		return this.relations.values();
+	}
+
+	// --------------------------------------------------------------------
+
+	public Collection<Relation> getRelations(String type) {
+		List<Relation> relations = new ArrayList<>();
+		for (Relation relation : this.relations.values()) {
+			if (type.equals(relation.getType())) {
+				relations.add(relation);
+			}
+		}
+		return relations;
 	}
 
 	// --------------------------------------------------------------------

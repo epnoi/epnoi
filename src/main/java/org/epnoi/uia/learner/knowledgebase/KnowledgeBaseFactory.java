@@ -10,7 +10,7 @@ import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.Du
 import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 
-public class KnowledgeBaseBuilder {
+public class KnowledgeBaseFactory {
 	private Core core;
 	private WordNetHandler wordnetHandler;
 	private WikidataHandler wikidataHandler;
@@ -83,7 +83,7 @@ public class KnowledgeBaseBuilder {
 				KnowledgeBaseParameters.WIKIDATA_PARAMETERS_PARAMETER,
 				wikidataParameters);
 
-		KnowledgeBaseBuilder knowledgeBaseCreator = new KnowledgeBaseBuilder();
+		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
 			knowledgeBaseCreator.init(core, knowledgeBaseParameters);
 		} catch (EpnoiInitializationException e) {

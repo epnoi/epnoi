@@ -16,8 +16,10 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
 import org.epnoi.uia.learner.relations.RelationsHandler;
+import org.epnoi.uia.learner.relations.RelationsRetriever;
 import org.epnoi.uia.learner.terms.TermVertice;
 import org.epnoi.uia.learner.terms.TermsExtractor;
+import org.epnoi.uia.learner.terms.TermsRetriever;
 import org.epnoi.uia.learner.terms.TermsTable;
 
 public class OntologyLearningWorkflow {
@@ -25,17 +27,19 @@ public class OntologyLearningWorkflow {
 			.getLogger(OntologyLearningWorkflow.class.getName());
 	private OntologyLearningWorkflowParameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
+	private TermsRetriever termsRetriever;
 	private TermsTable termsTable;
 	private RelationsTable relationsTable;
 	private RelationsHandler relationsHandler;
 	private RelationsExtractor relationsTableExtractor;
+	private RelationsRetriever relationsTableRetriever;
 
 	private DomainsGatherer domainsGatherer;
 	private DomainsTable domainsTable;
 
 	private double hypernymRelationsThreshold;
 	private boolean extractTerms;
-
+	private boolean extractRelations;
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
@@ -61,10 +65,17 @@ public class OntologyLearningWorkflow {
 		this.termExtractor.init(core, this.domainsTable,
 				ontologyLearningParameters);
 
+		
+		this.termsRetriever = new TermsRetriever(core);
+		
+		
+		
 		this.relationsTableExtractor = new RelationsExtractor();
 		this.relationsTableExtractor.init(core, this.domainsTable,
 				ontologyLearningParameters);
 
+		this.relationsTableRetriever = new RelationsRetriever(core);
+		
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
@@ -72,11 +83,13 @@ public class OntologyLearningWorkflow {
 	public void execute() {
 		logger.info("Starting the execution of a Ontology Learning Process");
 
+		Domain targetDomain = this.domainsTable.getTargetDomain();
+		
 		if (extractTerms) {
-			
+
 			this.termsTable = this.termExtractor.extract();
 		} else {
-			this.termsTable = this.termExtractor.retrieve();
+			this.termsTable = this.termsRetriever.retrieve(targetDomain);
 		}
 
 		termsTable.show(30);
@@ -85,8 +98,6 @@ public class OntologyLearningWorkflow {
 
 		this.relationsTable = this.relationsTableExtractor
 				.extract(this.termsTable);
-		
-		
 
 		System.out.println("Relations Table> " + this.relationsTable);
 
@@ -104,8 +115,10 @@ public class OntologyLearningWorkflow {
 
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
-						termVerticeToExpand.getTerm().getURI(), hypernymRelationsThreshold)) {
-					Term destinationTerm = this.termsTable.getTerm(relation.getTarget());
+						termVerticeToExpand.getTerm().getURI(),
+						hypernymRelationsThreshold)) {
+					Term destinationTerm = this.termsTable.getTerm(relation
+							.getTarget());
 					TermVertice destinationTermVertice = new TermVertice(
 							destinationTerm);
 					ontologyNoisyGraph.addEdge(termVerticeToExpand,

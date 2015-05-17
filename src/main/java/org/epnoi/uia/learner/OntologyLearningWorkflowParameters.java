@@ -7,11 +7,11 @@ public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 	// Domain Definition
 	// Parameters--------------------------------------------------------------------------------
 
-	public static final String CONSIDERED_DOMAINS = "CONSIDERED_DOMAINS";
+	public static final String CONSIDERED_DOMAINS = "CONSIDERED_DOMAINS"; // List<Domain>
 	// The domains considered in the ontology learning process. It includes the
 	// target domain plus the ones used as a reference.
 
-	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";
+	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";//String (URI of the target domain that must be among the CONSIDERED_DOMAINS
 	// Domain that is the target of the ontology learning process, the learned
 	// ontology represents this domain.
 

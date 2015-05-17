@@ -38,13 +38,14 @@ public class DomainsGatherer {
 	public DomainsTable gather() {
 		logger.info("Gathering the DomainsTable");
 		for (Domain domain : this.consideredDomains) {
+			this.domainsTable.addDomain(domain);
 			logger.info("Gathering the domain " + domain);
 
 			List<String> foundURIs = core.getDomainsHandler().gather(domain);
 			logger.info("Found initially " + foundURIs.size()
 					+ " elements in the domain");
 
-			this.domainsTable.getDomains().put(domain.getURI(), foundURIs);
+			this.domainsTable.addDomainResources(domain.getURI(), foundURIs);
 
 		}
 		this.domainsTable.setTargetDomain(targetDomain);

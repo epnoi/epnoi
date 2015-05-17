@@ -79,7 +79,7 @@ public class RelationsExtractor {
 		RelationsTable relationsTable = new RelationsTable();
 		// The relations finding task is only performed in the target domain,
 		// these are the resources that we should consider
-		for (String domainResourceURI : domainsTable.getDomains().get(
+		for (String domainResourceURI : domainsTable.getDomainResources().get(
 				domainsTable.getTargetDomain())) {
 			logger.info("Indexing the resource " + domainResourceURI);
 			_findRelationsInResource(domainResourceURI);

@@ -93,7 +93,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexDomainResoures(String domain) {
-		List<String> resourcesURIs = this.domainsTable.getDomains().get(domain);
+		List<String> resourcesURIs = this.domainsTable.getDomainResources().get(domain);
 		System.out.println(" resourceURIS"+ resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
@@ -478,27 +478,7 @@ public class TermsExtractor {
 
 	}
 
-	// -----------------------------------------------------------------------------------
-
-	public TermsTable retrieve() {
-		TermsTable termsTable = new TermsTable();
-
-		List<String> foundURIs = this.core
-				.getAnnotationHandler()
-				.getLabeledAs(
-						(String) this.parameters
-								.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN),
-						RDFHelper.TERM_CLASS);
-
-		for (String termURI : foundURIs) {
-			Term term = (Term) this.core.getInformationHandler().get(termURI,
-					RDFHelper.TERM_CLASS);
-			// System.out.println("retrieved term ---> " + term);
-			termsTable.addTerm(term);
-		}
-		return termsTable;
-	}
-
+	
 	// -----------------------------------------------------------------------------------
 
 	public TermsTable extract() {
@@ -519,23 +499,7 @@ public class TermsExtractor {
 		return termsTable;
 	}
 
-	// -----------------------------------------------------------------------------------
-
-	private void removeTerms() {
-		List<String> foundURIs = this.core
-				.getAnnotationHandler()
-				.getLabeledAs(
-						(String) this.parameters
-								.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN),
-						RDFHelper.TERM_CLASS);
-		System.out.println("Found " + foundURIs.size() + " to get removed ");
-		for (String termURI : foundURIs) {
-			System.out.println("Removing the term " + termURI);
-			this.core.getInformationHandler().remove(termURI,
-					RDFHelper.TERM_CLASS);
-		}
-	}
-
+	
 	// -----------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
