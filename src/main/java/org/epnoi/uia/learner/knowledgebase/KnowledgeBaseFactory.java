@@ -23,13 +23,13 @@ public class KnowledgeBaseFactory {
 		this.wordnetHandler = new WordNetHandler();
 		this.wordnetHandler
 				.init((WordNetHandlerParameters) parameters
-						.getParameterValue(KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER));
+						.getParameterValue(KnowledgeBaseParameters.WORDNET_PARAMETERS));
 
 		WikidataHandlerBuilder wikidataHandlerBuilder = new WikidataHandlerBuilder();
 		wikidataHandlerBuilder
 				.init(core,
 						(WikidataHandlerParameters) parameters
-								.getParameterValue(KnowledgeBaseParameters.WIKIDATA_PARAMETERS_PARAMETER));
+								.getParameterValue(KnowledgeBaseParameters.WIKIDATA_PARAMETERS));
 
 		this.wikidataHandler = wikidataHandlerBuilder.build();
 	}
@@ -60,27 +60,27 @@ public class KnowledgeBaseFactory {
 				WordNetHandlerParameters.DICTIONARY_LOCATION, filepath);
 
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER,
+				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
 				"http://wikidataView");
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER, true);
+				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.OFFLINE_MODE_PARAMETER, true);
+				WikidataHandlerParameters.OFFLINE_MODE, true);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER,
+				WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.TIMEOUT_PARAMETER, 10);
+				WikidataHandlerParameters.TIMEOUT, 10);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_PATH_PARAMETER,
+				WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER,
+				KnowledgeBaseParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WIKIDATA_PARAMETERS_PARAMETER,
+				KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
 				wikidataParameters);
 
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();

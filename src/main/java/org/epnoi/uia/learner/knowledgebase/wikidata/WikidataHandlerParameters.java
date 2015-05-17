@@ -3,12 +3,12 @@ package org.epnoi.uia.learner.knowledgebase.wikidata;
 import org.epnoi.uia.commons.Parameters;
 
 public class WikidataHandlerParameters extends Parameters<Object> {
-	public static String WIKIDATA_VIEW_URI_PARAMETER = "URI_PARAMETER";
+	public static String WIKIDATA_VIEW_URI = "URI_PARAMETER";
 	
 	/**
 	 * Path where the Wikidata dump can be found
 	 */
-	public static String DUMP_PATH_PARAMETER = "DUMP_PATH_PARAMETER";
+	public static String DUMP_PATH = "DUMP_PATH_PARAMETER";
 
 	/**
 	 * If set to true, all example programs will run in offline mode. Only data
@@ -16,7 +16,7 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	 */
 	// public static final boolean OFFLINE_MODE = true;
 
-	public static final String OFFLINE_MODE_PARAMETER = "OFFLINE_MODE_PARAMETER";
+	public static final String OFFLINE_MODE = "OFFLINE_MODE_PARAMETER";
 
 	public static enum DumpProcessingMode {
 		JSON, CURRENT_REVS, ALL_REVS, CURRENT_REVS_WITH_DAILIES, ALL_REVS_WITH_DAILIES, JUST_ONE_DAILY_FOR_TEST
@@ -26,7 +26,7 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	 * Defines which dumps will be downloaded and processed in all examples.
 	 */
 
-	public static final String DUMP_FILE_MODE_PARAMETER = "DUMP_FILE_MODE_PARAMETER";
+	public static final String DUMP_FILE_MODE = "DUMP_FILE_MODE_PARAMETER";
 	// public static final DumpProcessingMode DUMP_FILE_MODE =
 	// DumpProcessingMode.JSON;
 
@@ -38,11 +38,11 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	 * it allows for final processing and proper closing to happen without
 	 * having to wait for a whole dump file to process.
 	 */
-	public static final String TIMEOUT_PARAMETER = "TIMEOUT_PARAMETER";
+	public static final String TIMEOUT = "TIMEOUT_PARAMETER";
 
-	public static final String RETRIEVE_WIKIDATA_VIEW_PARAMETER = "RETRIEVE_WIKIDATA_VIEW_PARAMETER";
+	public static final String RETRIEVE_WIKIDATA_VIEW = "RETRIEVE_WIKIDATA_VIEW_PARAMETER";
 	
-	public static final String STORE_WIKIDATA_VIEW_PARAMETER = "STORE_WIKIDATA_VIEW_PARAMETER";
+	public static final String STORE_WIKIDATA_VIEW = "STORE_WIKIDATA_VIEW_PARAMETER";
 
 	// public static final int TIMEOUT_SEC = 10;
 

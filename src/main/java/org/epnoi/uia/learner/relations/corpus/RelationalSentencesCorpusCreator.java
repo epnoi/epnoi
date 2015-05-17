@@ -424,7 +424,7 @@ public class RelationalSentencesCorpusCreator {
 				WordNetHandlerParameters.DICTIONARY_LOCATION, filepath);
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS_PARAMETER,
+				KnowledgeBaseParameters.WORDNET_PARAMETERS,
 				wordnetParameters);
 
 		parameters

@@ -38,6 +38,6 @@ public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 	// being extracted in the relation extraction phase in the ontology learning
 	// process
 
-	public static final String RELATIONS_HANDLER_PARAMETER = "RELATIONS_HANDLER_PARAMETER";
+	public static final String RELATIONS_HANDLER_PARAMETERS = "RELATIONS_HANDLER_PARAMETER";
 
 }
