@@ -3,9 +3,11 @@ package org.epnoi.uia.learner.relations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.epnoi.model.Domain;
@@ -27,6 +29,12 @@ import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.terms.TermsRetriever;
 import org.epnoi.uia.learner.terms.TermsTable;
 
+/**
+ * 
+ * @author
+ *
+ */
+
 public class RelationsHandler {
 	private static final Logger logger = Logger
 			.getLogger(RelationsHandler.class.getName());
@@ -40,12 +48,16 @@ public class RelationsHandler {
 	private RelationsHandlerParameters parameters;
 
 	private List<Domain> consideredDomains;
+	private Set<String> retrievedDomains;// Set of the domains which
+											// Realtions/TermsTables have been
+											// successfully retrieved
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public RelationsHandler() {
 		this.relationsTable = new HashMap<>();
 		this.termsTable = new HashMap<>();
+		this.retrievedDomains = new HashSet<>();
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -77,7 +89,10 @@ public class RelationsHandler {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
-
+	/**
+	 * Method that retrieves for each considered domain the RelationsTable and
+	 * TermsTable. If there exists any problem, the domain is
+	 */
 	private void _initDomainsRelationsTables() {
 		TermsRetriever termsRetriever = new TermsRetriever(core);
 		RelationsRetriever relationsRetriever = new RelationsRetriever(core);
@@ -95,63 +110,129 @@ public class RelationsHandler {
 					RelationsTable relationsTable = relationsRetriever
 							.retrieve(domain);
 					this.relationsTable.put(domain.getURI(), relationsTable);
+					this.retrievedDomains.add(domain.getURI());
 				} catch (Exception e) {
-					// TODO: handle exception
+					logger.info("There was a problem retrieving the domain "
+							+ domain.getURI() + " Terms/RelationsTable");
+					e.printStackTrace();
+					this.termsTable.put(domain.getURI(), null);
+					this.relationsTable.put(domain.getURI(), null);
 				}
 			}
 		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
+	/*
+	 * 
+	 */
 
-	public List<Relation> getRelations(String sourceTerm, String domain,
+	public List<Relation> getRelationsBySurfaceForm(
+			String sourceTermSurfaceForm, String domain,
 			double expansionProbabilityThreshold) {
 		List<Relation> relations = new ArrayList<>();
 		// First we retrieve the relations that we can find in the knowledge
 		// base for the source term
-		for (String targetTerm : this.knowledgeBase.getHypernyms(sourceTerm)) {
 
-			relations.add(Relation.buildKnowledgeBaseRelation(sourceTerm,
-					targetTerm, RelationHelper.HYPERNYM));
+		for (String targetTerm : this.knowledgeBase
+				.getHypernyms(sourceTermSurfaceForm)) {
+
+			relations
+					.add(Relation.buildKnowledgeBaseRelation(
+							sourceTermSurfaceForm, targetTerm,
+							RelationHelper.HYPERNYM));
 		}
+		// If we have been able to retrieve the Terms/RelationsTable associated
+		// with the domain, we also return these relations
+		if (this.retrievedDomains.contains(domain)) {
+			Term term = this.termsTable.get(domain).getTermBySurfaceForm(
+					sourceTermSurfaceForm);
 
-		Term term = this.termsTable.get(domain).getTermByWord(sourceTerm);
+			// Afterthat we add those relations for such source term in the
+			// relations table
+			relations.addAll(relationsTable.get(domain).getRelations(
+					term.getURI(), expansionProbabilityThreshold));
+		}
+		return relations;
+	}
 
-		// Afterthat we add those relations for such source term in the
-		// relations table
-		relations.addAll(relationsTable.get(domain).getRelations(term.getURI(),
-				expansionProbabilityThreshold));
+	// ---------------------------------------------------------------------------------------------------------------------
+	/*
+	 * 
+	 */
+
+	public List<Relation> getRelationsByURI(String sourceTermURI,
+			String domain, double expansionProbabilityThreshold) {
+		List<Relation> relations = new ArrayList<>();
+		// First we retrieve the relations that we can find in the knowledge
+		// base for the source term
+		/*
+		 * FIX LATER: Integrate surface forms-> uris and viceversa in knowledge
+		 * base for (String targetTerm :
+		 * this.knowledgeBase.getHypernyms(sourceTermURI)) {
+		 * 
+		 * relations.add(Relation.buildKnowledgeBaseRelation(sourceTermURI,
+		 * targetTerm, RelationHelper.HYPERNYM)); }
+		 */
+		// If we have been able to retrieve the Terms/RelationsTable associated
+		// with the domain, we also return these relations
+		if (this.retrievedDomains.contains(domain)) {
+
+			// Afterthat we add those relations for such source term in the
+			// relations table
+			relations.addAll(relationsTable.get(domain).getRelations(
+					sourceTermURI, expansionProbabilityThreshold));
+		}
 		return relations;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
-	public boolean areRelated(String sourceTerm, String targetTerm,
-			String type, String domain) {
+	/**
+	 * Method used to determine if there exists a relationship of an specific
+	 * type on a given domain. It test also if the relation exists in the
+	 * Knowledge Base, as we consider it domain-independent
+	 * 
+	 * @param sourceTermSurfaceForm
+	 * @param targetTermSurfaceForm
+	 * @param type
+	 * @param domain
+	 * @return
+	 */
+
+	public boolean areRelated(String sourceTermSurfaceForm,
+			String targetTermSurfaceForm, String type, String domain) {
 		boolean found = false;
-		this.knowledgeBase.areRelated(sourceTerm, targetTerm);
-		Term term = this.termsTable.get(domain).getTermByWord(sourceTerm);
-		if (this.relationsTable.get(domain) != null) {
+		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
+				targetTermSurfaceForm)) {
+			return true;
+		} else {
 
-			Iterator<Relation> relationsIt = this.relationsTable.get(domain)
-					.getRelations(term.getURI(), 0).iterator();
-			while (!found && relationsIt.hasNext()) {
+			Term sourceTerm = this.termsTable.get(domain).getTermBySurfaceForm(
+					sourceTermSurfaceForm);
+			Term term = this.termsTable.get(domain).getTermBySurfaceForm(
+					sourceTermSurfaceForm);
+			if (this.relationsTable.get(domain) != null) {
 
-				Relation relation = relationsIt.next();
-				Term termTarget = this.termsTable.get(domain).getTermByWord(
-						targetTerm);
-				found = (termTarget.getAnnotatedTerm().getWord()
-						.equals(targetTerm));
+				Iterator<Relation> relationsIt = this.relationsTable
+						.get(domain).getRelations(term.getURI(), 0).iterator();
+				while (!found && relationsIt.hasNext()) {
 
+					Relation relation = relationsIt.next();
+
+					found = (relation.getTarget().equals(term.getURI()));
+
+				}
 			}
+			return found;
 		}
-		return found;
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		System.out.println("Starting the Ontology Learning Process!");
+		System.out.println("Starting the RelationsHandler test!");
 
 		// Core initialization
 		Core core = CoreUtility.getUIACore();
@@ -195,24 +276,21 @@ public class RelationsHandler {
 				"http://wikidataView");
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.OFFLINE_MODE, true);
+		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
+				true);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.TIMEOUT, 10);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_PATH,
+		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 10);
+		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS,
-				wordnetParameters);
+				KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
 
-		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
-				wikidataParameters);
+		knowledgeBaseParameters
+				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
+						wikidataParameters);
 
 		RelationsHandlerParameters relationsHandlerParameters = new RelationsHandlerParameters();
 
@@ -260,7 +338,7 @@ public class RelationsHandler {
 			e.printStackTrace();
 		}
 
-		System.out.println("Ending the Ontology Learning Process!");
+		System.out.println("Ending the RelationsHandler Process!");
 	}
 
 }

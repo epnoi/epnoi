@@ -11,6 +11,13 @@ import java.util.TreeMap;
 
 import org.epnoi.model.Term;
 
+/**
+ * The Terms Table is used to: 
+ * <li>It stores the Terms ordered by the termhood</li>
+ * <li>It provides look-up functionality for finding terms based on their URI and their surfaces form</li>
+ * @author Rafael Gonzalez-Cabero ({@link https://github.com/fitash})
+ *
+ */
 public class TermsTable {
 	private Map<Term, String> orderedTerms;
 	private Map<String, Term> terms;
@@ -57,7 +64,7 @@ public class TermsTable {
 
 	// --------------------------------------------------------------------
 
-	public Term getTermByWord(String word) {
+	public Term getTermBySurfaceForm(String word) {
 		return this.termsBySurfaceForm.get(word);
 	}
 

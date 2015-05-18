@@ -26,7 +26,7 @@ public class RelationsTable implements Resource {
 				new RelationsComparator());
 		this.relations = new HashMap<>();
 		this.relationsBySource = new HashMap<>();
-		
+
 	}
 
 	// --------------------------------------------------------------------
@@ -108,11 +108,13 @@ public class RelationsTable implements Resource {
 
 	// --------------------------------------------------------------------
 
-	public void introduceRelation(String domain, Term sourceTerm, Term targetTerm,
-			String type, String provenanceSentence, double relationhood) {
+	public void introduceRelation(String domain, Term sourceTerm,
+			Term targetTerm, String type, String provenanceSentence,
+			double relationhood) {
 
 		String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
-				.getWord(), targetTerm.getAnnotatedTerm().getWord(), type, domain);
+				.getWord(), targetTerm.getAnnotatedTerm().getWord(), type,
+				domain);
 
 		if (this.hasRelation(relationURI)) {
 			// If the relation is already in the Relations Table, we have to
@@ -146,7 +148,7 @@ public class RelationsTable implements Resource {
 			}
 
 			relations.add(relation);
-			
+
 		}
 	}
 
