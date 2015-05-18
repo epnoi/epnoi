@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
+package org.epnoi.uia.learner.knowledgebase.wikidata;
 
 import java.io.IOException;
 import java.io.StringReader;

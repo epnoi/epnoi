@@ -11,9 +11,17 @@ import java.util.TreeMap;
 
 import org.epnoi.model.Term;
 
+/**
+ * The Terms Table is used to: 
+ * <li>It stores the Terms ordered by the termhood</li>
+ * <li>It provides look-up functionality for finding terms based on their URI and their surfaces form</li>
+ * @author Rafael Gonzalez-Cabero ({@link https://github.com/fitash})
+ *
+ */
 public class TermsTable {
-	Map<Term, String> orderedTerms;
-	Map<String, Term> terms;
+	private Map<Term, String> orderedTerms;
+	private Map<String, Term> terms;
+	private Map<String, Term> termsBySurfaceForm;
 
 	// --------------------------------------------------------------------
 
@@ -21,6 +29,7 @@ public class TermsTable {
 
 		this.orderedTerms = new TreeMap<Term, String>(new TermsComparator());
 		this.terms = new HashMap<String, Term>();
+		this.terms = new HashMap<>();
 	}
 
 	// --------------------------------------------------------------------
@@ -44,12 +53,19 @@ public class TermsTable {
 	public void addTerm(Term term) {
 		this.orderedTerms.put(term, term.getURI());
 		this.terms.put(term.getURI(), term);
+		this.terms.put(term.getAnnotatedTerm().getWord(), term);
 	}
 
 	// --------------------------------------------------------------------
 
 	public Term getTerm(String URI) {
 		return this.terms.get(URI);
+	}
+
+	// --------------------------------------------------------------------
+
+	public Term getTermBySurfaceForm(String word) {
+		return this.termsBySurfaceForm.get(word);
 	}
 
 	// --------------------------------------------------------------------
@@ -94,7 +110,7 @@ public class TermsTable {
 	public Collection<Term> getTerms() {
 		return this.terms.values();
 	}
-	
+
 	// --------------------------------------------------------------------
 
 	public void show(int numberOfDeatiledTerms) {
@@ -107,17 +123,20 @@ public class TermsTable {
 				.println("=====================================================================================================================");
 
 		System.out.println("# of candidate terms: " + this.size());
-		System.out.println("The top most "+numberOfDeatiledTerms+" probable terms are: ");
+		System.out.println("The top most " + numberOfDeatiledTerms
+				+ " probable terms are: ");
 		int i = 1;
-		for (Term term : this.getMostProbable(30)) {
+		for (Term term : this.getMostProbable(numberOfDeatiledTerms)) {
 			System.out.println("(" + i++ + ")"
 					+ term.getAnnotatedTerm().getWord() + " with termhood "
 					+ term.getAnnotatedTerm().getAnnotation().getTermhood());
-			
-			System.out.println("------------------------------------------------------");
+
+			System.out
+					.println("------------------------------------------------------");
 			System.out.println(term);
-			System.out.println("------------------------------------------------------");
-			
+			System.out
+					.println("------------------------------------------------------");
+
 		}
 
 		System.out
@@ -126,4 +145,3 @@ public class TermsTable {
 				.println("=====================================================================================================================");
 	}
 }
- 

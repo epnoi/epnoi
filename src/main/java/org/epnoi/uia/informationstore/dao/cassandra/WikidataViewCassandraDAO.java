@@ -20,7 +20,7 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;

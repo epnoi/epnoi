@@ -14,23 +14,23 @@ public class DomainsGatherer {
 	private List<Domain> consideredDomains;
 	private String targetDomain;
 
-	private OntologyLearningParameters parameters;
+	private OntologyLearningWorkflowParameters parameters;
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
-	public void init(Core core, OntologyLearningParameters parameters) {
+	public void init(Core core, OntologyLearningWorkflowParameters parameters) {
 		logger.info("Initializing the DomainsGatherer with the following parameters: ");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 
 		this.consideredDomains = (List<Domain>) this.parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
+				.getParameterValue(OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS);
 
 		this.domainsTable = new DomainsTable();
 		this.targetDomain = (String) this.parameters
-				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -38,13 +38,14 @@ public class DomainsGatherer {
 	public DomainsTable gather() {
 		logger.info("Gathering the DomainsTable");
 		for (Domain domain : this.consideredDomains) {
+			this.domainsTable.addDomain(domain);
 			logger.info("Gathering the domain " + domain);
 
 			List<String> foundURIs = core.getDomainsHandler().gather(domain);
 			logger.info("Found initially " + foundURIs.size()
 					+ " elements in the domain");
 
-			this.domainsTable.getDomains().put(domain.getURI(), foundURIs);
+			this.domainsTable.addDomainResources(domain.getURI(), foundURIs);
 
 		}
 		this.domainsTable.setTargetDomain(targetDomain);

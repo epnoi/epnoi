@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.knowledgebase.wordnet;
+package org.epnoi.uia.learner.knowledgebase.wordnet;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerBuilder;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerBuilder;
 
 import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;

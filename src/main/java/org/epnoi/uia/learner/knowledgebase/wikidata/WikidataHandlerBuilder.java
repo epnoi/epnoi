@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.knowledgebase.wikidata;
+package org.epnoi.uia.learner.knowledgebase.wikidata;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.relations.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.tartarus.snowball.ext.EnglishStemmer;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
@@ -65,20 +65,20 @@ public class WikidataHandlerBuilder {
 		this.parameters = parameters;
 
 		this.dumpPath = (String) this.parameters
-				.getParameterValue(WikidataHandlerParameters.DUMP_PATH_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.DUMP_PATH);
 
 		this.offlineMode = (boolean) this.parameters
-				.getParameterValue(WikidataHandlerParameters.OFFLINE_MODE_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.OFFLINE_MODE);
 
 		this.dumpProcessingMode = (DumpProcessingMode) this.parameters
-				.getParameterValue(WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.DUMP_FILE_MODE);
 		this.timeout = (int) this.parameters
-				.getParameterValue(WikidataHandlerParameters.TIMEOUT_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.TIMEOUT);
 
 		this.store = (boolean) this.parameters
-				.getParameterValue(WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.STORE_WIKIDATA_VIEW);
 		this.wikidataViewURI = (String) this.parameters
-				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER);
+				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
 
 		// Controller object for processing dumps:
 		this.dumpProcessingController = new DumpProcessingController(
@@ -218,18 +218,18 @@ public class WikidataHandlerBuilder {
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
 		parameters.setParameter(
-				WikidataHandlerParameters.WIKIDATA_VIEW_URI_PARAMETER,
+				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
 				"http://wikidataView");
 		parameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW_PARAMETER, true);
+				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
 		parameters.setParameter(
-				WikidataHandlerParameters.OFFLINE_MODE_PARAMETER, true);
+				WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(
-				WikidataHandlerParameters.DUMP_FILE_MODE_PARAMETER,
+				WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		parameters.setParameter(WikidataHandlerParameters.TIMEOUT_PARAMETER,
+		parameters.setParameter(WikidataHandlerParameters.TIMEOUT,
 				100);
-		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH_PARAMETER,
+		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
 		WikidataHandlerBuilder wikidataBuilder = new WikidataHandlerBuilder();
