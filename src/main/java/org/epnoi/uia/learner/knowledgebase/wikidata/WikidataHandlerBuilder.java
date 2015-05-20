@@ -46,6 +46,7 @@ public class WikidataHandlerBuilder {
 	private DumpProcessingMode dumpProcessingMode;
 	private int timeout;
 	private boolean store;
+	private boolean retrieve;
 	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
@@ -77,6 +78,10 @@ public class WikidataHandlerBuilder {
 
 		this.store = (boolean) this.parameters
 				.getParameterValue(WikidataHandlerParameters.STORE_WIKIDATA_VIEW);
+
+		this.retrieve = (boolean) this.parameters
+				.getParameterValue(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW);
+
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
 
@@ -134,12 +139,21 @@ public class WikidataHandlerBuilder {
 		logger.info("Building a WikidataHandler with the following parameters: "
 				+ parameters);
 		WikidataView wikidataView = null;
-		processEntitiesFromWikidataDump();
 
 		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
+		if (this.retrieve) {
+			// If the retrieve flag is activated, we get the core of the handler
+			// (the WikidataView) from the UIA
+			logger.info("Retrieving the  WikidataView, since the retrieve flag was activated");
+			wikidataView = (WikidataView) this.core.getInformationHandler()
+					.get(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
 
-		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
-				labelsReverseDictionary, relationsTable);
+		} else {
+			logger.info("Creating a newWikidataView, since the retrieve flag was activated");
+			processEntitiesFromWikidataDump();
+			wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
+					labelsReverseDictionary, relationsTable);
+		}
 
 		if (this.store) {
 			logger.info("Storing the new built WikidataView, since the store flag was activated");
@@ -159,10 +173,7 @@ public class WikidataHandlerBuilder {
 	public WikidataHandler retrieve() {
 		logger.info("Retrieving a WikidataHandler from a WikidataView stored in the UIA");
 		WikidataView wikidataView = null;
-		/*
-		 * wikidataView = (WikidataView) this.core.getInformationHandler().get(
-		 * this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
-		 */
+
 		return new WikidataHandlerImpl(wikidataView);
 
 	}
@@ -217,18 +228,17 @@ public class WikidataHandlerBuilder {
 
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
-		parameters.setParameter(
-				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
+		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
 				"http://wikidataView");
-		parameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
-		parameters.setParameter(
-				WikidataHandlerParameters.OFFLINE_MODE, true);
-		parameters.setParameter(
-				WikidataHandlerParameters.DUMP_FILE_MODE,
+		parameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW,
+				true);
+		
+		parameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW,
+				false);
+		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
+		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		parameters.setParameter(WikidataHandlerParameters.TIMEOUT,
-				100);
+		parameters.setParameter(WikidataHandlerParameters.TIMEOUT, 100);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
@@ -308,21 +318,21 @@ public class WikidataHandlerBuilder {
 			// Firstly we retrieve the IRIs
 			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
 					.get(sourceLabel);
-			// System.out.println("sourceIRIs >>>> " + sourceIRIs);
-			// For each of them we must retrieve
+			if (sourceIRIs != null) {
 
-			for (String sourceIRI : sourceIRIs) {
-				// System.out.println("sourceIRI " + sourceIRI);
-				for (String targetIRI : consideredRelations.get(sourceIRI)) {
-					if (targetIRI != null) {
-						for (String destinationTarget : this.wikidataView
-								.getLabelsReverseDictionary().get(targetIRI)) {
-							targetLabels.add(destinationTarget);
+				for (String sourceIRI : sourceIRIs) {
+					// System.out.println("sourceIRI " + sourceIRI);
+					for (String targetIRI : consideredRelations.get(sourceIRI)) {
+						if (targetIRI != null) {
+							for (String destinationTarget : this.wikidataView
+									.getLabelsReverseDictionary()
+									.get(targetIRI)) {
+								targetLabels.add(destinationTarget);
+							}
 						}
 					}
 				}
 			}
-
 			return targetLabels;
 		}
 

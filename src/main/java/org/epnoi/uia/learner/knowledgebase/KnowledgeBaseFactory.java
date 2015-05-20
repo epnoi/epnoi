@@ -11,32 +11,43 @@ import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 
 public class KnowledgeBaseFactory {
-	private Core core;
+	private Core core; // The UIA core
+	private WikidataHandlerBuilder wikidataHandlerBuilder;
 	private WordNetHandler wordnetHandler;
 	private WikidataHandler wikidataHandler;
+	private KnowledgeBaseParameters parameters;
+	private boolean retrieveWikidataView = true;
 
 	// ------------------------------------------------------------------------------------
 
 	public void init(Core core, KnowledgeBaseParameters parameters)
 			throws EpnoiInitializationException {
+		System.out.println("ENTRA");
 		this.core = core;
+		this.parameters = parameters;
 		this.wordnetHandler = new WordNetHandler();
-		this.wordnetHandler
-				.init((WordNetHandlerParameters) parameters
-						.getParameterValue(KnowledgeBaseParameters.WORDNET_PARAMETERS));
+		this.wordnetHandler.init((WordNetHandlerParameters) parameters
+				.getParameterValue(KnowledgeBaseParameters.WORDNET_PARAMETERS));
 
-		WikidataHandlerBuilder wikidataHandlerBuilder = new WikidataHandlerBuilder();
-		wikidataHandlerBuilder
+		this.wikidataHandlerBuilder = new WikidataHandlerBuilder();
+		this.wikidataHandlerBuilder
 				.init(core,
 						(WikidataHandlerParameters) parameters
 								.getParameterValue(KnowledgeBaseParameters.WIKIDATA_PARAMETERS));
 
-		this.wikidataHandler = wikidataHandlerBuilder.build();
+		if (this.parameters
+				.getParameterValue(KnowledgeBaseParameters.RETRIEVE_WIKIDATA_VIEW) != null) {
+			this.retrieveWikidataView = (boolean) this.parameters
+					.getParameterValue(KnowledgeBaseParameters.RETRIEVE_WIKIDATA_VIEW);
+		}
+
 	}
 
 	// ------------------------------------------------------------------------------------
 
 	public KnowledgeBase build() {
+		System.out.println("---> " + wikidataHandlerBuilder);
+		this.wikidataHandler = wikidataHandlerBuilder.build();
 		KnowledgeBase knowledgeBase = new KnowledgeBase(this.wordnetHandler,
 				this.wikidataHandler);
 
@@ -65,23 +76,22 @@ public class KnowledgeBaseFactory {
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.OFFLINE_MODE, true);
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
+		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
+				true);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.TIMEOUT, 10);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_PATH,
+		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 10);
+		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS,
-				wordnetParameters);
+				KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
 
-		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
-				wikidataParameters);
+		knowledgeBaseParameters
+				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
+						wikidataParameters);
 
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
