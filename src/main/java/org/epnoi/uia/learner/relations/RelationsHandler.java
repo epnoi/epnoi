@@ -130,6 +130,9 @@ public class RelationsHandler {
 	public List<Relation> getRelationsBySurfaceForm(
 			String sourceTermSurfaceForm, String domain,
 			double expansionProbabilityThreshold) {
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm
+				+ ", domain " + domain + "probThreshold "
+				+ expansionProbabilityThreshold);
 		List<Relation> relations = new ArrayList<>();
 		// First we retrieve the relations that we can find in the knowledge
 		// base for the source term
@@ -200,33 +203,39 @@ public class RelationsHandler {
 	 * @return
 	 */
 
-	public boolean areRelated(String sourceTermSurfaceForm,
+	public Double areRelated(String sourceTermSurfaceForm,
 			String targetTermSurfaceForm, String type, String domain) {
-		boolean found = false;
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm+" targetTermSurfaceForm " + targetTermSurfaceForm
+				+ ", type " + type + ", domain " + domain);
+		Double existenceProbability = 0.;
 		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
 				targetTermSurfaceForm)) {
-			return true;
+			existenceProbability = 1.;
 		} else {
-
-			Term sourceTerm = this.termsTable.get(domain).getTermBySurfaceForm(
-					sourceTermSurfaceForm);
-			Term term = this.termsTable.get(domain).getTermBySurfaceForm(
-					sourceTermSurfaceForm);
 			if (this.relationsTable.get(domain) != null) {
 
+				Term sourceTerm = this.termsTable.get(domain)
+						.getTermBySurfaceForm(sourceTermSurfaceForm);
+				Term targetTerm = this.termsTable.get(domain)
+						.getTermBySurfaceForm(targetTermSurfaceForm);
+				boolean found = false;
+
 				Iterator<Relation> relationsIt = this.relationsTable
-						.get(domain).getRelations(term.getURI(), 0).iterator();
+						.get(domain).getRelations(sourceTerm.getURI(), 0)
+						.iterator();
 				while (!found && relationsIt.hasNext()) {
 
 					Relation relation = relationsIt.next();
 
-					found = (relation.getTarget().equals(term.getURI()));
+					if (relation.getTarget().equals(targetTerm.getURI())) {
+						existenceProbability = relation.getRelationhood();
+					}
 
 				}
 			}
-			return found;
-		}
 
+		}
+		return existenceProbability;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -275,7 +284,11 @@ public class RelationsHandler {
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
 				"http://wikidataView");
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
+				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
+		wikidataParameters.setParameter(
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
+		wikidataParameters.setParameter(
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
 				true);
 		wikidataParameters.setParameter(
@@ -338,6 +351,12 @@ public class RelationsHandler {
 			e.printStackTrace();
 		}
 
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("dog", "canine",
+						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("cat", "canine",
+						RelationHelper.HYPERNYM, "http://whatever"));
 		System.out.println("Ending the RelationsHandler Process!");
 	}
 
