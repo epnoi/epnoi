@@ -355,7 +355,11 @@ public class RelationsHandler {
 				+ relationsHandler.areRelated("dog", "canine",
 						RelationHelper.HYPERNYM, "http://whatever"));
 		System.out.println("Are related? "
-				+ relationsHandler.areRelated("cat", "canine",
+				+ relationsHandler.areRelated("cats", "canine",
+						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("The strange EEUU case");
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("EEUU", "country",
 						RelationHelper.HYPERNYM, "http://whatever"));
 		System.out.println("Ending the RelationsHandler Process!");
 	}

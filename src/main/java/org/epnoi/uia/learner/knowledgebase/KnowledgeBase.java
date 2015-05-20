@@ -35,8 +35,15 @@ public class KnowledgeBase {
 	// -----------------------------------------------------------------------------------------------
 
 	public boolean areRelatedInWordNet(String source, String target) {
+	
+
 		String stemmedSource = this.wordNetHandler.stemNoun(source);
+		stemmedSource = (stemmedSource == null) ? stemmedSource = source
+				: stemmedSource;
 		String stemmedTarget = this.wordNetHandler.stemNoun(target);
+		stemmedTarget = (stemmedTarget == null) ? stemmedTarget = source
+				: stemmedTarget;
+		
 		Set<String> sourceHypernyms = this.wordNetHandler
 				.getNounFirstMeaningHypernyms(stemmedSource);
 		return (sourceHypernyms != null && sourceHypernyms
