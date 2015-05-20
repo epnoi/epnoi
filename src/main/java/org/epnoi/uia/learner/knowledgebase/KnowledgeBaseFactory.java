@@ -46,7 +46,7 @@ public class KnowledgeBaseFactory {
 	// ------------------------------------------------------------------------------------
 
 	public KnowledgeBase build() {
-		System.out.println("---> " + wikidataHandlerBuilder);
+		
 		this.wikidataHandler = wikidataHandlerBuilder.build();
 		KnowledgeBase knowledgeBase = new KnowledgeBase(this.wordnetHandler,
 				this.wikidataHandler);

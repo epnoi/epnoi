@@ -130,6 +130,9 @@ public class RelationsHandler {
 	public List<Relation> getRelationsBySurfaceForm(
 			String sourceTermSurfaceForm, String domain,
 			double expansionProbabilityThreshold) {
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm
+				+ ", domain " + domain + "probThreshold "
+				+ expansionProbabilityThreshold);
 		List<Relation> relations = new ArrayList<>();
 		// First we retrieve the relations that we can find in the knowledge
 		// base for the source term
@@ -202,6 +205,8 @@ public class RelationsHandler {
 
 	public Double areRelated(String sourceTermSurfaceForm,
 			String targetTermSurfaceForm, String type, String domain) {
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm+" targetTermSurfaceForm " + targetTermSurfaceForm
+				+ ", type " + type + ", domain " + domain);
 		Double existenceProbability = 0.;
 		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
 				targetTermSurfaceForm)) {
