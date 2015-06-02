@@ -64,7 +64,7 @@ public class WikipediaHarvester {
 	public void init(Core core) throws EpnoiInitializationException {
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.core = core;
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 		pf = new MediaWikiParserFactory();
 		parser = pf.createParser();
 	}

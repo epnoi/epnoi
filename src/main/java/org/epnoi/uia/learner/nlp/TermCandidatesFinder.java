@@ -1,7 +1,5 @@
 package org.epnoi.uia.learner.nlp;
 
-import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
-
 import gate.Annotation;
 import gate.Corpus;
 import gate.Document;
@@ -13,7 +11,12 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
 
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
+
 public class TermCandidatesFinder {
+	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
@@ -44,25 +47,26 @@ public class TermCandidatesFinder {
 				doc = new DocumentImpl();
 			}
 			corpus.remove(0);
-			
-			
+
 		}
-		//System.out.println("doc before delete-----> "+doc.toXml());
-		//Factory.deleteResource(doc);
-		//System.out.println("doc after delete-----> "+doc.toXml());
+		// System.out.println("doc before delete-----> "+doc.toXml());
+		// Factory.deleteResource(doc);
+		// System.out.println("doc after delete-----> "+doc.toXml());
 		return doc;
 
 	}
 
 	// ----------------------------------------------------------------------------------
 
-	public void init() {
+	public void init(Core core) {
+		this.core = core;
 		ControllerCreator controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
+		controllerCreator.init(core);
 		this.controller = controllerCreator.createController();
 
 		try {
-			this.corpus = Factory.newCorpus("Test Data Corpus");
+			this.corpus = Factory.newCorpus("Working Corpus");
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,8 +90,10 @@ public class TermCandidatesFinder {
 		System.out
 				.println("TermCandidatesFinder test================================================================");
 
+		Core core = CoreUtility.getUIACore();
+
 		TermCandidatesFinder app = new TermCandidatesFinder();
-		app.init();
+		app.init(core);
 		Document document = app
 				.findTermCandidates("My  taylor is rich, and my pretty mom is in the big kitchen");
 
@@ -96,12 +102,10 @@ public class TermCandidatesFinder {
 		System.out.println(documentAsString);
 		System.out.println("---");
 		Document document2 = null;
-		
-		Utils.featureMap(
-				gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+
+		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
 				documentAsString,
-				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-				"text/xml");
+				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
 		try {
 			document2 = (Document) Factory
 					.createResource(

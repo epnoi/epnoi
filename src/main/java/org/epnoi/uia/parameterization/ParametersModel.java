@@ -13,6 +13,7 @@ public class ParametersModel {
 	private String port;
 	private String path;
 	// private String scope;
+	private String gatePath;
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
@@ -22,6 +23,8 @@ public class ParametersModel {
 	private RSSHoarderParameters rssHoarder;
 	private RSSHarvesterParameters rssHarvester;
 
+	// ---------------------------------------------------------------------------------
+
 	public ParametersModel() {
 		this.virtuosoInformationStores = new ArrayList<>();
 		this.solrInformationStores = new ArrayList<>();
@@ -29,14 +32,20 @@ public class ParametersModel {
 		this.mapInformationStores = new ArrayList<>();
 	}
 
+	// ---------------------------------------------------------------------------------
+
 	public ArrayList<VirtuosoInformationStoreParameters> getVirtuosoInformationStore() {
 		return virtuosoInformationStores;
 	}
+
+	// ---------------------------------------------------------------------------------
 
 	public void setVirtuosoInformationStore(
 			ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStore) {
 		this.virtuosoInformationStores = virtuosoInformationStore;
 	}
+
+	// ---------------------------------------------------------------------------------
 
 	public void resolveToAbsolutePaths(Class<? extends Object> referenceClass) {
 		/*
@@ -53,6 +62,18 @@ public class ParametersModel {
 		 * 
 		 * }
 		 */
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public String getGatePath() {
+		return this.gatePath;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setGatePath(String gatePath) {
+		this.gatePath=gatePath;
 	}
 
 	// ---------------------------------------------------------------------------------
@@ -122,12 +143,16 @@ public class ParametersModel {
 
 	@Override
 	public String toString() {
-		return "ParametersModel [hostname=" + hostname + ", port=" + port
-				+ ", path=" + path + ", virtuosoInformationStores="
-				+ virtuosoInformationStores + ", solrInformationStores="
-				+ solrInformationStores + ", mapInformationStores="
-				+ mapInformationStores + ", rssHoarder=" + rssHoarder
-				+ ", rssHarvester=" + rssHarvester + "]";
+		return "CoreParametersModel [hostname=" + hostname + ", port=" + port
+				+ ", path=" + path + ", gatePath=" + gatePath
+				+ ", virtuosoInformationStores=" + virtuosoInformationStores
+				+ ", solrInformationStores=" + solrInformationStores
+				+ ", cassandraInformationStores=" + cassandraInformationStores
+				+ ", mapInformationStores=" + mapInformationStores
+				+ ", rssHoarder=" + rssHoarder + ", rssHarvester="
+				+ rssHarvester + "]";
 	}
+
+	// ---------------------------------------------------------------------------------
 
 }

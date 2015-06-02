@@ -32,7 +32,7 @@ public class WikipediaHarvesterResultsReader {
 		this.core = core;
 
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 	}
 

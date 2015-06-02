@@ -71,7 +71,7 @@ public class TestMapDAO extends MapDAO {
 
 		termCandidatesFinder = new TermCandidatesFinder();
 
-		termCandidatesFinder.init();
+		termCandidatesFinder.init(core);
 		String annotatedContentURI = "http://testAnnotated"
 				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
 

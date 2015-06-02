@@ -232,7 +232,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		Core core = CoreUtility.getUIACore();
 		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
-		termCandidatesFinder.init();
+		termCandidatesFinder.init(core);
 
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();

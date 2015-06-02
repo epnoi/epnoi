@@ -16,6 +16,7 @@ public class CoreUtility {
 		long time = System.currentTimeMillis();
 		Core core = new Core();
 		ParametersModel parametersModel = _readParameters();
+		logger.info("Reading the following paramaters for the UIA: "+parametersModel);
 		core.init(parametersModel);
 
 		long afterTime = System.currentTimeMillis();

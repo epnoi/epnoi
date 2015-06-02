@@ -74,7 +74,7 @@ public class Core {
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();
-		
+
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
 		this._initDomainsHandler();
@@ -88,7 +88,7 @@ public class Core {
 	private void _initDomainsHandler() {
 		this.domainsHandler = new DomainsHandler();
 		this.domainsHandler.init(this);
-		
+
 	}
 
 	private void _initEventBus() {
@@ -333,11 +333,16 @@ public class Core {
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initGATE() {
-		String gateHomePath = Core.class.getResource("").getPath() + "/gate";
-		String pluginsPath = gateHomePath + "/plugins";
-		String grammarsPath = Core.class.getResource("").getPath()
-				+ "/grammars/nounphrases";
 
+		String gateHomePath = this.parametersModel.getGatePath();
+		String pluginsPath = gateHomePath + "/plugins";
+		String grammarsPath = gateHomePath + "/grammars/nounphrases";
+
+		/*
+		 * String gateHomePath = Core.class.getResource("").getPath() + "/gate";
+		 * String pluginsPath = gateHomePath + "/plugins"; String grammarsPath =
+		 * Core.class.getResource("").getPath() + "/grammars/nounphrases";
+		 */
 		System.out.println("The gateHomePath is " + gateHomePath);
 		System.out.println("The pluginsPath is " + pluginsPath);
 		System.out.println("The grammarsPath is " + grammarsPath);
@@ -378,4 +383,8 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+
+	public ParametersModel getParameters() {
+		return this.parametersModel;
+	}
 }

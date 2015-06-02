@@ -58,7 +58,7 @@ public class RelationalSentencesCorpusCreator {
 		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 		KnowledgeBaseParameters wordNetParameters = (KnowledgeBaseParameters) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER);
 
