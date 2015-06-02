@@ -23,37 +23,19 @@ public class ControllerCreator {
 	}
 
 	public SerialAnalyserController createController() {
+		// In this piece of code we just initialize the processing resources.
+		// Gate + the associated plugins are initialized in the core
+		// initialization
 		try {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
 																		// time
 			String gateHomePath = this.core.getParameters().getGatePath();
-			String pluginsPath = gateHomePath + "/plugins";
 			String grammarsPath = gateHomePath + "/grammars/nounphrases";
 
-			System.out.println("The gateHomePath is " + gateHomePath);
-			System.out.println("The pluginsPath is " + pluginsPath);
-			System.out.println("The grammarsPath is " + grammarsPath);
-
-			/*
-			 * File gateHomeDirectory = new File(gateHomePath); File pDir = new
-			 * File(pluginsPath);
-			 * 
-			 * Gate.setPluginsHome(pDir);
-			 * 
-			 * Gate.setGateHome(gateHomeDirectory); Gate.setUserConfigFile(new
-			 * File(gateHomeDirectory, "user-gate.xml"));
-			 * 
-			 * Gate.init(); // to prepare the GATE library
-			 * 
-			 * URL anniePlugin = new File(pDir, "ANNIE").toURI().toURL(); //
-			 * specify // plugin // to be // loaded
-			 * Gate.getCreoleRegister().registerDirectories(anniePlugin); //
-			 * finally // register // the // plugin
-			 */
 			SerialAnalyserController sac = (SerialAnalyserController) Factory
 					.createResource("gate.creole.SerialAnalyserController");
 
-			ProcessingResource aEngTokeniser = (ProcessingResource) Factory
+			ProcessingResource englishTokeniser = (ProcessingResource) Factory
 					.createResource("gate.creole.tokeniser.DefaultTokeniser");
 
 			ProcessingResource sentenceSplitter = (ProcessingResource) Factory
@@ -62,11 +44,11 @@ public class ControllerCreator {
 			ProcessingResource POStagger = (ProcessingResource) Factory
 					.createResource("gate.creole.POSTagger");
 
-			/*
-			 * ProcessingResource dependencyParser = (ProcessingResource)
-			 * Factory
-			 * .createResource("gate.stanford.apps.EnglishDependencies");
-			 */
+			System.out.println(Factory
+					.createResource("gate.stanford.apps.EnglishDependencies"));
+
+			ProcessingResource dependencyParser = (ProcessingResource) Factory
+					.createResource("gate.stanford.Parser");
 
 			FeatureMap mainGrammarFeature = Factory.newFeatureMap();
 			mainGrammarFeature.put("grammarURL", new File(grammarsPath
@@ -102,10 +84,10 @@ public class ControllerCreator {
 			 * .createResource("gate.creole.Transducer", columnNameJapeFeature);
 			 */
 
-			sac.add(aEngTokeniser);
+			sac.add(englishTokeniser);
 			sac.add(sentenceSplitter);
 			sac.add(POStagger);
-			// sac.add(dependencyParser);
+			sac.add(dependencyParser);
 			sac.add(mainGrammarTransducer);
 
 			long endLoadResourcesTime = System.currentTimeMillis(); // end time

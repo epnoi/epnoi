@@ -332,20 +332,20 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _initGATE() {
+	/**
+	 * Initializtion of the Gate natural language processing framework and the
+	 * needed Gate plugins
+	 */
 
-		String gateHomePath = this.parametersModel.getGatePath();
+	private void _initGATE() {
+		logger.info("Initializing Gate");
+			String gateHomePath = this.parametersModel.getGatePath();
 		String pluginsPath = gateHomePath + "/plugins";
 		String grammarsPath = gateHomePath + "/grammars/nounphrases";
 
-		/*
-		 * String gateHomePath = Core.class.getResource("").getPath() + "/gate";
-		 * String pluginsPath = gateHomePath + "/plugins"; String grammarsPath =
-		 * Core.class.getResource("").getPath() + "/grammars/nounphrases";
-		 */
-		System.out.println("The gateHomePath is " + gateHomePath);
-		System.out.println("The pluginsPath is " + pluginsPath);
-		System.out.println("The grammarsPath is " + grammarsPath);
+		logger.info("The gateHomePath is set to " + gateHomePath
+				+ ", the pluginsPath is set to " + pluginsPath
+				+ " and finally the grammarsPath is set to " + grammarsPath);
 
 		File gateHomeDirectory = new File(gateHomePath);
 		File pluginsDirectory = new File(pluginsPath);
@@ -362,6 +362,10 @@ public class Core {
 					.toURL();
 
 			Gate.getCreoleRegister().registerDirectories(anniePlugin);
+
+			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
+					"Parser_Stanford").toURI().toURL();
+			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
 
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block

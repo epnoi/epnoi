@@ -24,35 +24,31 @@ public class TermCandidatesFinder {
 	// ----------------------------------------------------------------------------------
 
 	public Document findTermCandidates(String content) {
-		Document doc = null;
+		Document document = null;
 		try {
-			doc = Factory.newDocument(content);
+			document = Factory.newDocument(content);
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (doc.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
+		if (document.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
 
-			this.corpus.add(doc);
+			this.corpus.add(document);
 
-			// controller.setCorpus(
 			try {
 				controller.execute();
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("---------------> " + content);
-				System.out.println("---------------> " + doc.toString());
-				doc = new DocumentImpl();
+
+				document = new DocumentImpl();
 			}
 			corpus.remove(0);
 
 		}
-		// System.out.println("doc before delete-----> "+doc.toXml());
-		// Factory.deleteResource(doc);
-		// System.out.println("doc after delete-----> "+doc.toXml());
-		return doc;
+
+		return document;
 
 	}
 
@@ -73,14 +69,6 @@ public class TermCandidatesFinder {
 		}
 
 		this.controller.setCorpus(this.corpus);
-		/*
-		 * CorpusCreator corpusCreator = new CorpusCreator();
-		 * 
-		 * String gateHomePath = TermCandidatesFinder.class.getResource("")
-		 * .getPath() + "/gate"; String documentsPath =
-		 * TermCandidatesFinder.class.getResource("") .getPath() + "/documents";
-		 * String resultsPath = gateHomePath + "/results";
-		 */
 	}
 
 	// ----------------------------------------------------------------------------------
@@ -92,9 +80,9 @@ public class TermCandidatesFinder {
 
 		Core core = CoreUtility.getUIACore();
 
-		TermCandidatesFinder app = new TermCandidatesFinder();
-		app.init(core);
-		Document document = app
+		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+		termCandidatesFinder.init(core);
+		Document document = termCandidatesFinder
 				.findTermCandidates("My  taylor is rich, and my pretty mom is in the big kitchen");
 
 		String documentAsString = document.toXml();
