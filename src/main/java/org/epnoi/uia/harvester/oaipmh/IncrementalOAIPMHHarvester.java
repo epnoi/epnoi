@@ -61,7 +61,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 	public IncrementalOAIPMHHarvester() {
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 	}
 

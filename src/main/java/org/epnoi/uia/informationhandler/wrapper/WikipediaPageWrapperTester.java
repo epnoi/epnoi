@@ -75,7 +75,7 @@ public class WikipediaPageWrapperTester {
 	public WikipediaPageWrapperTester() {
 		this.core = CoreUtility.getUIACore();
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 	}
 

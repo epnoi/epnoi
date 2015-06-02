@@ -19,10 +19,10 @@ public class CorpusCreator {
 		File folder = new File(folderPath);
 		File[] allFiles = folder.listFiles();
 
-		Corpus corpus =null;
-		
+		Corpus corpus = null;
+
 		try {
-			corpus=Factory.newCorpus("Test Data Corpus");
+			corpus = Factory.newCorpus("Test Data Corpus");
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,8 +40,9 @@ public class CorpusCreator {
 		int countFiles = 0; // keep counting till max cluster size
 		int totalFilesProcessed = 0;
 		for (File f : allFiles) { // for each file
-			System.out.println("Creating the gate document for "+f.getAbsolutePath());
-			URL sourceUrl=null;
+			System.out.println("Creating the gate document for "
+					+ f.getAbsolutePath());
+			URL sourceUrl = null;
 			try {
 				sourceUrl = f.toURI().toURL();
 			} catch (MalformedURLException e) {
@@ -60,16 +61,17 @@ public class CorpusCreator {
 			features.put("createdOn", new Date());
 			i++; // increment i to name each doc and corpus uniquely
 			// create document with specified params, features and unique name
-			Document doc=null;
+			Document doc = null;
 			try {
 				doc = (Document) Factory.createResource(
-						"gate.corpora.DocumentImpl", params, features, f.getName());
+						"gate.corpora.DocumentImpl", params, features,
+						f.getName());
 			} catch (ResourceInstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// add document in the corpus
-			//System.out.println(".................................................> "+doc.getContent().toString());
+			// System.out.println(".................................................> "+doc.getContent().toString());
 			corpus.add(doc);
 		}
 		return corpus;

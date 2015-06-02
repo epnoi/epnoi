@@ -245,7 +245,7 @@ class FilesystemHarvester {
 
 		this.core = core;
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 		this.path = (String) parameters
 				.getParameterValue(FilesystemHarvesterParameters.FILEPATH_PARAMETER);

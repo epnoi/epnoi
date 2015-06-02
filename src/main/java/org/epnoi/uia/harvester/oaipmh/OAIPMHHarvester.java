@@ -74,7 +74,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 	 
 	 public OAIPMHHarvester(){
 		 this.termCandidatesFinder = new TermCandidatesFinder();
-		 this.termCandidatesFinder.init();
+		 this.termCandidatesFinder.init(core);
 		 
 		 
 		 org.w3c.dom.Node testNode = null;
