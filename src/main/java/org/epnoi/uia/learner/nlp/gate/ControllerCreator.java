@@ -28,9 +28,12 @@ public class ControllerCreator {
 		// initialization
 		try {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
+																		// //
 																		// time
+			String grammarsPath = ControllerCreator.class.getResource(
+					"grammars/nounphrases").getPath();
+
 			String gateHomePath = this.core.getParameters().getGatePath();
-			String grammarsPath = gateHomePath + "/grammars/nounphrases";
 
 			SerialAnalyserController sac = (SerialAnalyserController) Factory
 					.createResource("gate.creole.SerialAnalyserController");
@@ -43,9 +46,6 @@ public class ControllerCreator {
 
 			ProcessingResource POStagger = (ProcessingResource) Factory
 					.createResource("gate.creole.POSTagger");
-
-			System.out.println(Factory
-					.createResource("gate.stanford.apps.EnglishDependencies"));
 
 			ProcessingResource dependencyParser = (ProcessingResource) Factory
 					.createResource("gate.stanford.Parser");
@@ -102,10 +102,7 @@ public class ControllerCreator {
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (GateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 }

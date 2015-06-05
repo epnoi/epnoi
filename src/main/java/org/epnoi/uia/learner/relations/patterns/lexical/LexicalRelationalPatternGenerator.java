@@ -12,21 +12,23 @@ import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
 
-public class LexicalRelationalPatternGenerator {
+public class LexicalRelationalPatternGenerator  implements RelationalPatternGenerator{
 	private AnnotationsComparator annotationsComparator;
 
 	public LexicalRelationalPatternGenerator() {
 		this.annotationsComparator = new AnnotationsComparator();
 	}
 
-	public List<LexicalRelationalPattern> generate(
+	public List<RelationalPattern> generate(
 			RelationalSentence relationalSentence) {
 		// LexicalRelationalPattern pattern = new LexicalRelationalPattern();
 		// return pattern;
 
 		// System.out.println("---> "+relationalSentence+"["+relationalSentence.getSource+"+]--->["+target+"]");
-		List<LexicalRelationalPattern> generatedPatterns = new ArrayList<>();
+		List<RelationalPattern> generatedPatterns = new ArrayList<>();
 
 		String serializedAnnotatedSentente = relationalSentence
 				.getAnnotatedSentence();

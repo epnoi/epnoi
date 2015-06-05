@@ -11,6 +11,8 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
 
+import java.util.List;
+
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
@@ -45,11 +47,9 @@ public class TermCandidatesFinder {
 				document = new DocumentImpl();
 			}
 			corpus.remove(0);
-
 		}
 
 		return document;
-
 	}
 
 	// ----------------------------------------------------------------------------------
@@ -82,13 +82,18 @@ public class TermCandidatesFinder {
 
 		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
 		termCandidatesFinder.init(core);
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "My  taylor is rich, and my pretty mom is in the big kitchen");
+		 */
 		Document document = termCandidatesFinder
-				.findTermCandidates("My  taylor is rich, and my pretty mom is in the big kitchen");
-
-		String documentAsString = document.toXml();
-		System.out.println("---");
-		System.out.println(documentAsString);
-		System.out.println("---");
+				.findTermCandidates("Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas");
+		
+		  String documentAsString = document.toXml();
+		 /* 
+		 * System.out.println("---"); System.out.println(documentAsString);
+		 * System.out.println("---");
+		 */
 		Document document2 = null;
 
 		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
@@ -106,8 +111,8 @@ public class TermCandidatesFinder {
 		} catch (ResourceInstantiationException e) {
 			e.printStackTrace();
 		}
-		System.out.println("mmm>  " + document2.getAnnotations());
-		showTerms(document2);
+		 System.out.println("mmm>  " + document2.toXml());
+		showDependencies(document2);
 
 		System.out
 				.println("TermCandidatesFinder test is over!================================================================");
@@ -129,5 +134,33 @@ public class TermCandidatesFinder {
 				e.printStackTrace();
 			}
 		}
+
+	}
+
+	// ----------------------------------------------------------------------------------
+
+	private static void showDependencies(Document document) {
+
+		for (Annotation dependencyAnnotation : document.getAnnotations().get(
+				"Dependency")) {
+			// System.out.println("The rule :>"+annotation.getFeatures().get("rule"));
+
+			List<Integer> ids = (List<Integer>) dependencyAnnotation
+					.getFeatures().get("args");
+			System.out
+					.println("--------------------------------------------------------------------------------------------------------------------------------");
+			System.out.println(dependencyAnnotation.getFeatures().get("kind"));
+
+			for (Integer id : ids) {
+
+				System.out.println(document.getAnnotations().get(id)
+						.getFeatures().get("string"));
+
+			}
+
+			// System.out.println("> "+dependencyAnnotation);
+
+		}
+
 	}
 }
