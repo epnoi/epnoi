@@ -5,15 +5,17 @@ import gate.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.AnnotationsComparator;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
+
+
 
 public class LexicalRelationalPatternGenerator  implements RelationalPatternGenerator{
 	private AnnotationsComparator annotationsComparator;
@@ -220,14 +222,6 @@ public class LexicalRelationalPatternGenerator  implements RelationalPatternGene
 
 	// --------------------------------------------------------------------------------------------------------
 
-	class AnnotationsComparator implements Comparator<Annotation> {
-
-		@Override
-		public int compare(final Annotation annotationA,
-				final Annotation annotationB) {
-			return annotationA.getStartNode().getOffset()
-					.compareTo(annotationB.getStartNode().getOffset());
-		}
-	}
+	
 
 }

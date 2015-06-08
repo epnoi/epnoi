@@ -67,10 +67,10 @@ public class RelationalSentencesCorpusCreator {
 		this.knowledgeBase = knowledgeBaseBuilder.build();
 
 		this.storeResult = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
 
 		this.verbose = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
 
 	}
 
@@ -459,11 +459,11 @@ public class RelationalSentencesCorpusCreator {
 
 		parameters
 				.setParameter(
-						RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER,
+						RelationalSentencesCorpusCreationParameters.STORE,
 						false);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER,
+				RelationalSentencesCorpusCreationParameters.VERBOSE,
 				true);
 
 		try {

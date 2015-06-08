@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.patterns.syntactic;
+package org.epnoi.uia.learner.relations.patterns;
 
 import java.util.logging.Logger;
 
@@ -6,20 +6,15 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpus;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpusCreator;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelBuilder;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
+import org.epnoi.uia.learner.relations.patterns.syntactic.SyntacticRelationalModelCreationParameters;
 
-public class SyntacticRelationalModelCreator {
+public class RelationalPatternsModelCreator {
 	private static final Logger logger = Logger
-			.getLogger(SyntacticRelationalModelCreator.class.getName());
+			.getLogger(RelationalPatternsModelCreator.class.getName());
 	private RelationalPatternsModelCreationParameters parameters;
 	private Core core;
 
@@ -33,6 +28,7 @@ public class SyntacticRelationalModelCreator {
 	MockUpRelationalSentencesCorpusCreator relationSentencesCorpusCreator;
 	private boolean store;
 	private boolean verbose;
+	private boolean test;
 	private String path;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -46,44 +42,63 @@ public class SyntacticRelationalModelCreator {
 		this.parameters = parameters;
 		String relationalSentencesCorpusURI = (String) this.parameters
 				.getParameterValue(SyntacticRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
-		this.patternsCorpusCreator = new RelationalPatternsCorpusCreator();
-		this.patternsCorpusCreator.init(core,
-				new SyntacticRelationalPatternGenerator());
 
-		/*
-		 * FUTURE RelationalSentencesCorpus relationalSentencesCorpus =
-		 * (RelationalSentencesCorpus) this.core
-		 * .getInformationHandler().get(relationalSentencesCorpusURI,
-		 * RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
-		 */
+		this.patternsCorpusCreator = new RelationalPatternsCorpusCreator();
+		RelationalPatternGenerator relationalPatternsGenerator = null;
+		try {
+			relationalPatternsGenerator = RelationalPatternsGeneratorFactory
+					.build(parameters);
+		} catch (EpnoiResourceAccessException exception) {
+
+			throw new EpnoiInitializationException(exception.getMessage());
+		}
+		this.patternsCorpusCreator.init(core, relationalPatternsGenerator);
 
 		this.relationSentencesCorpusCreator = new MockUpRelationalSentencesCorpusCreator();
 
 		try {
-			relationSentencesCorpusCreator.init(core);
+			this.relationSentencesCorpusCreator.init(core);
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);
 		}
 
-		modelBuilder = new SyntacticRelationalPatternsModelBuilder(parameters);
+		try {
+			this.modelBuilder = RelationalPatternsModelBuilderFactory
+					.build(parameters);
+		} catch (EpnoiResourceAccessException e) {
+
+			throw new EpnoiInitializationException(e.getMessage());
+		}
 
 		this.path = (String) parameters
-				.getParameterValue(SyntacticRelationalModelCreationParameters.MODEL_PATH_PARAMETERS);
+				.getParameterValue(RelationalPatternsModelCreationParameters.MODEL_PATH);
 
 		this.store = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
+				.getParameterValue(RelationalPatternsModelCreationParameters.STORE);
 
 		this.verbose = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
+				.getParameterValue(RelationalPatternsModelCreationParameters.VERBOSE);
+
+		if (parameters
+				.getParameterValue(RelationalPatternsModelCreationParameters.TEST) != null) {
+
+			this.test = ((boolean) parameters
+					.getParameterValue(RelationalPatternsModelCreationParameters.TEST));
+		} else {
+			this.test = false;
+		}
 	}
+
+	// ------------------------------------------------------------------------------------------------------------------------
 
 	public void create() {
 
-		_createCorpora();
+		_obtainCorpora();
 		this.model = _createModel();
 		if (this.verbose) {
+			System.out.println(">> "+this.model);
 			this.model.show();
 		}
 		if (this.store) {
@@ -92,8 +107,8 @@ public class SyntacticRelationalModelCreator {
 
 		}
 	}
-	
-	//------------------------------------------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------------------------------------------
 
 	private void _storeModel() {
 		logger.info("Storing the model at " + path);
@@ -108,13 +123,18 @@ public class SyntacticRelationalModelCreator {
 		}
 
 	}
-	
-	//------------------------------------------------------------------------------------------------------------------------
 
-	private void _createCorpora() {
-		this.relationalSentencesCorpus = relationSentencesCorpusCreator
-				.createTestCorpus();
+	// ------------------------------------------------------------------------------------------------------------------------
 
+	private void _obtainCorpora() {
+		logger.info("Obtaining the RelationalPatternsCorspus");
+
+		if (this.test) {
+			this.relationalSentencesCorpus = relationSentencesCorpusCreator
+					.createTestCorpus();
+		} else {
+			this.relationalSentencesCorpus = _retrieveRelationalSentencesCorpus();
+		}
 		if (relationalSentencesCorpus == null) {
 			logger.severe("The RelationalSentecesCorpus was null, the model cannot be created!");
 		} else {
@@ -128,6 +148,32 @@ public class SyntacticRelationalModelCreator {
 			logger.info("The RelationalPatternsCorpus has "
 					+ patternsCorpus.getPatterns().size() + " patterns");
 		}
+	}
+
+	// ------------------------------------------------------------------------------------------------------------------------
+
+	private RelationalSentencesCorpus _retrieveRelationalSentencesCorpus() {
+
+		RelationalSentencesCorpus relationalSentencesCorpus = (RelationalSentencesCorpus) this.core
+				.getInformationHandler().get(relationalSentencesCorpusURI,
+						RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+
+		if (relationalSentencesCorpus == null) {
+			logger.info("The Relational Sentences Corpus "
+					+ relationalSentencesCorpusURI + "could not be found");
+
+		} else {
+
+			logger.info("The RelationalSencentcesCorpus has "
+					+ relationalSentencesCorpus.getSentences().size()
+					+ " sentences");
+			patternsCorpus = patternsCorpusCreator
+					.buildCorpus(relationalSentencesCorpus);
+
+			logger.info("The RelationalPatternsCorpus has "
+					+ patternsCorpus.getPatterns().size() + " patterns");
+		}
+		return relationalSentencesCorpus;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -152,30 +198,34 @@ public class SyntacticRelationalModelCreator {
 		RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
 		parameters
 				.setParameter(
-						SyntacticRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+						RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
 						"http://drInventorFirstReview/relationalSentencesCorpus");
 		parameters
 				.setParameter(
-						SyntacticRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
+						RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
 						20);
 
-		parameters
-				.setParameter(
-						SyntacticRelationalModelCreationParameters.MODEL_PATH_PARAMETERS,
-						"/JUNK/model.bin");
-
-		parameters
-				.setParameter(
-						RelationalSentencesCorpusCreationParameters.STORE,
-						true);
+		parameters.setParameter(
+				RelationalPatternsModelCreationParameters.MODEL_PATH,
+				"/JUNK/syntacticModel.bin");
+		parameters.setParameter(
+				RelationalPatternsModelCreationParameters.TYPE,
+				PatternsConstants.SYNTACTIC);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE,
+				RelationalPatternsModelCreationParameters.STORE,
 				false);
+
+		parameters.setParameter(
+				RelationalPatternsModelCreationParameters.VERBOSE,
+				true);
+
+		parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
+				true);
 
 		Core core = CoreUtility.getUIACore();
 
-		SyntacticRelationalModelCreator modelCreator = new SyntacticRelationalModelCreator();
+		RelationalPatternsModelCreator modelCreator = new RelationalPatternsModelCreator();
 		try {
 			modelCreator.init(core, parameters);
 		} catch (EpnoiInitializationException e) {
@@ -185,7 +235,7 @@ public class SyntacticRelationalModelCreator {
 
 		modelCreator.create();
 
-		System.out.println("Ending the Syntantic Relational Model creation");
+		System.out.println("Ending the Relational Model creation");
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
