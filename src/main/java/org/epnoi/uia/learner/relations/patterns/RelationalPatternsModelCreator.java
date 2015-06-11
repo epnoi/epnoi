@@ -98,7 +98,7 @@ public class RelationalPatternsModelCreator {
 		_obtainCorpora();
 		this.model = _createModel();
 		if (this.verbose) {
-			System.out.println(">> "+this.model);
+			System.out.println(">> " + this.model);
 			this.model.show();
 		}
 		if (this.store) {
@@ -208,17 +208,14 @@ public class RelationalPatternsModelCreator {
 		parameters.setParameter(
 				RelationalPatternsModelCreationParameters.MODEL_PATH,
 				"/JUNK/syntacticModel.bin");
-		parameters.setParameter(
-				RelationalPatternsModelCreationParameters.TYPE,
+		parameters.setParameter(RelationalPatternsModelCreationParameters.TYPE,
 				PatternsConstants.SYNTACTIC);
 
 		parameters.setParameter(
-				RelationalPatternsModelCreationParameters.STORE,
-				false);
+				RelationalPatternsModelCreationParameters.STORE, false);
 
 		parameters.setParameter(
-				RelationalPatternsModelCreationParameters.VERBOSE,
-				true);
+				RelationalPatternsModelCreationParameters.VERBOSE, true);
 
 		parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
 				true);

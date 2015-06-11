@@ -30,7 +30,7 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsGatherer;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 
 public class TermsExtractor {
 
@@ -117,7 +117,7 @@ public class TermsExtractor {
 				annotatedDocument);
 
 		for (Annotation annotation : annotatedDocument.getAnnotations().get(
-				NLPAnnotationsHelper.TERM_CANDIDATE)) {
+				NLPAnnotationsConstants.TERM_CANDIDATE)) {
 
 			AnnotatedWord<TermMetadata> termCandidate = termCandidateBuilder
 					.buildTermCandidate(annotation);

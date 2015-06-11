@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.learner.nlp.gate.AnnotationsComparator;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
@@ -47,7 +47,7 @@ public class LexicalRelationalPatternGenerator  implements RelationalPatternGene
 		List<Annotation> orderedAnnotations = new ArrayList<>();
 
 		for (Annotation annotation : annotatedSentence.getAnnotations().get(
-				NLPAnnotationsHelper.TOKEN)) {
+				NLPAnnotationsConstants.TOKEN)) {
 			orderedAnnotations.add(annotation);
 
 		}
@@ -141,7 +141,7 @@ public class LexicalRelationalPatternGenerator  implements RelationalPatternGene
 		List<Annotation> orderedAnnotations = new ArrayList<>();
 
 		for (Annotation annotation : document.getAnnotations()
-				.get(NLPAnnotationsHelper.TOKEN)
+				.get(NLPAnnotationsConstants.TOKEN)
 				.get(windowStartOffset, windowEndOffset)) {
 			orderedAnnotations.add(annotation);
 

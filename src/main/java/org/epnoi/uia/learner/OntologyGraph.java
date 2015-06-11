@@ -5,11 +5,8 @@ import org.epnoi.uia.learner.terms.TermVertice;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.DirectedMultigraph;
 
-public class OntologyGraph extends DirectedMultigraph<TermVertice, RelationEdge>{
-
-
-
-	
+public class OntologyGraph extends
+		DirectedMultigraph<TermVertice, RelationEdge> {
 
 	public OntologyGraph() {
 		super(RelationEdge.class);

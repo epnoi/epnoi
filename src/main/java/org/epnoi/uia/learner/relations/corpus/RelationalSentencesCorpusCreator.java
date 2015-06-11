@@ -32,7 +32,7 @@ import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseFactory;
 import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
 import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -250,7 +250,7 @@ public class RelationalSentencesCorpusCreator {
 	public void _searchDocument(Document document) {
 
 		AnnotationSet sentenceAnnotations = document.getAnnotations().get(
-				NLPAnnotationsHelper.SENTENCE);
+				NLPAnnotationsConstants.SENTENCE);
 		DocumentContent sentenceContent = null;
 		AnnotationSet sentencesAnnotations = document.getAnnotations();
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
@@ -292,7 +292,7 @@ public class RelationalSentencesCorpusCreator {
 		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<>();
 
 		for (Annotation termAnnotation : sentenceAnnotationsSet
-				.get(NLPAnnotationsHelper.TERM_CANDIDATE)) {
+				.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 			Long startOffset = termAnnotation.getStartNode().getOffset()
 					- sentenceStartOffset;
 			Long endOffset = termAnnotation.getEndNode().getOffset()

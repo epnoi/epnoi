@@ -4,27 +4,39 @@ import gate.Annotation;
 import gate.Document;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.learner.relations.RelationalSentence;
+import org.epnoi.uia.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
-import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
-import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternNode;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.SimpleGraph;
+
+import scala.collection.mutable.HashMap;
 
 public class SyntacticRelationalPatternGenerator implements
 		RelationalPatternGenerator {
 
 	private Comparator<? super Annotation> annotationsComparator;
 
+	// -----------------------------------------------------------------------------------------------------
+
 	public SyntacticRelationalPatternGenerator() {
 
 	}
+
+	// -----------------------------------------------------------------------------------------------------
 
 	@Override
 	public List<RelationalPattern> generate(RelationalSentence sentence) {
@@ -41,58 +53,40 @@ public class SyntacticRelationalPatternGenerator implements
 		Document annotatedSentence = GateUtils
 				.deserializeGATEDocument(serializedAnnotatedSentente);
 
+		SyntacticPatternGraphBuilder patternGraphBuilder = new SyntacticPatternGraphBuilder();
+
+		Graph<SyntacticPatternGraphVertex, SyntacticPatternGraphEdge> patternGraph = patternGraphBuilder
+				.build(source, target, annotatedSentence);
+
+		System.out.println("-------> " + patternGraph);
+
 		SyntacticRelationalPattern syntacticRelationalPattern = new SyntacticRelationalPattern();
 
-		List<Annotation> orderedAnnotations = new ArrayList<>();
-
-		for (Annotation annotation : annotatedSentence.getAnnotations().get(
-				NLPAnnotationsHelper.TOKEN)) {
-			orderedAnnotations.add(annotation);
-
-		}
-		Collections.sort(orderedAnnotations, this.annotationsComparator);
-
 		/*
-		 * boolean insideWindow = false;
+		 * List<Annotation> orderedAnnotations = new ArrayList<>();
 		 * 
-		 * int position = 0;
+		 * for (Annotation annotation : annotatedSentence.getAnnotations().get(
+		 * NLPAnnotationsConstants.TOKEN)) { orderedAnnotations.add(annotation);
 		 * 
-		 * for (Annotation annotation : orderedAnnotations) {
-		 * 
-		 * LexicalRelationalPatternNode node = new
-		 * LexicalRelationalPatternNode();
-		 * 
-		 * if (annotation.getStartNode().getOffset().equals(source.getStart())
-		 * && annotation.getEndNode().getOffset() .equals(source.getEnd())) {
-		 * 
-		 * insideWindow = !insideWindow;
-		 * node.setOriginialToken(annotation.getFeatures().get("string")
-		 * .toString()); node.setGeneratedToken("<SOURCE>");
-		 * lexicalRelationalPattern.getNodes().add(node);
-		 * 
-		 * } else if (annotation.getStartNode().getOffset()
-		 * .equals(target.getStart()) && annotation.getEndNode().getOffset()
-		 * .equals(target.getEnd())) { // System.out.println("IT WAS TARGET! " +
-		 * // annotation.getFeatures().get("string"));
-		 * node.setOriginialToken(annotation.getFeatures().get("string")
-		 * .toString()); node.setGeneratedToken("<TARGET>"); insideWindow =
-		 * !insideWindow; //System.out.println("TARGET");
-		 * lexicalRelationalPattern.getNodes().add(node); } else if
-		 * (insideWindow) {
-		 * node.setOriginialToken(annotation.getFeatures().get("string")
-		 * .toString()); if (_isAVerb((String)
-		 * annotation.getFeatures().get("category"))) {
-		 * node.setGeneratedToken(annotation.getFeatures()
-		 * .get("string").toString()); } else {
-		 * node.setGeneratedToken(annotation.getFeatures()
-		 * .get("category").toString()); }
-		 * 
-		 * lexicalRelationalPattern.getNodes().add(node); } position++; }
-		 * 
-		 * generatedPatterns.add(lexicalRelationalPattern);
+		 * } Collections.sort(orderedAnnotations, this.annotationsComparator);
 		 */
-		generatedPatterns.add(new SyntacticRelationalPattern());
+		generatedPatterns.add(syntacticRelationalPattern);
 		return generatedPatterns;
 	}
 
+	// -----------------------------------------------------------------------------------------------------
+
+	public static void main(String[] args) throws EpnoiInitializationException {
+		Core core = CoreUtility.getUIACore();
+		SyntacticRelationalPatternGenerator patternGenerator = new SyntacticRelationalPatternGenerator();
+
+		MockUpRelationalSentencesCorpusCreator corpusCreator = new MockUpRelationalSentencesCorpusCreator();
+		corpusCreator.init(core);
+
+		for (RelationalSentence sentence : corpusCreator.createTestCorpus()
+				.getSentences()) {
+			patternGenerator.generate(sentence);
+		}
+
+	}
 }

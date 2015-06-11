@@ -25,7 +25,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
@@ -94,7 +94,7 @@ public class RelationsExtractor {
 		Document annotatedResourceDocument = (Document)annotatedResource.getContent();
 		
 		AnnotationSet sentenceAnnotations = annotatedResourceDocument.getAnnotations()
-				.get(NLPAnnotationsHelper.SENTENCE);
+				.get(NLPAnnotationsConstants.SENTENCE);
 
 		System.out.println("There are " + sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
@@ -132,7 +132,7 @@ public class RelationsExtractor {
 				.get(sentenceStartOffset, sentenceEndOffset);
 		List<Annotation> termAnnotations = new ArrayList<Annotation>();
 		for (Annotation termAnnotation : senteceAnnotationSet
-				.get(NLPAnnotationsHelper.TERM_CANDIDATE)) {
+				.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 			termAnnotations.add(termAnnotation);
 		}
 
