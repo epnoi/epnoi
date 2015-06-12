@@ -11,33 +11,38 @@ import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpus;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpusCreator;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
 
 public class LexicalRelationalModelCreator {
 	private static final Logger logger = Logger
 			.getLogger(LexicalRelationalModelCreator.class.getName());
-	private LexicalRelationalModelCreationParameters parameters;
+	private RelationalPatternsModelCreationParameters parameters;
 	private Core core;
-	private LexicalRelationalPatternsCorpusCreator patternsCorpusCreator;
+	private RelationalPatternsCorpusCreator patternsCorpusCreator;
 	private RelationalPatternsCorpus patternsCorpus;
 	private BigramSoftPatternModelBuilder modelBuilder;
 	private BigramSoftPatternModel model;
 	private boolean store;
 	private boolean verbose;
+	private boolean test;
 	private String path;
 
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
-			LexicalRelationalModelCreationParameters parameters)
+			RelationalPatternsModelCreationParameters parameters)
 			throws EpnoiInitializationException {
 		logger.info("Initializing the LexicalRealationalModelCreator with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 		String relationalSentencesCorpusURI = (String) this.parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
-		this.patternsCorpusCreator = new LexicalRelationalPatternsCorpusCreator();
-		this.patternsCorpusCreator.init(core);
+				.getParameterValue(RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
+		this.patternsCorpusCreator = new RelationalPatternsCorpusCreator();
+		this.patternsCorpusCreator.init(core,
+				new LexicalRelationalPatternGenerator());
 
 		RelationalSentencesCorpus relationalSentencesCorpus = (RelationalSentencesCorpus) this.core
 				.getInformationHandler().get(relationalSentencesCorpusURI,
@@ -63,13 +68,22 @@ public class LexicalRelationalModelCreator {
 		modelBuilder = new BigramSoftPatternModelBuilder(parameters);
 
 		this.path = (String) parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS);
+				.getParameterValue(RelationalPatternsModelCreationParameters.MODEL_PATH);
 
 		this.store = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
 
 		this.verbose = (boolean) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
+
+		if (parameters
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.TEST) != null) {
+
+			this.test = ((boolean) parameters
+					.getParameterValue(RelationalSentencesCorpusCreationParameters.TEST));
+		} else {
+			this.test = false;
+		}
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -96,9 +110,9 @@ public class LexicalRelationalModelCreator {
 			this.model.show();
 		}
 		if (this.store) {
-			logger.info("Storing the model at "+path);
+			logger.info("Storing the model at " + path);
 			try {
-				BigramSoftPatternModelSerializer.serialize(path, model);
+				RelationalPatternsModelSerializer.serialize(path, model);
 
 			} catch (EpnoiResourceAccessException e) {
 				logger.severe("There was a problem trying to serialize the BigramSoftPatternModel at "
@@ -113,27 +127,27 @@ public class LexicalRelationalModelCreator {
 
 	public static void main(String[] args) {
 		System.out.println("Starting the Lexical Relational Model creation");
-		LexicalRelationalModelCreationParameters parameters = new LexicalRelationalModelCreationParameters();
+		RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
 		parameters
 				.setParameter(
-						LexicalRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+						RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
 						"http://drInventorFirstReview/relationalSentencesCorpus");
 		parameters
 				.setParameter(
-						LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
+						RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
 						20);
 
 		parameters.setParameter(
-				LexicalRelationalModelCreationParameters.MODEL_PATH_PARAMETERS,
+				RelationalPatternsModelCreationParameters.MODEL_PATH,
 				"/JUNK/model.bin");
 
 		parameters
 				.setParameter(
-						RelationalSentencesCorpusCreationParameters.STORE_RESULT_PARAMETER,
+						RelationalSentencesCorpusCreationParameters.STORE,
 						true);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE_PARAMETER,
+				RelationalSentencesCorpusCreationParameters.VERBOSE,
 				false);
 
 		Core core = CoreUtility.getUIACore();

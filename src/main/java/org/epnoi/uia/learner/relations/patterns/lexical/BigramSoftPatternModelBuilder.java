@@ -7,14 +7,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-public class BigramSoftPatternModelBuilder {
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelBuilder;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+
+public class BigramSoftPatternModelBuilder implements
+		RelationalPatternsModelBuilder {
 	private static final Logger logger = Logger
 			.getLogger(BigramSoftPatternModelBuilder.class.getName());
 	private HashMap<String, NodeInformation> nodesInformation;
 	private Long[] nodesPositionsCount;
 	private Long nodesCount;
 
-	private LexicalRelationalModelCreationParameters parameters;
+	private RelationalPatternsModelCreationParameters parameters;
 	private int maxPatternLenght;
 
 	private Map<String, Map<String, Double[]>> bigramProbability;
@@ -24,11 +29,11 @@ public class BigramSoftPatternModelBuilder {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public BigramSoftPatternModelBuilder(
-			LexicalRelationalModelCreationParameters parameters) {
+			RelationalPatternsModelCreationParameters parameters) {
 		this.parameters = parameters;
 		this.nodesInformation = new HashMap<>();
 		maxPatternLenght = (Integer) this.parameters
-				.getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+				.getParameterValue(RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
 		this.nodesPositionsCount = new Long[maxPatternLenght];
 		this.nodesCount = 0L;
 		for (int i = 0; i < nodesPositionsCount.length; i++) {
@@ -41,12 +46,16 @@ public class BigramSoftPatternModelBuilder {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
+	@Override
+	public void addPattern(RelationalPattern pattern) {
 
-	public void addPattern(LexicalRelationalPattern pattern) {
-		if (pattern.getLength() < maxPatternLenght) {
-			List<LexicalRelationalPatternNode> nodes = pattern.getNodes();
+		LexicalRelationalPattern lexicalRelationalPattern = (LexicalRelationalPattern) pattern;
+		if (lexicalRelationalPattern.getLength() < maxPatternLenght) {
+			List<LexicalRelationalPatternNode> nodes = lexicalRelationalPattern
+					.getNodes();
 			int position = 0;
-			for (LexicalRelationalPatternNode node : pattern.getNodes()) {
+			for (LexicalRelationalPatternNode node : lexicalRelationalPattern
+					.getNodes()) {
 				NodeInformation nodeInformation = this.nodesInformation
 						.get(node.getGeneratedToken());
 				if (nodeInformation == null) {
@@ -62,7 +71,7 @@ public class BigramSoftPatternModelBuilder {
 				position++;
 			}
 		} else {
-			//System.out.println(pattern + " is leftout since is too large");
+			// System.out.println(pattern + " is leftout since is too large");
 		}
 	}
 
@@ -187,7 +196,6 @@ public class BigramSoftPatternModelBuilder {
 
 	}
 
-
 	// ----------------------------------------------------------------------------------------------------------------
 
 	private void _calculateUnigramProbability(String nodeToken,
@@ -223,7 +231,7 @@ public class BigramSoftPatternModelBuilder {
 					 */
 					Double bigramProbability = ((double) followerCounts[i] / (double) nodeInformation
 							.getPositions()[i]);
-					/* 
+					/*
 					 * System.out
 					 * .println("------------------------------------------:> "
 					 * + bigramProbability);

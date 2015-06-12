@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.relations.patterns.lexical;
+package org.epnoi.uia.learner.relations.patterns;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -6,10 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModel;
 
-public class BigramSoftPatternModelSerializer {
+public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------
-	public static void serialize(String filename, BigramSoftPatternModel model) throws EpnoiResourceAccessException {
+	public static void serialize(String filename, RelationalPatternsModel model) throws EpnoiResourceAccessException {
 		
 		// save the object to file
 		
@@ -31,7 +32,7 @@ public class BigramSoftPatternModelSerializer {
 
 	// ------------------------------------------------------------------------------------
 
-	public static BigramSoftPatternModel deserialize(String filename) throws EpnoiResourceAccessException {
+	public static RelationalPatternsModel deserialize(String filename) throws EpnoiResourceAccessException {
 		BigramSoftPatternModel model = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;

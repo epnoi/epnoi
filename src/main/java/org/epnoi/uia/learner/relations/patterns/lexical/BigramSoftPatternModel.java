@@ -4,13 +4,17 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class BigramSoftPatternModel implements SoftPatternModel {
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+
+public class BigramSoftPatternModel implements RelationalPatternsModel {
 
 	private static final long serialVersionUID = 9103308220708737439L;
 	private static final int MAX_PATTERN_LENGTH = 20;
 	private Map<String, Double[]> unigramProbability;
 	private Map<String, Map<String, Double[]>> bigramProbability;
-	private LexicalRelationalModelCreationParameters parmeters;
+	private RelationalPatternsModelCreationParameters parmeters;
 	// private int maxPatternLength;
 	// private LexicalRelationalModelCreationParameters parameters;
 	private double interpolation_constant = 0.3d; // Set to this value using the
@@ -22,7 +26,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 	// ---------------------------------------------------------------------------------------------------------
 
 	protected BigramSoftPatternModel(
-			LexicalRelationalModelCreationParameters parameters,
+			RelationalPatternsModelCreationParameters parameters,
 			Map<String, Double[]> unigramProbability,
 			Map<String, Map<String, Double[]>> bigramProbability,
 			double interpolationConstant) {
@@ -68,10 +72,11 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 	// ---------------------------------------------------------------------------------------------------------
 
 	@Override
-	public double calculatePatternProbability(
-			LexicalRelationalPattern relationalPattern) {
-	//System.out.println(relationalPattern);
-		if ((relationalPattern.getLength() < 2)||(relationalPattern.getLength()>MAX_PATTERN_LENGTH)) {
+	public double calculatePatternProbability(RelationalPattern pattern) {
+		LexicalRelationalPattern relationalPattern = (LexicalRelationalPattern) pattern;
+		// System.out.println(relationalPattern);
+		if ((relationalPattern.getLength() < 2)
+				|| (relationalPattern.getLength() > MAX_PATTERN_LENGTH)) {
 			return 0d;
 		} else {// Generic case...
 			String pastNodeToken;
@@ -96,7 +101,7 @@ public class BigramSoftPatternModel implements SoftPatternModel {
 			probability = probability / relationalPattern.getLength();
 
 			// And finally brought back to the [0,1] range
-			//System.out.println(Math.exp(probability));
+			// System.out.println(Math.exp(probability));
 			return Math.exp(probability);
 		}
 	}

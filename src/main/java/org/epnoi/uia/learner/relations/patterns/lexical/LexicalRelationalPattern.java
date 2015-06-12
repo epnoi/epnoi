@@ -29,7 +29,7 @@ public class LexicalRelationalPattern implements RelationalPattern {
 
 	// ----------------------------------------------------------------------------------------------------
 
-	public int getLength() {
+	public Integer getLength() {
 		return ((this.nodes == null) ? 0 : this.nodes.size());
 	}
 

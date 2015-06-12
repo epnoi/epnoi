@@ -1,8 +1,8 @@
-package org.epnoi.uia.learner.relations.patterns.lexical;
+package org.epnoi.uia.learner.relations.patterns.syntactic;
 
 import org.epnoi.uia.commons.Parameters;
 
-public class LexicalRelationalModelCreationParameters extends Parameters<Object> {
+public class SyntacticRelationalModelCreationParameters extends Parameters<Object> {
 	public static final String RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER = "RELATIONAL_SENTENCES_CORPUS_URI";
 	public static final String MAX_PATTERN_LENGTH_PARAMETER = "MAX_PATTERN_LENGTH_PARAMETER";
 	public static final String MODEL_PATH_PARAMETERS = "MODEL_PATH_PARAMETER";
@@ -15,7 +15,7 @@ public class LexicalRelationalModelCreationParameters extends Parameters<Object>
 
 	@Override
 	public String toString() {
-		return "LexicalRelationalModelCreationParameters ["
+		return "SyntacticRelationalModelCreationParameters ["
 				+ parameters.toString() + "]";
 	}
 

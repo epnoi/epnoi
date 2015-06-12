@@ -11,9 +11,14 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
 
+import java.util.List;
+
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
+import org.epnoi.uia.learner.relations.patterns.syntactic.SyntacticPatternGraphEdge;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.SimpleGraph;
 
 public class TermCandidatesFinder {
 	private Core core;
@@ -45,11 +50,9 @@ public class TermCandidatesFinder {
 				document = new DocumentImpl();
 			}
 			corpus.remove(0);
-
 		}
 
 		return document;
-
 	}
 
 	// ----------------------------------------------------------------------------------
@@ -82,13 +85,23 @@ public class TermCandidatesFinder {
 
 		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
 		termCandidatesFinder.init(core);
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "My  taylor is rich, and my pretty mom is in the big kitchen");
+		 */
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
+		 * );
+		 */
 		Document document = termCandidatesFinder
-				.findTermCandidates("My  taylor is rich, and my pretty mom is in the big kitchen");
+				.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
 
 		String documentAsString = document.toXml();
-		System.out.println("---");
-		System.out.println(documentAsString);
-		System.out.println("---");
+		/*
+		 * System.out.println("---"); System.out.println(documentAsString);
+		 * System.out.println("---");
+		 */
 		Document document2 = null;
 
 		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
@@ -106,8 +119,8 @@ public class TermCandidatesFinder {
 		} catch (ResourceInstantiationException e) {
 			e.printStackTrace();
 		}
-		System.out.println("mmm>  " + document2.getAnnotations());
-		showTerms(document2);
+		// System.out.println("mmm>  " + document2.toXml());
+		createDependencyGraph(document);
 
 		System.out
 				.println("TermCandidatesFinder test is over!================================================================");
@@ -129,5 +142,81 @@ public class TermCandidatesFinder {
 				e.printStackTrace();
 			}
 		}
+
+	}
+
+	// ----------------------------------------------------------------------------------
+
+	private static void showDependencies(Document document) {
+
+		for (Annotation dependencyAnnotation : document.getAnnotations().get(
+				"Dependency")) {
+			// System.out.println("The rule :>"+annotation.getFeatures().get("rule"));
+
+			List<Integer> ids = (List<Integer>) dependencyAnnotation
+					.getFeatures().get("args");
+			System.out
+					.println("--------------------------------------------------------------------------------------------------------------------------------");
+			System.out.println(dependencyAnnotation.getFeatures().get("kind"));
+
+			for (Integer id : ids) {
+
+				System.out.println(document.getAnnotations().get(id)
+						.getFeatures().get("string"));
+
+			}
+
+			// System.out.println("> "+dependencyAnnotation);
+
+		}
+
+	}
+
+	private static void createDependencyGraph(Document document) {
+
+		Graph<Integer, SyntacticPatternGraphEdge> patternGraph = new SimpleGraph<Integer, SyntacticPatternGraphEdge>(
+				SyntacticPatternGraphEdge.class);
+
+		for (Annotation dependencyAnnotation : document.getAnnotations().get(
+				"Dependency")) {
+			// System.out.println("The rule :>"+annotation.getFeatures().get("rule"));
+
+			List<Integer> ids = (List<Integer>) dependencyAnnotation
+					.getFeatures().get("args");
+			System.out
+					.println("--------------------------------------------------------------------------------------------------------------------------------");
+
+			System.out.println();
+			String kind = (String) dependencyAnnotation.getFeatures().get(
+					"kind");
+
+			// for (Integer id : ids) {
+
+			/*
+			System.out.println("S>"
+					+ document.getAnnotations().get(ids.get(0)).getFeatures()
+							.get("string"));
+			System.out.println("T>"
+					+ document.getAnnotations().get(ids.get(1)).getFeatures()
+							.get("string"));
+*/
+			Integer source = ids.get(0);
+			Integer target = ids.get(1);
+
+			if (source != null && target != null) {
+				patternGraph.addVertex(source);
+				patternGraph.addVertex(target);
+				patternGraph.addEdge(source, target,
+						new SyntacticPatternGraphEdge(kind));
+			} else {
+				System.out.println("Source > " + source + " > " + "Target > "
+						+ target);
+			}
+
+			
+		
+		}
+		System.out.println("--> "+patternGraph.toString());
+
 	}
 }

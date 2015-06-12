@@ -5,28 +5,32 @@ import gate.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.uia.learner.nlp.gate.AnnotationsComparator;
 import org.epnoi.uia.learner.relations.RelationalSentence;
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
 
-public class LexicalRelationalPatternGenerator {
+
+
+public class LexicalRelationalPatternGenerator  implements RelationalPatternGenerator{
 	private AnnotationsComparator annotationsComparator;
 
 	public LexicalRelationalPatternGenerator() {
 		this.annotationsComparator = new AnnotationsComparator();
 	}
 
-	public List<LexicalRelationalPattern> generate(
+	public List<RelationalPattern> generate(
 			RelationalSentence relationalSentence) {
 		// LexicalRelationalPattern pattern = new LexicalRelationalPattern();
 		// return pattern;
 
 		// System.out.println("---> "+relationalSentence+"["+relationalSentence.getSource+"+]--->["+target+"]");
-		List<LexicalRelationalPattern> generatedPatterns = new ArrayList<>();
+		List<RelationalPattern> generatedPatterns = new ArrayList<>();
 
 		String serializedAnnotatedSentente = relationalSentence
 				.getAnnotatedSentence();
@@ -43,7 +47,7 @@ public class LexicalRelationalPatternGenerator {
 		List<Annotation> orderedAnnotations = new ArrayList<>();
 
 		for (Annotation annotation : annotatedSentence.getAnnotations().get(
-				NLPAnnotationsHelper.TOKEN)) {
+				NLPAnnotationsConstants.TOKEN)) {
 			orderedAnnotations.add(annotation);
 
 		}
@@ -137,7 +141,7 @@ public class LexicalRelationalPatternGenerator {
 		List<Annotation> orderedAnnotations = new ArrayList<>();
 
 		for (Annotation annotation : document.getAnnotations()
-				.get(NLPAnnotationsHelper.TOKEN)
+				.get(NLPAnnotationsConstants.TOKEN)
 				.get(windowStartOffset, windowEndOffset)) {
 			orderedAnnotations.add(annotation);
 
@@ -218,14 +222,6 @@ public class LexicalRelationalPatternGenerator {
 
 	// --------------------------------------------------------------------------------------------------------
 
-	class AnnotationsComparator implements Comparator<Annotation> {
-
-		@Override
-		public int compare(final Annotation annotationA,
-				final Annotation annotationB) {
-			return annotationA.getStartNode().getOffset()
-					.compareTo(annotationB.getStartNode().getOffset());
-		}
-	}
+	
 
 }

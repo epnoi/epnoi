@@ -25,11 +25,11 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
-import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModelSerializer;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
-import org.epnoi.uia.learner.relations.patterns.lexical.SoftPatternModel;
 import org.epnoi.uia.learner.terms.TermCandidateBuilder;
 import org.epnoi.uia.learner.terms.TermsTable;
 
@@ -38,7 +38,7 @@ public class RelationsExtractor {
 			.getLogger(RelationsExtractor.class.getName());
 	private static final long MAX_DISTANCE = 20;
 	private Core core;
-	private SoftPatternModel softPatternModel;
+	private RelationalPatternsModel softPatternModel;
 	private Parameters parameters;
 	private DomainsTable domainsTable;
 	private TermsTable termsTable;
@@ -64,7 +64,7 @@ public class RelationsExtractor {
 		this.domainsTable = domainsTable;
 		this.relationsTable = new RelationsTable();
 		try {
-			this.softPatternModel = BigramSoftPatternModelSerializer
+			this.softPatternModel = RelationalPatternsModelSerializer
 					.deserialize(hypernymModelPath);
 		} catch (EpnoiResourceAccessException e) {
 			throw new EpnoiInitializationException(e.getMessage());
@@ -94,7 +94,7 @@ public class RelationsExtractor {
 		Document annotatedResourceDocument = (Document)annotatedResource.getContent();
 		
 		AnnotationSet sentenceAnnotations = annotatedResourceDocument.getAnnotations()
-				.get(NLPAnnotationsHelper.SENTENCE);
+				.get(NLPAnnotationsConstants.SENTENCE);
 
 		System.out.println("There are " + sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
@@ -132,7 +132,7 @@ public class RelationsExtractor {
 				.get(sentenceStartOffset, sentenceEndOffset);
 		List<Annotation> termAnnotations = new ArrayList<Annotation>();
 		for (Annotation termAnnotation : senteceAnnotationSet
-				.get(NLPAnnotationsHelper.TERM_CANDIDATE)) {
+				.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 			termAnnotations.add(termAnnotation);
 		}
 
