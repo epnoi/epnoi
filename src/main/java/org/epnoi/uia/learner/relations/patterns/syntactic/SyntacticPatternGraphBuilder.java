@@ -17,25 +17,28 @@ public class SyntacticPatternGraphBuilder {
 
 	private SyntacticPatternGraph patternGraph;
 	private Document annotatedSentence;
-	
-	
-	// -----------------------------------------------------------------------------------------------------
 
-	 	
-	
+	// -----------------------------------------------------------------------------------------------------
 
 	// -----------------------------------------------------------------------------------------------------
 
 	public SyntacticPatternGraph build(OffsetRangeSelector source,
 			OffsetRangeSelector target, Document annotatedSentence) {
-		
+
 		this.annotatedSentence = annotatedSentence;
 
 		// First of all we create the dependency graph for the sentence
+		// Vertex-> The IDs of the annotations in the annotatedSentence
+		// Edges-> The kind of grammatical dependency
 		Graph<Integer, SyntacticPatternGraphEdge> dependencyGraph = createDependencyGraph(annotatedSentence);
 
 		this.patternGraph = new SyntacticPatternGraph();
 
+		// Then we generate the ids of the annotations of both the source and
+		// target
+		// Note that both source/target are defined with a offsetrange an they
+		// might
+		// be formed by more than one annotation
 		Set<Integer> sourceIDs = _getTokensIDs(source, annotatedSentence);
 
 		Set<Integer> targetIDs = _getTokensIDs(target, annotatedSentence);
@@ -43,6 +46,10 @@ public class SyntacticPatternGraphBuilder {
 		this.patternGraph.setSourceIDs(sourceIDs);
 		this.patternGraph.setTargetIDs(targetIDs);
 
+		// Once we have determined the IDs of the source/target of the pattern,
+		// we create the graph using the dependecy graph
+		// The vertices that are part of the source/target are colapsed, the
+		// rest are left unaltered.
 		_addVertex(dependencyGraph);
 
 		_addEdges(dependencyGraph);
@@ -55,7 +62,7 @@ public class SyntacticPatternGraphBuilder {
 
 	/**
 	 * Method that adds all the vertex in the dependency graph to the pattern
-	 * graph (except for those that conform the source/target
+	 * graph (except for those that conform the source/target)
 	 * 
 	 * @param dependencyGraph
 	 */
@@ -70,6 +77,9 @@ public class SyntacticPatternGraphBuilder {
 				// id is the same that in the dependency graph
 
 				String label = _generateLabel(vertex, annotatedSentence);
+				if (label == null) {
+					label = "ROOT";
+				}
 				SyntacticPatternGraphVertex newVertex = new SyntacticPatternGraphVertex(
 						vertex, label);
 				this.patternGraph.addVertex(newVertex);
@@ -79,6 +89,14 @@ public class SyntacticPatternGraphBuilder {
 	}
 
 	// -----------------------------------------------------------------------------------------------------
+
+	/**
+	 * Method that adds all the edges of the dependencyGraph except those that
+	 * relate annotations that have been colapsed as part of either the
+	 * source/target
+	 * 
+	 * @param dependencyGraph
+	 */
 
 	private void _addEdges(
 			Graph<Integer, SyntacticPatternGraphEdge> dependencyGraph) {
@@ -90,16 +108,11 @@ public class SyntacticPatternGraphBuilder {
 			// We add all the edges except those that relate
 			if (!_edgeJoinsSourceOrTargetIDs(edgeSourceID, edgeTargetID)) {
 
-				System.out.println("Adding it! "+edgeSourceID+ "  >> "+edgeTargetID);
 				this.patternGraph.addEdge(
 						this.patternGraph.getVetex(edgeSourceID),
 						this.patternGraph.getVetex(edgeTargetID), edge);
 
-			}else{
-				System.out.println("Not adding it :( "+edgeSourceID+ "  >> "+edgeTargetID);
 			}
-				
-
 		}
 	}
 
@@ -113,14 +126,26 @@ public class SyntacticPatternGraphBuilder {
 						.getTargetIDs().contains(edgeTargetID));
 	}
 
+	// -----------------------------------------------------------------------------------------------------
+
 	private String _generateLabel(Integer vertex, Document annotatedSentence) {
-		System.out.println(">> "+annotatedSentence);
+
 		Annotation annotation = annotatedSentence.getAnnotations().get(vertex);
-		String surfaceForm = (String) annotation.getFeatures().get("string");
+		String surfaceForm = (String) annotation.getFeatures().get(
+				NLPAnnotationsConstants.TOKEN_STRING);
 		return surfaceForm;
 	}
 
 	// -----------------------------------------------------------------------------------------------------
+
+	/**
+	 * Method that given a offeset text range, returns the set of IDs of the
+	 * annotations that lay in that range
+	 * 
+	 * @param range
+	 * @param annotatedSentence
+	 * @return
+	 */
 
 	private Set<Integer> _getTokensIDs(OffsetRangeSelector range,
 			Document annotatedSentence) {

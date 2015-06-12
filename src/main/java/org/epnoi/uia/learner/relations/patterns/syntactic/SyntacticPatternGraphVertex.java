@@ -2,7 +2,7 @@ package org.epnoi.uia.learner.relations.patterns.syntactic;
 
 import org.jgrapht.graph.DefaultEdge;
 
-public class SyntacticPatternGraphVertex {
+public class SyntacticPatternGraphVertex implements SyntacticPatternGraphElement{
 	private Integer id;
 	private String label;
 
@@ -42,7 +42,7 @@ public class SyntacticPatternGraphVertex {
 
 	@Override
 	public String toString() {
-		return "SyntacticPatternGraphVertex [id=" + id + ", label=" + label
+		return "V [id=" + id + ", label=" + label
 				+ "]";
 	}
 

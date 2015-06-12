@@ -2,7 +2,7 @@ package org.epnoi.uia.learner.relations.patterns.syntactic;
 
 import org.jgrapht.graph.DefaultEdge;
 
-public class SyntacticPatternGraphEdge extends DefaultEdge {
+public class SyntacticPatternGraphEdge extends DefaultEdge implements SyntacticPatternGraphElement{
 	private String kind;
 
 	// ------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ public class SyntacticPatternGraphEdge extends DefaultEdge {
 
 	@Override
 	public String toString() {
-		return "SyntacticPatternGraphEdge [kind=" + kind + "]";
+		return "E [kind=" + kind + "]";
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------
