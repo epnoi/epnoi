@@ -54,7 +54,7 @@ public class SyntacticRelationalPatternGenerator implements
 		SyntacticPatternGraph patternGraph = patternGraphBuilder.build(source,
 				target, annotatedSentence);
 
-		SyntacticRelationalPattern syntacticRelationalPattern = new SyntacticRelationalPattern();
+		//SyntacticRelationalPattern syntacticRelationalPattern = new SyntacticRelationalPattern();
 
 		DijkstraShortestPath shortestPathGenerator = new DijkstraShortestPath(
 				patternGraph, patternGraph.getSource(),
