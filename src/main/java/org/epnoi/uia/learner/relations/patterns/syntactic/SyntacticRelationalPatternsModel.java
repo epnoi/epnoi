@@ -1,9 +1,22 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SyntacticRelationalPatternsModel implements RelationalPatternsModel {
+import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
+
+public class SyntacticRelationalPatternsModel implements
+		RelationalPatternsModel {
+	private List<SyntacticRelationalPattern> patterns;
+
+	// ------------------------------------------------------------------------------------
+
+	public SyntacticRelationalPatternsModel() {
+		this.patterns = new ArrayList<>();
+	}
+
+	// ------------------------------------------------------------------------------------
 
 	@Override
 	public double calculatePatternProbability(
@@ -12,9 +25,21 @@ public class SyntacticRelationalPatternsModel implements RelationalPatternsModel
 		return 0;
 	}
 
+	// ------------------------------------------------------------------------------------
+
 	@Override
 	public void show() {
+		System.out.println("The model has " + patterns.size() + " patterns");
+	}
 
+	// ------------------------------------------------------------------------------------
+
+	public void addPattern(RelationalPattern relationalPattern) {
+		if (!this.patterns.contains(relationalPattern)) {
+			this.patterns.add((SyntacticRelationalPattern) relationalPattern);
+		} else {
+			System.out.println("The pattern "+relationalPattern+" was already in the model");
+		}
 	}
 
 }

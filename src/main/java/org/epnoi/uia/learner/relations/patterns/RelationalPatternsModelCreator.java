@@ -98,7 +98,6 @@ public class RelationalPatternsModelCreator {
 		_obtainCorpora();
 		this.model = _createModel();
 		if (this.verbose) {
-			System.out.println(">> " + this.model);
 			this.model.show();
 		}
 		if (this.store) {
