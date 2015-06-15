@@ -52,7 +52,7 @@ public class MockUpRelationalSentencesCorpusCreator {
 				annotatedContentB.toXml());
 
 		this.corpus.getSentences().add(relationalSentenceA);
-
+		this.corpus.getSentences().add(relationalSentenceA);
 		this.corpus.getSentences().add(relationalSentenceB);
 		return this.corpus;
 	}

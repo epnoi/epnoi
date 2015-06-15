@@ -144,13 +144,16 @@ public class SyntacticRelationalPattern implements RelationalPattern {
 	// -------------------------------------------------------------------------------------------
 	@Override
 	public boolean equals(Object other) {
+
 		if (other instanceof SyntacticRelationalPattern) {
+			
 			SyntacticRelationalPattern otherPattern = (SyntacticRelationalPattern) other;
 			if (this.getLength() == otherPattern.getLength()) {
 
 				boolean matches = _equalsCore(otherPattern)
 						&& _equalsLeftWindow(otherPattern)
 						&& _equalsRightWindow(otherPattern);
+				
 				return matches;
 			}
 		}
@@ -178,6 +181,7 @@ public class SyntacticRelationalPattern implements RelationalPattern {
 	// -------------------------------------------------------------------------------------------
 
 	private boolean _equalsLeftWindow(SyntacticRelationalPattern otherPattern) {
+
 		if (this.sourcePosition == otherPattern.getSourcePosition()) {
 			boolean matches = true;
 			int i = this.sourcePosition;
@@ -196,16 +200,16 @@ public class SyntacticRelationalPattern implements RelationalPattern {
 	private boolean _equalsCore(SyntacticRelationalPattern otherPattern) {
 		int otherPatternSourcePosition = otherPattern.getSourcePosition();
 
-		int i = 0;
+		int i = this.sourcePosition;
 		boolean matches = true;
 		if (this.getCoreLength() == otherPattern.getCoreLength()) {
-			while (matches && (i < this.corePathLength)) {
+		
+			while (matches && (i <= this.targetPosition)) {
 				i++;
 				matches = matches
-						&& otherPattern
-								.getNode(otherPatternSourcePosition + i)
-								.equals(this.nodes.get(this.sourcePosition + i));
+						&& otherPattern.getNode(i).equals(this.nodes.get(i));
 			}
+			
 			return matches;
 		}
 		return false;

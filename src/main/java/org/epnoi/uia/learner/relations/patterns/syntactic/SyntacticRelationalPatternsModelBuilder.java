@@ -32,7 +32,7 @@ public class SyntacticRelationalPatternsModelBuilder implements
 
 	public RelationalPatternsModel build() {
 		logger.info("Building the SyntacticalRelationalPatternsModel");
-		return new SyntacticRelationalPatternsModel();
+		return this.model;
 	}
 
 }

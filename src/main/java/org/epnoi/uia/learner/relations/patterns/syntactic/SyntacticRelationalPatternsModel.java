@@ -30,15 +30,18 @@ public class SyntacticRelationalPatternsModel implements
 	@Override
 	public void show() {
 		System.out.println("The model has " + patterns.size() + " patterns");
+		System.out.println("-----> " + patterns);
 	}
 
 	// ------------------------------------------------------------------------------------
 
 	public void addPattern(RelationalPattern relationalPattern) {
+		System.out.println(">> " + relationalPattern);
 		if (!this.patterns.contains(relationalPattern)) {
 			this.patterns.add((SyntacticRelationalPattern) relationalPattern);
 		} else {
-			System.out.println("The pattern "+relationalPattern+" was already in the model");
+			System.out.println("----------------------------------------------------------The pattern " + relationalPattern
+					+ " was already in the model");
 		}
 	}
 
