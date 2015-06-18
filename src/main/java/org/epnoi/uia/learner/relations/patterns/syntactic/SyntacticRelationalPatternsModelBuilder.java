@@ -71,7 +71,8 @@ public class SyntacticRelationalPatternsModelBuilder implements
 
 	public void addNegativePattern(RelationalPattern relationalPattern) {
 
-		this.patterns.add((SyntacticRelationalPattern) relationalPattern);
+		this.negativePatterns
+				.add((SyntacticRelationalPattern) relationalPattern);
 	}
 
 	// ------------------------------------------------------------------------------------------------------
@@ -104,6 +105,11 @@ public class SyntacticRelationalPatternsModelBuilder implements
 		List<Vector> patternsFeatures = new ArrayList<>();
 		for (SyntacticRelationalPattern pattern : this.patterns) {
 			patternsFeatures.add(_obtainPatternFeatures(pattern));
+		}
+		List<Vector> negativePatternsFeatures = new ArrayList<>();
+		for (SyntacticRelationalPattern negativePattern : this.patterns) {
+			negativePatternsFeatures
+					.add(_obtainPatternFeatures(negativePattern));
 		}
 
 	}
