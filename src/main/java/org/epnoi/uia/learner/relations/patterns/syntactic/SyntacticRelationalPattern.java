@@ -1,11 +1,9 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.uia.learner.relations.patterns.PatternsConstants;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
-import org.jgrapht.GraphPath;
 
 public class SyntacticRelationalPattern implements RelationalPattern {
 
@@ -44,7 +42,7 @@ public class SyntacticRelationalPattern implements RelationalPattern {
 
 		}
 		this.corePathLength = this.targetPosition - this.sourcePosition;
-		System.out.println(":::::::> " + this.toString());
+		// System.out.println(":::::::> " + this.toString());
 	}
 
 	// -------------------------------------------------------------------------------------------
@@ -137,6 +135,82 @@ public class SyntacticRelationalPattern implements RelationalPattern {
 							.equals(this.nodes.get(this.sourcePosition + i));
 		}
 		return matches;
+	}
+
+	// -------------------------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------------------------
+	@Override
+	public boolean equals(Object other) {
+
+		if (other instanceof SyntacticRelationalPattern) {
+			
+			SyntacticRelationalPattern otherPattern = (SyntacticRelationalPattern) other;
+			if (this.getLength() == otherPattern.getLength()) {
+
+				boolean matches = _equalsCore(otherPattern)
+						&& _equalsLeftWindow(otherPattern)
+						&& _equalsRightWindow(otherPattern);
+				
+				return matches;
+			}
+		}
+		return false;
+	}
+
+	// -------------------------------------------------------------------------------------------
+
+	private boolean _equalsRightWindow(SyntacticRelationalPattern otherPattern) {
+
+		if (this.targetPosition == otherPattern.getTargetPosition()) {
+
+			boolean matches = true;
+			int i = targetPosition;
+			while (matches && i < this.getLength()) {
+				matches = matches
+						&& otherPattern.getNode(i).equals(this.nodes.get(i));
+				i++;
+			}
+			return matches;
+		}
+		return false;
+	}
+
+	// -------------------------------------------------------------------------------------------
+
+	private boolean _equalsLeftWindow(SyntacticRelationalPattern otherPattern) {
+
+		if (this.sourcePosition == otherPattern.getSourcePosition()) {
+			boolean matches = true;
+			int i = this.sourcePosition;
+			while (matches && i > 0) {
+				matches = matches
+						&& otherPattern.getNode(i).equals(this.nodes.get(i));
+				i--;
+			}
+			return matches;
+		}
+		return false;
+	}
+
+	// -------------------------------------------------------------------------------------------
+
+	private boolean _equalsCore(SyntacticRelationalPattern otherPattern) {
+		int otherPatternSourcePosition = otherPattern.getSourcePosition();
+
+		int i = this.sourcePosition;
+		boolean matches = true;
+		if (this.getCoreLength() == otherPattern.getCoreLength()) {
+		
+			while (matches && (i <= this.targetPosition)) {
+				i++;
+				matches = matches
+						&& otherPattern.getNode(i).equals(this.nodes.get(i));
+			}
+			
+			return matches;
+		}
+		return false;
 	}
 
 	// -------------------------------------------------------------------------------------------

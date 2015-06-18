@@ -243,7 +243,11 @@
 			<artifactId>lucene-analyzers-common</artifactId>
 			<version>4.10.4</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-core</artifactId>
+			<version>0.9</version>
+		</dependency>
 
 	</dependencies>
 	<build>

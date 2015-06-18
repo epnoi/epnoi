@@ -2,7 +2,8 @@ package org.epnoi.uia.learner.relations.patterns.syntactic;
 
 import org.jgrapht.graph.DefaultEdge;
 
-public class SyntacticPatternGraphEdge extends DefaultEdge implements SyntacticPatternGraphElement{
+public class SyntacticPatternGraphEdge extends DefaultEdge implements
+		SyntacticPatternGraphElement {
 	private String kind;
 
 	// ------------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,16 @@ public class SyntacticPatternGraphEdge extends DefaultEdge implements SyntacticP
 
 	public void setKind(String kind) {
 		this.kind = kind;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------------------
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof SyntacticPatternGraphEdge) {
+			SyntacticPatternGraphEdge otherEdge = (SyntacticPatternGraphEdge) other;
+			return (this.kind.equals(otherEdge.getKind()));
+		}
+		return false;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------
