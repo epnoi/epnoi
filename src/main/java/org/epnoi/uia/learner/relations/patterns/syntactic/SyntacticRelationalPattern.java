@@ -1,11 +1,9 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.uia.learner.relations.patterns.PatternsConstants;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
-import org.jgrapht.GraphPath;
 
 public class SyntacticRelationalPattern implements RelationalPattern {
 

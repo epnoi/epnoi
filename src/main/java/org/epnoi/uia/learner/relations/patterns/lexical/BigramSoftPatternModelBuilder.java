@@ -77,6 +77,13 @@ public class BigramSoftPatternModelBuilder implements
 
 	// ----------------------------------------------------------------------------------------------------------------
 
+	@Override
+	public void addNegativePattern(RelationalPattern pattern) {
+		logger.info("Negative patterns are ignored since this is a generative model that only uses positive patterns!");
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	private void _updateNodeInformation(NodeInformation nodeInformation,
 			LexicalRelationalPatternNode node, int position,
 			List<LexicalRelationalPatternNode> nodes) {
