@@ -1,7 +1,9 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Paper;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.model.User;
@@ -13,7 +15,8 @@ import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 
@@ -50,10 +53,22 @@ public class CassandraDAOFactory {
 			TermCassandraDAO termDAO = new TermCassandraDAO();
 			termDAO.init();
 			return termDAO;
-		}else if (resource instanceof RelationalSentencesCorpus) {
+		} else if (resource instanceof RelationalSentencesCorpus) {
 			RelationalSentencesCorpusCassandraDAO relationalSentenceDAO = new RelationalSentencesCorpusCassandraDAO();
 			relationalSentenceDAO.init();
 			return relationalSentenceDAO;
+		} else if (resource instanceof Domain) {
+			DomainCassandraDAO domainDAO = new DomainCassandraDAO();
+			domainDAO.init();
+			return domainDAO;
+		} else if (resource instanceof RelationsTable) {
+			RelationsTableCassandraDAO relationsTableDAO = new RelationsTableCassandraDAO();
+			relationsTableDAO.init();
+			return relationsTableDAO;
+		} else if (resource instanceof WikidataView) {
+			WikidataViewCassandraDAO wikidataViewDAO = new WikidataViewCassandraDAO();
+			wikidataViewDAO.init();
+			return wikidataViewDAO;
 		}
 		throw new DAONotFoundException("Not implemented for the resource "
 				+ resource);
@@ -96,13 +111,26 @@ public class CassandraDAOFactory {
 			termDAO.init();
 			return termDAO;
 
-		}else if (typeSelector.equals(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS)) {
+		} else if (typeSelector
+				.equals(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS)) {
 			RelationalSentencesCorpusCassandraDAO relationalSentenceDAO = new RelationalSentencesCorpusCassandraDAO();
 			relationalSentenceDAO.init();
 			return relationalSentenceDAO;
-		}
+		} else if (typeSelector.equals(RDFHelper.DOMAIN_CLASS)) {
+			DomainCassandraDAO domainDAO = new DomainCassandraDAO();
+			domainDAO.init();
+			return domainDAO;
+		} else if (typeSelector.equals(RDFHelper.RELATIONS_TABLE_CLASS)) {
 
-		else {
+			RelationsTableCassandraDAO relationsTableDAO = new RelationsTableCassandraDAO();
+			relationsTableDAO.init();
+			return relationsTableDAO;
+		} else if (typeSelector.equals(RDFHelper.WIKIDATA_VIEW_CLASS)) {
+
+			WikidataViewCassandraDAO wikidataViewDAO = new WikidataViewCassandraDAO();
+			wikidataViewDAO.init();
+			return wikidataViewDAO;
+		} else {
 			throw new DAONotFoundException(
 					"Unknown dao for the resource class " + typeSelector);
 		}

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
+import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationhandler.InformationHandler;
@@ -49,6 +50,7 @@ public class Core {
 
 	private SearchHandler searchHandler = null;
 	private AnnotationHandler annotationHandler = null;
+	private DomainsHandler domainsHandler = null;
 	private EventBus eventBus = null;
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -72,8 +74,10 @@ public class Core {
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();
+
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
+		this._initDomainsHandler();
 		this._hoardersInitialization();
 		this._harvestersInitialization();
 
@@ -81,14 +85,19 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	private void _initDomainsHandler() {
+		this.domainsHandler = new DomainsHandler();
+		this.domainsHandler.init(this);
+
+	}
+
 	private void _initEventBus() {
 
 		logger.info("Initializing the Event Bus");
 		this.eventBus = new EventBus();
 	}
-	
-	// ----------------------------------------------------------------------------------------------------------
 
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initAnnotationsHandler() {
 		this.annotationHandler = new AnnotationHandlerImpl(this);
@@ -159,15 +168,15 @@ public class Core {
 
 		}
 		logger.info("Initializing map information stores");
-		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
+		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel
+				.getMapInformationStore()) {
 			logger.info(mapInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
 					.buildInformationStore(mapInformationStoreParameters,
 							parametersModel);
 
-			this.informationStores.put(
-					mapInformationStoreParameters.getURI(),
+			this.informationStores.put(mapInformationStoreParameters.getURI(),
 					newInformationStore);
 
 			_addInformationStoreByType(newInformationStore,
@@ -176,7 +185,6 @@ public class Core {
 					+ newInformationStore.test());
 
 		}
-
 
 	}
 
@@ -261,14 +269,14 @@ public class Core {
 	public InformationSourcesHandler getInformationSourcesHandler() {
 		return informationSourcesHandler;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public void setInformationSourcesHandler(
 			InformationSourcesHandler informationSourcesHandler) {
 		this.informationSourcesHandler = informationSourcesHandler;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public SearchHandler getSearchHandler() {
@@ -324,15 +332,20 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _initGATE() {
-		String gateHomePath = Core.class.getResource("").getPath() + "/gate";
-		String pluginsPath = gateHomePath + "/plugins";
-		String grammarsPath = Core.class.getResource("").getPath()
-				+ "/grammars/nounphrases";
+	/**
+	 * Initializtion of the Gate natural language processing framework and the
+	 * needed Gate plugins
+	 */
 
-		System.out.println("The gateHomePath is " + gateHomePath);
-		System.out.println("The pluginsPath is " + pluginsPath);
-		System.out.println("The grammarsPath is " + grammarsPath);
+	private void _initGATE() {
+		logger.info("Initializing Gate");
+			String gateHomePath = this.parametersModel.getGatePath();
+		String pluginsPath = gateHomePath + "/plugins";
+		String grammarsPath = gateHomePath + "/grammars/nounphrases";
+
+		logger.info("The gateHomePath is set to " + gateHomePath
+				+ ", the pluginsPath is set to " + pluginsPath
+				+ " and finally the grammarsPath is set to " + grammarsPath);
 
 		File gateHomeDirectory = new File(gateHomePath);
 		File pluginsDirectory = new File(pluginsPath);
@@ -349,13 +362,33 @@ public class Core {
 					.toURL();
 
 			Gate.getCreoleRegister().registerDirectories(anniePlugin);
-			
+
+			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
+					"Parser_Stanford").toURI().toURL();
+			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
+
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
+	// ----------------------------------------------------------------------------------------------------------
+
+	public DomainsHandler getDomainsHandler() {
+		return domainsHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setDomainsHandler(DomainsHandler domainsHandler) {
+		this.domainsHandler = domainsHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public ParametersModel getParameters() {
+		return this.parametersModel;
+	}
 }

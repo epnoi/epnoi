@@ -1,0 +1,53 @@
+#!/bin/sh
+#Global variables 
+EPNOI_HOME="/JUNK/epnoi"
+SCRIPT_DIR=$(pwd)
+TMP_DIR=$EPNOI_HOME/tmp
+VIRTUOSO_DIR="/usr/local/virtuoso-opensource"
+
+
+stop_solr () {
+echo "stopping_solr-----------------------------------------------------------------------"
+echo  "-------> $TMP_DIR/solr.pid"
+SOLR_PID=$(cat $TMP_DIR/solr.pid) 
+kill $SOLR_PID
+
+}
+
+####################################
+stop_cassandra () {
+echo "Stopping cassandra!-----------------------------------------------------------------------"
+echo  "-------> $TMP_DIR/cassandra.pid"
+PID=$(cat $TMP_DIR/cassandra.pid) 
+kill $PID
+}
+
+stop_virtuoso () {
+echo "Stopping Virtuoso!-----------------------------------------------------------------------"
+$VIRTUOSO_DIR/bin/isql 1111 dba dba -K
+}
+
+stop_epnoi () {
+echo "Stopping epnoi!-----------------------------------------------------------------------"
+echo  "-------> $TMP_DIR/epnoi.pid"
+PID=$(cat $TMP_DIR/epnoi.pid) 
+kill $PID
+}
+
+
+clear (){
+rm -rf $TMP_DIR
+}
+
+
+if [ -e $TMP_DIR ]; then
+	echo "The temporal directory is present"
+	stop_solr
+	stop_cassandra
+	stop_virtuoso
+	stop_epnoi
+	clear
+else
+	echo "The temporal directory was not present. Probably epnoi is not running."
+fi
+

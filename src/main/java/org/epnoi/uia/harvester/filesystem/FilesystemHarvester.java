@@ -20,13 +20,12 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -142,14 +141,14 @@ class FilesystemHarvester {
 									SelectorHelper.ANNOTATED_CONTENT_URI,
 									paper.getURI()
 											+ "/"
-											+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+											+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 					annotationSelector.setProperty(SelectorHelper.TYPE,
 							RDFHelper.PAPER_CLASS);
 
 					core.getInformationHandler().setAnnotatedContent(
 							annotationSelector,
-							new Content<>(annotatedContent.toXml(),
-									ContentHelper.CONTENT_TYPE_TEXT_XML));
+							new Content<Object>(annotatedContent,
+									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
 					
 					totalTime = Math.abs(startTme
 							- System.currentTimeMillis());
@@ -246,7 +245,7 @@ class FilesystemHarvester {
 
 		this.core = core;
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 		this.path = (String) parameters
 				.getParameterValue(FilesystemHarvesterParameters.FILEPATH_PARAMETER);
@@ -273,6 +272,11 @@ class FilesystemHarvester {
 		parameters.setParameter(
 				FilesystemHarvesterParameters.VERBOSE_PARAMETER, true);
 
+		parameters.setParameter(
+				FilesystemHarvesterParameters.OVERWRITE_PARAMETER, true);
+
+		
+		
 		parameters.setParameter(
 				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
 				"/epnoi/epnoideployment/firstReviewResources/CGCorpus");

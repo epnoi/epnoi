@@ -64,7 +64,7 @@ public class ItemRDFDAO extends RDFDAO {
 		
 
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
-				queryExpression, this.graph);
+				queryExpression, graph);
 		vur.exec();
 	}
 
@@ -72,21 +72,21 @@ public class ItemRDFDAO extends RDFDAO {
 
 	public void remove(String URI) {
 		ItemRDFDAO itemRDFDAO = new ItemRDFDAO();
-		itemRDFDAO.init(this.parameters);
+		itemRDFDAO.init(parameters);
 
 		String feedURI = URI;
 
 		Query sparql = QueryFactory.create("DESCRIBE <" + feedURI + "> FROM <"
-				+ this.parameters.getGraph() + ">");
+				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
-				sparql, this.graph);
+				sparql, graph);
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
 		// System.out.println("\nDESCRIBE results:");
-		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
-			Triple triple = (Triple) i.next();
-			this.graph.remove(triple);
+		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
+			Triple triple =  i.next();
+			graph.remove(triple);
 		}
 	}
 

@@ -86,9 +86,7 @@ public class TermCassandraDAO extends CassandraDAO {
 				String.valueOf(termMetadata.getTermProbability()),
 				TermCassandraHelper.COLUMN_FAMILLY);
 
-		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(term.getURI(),
-						TermCassandraHelper.COLUMN_FAMILLY);
+		
 	}
 
 	// --------------------------------------------------------------------------------

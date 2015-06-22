@@ -1,5 +1,7 @@
 package org.epnoi.uia.informationstore.dao.map;
 
+import gate.Document;
+
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
@@ -17,19 +19,21 @@ public abstract class MapDAO implements DAO {
 	private static final String ANNOTATED_CONTENT_COLLECTION = "ANNOTATED_CONTENT_COLLECTION";
 	private static final String OTHER_ANNOTATED_CONTENT_COLLECTION = "OTHER_ANNOTATED_CONTENT_COLLECTION";
 
-	protected static ConcurrentNavigableMap<String, String> map;
+	protected static ConcurrentNavigableMap<String, Object> map;
 
-	public abstract Content<String> getAnnotatedContent(Selector selector);
+	public abstract Content<Object> getAnnotatedContent(Selector selector);
 
 	public abstract void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent);
+			Content<Object> annotatedContent);
 
 	public synchronized void init(MapInformationStoreParameters parameters) {
 		if (!initialized) {
+			System.out
+					.println("Initializing-------------------------------------------------------------");
 			databaseFile = new File(parameters.getPath());
-			database = DBMaker.newFileDB(databaseFile).transactionDisable().compressionEnable().closeOnJvmShutdown()
-					.make();
-			
+			database = DBMaker.newFileDB(databaseFile).transactionDisable()
+					.compressionEnable().closeOnJvmShutdown().make();
+
 			map = database.getTreeMap(ANNOTATED_CONTENT_COLLECTION);
 			initialized = true;
 		}

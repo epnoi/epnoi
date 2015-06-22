@@ -1,6 +1,7 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
 import org.epnoi.model.Annotation;
+import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
@@ -15,7 +16,8 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.RelationalSentencesCorpusRDFDAO;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -79,6 +81,14 @@ public class RDFDAOFactory {
 			return dao;
 		} else if (resource instanceof RelationalSentencesCorpus) {
 			RDFDAO dao = new RelationalSentencesCorpusRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof Domain) {
+			RDFDAO dao = new DomainRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+		} else if (resource instanceof WikidataView) {
+			RDFDAO dao = new WikidataViewRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 		}
@@ -154,6 +164,16 @@ public class RDFDAOFactory {
 		} else if (typeSelector
 				.equals(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS)) {
 			RDFDAO dao = new RelationalSentencesCorpusRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+
+		} else if (typeSelector.equals(RDFHelper.DOMAIN_CLASS)) {
+			RDFDAO dao = new DomainRDFDAO();
+			dao.init(this.parameters);
+			return dao;
+
+		} else if (typeSelector.equals(RDFHelper.WIKIDATA_VIEW_CLASS)) {
+			RDFDAO dao = new WikidataViewRDFDAO();
 			dao.init(this.parameters);
 			return dao;
 

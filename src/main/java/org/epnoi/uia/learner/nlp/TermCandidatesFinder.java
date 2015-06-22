@@ -1,7 +1,5 @@
 package org.epnoi.uia.learner.nlp;
 
-import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
-
 import gate.Annotation;
 import gate.Corpus;
 import gate.Document;
@@ -13,7 +11,17 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
 
+import java.util.List;
+
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
+import org.epnoi.uia.learner.relations.patterns.syntactic.SyntacticPatternGraphEdge;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.SimpleGraph;
+
 public class TermCandidatesFinder {
+	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
 	private Corpus corpus = null;
@@ -21,62 +29,49 @@ public class TermCandidatesFinder {
 	// ----------------------------------------------------------------------------------
 
 	public Document findTermCandidates(String content) {
-		Document doc = null;
+		Document document = null;
 		try {
-			doc = Factory.newDocument(content);
+			document = Factory.newDocument(content);
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (doc.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
+		if (document.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
 
-			this.corpus.add(doc);
+			this.corpus.add(document);
 
-			// controller.setCorpus(
 			try {
 				controller.execute();
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("---------------> " + content);
-				System.out.println("---------------> " + doc.toString());
-				doc = new DocumentImpl();
+
+				document = new DocumentImpl();
 			}
 			corpus.remove(0);
-			
-			
 		}
-		//System.out.println("doc before delete-----> "+doc.toXml());
-		//Factory.deleteResource(doc);
-		//System.out.println("doc after delete-----> "+doc.toXml());
-		return doc;
 
+		return document;
 	}
 
 	// ----------------------------------------------------------------------------------
 
-	public void init() {
+	public void init(Core core) {
+		this.core = core;
 		ControllerCreator controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
+		controllerCreator.init(core);
 		this.controller = controllerCreator.createController();
 
 		try {
-			this.corpus = Factory.newCorpus("Test Data Corpus");
+			this.corpus = Factory.newCorpus("Working Corpus");
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		this.controller.setCorpus(this.corpus);
-		/*
-		 * CorpusCreator corpusCreator = new CorpusCreator();
-		 * 
-		 * String gateHomePath = TermCandidatesFinder.class.getResource("")
-		 * .getPath() + "/gate"; String documentsPath =
-		 * TermCandidatesFinder.class.getResource("") .getPath() + "/documents";
-		 * String resultsPath = gateHomePath + "/results";
-		 */
 	}
 
 	// ----------------------------------------------------------------------------------
@@ -86,22 +81,32 @@ public class TermCandidatesFinder {
 		System.out
 				.println("TermCandidatesFinder test================================================================");
 
-		TermCandidatesFinder app = new TermCandidatesFinder();
-		app.init();
-		Document document = app
-				.findTermCandidates("My  taylor is rich, and my pretty mom is in the big kitchen");
+		Core core = CoreUtility.getUIACore();
+
+		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+		termCandidatesFinder.init(core);
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "My  taylor is rich, and my pretty mom is in the big kitchen");
+		 */
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
+		 * );
+		 */
+		Document document = termCandidatesFinder
+				.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
 
 		String documentAsString = document.toXml();
-		System.out.println("---");
-		System.out.println(documentAsString);
-		System.out.println("---");
+		/*
+		 * System.out.println("---"); System.out.println(documentAsString);
+		 * System.out.println("---");
+		 */
 		Document document2 = null;
-		
-		Utils.featureMap(
-				gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+
+		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
 				documentAsString,
-				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-				"text/xml");
+				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
 		try {
 			document2 = (Document) Factory
 					.createResource(
@@ -114,8 +119,8 @@ public class TermCandidatesFinder {
 		} catch (ResourceInstantiationException e) {
 			e.printStackTrace();
 		}
-		System.out.println("mmm>  " + document2.getAnnotations());
-		showTerms(document2);
+		// System.out.println("mmm>  " + document2.toXml());
+		createDependencyGraph(document);
 
 		System.out
 				.println("TermCandidatesFinder test is over!================================================================");
@@ -137,5 +142,81 @@ public class TermCandidatesFinder {
 				e.printStackTrace();
 			}
 		}
+
+	}
+
+	// ----------------------------------------------------------------------------------
+
+	private static void showDependencies(Document document) {
+
+		for (Annotation dependencyAnnotation : document.getAnnotations().get(
+				"Dependency")) {
+			// System.out.println("The rule :>"+annotation.getFeatures().get("rule"));
+
+			List<Integer> ids = (List<Integer>) dependencyAnnotation
+					.getFeatures().get("args");
+			System.out
+					.println("--------------------------------------------------------------------------------------------------------------------------------");
+			System.out.println(dependencyAnnotation.getFeatures().get("kind"));
+
+			for (Integer id : ids) {
+
+				System.out.println(document.getAnnotations().get(id)
+						.getFeatures().get("string"));
+
+			}
+
+			// System.out.println("> "+dependencyAnnotation);
+
+		}
+
+	}
+
+	private static void createDependencyGraph(Document document) {
+
+		Graph<Integer, SyntacticPatternGraphEdge> patternGraph = new SimpleGraph<Integer, SyntacticPatternGraphEdge>(
+				SyntacticPatternGraphEdge.class);
+
+		for (Annotation dependencyAnnotation : document.getAnnotations().get(
+				"Dependency")) {
+			// System.out.println("The rule :>"+annotation.getFeatures().get("rule"));
+
+			List<Integer> ids = (List<Integer>) dependencyAnnotation
+					.getFeatures().get("args");
+			System.out
+					.println("--------------------------------------------------------------------------------------------------------------------------------");
+
+			System.out.println();
+			String kind = (String) dependencyAnnotation.getFeatures().get(
+					"kind");
+
+			// for (Integer id : ids) {
+
+			/*
+			System.out.println("S>"
+					+ document.getAnnotations().get(ids.get(0)).getFeatures()
+							.get("string"));
+			System.out.println("T>"
+					+ document.getAnnotations().get(ids.get(1)).getFeatures()
+							.get("string"));
+*/
+			Integer source = ids.get(0);
+			Integer target = ids.get(1);
+
+			if (source != null && target != null) {
+				patternGraph.addVertex(source);
+				patternGraph.addVertex(target);
+				patternGraph.addEdge(source, target,
+						new SyntacticPatternGraphEdge(kind));
+			} else {
+				System.out.println("Source > " + source + " > " + "Target > "
+						+ target);
+			}
+
+			
+		
+		}
+		System.out.println("--> "+patternGraph.toString());
+
 	}
 }

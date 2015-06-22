@@ -102,7 +102,7 @@ public class FeedWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 	
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -111,7 +111,7 @@ public class FeedWrapper implements Wrapper {
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 		// TODO Auto-generated method stub
 		
 	}

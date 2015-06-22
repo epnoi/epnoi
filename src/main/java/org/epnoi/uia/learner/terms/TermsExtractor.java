@@ -23,13 +23,14 @@ import org.epnoi.uia.commons.Parameters;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsGatherer;
 import org.epnoi.uia.learner.DomainsTable;
-import org.epnoi.uia.learner.OntologyLearningParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsHelper;
+import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 
 public class TermsExtractor {
 
@@ -53,24 +54,23 @@ public class TermsExtractor {
 	private final double domainConsensusWeight = 1 - cValueWeight
 			- domainPertinenceWeight;
 
-	OntologyLearningParameters parameters;
+	OntologyLearningWorkflowParameters parameters;
 
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, DomainsTable domainsTable,
-			OntologyLearningParameters parameters) {
+			OntologyLearningWorkflowParameters parameters) {
 		logger.info("Initializing the TermExtractor with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 
 		this.domainsTable = domainsTable;
-		this.consideredResources = (String) parameters
-				.getParameterValue(OntologyLearningParameters.CONSIDERED_RESOURCES);
+		
 		this.targetDomain = (String) parameters
-				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -93,7 +93,8 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexDomainResoures(String domain) {
-		List<String> resourcesURIs = this.domainsTable.getDomains().get(domain);
+		List<String> resourcesURIs = this.domainsTable.getDomainResources().get(domain);
+		System.out.println(" resourceURIS"+ resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
@@ -111,12 +112,12 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexResource(String domain, String URI) {
-		Document annotatedDocument = retrieveAnnotatedDocument(URI);
+		Document annotatedDocument = (Document)retrieveAnnotatedDocument(URI).getContent();
 		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 				annotatedDocument);
 
 		for (Annotation annotation : annotatedDocument.getAnnotations().get(
-				NLPAnnotationsHelper.TERM_CANDIDATE)) {
+				NLPAnnotationsConstants.TERM_CANDIDATE)) {
 
 			AnnotatedWord<TermMetadata> termCandidate = termCandidateBuilder
 					.buildTermCandidate(annotation);
@@ -138,16 +139,17 @@ public class TermsExtractor {
 
 	// -----------------------------------------------------------------------------------
 
-	private Document retrieveAnnotatedDocument(String URI) {
+	private Content<Object> retrieveAnnotatedDocument(String URI) {
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.URI, URI);
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
-				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 
-		Content<String> annotatedContent = core.getInformationHandler()
+		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
+	/*
 		Document document = null;
 		try {
 			document = (Document) Factory
@@ -155,7 +157,7 @@ public class TermsExtractor {
 							"gate.corpora.DocumentImpl",
 							Utils.featureMap(
 									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									annotatedContent.getContent(),
+									(String)annotatedContent.getContent(),
 									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
 									"text/xml"));
 
@@ -164,7 +166,8 @@ public class TermsExtractor {
 					+ URI);
 			logger.severe(e.getMessage());
 		}
-		return document;
+		*/
+		return annotatedContent;
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -475,27 +478,7 @@ public class TermsExtractor {
 
 	}
 
-	// -----------------------------------------------------------------------------------
-
-	public TermsTable retrieve() {
-		TermsTable termsTable = new TermsTable();
-
-		List<String> foundURIs = this.core
-				.getAnnotationHandler()
-				.getLabeledAs(
-						(String) this.parameters
-								.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN),
-						RDFHelper.TERM_CLASS);
-
-		for (String termURI : foundURIs) {
-			Term term = (Term) this.core.getInformationHandler().get(termURI,
-					RDFHelper.TERM_CLASS);
-			// System.out.println("retrieved term ---> " + term);
-			termsTable.addTerm(term);
-		}
-		return termsTable;
-	}
-
+	
 	// -----------------------------------------------------------------------------------
 
 	public TermsTable extract() {
@@ -516,23 +499,7 @@ public class TermsExtractor {
 		return termsTable;
 	}
 
-	// -----------------------------------------------------------------------------------
-
-	private void removeTerms() {
-		List<String> foundURIs = this.core
-				.getAnnotationHandler()
-				.getLabeledAs(
-						(String) this.parameters
-								.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN),
-						RDFHelper.TERM_CLASS);
-		System.out.println("Found " + foundURIs.size() + " to get removed ");
-		for (String termURI : foundURIs) {
-			System.out.println("Removing the term " + termURI);
-			this.core.getInformationHandler().remove(termURI,
-					RDFHelper.TERM_CLASS);
-		}
-	}
-
+	
 	// -----------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -569,25 +536,22 @@ public class TermsExtractor {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
+		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_DOMAINS,
+				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_RESOURCES,
-				consideredResources);
 
 		Core core = CoreUtility.getUIACore();
 		DomainsGatherer domainGatherer = new DomainsGatherer();

@@ -29,11 +29,9 @@ public class TermWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
-		
-		informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
 	}
@@ -51,30 +49,26 @@ public class TermWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
-		Term cassandraItem = (Term) informationStore.get(selector);
-
-		return cassandraItem;
+		return informationStore.get(selector);
 	}
 
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		
 
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.TERM_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
-	
 
-		InformationStore informationStore = this.core.getInformationStoresByType(
-				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+				.get(0);
 
 		informationStore.remove(selector);
-		
-		informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE)
-				.get(0);
+
+		informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
 
 	}
@@ -91,9 +85,10 @@ public class TermWrapper implements Wrapper {
 
 	@Override
 	public boolean exists(String URI) {
-	
-		InformationStore informationStore = this.core.getInformationStoresByType(
-				InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
+
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.TERM_CLASS);
@@ -103,40 +98,38 @@ public class TermWrapper implements Wrapper {
 	}
 
 	// -------------------------------------------------------------------------------------
-	
+
 	@Override
 	public Content<String> getContent(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	// -------------------------------------------------------------------------------------
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// -------------------------------------------------------------------------------------
-	
-	
 
 }

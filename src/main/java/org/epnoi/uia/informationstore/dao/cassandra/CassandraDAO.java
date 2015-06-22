@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -38,6 +39,8 @@ import org.epnoi.uia.informationstore.Selector;
 public abstract class CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
+
+	public static final int BATCH_SIZE = 100000;
 
 	protected static Cluster cluster = null;
 
@@ -84,7 +87,11 @@ public abstract class CassandraDAO {
 					AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
 					ContentCassandraHelper.COLUMN_FAMILLY,
 					TermCassandraHelper.COLUMN_FAMILLY,
-					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
+					DomainCassandraHelper.COLUMN_FAMILLY,
+					RelationsTableCassandraHelper.COLUMN_FAMILLY,
+					RelationCassandraHelper.COLUMN_FAMILLY,
+					WikidataViewCassandraHelper.COLUMN_FAMILLY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				System.out.println("Intializing columnFamilyDefinitions");
@@ -118,8 +125,8 @@ public abstract class CassandraDAO {
 								.createColumnFamilyDefinition(KEYSPACE,
 										columnFamilyName,
 										ComparatorType.UTF8TYPE);
-						System.out.println("Initializing > "
-								+ columnFamilyDefinition);
+						System.out.println("Initializing" + columnFamilyName
+								+ " > " + columnFamilyDefinition);
 					}
 					CassandraDAO.columnFamilyDefinitions
 							.add(columnFamilyDefinition);
@@ -182,7 +189,8 @@ public abstract class CassandraDAO {
 					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
 							CassandraDAO.keyspace, columnFamilyName,
 							StringSerializer.get(), StringSerializer.get());
-
+					System.out.println("(" + columnFamilyName + ","
+							+ columnFamilyTemplate + ")");
 					CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
 							columnFamilyTemplate);
 				}
@@ -223,6 +231,7 @@ public abstract class CassandraDAO {
 		int trial = 0;
 		boolean success = false;
 		while (!success && trial < maxTrials) {
+
 			ColumnFamilyUpdater<String, String> updater = CassandraDAO.columnFamilyTemplates
 					.get(columnFamilyName).createUpdater(key);
 			updater.setString(name, value);
@@ -235,7 +244,7 @@ public abstract class CassandraDAO {
 				trial++;
 				System.out.println("updateColumn " + e.getMessage());
 				try {
-					Thread.sleep(5000*trial);
+					Thread.sleep(5000 * trial);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -243,7 +252,46 @@ public abstract class CassandraDAO {
 			}
 			updater = null;
 		}
-		
+
+	}
+
+	//
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	protected void updateManyColumns(String key,
+			Map<String, String> pairsOfNameValues, String columnFamilyName) {
+
+		Set<HColumn<String, String>> colums = new HashSet<HColumn<String, String>>();
+		int index = 0;
+		Iterator<Entry<String, String>> pairsOfNameValuesIt = pairsOfNameValues
+				.entrySet().iterator();
+
+		while (pairsOfNameValuesIt.hasNext()) {
+			Entry<String, String> pair = pairsOfNameValuesIt.next();
+
+			colums.add(HFactory.createStringColumn(pair.getKey(),
+					pair.getValue()));
+			index++;
+
+			// When we have collected BATCH_SIZE pairs (name, value), or when we
+			// don't have more to add, we create the mutator and perform the
+			// update
+			if ((index % CassandraDAO.BATCH_SIZE == 0)
+					|| !pairsOfNameValuesIt.hasNext()) {
+				//System.out.println("Creating mutator and adding "+index);
+				Mutator<String> mutator = columnFamilyTemplates.get(
+						columnFamilyName).createMutator();
+
+				for (HColumn<String, String> column : colums) {
+					mutator.addInsertion(key, columnFamilyName, column);
+				}
+				mutator.execute();
+				colums.clear();
+				mutator = null;
+
+			}
+		}
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -320,12 +368,7 @@ public abstract class CassandraDAO {
 		} catch (HectorException e) {
 			System.out.println("Not possible to delete row with key " + key);
 		}
-		/*
-		 * Esto estaba antes, mirar si vale para algo try {
-		 * columnFamilyTemplates.get(columnFamilyName).deleteRow(key); } catch
-		 * (HectorException e) {
-		 * System.out.println("Not possible to delete row with key " + key); }
-		 */
+
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -333,7 +376,9 @@ public abstract class CassandraDAO {
 	/**
 	 * 
 	 * @param key
+	 *            : The URI of the item
 	 * @param columnFamilyKey
+	 *            : The column family name of the item
 	 * @return
 	 */
 	protected ColumnSliceIterator<String, String, String> getAllCollumns(

@@ -21,9 +21,9 @@ public interface Wrapper {
 
 	public void setContent(Selector selector, Content<String> content);
 
-	public Content<String> getAnnotatedContent(Selector selector);
+	public Content<Object> getAnnotatedContent(Selector selector);
 
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent);
+			Content<Object> annotatedContent);
 
 }

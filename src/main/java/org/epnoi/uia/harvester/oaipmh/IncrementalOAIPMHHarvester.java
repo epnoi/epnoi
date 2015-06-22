@@ -61,7 +61,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 	public IncrementalOAIPMHHarvester() {
 		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init();
+		this.termCandidatesFinder.init(core);
 
 	}
 
@@ -173,7 +173,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 				core.getInformationHandler().setAnnotatedContent(
 						annotationSelector,
-						new Content<>(annotatedContent.toXml(),
+						new Content<Object>(annotatedContent.toXml(),
 								ContentHelper.CONTENT_TYPE_TEXT_XML));
 
 				// System.out.println("-----|>"+core.getInformationHandler().getAnnotatedContent(paper.getURI()));

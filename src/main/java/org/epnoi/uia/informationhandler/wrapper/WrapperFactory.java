@@ -3,11 +3,13 @@ package org.epnoi.uia.informationhandler.wrapper;
 import java.util.HashMap;
 
 import org.epnoi.model.Annotation;
+import org.epnoi.model.Domain;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
@@ -22,7 +24,8 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHe
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;
@@ -57,14 +60,21 @@ public class WrapperFactory {
 
 		this.wrappersByClass.put(WikipediaPage.class.getName(),
 				new WikipediaPageWrapper(this.core));
-		
-		this.wrappersByClass.put(Term.class.getName(),
-				new TermWrapper(this.core));
-		
-		
+
+		this.wrappersByClass.put(Term.class.getName(), new TermWrapper(
+				this.core));
+
 		this.wrappersByClass.put(RelationalSentencesCorpus.class.getName(),
 				new RelationalSentencesCorpusWrapper(this.core));
 
+		this.wrappersByClass.put(Domain.class.getName(), new DomainWrapper(
+				this.core));
+
+		this.wrappersByClass.put(RelationsTable.class.getName(),
+				new RelationsTableWrapper(this.core));
+
+		this.wrappersByClass.put(WikidataView.class.getName(),
+				new WikidataViewWrapper(this.core));
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,13 +103,20 @@ public class WrapperFactory {
 
 		this.wrappersByType.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
 				new WikipediaPageWrapper(this.core));
-		
+
 		this.wrappersByType.put(RDFHelper.TERM_CLASS,
 				new TermWrapper(this.core));
-		
+
 		this.wrappersByType.put(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS,
 				new RelationalSentencesCorpusWrapper(this.core));
 
+		this.wrappersByType.put(RDFHelper.DOMAIN_CLASS, new DomainWrapper(
+				this.core));
+		this.wrappersByType.put(RDFHelper.RELATIONS_TABLE_CLASS,
+				new RelationsTableWrapper(this.core));
+
+		this.wrappersByType.put(RDFHelper.WIKIDATA_VIEW_CLASS,
+				new WikidataViewWrapper(this.core));
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

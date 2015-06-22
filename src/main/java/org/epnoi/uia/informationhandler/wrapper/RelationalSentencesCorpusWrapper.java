@@ -3,11 +3,10 @@ package org.epnoi.uia.informationhandler.wrapper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
-import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
@@ -15,9 +14,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.RelationHelper;
-import org.epnoi.uia.learner.relations.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;
@@ -115,7 +112,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public Content<String> getAnnotatedContent(Selector selector) {
+	public Content<Object> getAnnotatedContent(Selector selector) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -124,7 +121,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	@Override
 	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
+			Content<Object> annotatedContent) {
 		// TODO Auto-generated method stub
 
 	}
