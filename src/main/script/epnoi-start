@@ -1,5 +1,5 @@
 #!/bin/sh
-EPNOI_HOME="/JUNK/epnoi"
+EPNOI_HOME="/epnoi"
 
 #First we initialize the directories
 SCRIPT_DIR=$(pwd)
@@ -38,12 +38,15 @@ echo $!
 start_epnoi () {
 echo "Starting epnoi!---------------------------------------------------------------------------"
 cd $EPNOI_HOME/epnoi
-if [ $VERBOSE_PARAMETER == "-v" ] 
-then
+
+if [ $VERBOSE_PARAMETER == "verbose" ]; then
 	mvn jetty:run | tee $TMP_DIR/epnoi.output.log &
+#	echo "es verbose"
 else
+#if [ ! $VERBOSE_PARAMETER == "verbose" ];then 
 	mvn jetty:run > $TMP_DIR/epnoi.output.log 2>&1 &
-fi
+#echo "no es verbose"
+fi 
 
 echo $! > $TMP_DIR/epnoi.pid 
 echo $!

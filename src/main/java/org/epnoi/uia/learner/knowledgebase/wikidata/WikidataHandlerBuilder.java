@@ -232,9 +232,9 @@ public class WikidataHandlerBuilder {
 				"http://wikidataView");
 		parameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW,
 				true);
-		
-		parameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW,
-				false);
+
+		parameters.setParameter(
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
@@ -324,11 +324,16 @@ public class WikidataHandlerBuilder {
 					// System.out.println("sourceIRI " + sourceIRI);
 					for (String targetIRI : consideredRelations.get(sourceIRI)) {
 						if (targetIRI != null) {
-							for (String destinationTarget : this.wikidataView
-									.getLabelsReverseDictionary()
-									.get(targetIRI)) {
-								targetLabels.add(destinationTarget);
+							if (this.wikidataView.getLabelsReverseDictionary()
+									.get(targetIRI) != null) {
+
+								for (String destinationTarget : this.wikidataView
+										.getLabelsReverseDictionary().get(
+												targetIRI)) {
+									targetLabels.add(destinationTarget);
+								}
 							}
+
 						}
 					}
 				}

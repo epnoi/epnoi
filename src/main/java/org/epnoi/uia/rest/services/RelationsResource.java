@@ -94,9 +94,12 @@ public class RelationsResource extends UIAService {
 
 				Double relationhood = relationsHandler.areRelated(source,
 						target, type, domain);
+				
+				System.out.println("------------------------> "+relationhood);
 
 				return Response.ok().entity(relationhood).build();
 			} catch (Exception exception) {
+				exception.printStackTrace();
 				logger.severe(exception.getMessage());
 				return Response.serverError().build();
 			}

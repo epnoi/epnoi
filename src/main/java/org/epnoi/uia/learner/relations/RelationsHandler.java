@@ -235,6 +235,7 @@ public class RelationsHandler {
 			}
 
 		}
+		System.out.println("-----------------------------> "+existenceProbability);
 		return existenceProbability;
 	}
 
@@ -361,6 +362,11 @@ public class RelationsHandler {
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("EEUU", "country",
 						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("Finally the dog and cat problem");
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("dog", "animal",
+						RelationHelper.HYPERNYM, "http://whatever"));
+		
 		System.out.println("Ending the RelationsHandler Process!");
 	}
 
