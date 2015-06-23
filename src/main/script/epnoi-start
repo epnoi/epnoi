@@ -1,5 +1,5 @@
 #!/bin/sh
-EPNOI_HOME="/epnoi"
+EPNOI_HOME="/opt/epnoi"
 
 #First we initialize the directories
 SCRIPT_DIR=$(pwd)
