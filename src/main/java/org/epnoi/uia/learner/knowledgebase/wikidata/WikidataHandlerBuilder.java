@@ -14,12 +14,12 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.tartarus.snowball.ext.EnglishStemmer;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.datamodel.interfaces.ItemIdValue;
 import org.wikidata.wdtk.datamodel.interfaces.MonolingualTextValue;
 import org.wikidata.wdtk.datamodel.interfaces.PropertyDocument;
+import org.wikidata.wdtk.datamodel.interfaces.Snak;
 import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.datamodel.interfaces.StatementDocument;
 import org.wikidata.wdtk.datamodel.interfaces.StatementGroup;
@@ -147,9 +147,11 @@ public class WikidataHandlerBuilder {
 			logger.info("Retrieving the  WikidataView, since the retrieve flag was activated");
 			wikidataView = (WikidataView) this.core.getInformationHandler()
 					.get(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
+			logger.info("The WikidataView " + this.wikidataViewURI
+					+ " has been retrieved: "+wikidataView.toString());
 
 		} else {
-			logger.info("Creating a newWikidataView, since the retrieve flag was activated");
+			logger.info("Creating a new WikidataView, since the retrieve flag was set false");
 			processEntitiesFromWikidataDump();
 			wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
 					labelsReverseDictionary, relationsTable);
@@ -199,6 +201,15 @@ public class WikidataHandlerBuilder {
 			case JSON:
 				// MwDumpFile dumpFile
 				// =dumpProcessingController.getMostRecentDump(DumpContentType.JSON);
+				try {
+					dumpProcessingController
+							.setDownloadDirectory((String) this.parameters
+									.getParameterValue(WikidataHandlerParameters.DUMP_PATH));
+				} catch (IOException e) {
+
+					e.printStackTrace();
+					System.exit(-1);
+				}
 
 				dumpProcessingController.processMostRecentJsonDump();
 
@@ -214,7 +225,7 @@ public class WikidataHandlerBuilder {
 		} catch (TimeoutException e) {
 
 		}
-		System.out.println("Aqui deberia ir el processing 2");
+
 		// Print final timer results:
 		entityTimerProcessor.close();
 	}
@@ -447,12 +458,13 @@ public class WikidataHandlerBuilder {
 					Set<String> hyponyms = new HashSet<String>();
 
 					for (Statement statement : statementGroup.getStatements()) {
+						Snak mainSnak = statement.getClaim().getMainSnak();
+						if (mainSnak instanceof ValueSnak) {
+							String object = ((ItemIdValue) ((ValueSnak) mainSnak)
+									.getValue()).getId();
 
-						String object = ((ItemIdValue) ((ValueSnak) statement
-								.getClaim().getMainSnak()).getValue()).getId();
-
-						hyponyms.add(object);
-
+							hyponyms.add(object);
+						}
 					}
 					hypernymRelations.put(subject, hyponyms);
 				}

@@ -123,7 +123,7 @@ public class RelationsResource extends UIAService {
 			WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 			wordnetParameters.setParameter(
 					WordNetHandlerParameters.DICTIONARY_LOCATION,
-					"/epnoi/epnoideployment/wordnet/dictWN3.1/");
+					"/opt/epnoi/epnoideployment/wordnet/dictWN3.1/");
 
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.WIKIDATA_VIEW_URI,

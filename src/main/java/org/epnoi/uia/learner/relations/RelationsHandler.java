@@ -262,15 +262,17 @@ public class RelationsHandler {
 			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
 		}
 
-		List<Domain> consideredDomains = Arrays.asList(domain);
+		//List<Domain> consideredDomains = Arrays.asList(domain);
+		
 
+		List<Domain> consideredDomains = new ArrayList<Domain>();	
 		String targetDomain = domainURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
-		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
+		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		// First of all we initialize the KnowledgeBase
 		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
@@ -279,7 +281,7 @@ public class RelationsHandler {
 		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 		wordnetParameters.setParameter(
 				WordNetHandlerParameters.DICTIONARY_LOCATION,
-				"/epnoi/epnoideployment/wordnet/dictWN3.1/");
+				"/opt/epnoi/epnoideployment/wordnet/dictWN3.1/");
 
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
@@ -288,16 +290,15 @@ public class RelationsHandler {
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
+	
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
 				true);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 10);
+		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 40);
 		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
-				"/Users/rafita/Documents/workspace/wikidataParsingTest");
+				"/opt/epnoi/epnoideployment/wikidata/");
 
 		knowledgeBaseParameters.setParameter(
 				KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
@@ -361,6 +362,10 @@ public class RelationsHandler {
 		System.out.println("The strange EEUU case");
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("EEUU", "country",
+						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("The strange Spain case");
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("Spain", "country",
 						RelationHelper.HYPERNYM, "http://whatever"));
 		System.out.println("Finally the dog and cat problem");
 		System.out.println("Are related? "
