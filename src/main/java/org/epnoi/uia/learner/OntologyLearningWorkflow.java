@@ -169,7 +169,7 @@ public class OntologyLearningWorkflow {
 		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
-		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
+		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(

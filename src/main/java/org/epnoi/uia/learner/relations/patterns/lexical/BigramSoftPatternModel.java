@@ -1,11 +1,12 @@
 package org.epnoi.uia.learner.relations.patterns.lexical;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 
 public class BigramSoftPatternModel implements RelationalPatternsModel {
@@ -24,6 +25,12 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 													// Question Answering
 
 	// ---------------------------------------------------------------------------------------------------------
+
+	public BigramSoftPatternModel() {
+		this.unigramProbability = new HashMap<String, Double[]>();
+		this.bigramProbability = new HashMap<String, Map<String, Double[]>>();
+		this.unigramProbability.put("algo", new Double[] { 1.0, 2.0, 3.0 });
+	}
 
 	protected BigramSoftPatternModel(
 			RelationalPatternsModelCreationParameters parameters,
@@ -170,4 +177,5 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 		}
 		return result;
 	}
+
 }

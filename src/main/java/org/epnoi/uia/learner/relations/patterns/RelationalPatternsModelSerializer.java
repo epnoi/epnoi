@@ -10,10 +10,11 @@ import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModel;
 
 public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------
-	public static void serialize(String filename, RelationalPatternsModel model) throws EpnoiResourceAccessException {
-		
+	public static void serialize(String filename, RelationalPatternsModel model)
+			throws EpnoiResourceAccessException {
+
 		// save the object to file
-		
+
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
@@ -32,7 +33,9 @@ public class RelationalPatternsModelSerializer {
 
 	// ------------------------------------------------------------------------------------
 
-	public static RelationalPatternsModel deserialize(String filename) throws EpnoiResourceAccessException {
+	public static RelationalPatternsModel deserialize(String filename)
+			throws EpnoiResourceAccessException {
+		System.out.println("fiiiiiiiiiiiiiiiiiiiiiiiilename--  " + filename);
 		BigramSoftPatternModel model = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
@@ -42,6 +45,7 @@ public class RelationalPatternsModelSerializer {
 			model = (BigramSoftPatternModel) in.readObject();
 			in.close();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new EpnoiResourceAccessException(ex.getMessage());
 		}
 		return model;
@@ -50,6 +54,23 @@ public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
+		BigramSoftPatternModel newModel = new BigramSoftPatternModel();
+		try {
+			RelationalPatternsModelSerializer.serialize(
+					"/home/rgonzalez/Desktop/model.bin", newModel);
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		BigramSoftPatternModel readedModel=null;
+		try {
+			readedModel = (BigramSoftPatternModel) RelationalPatternsModelSerializer
+					.deserialize("/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Readed model " + readedModel.toString());
 	}
 }

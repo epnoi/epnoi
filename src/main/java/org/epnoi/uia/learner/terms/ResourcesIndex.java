@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class ResourcesIndex {
 
-	//Resources are stored per domain, ie: domain_uri
-	
+	// Resources are stored per domain, ie: domain_uri
+
 	private Map<String, Map<String, AnnotatedWord<ResourceMetadata>>> resources;
 
 	// -------------------------------------------------------------------------------------------------------
@@ -69,7 +69,12 @@ public class ResourcesIndex {
 	// -------------------------------------------------------------------------------------------------------
 
 	public List<AnnotatedWord<ResourceMetadata>> getResources(String domain) {
-		return new ArrayList<>(this.resources.get(domain).values());
+		List<AnnotatedWord<ResourceMetadata>> resources = new ArrayList<AnnotatedWord<ResourceMetadata>>();
+
+		if (this.resources.get(domain) != null) {
+			resources = new ArrayList<>(this.resources.get(domain).values());
+		}
+		return resources;
 	}
 
 }
