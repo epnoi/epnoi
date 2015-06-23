@@ -133,8 +133,6 @@ public class RelationsResource extends UIAService {
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
 			wikidataParameters.setParameter(
-					WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-			wikidataParameters.setParameter(
 					WikidataHandlerParameters.OFFLINE_MODE, true);
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.DUMP_FILE_MODE,
@@ -143,7 +141,7 @@ public class RelationsResource extends UIAService {
 					10);
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.DUMP_PATH,
-					"/Users/rafita/Documents/workspace/wikidataParsingTest");
+					"/opt/epnoi/epnoideployment/wikidata/");
 
 			knowledgeBaseParameters.setParameter(
 					KnowledgeBaseParameters.WORDNET_PARAMETERS,
