@@ -4,11 +4,30 @@ public class Domain implements Resource {
 
 	private String URI;
 	private String label;
-	private String consideredResource;
-	private String expression;
+	// Intensional definition
+	private String consideredResource; // Type of the considered resources in
+										// the domain
+	private String expression;// Expression that defines such resources
+
+	// Extensional definition
+	private ResearchObject resources; // Each domain can define an aggregation
+										// of the resources that belong to it in
+										// an explicit manner
 
 	// -------------------------------------------------------------------------------------------
+	
+	public ResearchObject getResources() {
+		return resources;
+	}
+	
+	// -------------------------------------------------------------------------------------------
 
+	public void setResources(ResearchObject resources) {
+		this.resources = resources;
+	}
+
+	// -------------------------------------------------------------------------------------------
+	
 	@Override
 	public String getURI() {
 		return this.URI;
