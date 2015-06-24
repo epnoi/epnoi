@@ -8,4 +8,5 @@ public class DomainCassandraHelper {
 	public static final String CONSIDERED_RESOURCES = "CONSIDERED_RESOURCES";
 	public static final String EXPRESSION = "EXPRESSION";
 
+
 }

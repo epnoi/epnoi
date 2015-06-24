@@ -63,8 +63,7 @@ public class FeedRDFDAO extends RDFDAO {
 						cleanOddCharacters(feed.getDescription()))
 				.replace("{FEED_PUB_DATE}",
 						DateConverter.convertDateFormat(feed.getPubDate()));
-		System.out.println("queryExpression ----------------------->"
-				+ queryExpression);
+	
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();

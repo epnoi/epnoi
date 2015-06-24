@@ -10,22 +10,11 @@ public class Domain implements Resource {
 	private String expression;// Expression that defines such resources
 
 	// Extensional definition
-	private ResearchObject resources; // Each domain can define an aggregation
+	private String resources; // Each domain can define an aggregation
 										// of the resources that belong to it in
 										// an explicit manner
 
-	// -------------------------------------------------------------------------------------------
 	
-	public ResearchObject getResources() {
-		return resources;
-	}
-	
-	// -------------------------------------------------------------------------------------------
-
-	public void setResources(ResearchObject resources) {
-		this.resources = resources;
-	}
-
 	// -------------------------------------------------------------------------------------------
 	
 	@Override
@@ -35,6 +24,18 @@ public class Domain implements Resource {
 
 	// -------------------------------------------------------------------------------------------
 
+	public String getResources() {
+		return resources;
+	}
+	
+	// -------------------------------------------------------------------------------------------
+
+	public void setResources(String resources) {
+		this.resources = resources;
+	}
+
+	// -------------------------------------------------------------------------------------------
+	
 	@Override
 	public void setURI(String URI) {
 		this.URI = URI;
@@ -76,12 +77,15 @@ public class Domain implements Resource {
 		this.label = label;
 	}
 
-	// -------------------------------------------------------------------------------------------
-
 	@Override
 	public String toString() {
-		return "Domain [URI=" + URI + ", consideredResource="
-				+ consideredResource + ", expression=" + expression + "]";
+		return "Domain [URI=" + URI + ", label=" + label
+				+ ", consideredResource=" + consideredResource
+				+ ", expression=" + expression + ", resources=" + resources
+				+ "]";
 	}
+
+	// -------------------------------------------------------------------------------------------
+
 
 }
