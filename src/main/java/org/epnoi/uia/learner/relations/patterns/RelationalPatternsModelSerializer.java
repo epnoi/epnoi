@@ -35,7 +35,6 @@ public class RelationalPatternsModelSerializer {
 
 	public static RelationalPatternsModel deserialize(String filename)
 			throws EpnoiResourceAccessException {
-		System.out.println("fiiiiiiiiiiiiiiiiiiiiiiiilename--  " + filename);
 		BigramSoftPatternModel model = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;

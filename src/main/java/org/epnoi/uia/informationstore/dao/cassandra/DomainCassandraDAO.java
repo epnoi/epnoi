@@ -11,6 +11,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class DomainCassandraDAO extends CassandraDAO {
@@ -140,7 +141,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 
 	@Override
 	public boolean exists(Selector selector) {
-		// TODO Auto-generated method stub
-		return false;
+		return (super.getAllCollumns(selector.getProperty(SelectorHelper.URI),
+				DomainCassandraHelper.COLUMN_FAMILLY).hasNext());
 	}
 }
