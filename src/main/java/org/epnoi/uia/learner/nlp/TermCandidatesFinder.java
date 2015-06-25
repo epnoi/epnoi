@@ -28,7 +28,7 @@ public class TermCandidatesFinder {
 
 	// ----------------------------------------------------------------------------------
 
-	public Document findTermCandidates(String content) {
+	synchronized public Document findTermCandidates(String content) {
 		Document document = null;
 		try {
 			document = Factory.newDocument(content);
@@ -193,13 +193,12 @@ public class TermCandidatesFinder {
 			// for (Integer id : ids) {
 
 			/*
-			System.out.println("S>"
-					+ document.getAnnotations().get(ids.get(0)).getFeatures()
-							.get("string"));
-			System.out.println("T>"
-					+ document.getAnnotations().get(ids.get(1)).getFeatures()
-							.get("string"));
-*/
+			 * System.out.println("S>" +
+			 * document.getAnnotations().get(ids.get(0)).getFeatures()
+			 * .get("string")); System.out.println("T>" +
+			 * document.getAnnotations().get(ids.get(1)).getFeatures()
+			 * .get("string"));
+			 */
 			Integer source = ids.get(0);
 			Integer target = ids.get(1);
 
@@ -213,10 +212,8 @@ public class TermCandidatesFinder {
 						+ target);
 			}
 
-			
-		
 		}
-		System.out.println("--> "+patternGraph.toString());
+		System.out.println("--> " + patternGraph.toString());
 
 	}
 }

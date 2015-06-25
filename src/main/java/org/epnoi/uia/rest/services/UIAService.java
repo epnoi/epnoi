@@ -7,6 +7,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.parameterization.ParametersModel;
 import org.epnoi.uia.parameterization.ParametersModelReader;
@@ -37,7 +38,13 @@ public abstract class UIAService {
 			long time = System.currentTimeMillis();
 			this.core = new Core();
 			parametersModel = this._readParameters();
-			this.core.init(parametersModel);
+			try {
+				core.init(parametersModel);
+			} catch (EpnoiInitializationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.exit(-1);
+			}
 			this.context.setAttribute(UIA_CORE_ATTRIBUTE, core);
 			long afterTime = System.currentTimeMillis();
 			System.out.println("It took " + (Long) (afterTime - time) / 1000.0

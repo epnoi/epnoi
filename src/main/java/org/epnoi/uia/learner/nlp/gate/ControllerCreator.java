@@ -30,7 +30,7 @@ public class ControllerCreator {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
 																		// //
 																		// time
-			String grammarsPath = ControllerCreator.class.getResource(
+			String grammarsPath = Core.class.getResource(
 					"grammars/nounphrases").getPath();
 
 			String gateHomePath = this.core.getParameters().getGatePath();

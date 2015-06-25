@@ -14,15 +14,11 @@ public class DomainsHandler {
 			.getName());
 	private Core core;
 
-
-
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core) {
-		logger.info("Initializing the DomainsHandler with the following parameters: ");
-		
+		logger.info("Initializing the DomainsHandler");
 		this.core = core;
-		
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -45,8 +41,7 @@ public class DomainsHandler {
 	private List<String> _cleanResources(List<String> foundURIs, Domain domain) {
 		List<String> cleanedURIs = new ArrayList<String>();
 		for (String uri : foundURIs) {
-			if (core.getInformationHandler().contains(uri,
-					domain.getType())) {
+			if (core.getInformationHandler().contains(uri, domain.getType())) {
 				cleanedURIs.add(uri);
 			}
 		}
