@@ -4,17 +4,16 @@ public class Domain implements Resource {
 
 	private String URI;
 	private String label;
-	// Intensional definition
-	private String consideredResource; // Type of the considered resources in
+	//Extensional definition
+	private String type; // Type of the considered resources in
 										// the domain
 	private String expression;// Expression that defines such resources
 
-	// Extensional definition
+	//Intensional definition
 	private String resources; // Each domain can define an aggregation
 										// of the resources that belong to it in
 										// an explicit manner
 
-	
 	// -------------------------------------------------------------------------------------------
 	
 	@Override
@@ -43,14 +42,14 @@ public class Domain implements Resource {
 
 	// -------------------------------------------------------------------------------------------
 
-	public String getConsideredResource() {
-		return consideredResource;
+	public String getType() {
+		return type;
 	}
 
 	// -------------------------------------------------------------------------------------------
 
-	public void setConsideredResource(String consideredResource) {
-		this.consideredResource = consideredResource;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	// -------------------------------------------------------------------------------------------
@@ -76,16 +75,16 @@ public class Domain implements Resource {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	// -------------------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "Domain [URI=" + URI + ", label=" + label
-				+ ", consideredResource=" + consideredResource
+		return "Domain [URI=" + URI + ", label=" + label + ", type=" + type
 				+ ", expression=" + expression + ", resources=" + resources
 				+ "]";
 	}
-
+	
 	// -------------------------------------------------------------------------------------------
-
 
 }

@@ -32,7 +32,7 @@ public class DomainsHandler {
 
 		logger.info("Gathering the domain " + domain);
 		List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
-				domain.getLabel(), domain.getConsideredResource());
+				domain.getLabel(), domain.getType());
 		logger.info("Found initially " + foundURIs.size()
 				+ " elements in the domain " + domain.getURI());
 
@@ -46,7 +46,7 @@ public class DomainsHandler {
 		List<String> cleanedURIs = new ArrayList<String>();
 		for (String uri : foundURIs) {
 			if (core.getInformationHandler().contains(uri,
-					domain.getConsideredResource())) {
+					domain.getType())) {
 				cleanedURIs.add(uri);
 			}
 		}

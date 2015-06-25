@@ -159,7 +159,7 @@ public class OntologyLearningWorkflow {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
 			domain.setURI(corpusURI);
-			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 
 		List<Domain> consideredDomains = Arrays.asList(domain);

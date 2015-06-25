@@ -74,7 +74,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 					break;
 
 				case DomainCassandraHelper.CONSIDERED_RESOURCES:
-					term.setConsideredResource(columnValue);
+					term.setType(columnValue);
 					break;
 				}
 
@@ -131,7 +131,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 		domain.setURI("lauri");
 		domain.setExpression("sparqlexpression");
 		domain.setLabel("name");
-		domain.setConsideredResource(RDFHelper.DOMAIN_CLASS);
+		domain.setType(RDFHelper.DOMAIN_CLASS);
 
 		core.getInformationHandler().put(domain, Context.getEmptyContext());
 
