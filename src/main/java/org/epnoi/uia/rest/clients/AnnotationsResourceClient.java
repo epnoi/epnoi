@@ -12,7 +12,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class AnnotationsServiceClient {
+public class AnnotationsResourceClient {
 
 	public static void main(String[] args) {
 		try {
