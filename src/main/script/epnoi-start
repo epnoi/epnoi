@@ -42,7 +42,7 @@ echo "Starting epnoi!-----------------------------------------------------------
 cd $EPNOI_HOME/epnoi
 
 if [ "$VERBOSE_PARAMETER" = "verbose" ]; then
-	mvn jetty:run | tee $TMP_DIR/epnoi.output.log &
+	mvn jetty:run | tee $TMP_DIR/epnoi.output.log 
 
 else
 	mvn jetty:run > $TMP_DIR/epnoi.output.log 2>&1 &

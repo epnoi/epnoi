@@ -85,7 +85,8 @@ public class DomainWrapper implements Wrapper {
 
 	@Override
 	public void update(Resource resource) {
-		// TODO Auto-generated method stub
+		this.remove(resource.getURI());
+		this.put(resource, Context.getEmptyContext());
 
 	}
 

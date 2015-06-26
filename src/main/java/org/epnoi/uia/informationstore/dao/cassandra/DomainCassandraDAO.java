@@ -30,14 +30,14 @@ public class DomainCassandraDAO extends CassandraDAO {
 
 		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
 
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.NAME,
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.LABEL,
 				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
 				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
 		
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.CONSIDERED_RESOURCES,
-				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.TYPE,
+				domain.getType(), DomainCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 				String columnName = column.getName();
 				String columnValue = column.getValue();
 				switch (columnName) {
-				case DomainCassandraHelper.NAME:
+				case DomainCassandraHelper.LABEL:
 					term.setLabel(columnValue);
 					break;
 
@@ -73,7 +73,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 					term.setExpression(columnValue);
 					break;
 
-				case DomainCassandraHelper.CONSIDERED_RESOURCES:
+				case DomainCassandraHelper.TYPE:
 					term.setType(columnValue);
 					break;
 				}

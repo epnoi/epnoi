@@ -2,6 +2,8 @@ package org.epnoi.uia.rest.services;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +25,7 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.uia.informationstore.dao.rdf.DublinCoreRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 import com.sun.jersey.api.Responses;
@@ -35,6 +38,10 @@ import com.wordnik.swagger.annotations.ApiResponses;
 @Path("/uia/domains/domain")
 @Api(value = "/uia/domains/domain", description = "Operations for handling a domain")
 public class DomainResource extends UIAService {
+	private static Map<String, String> typesURIsResolutionTable = new HashMap<String, String>();
+	static {
+		typesURIsResolutionTable.put("paper", RDFHelper.PAPER_CLASS);
+	}
 	private static final String LABEL_PROPERTY = "label";
 	private static final String EXPRESSION_PROPERTY = "expression";
 	private static final String TYPE_PROPERTY = "type";
@@ -63,8 +70,9 @@ public class DomainResource extends UIAService {
 			@ApiResponse(code = 201, message = "The domain has been created"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
 	public Response createDomain(
-			@ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String newDomainURI) {
-		logger.info("PUT domain > " + newDomainURI);
+			@ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String newDomainURI,
+			@ApiParam(value = "Domain type", required = true, allowMultiple = false, allowableValues = "paper") @QueryParam("type") String newDomainType) {
+		logger.info("PUT domain > " + newDomainURI + " type> " + newDomainType);
 
 		URI domainURI = null;
 		try {
@@ -77,6 +85,7 @@ public class DomainResource extends UIAService {
 		// the research object
 		Domain domain = new Domain();
 		domain.setURI(newDomainURI);
+		domain.setType(typesURIsResolutionTable.get(newDomainType));
 		domain.setResources(newDomainURI + resourcesPathSubfix);
 
 		// We create an empty research object
@@ -93,37 +102,37 @@ public class DomainResource extends UIAService {
 	}
 
 	// -----------------------------------------------------------------------------------------
-/*
-	@PUT
-	@Path("")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Stores a domain", notes = "")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "The domain has been created"),
-			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
-	public Response storeDomain(Domain domain) {
-		logger.info("PUT Domain > " + domain);
-
-		URI domainURI = null;
-		try {
-			domainURI = new URI(domain.getURI());
-		} catch (URISyntaxException e) {
-			throw new WebApplicationException();
-		}
-
-		// We create an empty research object
-		ResearchObject resources = new ResearchObject();
-		resources.setURI(domain.getResources());
-
-		this.core.getInformationHandler().put(resources,
-				org.epnoi.model.Context.getEmptyContext());
-
-		this.core.getInformationHandler().put(domain,
-				org.epnoi.model.Context.getEmptyContext());
-
-		return Response.created(domainURI).build();
-	}
-*/
+	/*
+	 * @PUT
+	 * 
+	 * @Path("")
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON)
+	 * 
+	 * @ApiOperation(value = "Stores a domain", notes = "")
+	 * 
+	 * @ApiResponses(value = {
+	 * 
+	 * @ApiResponse(code = 201, message = "The domain has been created"),
+	 * 
+	 * @ApiResponse(code = 500, message = "Something went wrong in the UIA") })
+	 * public Response storeDomain(Domain domain) { logger.info("PUT Domain > "
+	 * + domain);
+	 * 
+	 * URI domainURI = null; try { domainURI = new URI(domain.getURI()); } catch
+	 * (URISyntaxException e) { throw new WebApplicationException(); }
+	 * 
+	 * // We create an empty research object ResearchObject resources = new
+	 * ResearchObject(); resources.setURI(domain.getResources());
+	 * 
+	 * this.core.getInformationHandler().put(resources,
+	 * org.epnoi.model.Context.getEmptyContext());
+	 * 
+	 * this.core.getInformationHandler().put(domain,
+	 * org.epnoi.model.Context.getEmptyContext());
+	 * 
+	 * return Response.created(domainURI).build(); }
+	 */
 	// -----------------------------------------------------------------------------------------
 
 	@GET
@@ -243,7 +252,7 @@ public class DomainResource extends UIAService {
 	private void _updateDomainProperty(String URI, String propertyName,
 			String value) {
 		Domain domain = (Domain) core.getInformationHandler().get(URI,
-				RDFHelper.RESEARCH_OBJECT_CLASS);
+				RDFHelper.DOMAIN_CLASS);
 
 		switch (propertyName) {
 		case DomainResource.EXPRESSION_PROPERTY:
@@ -274,11 +283,15 @@ public class DomainResource extends UIAService {
 			@ApiParam(value = "Domain uri", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
 		logger.info("DELETE > " + URI);
 
-		Domain researchObject = (Domain) core.getInformationHandler().get(URI,
+		Domain domain = (Domain) core.getInformationHandler().get(URI,
 				RDFHelper.DOMAIN_CLASS);
-		if (researchObject != null) {
+		if (domain != null) {
 			this.core.getInformationHandler().remove(URI,
 					RDFHelper.DOMAIN_CLASS);
+			// When we delete the domain object we also must remove the
+			// associated research object
+			this.core.getInformationHandler().remove(URI + resourcesPathSubfix,
+					RDFHelper.RESEARCH_OBJECT_CLASS);
 			return Response.ok().build();
 		} else {
 			return Response.status(Responses.NOT_FOUND).build();

@@ -53,7 +53,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{HAS_TOPIC_PROPERTY}",
 						AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+	//	System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -81,7 +81,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{HAS_TOPIC_PROPERTY}",
 						AnnotationOntologyRDFHelper.HAS_TOPIC_PROPERTY);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -160,7 +160,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		System.out.println(" AHORA TENDRIAMOS QUE BORRAR > " + queryResults);
@@ -226,7 +226,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
 						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY);
 
-		System.out.println("----> QUERY EXPRESSION TO COPY " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION TO COPY " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -256,7 +256,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATES_DOCUMENT_PROPERTY}",
 						AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -288,7 +288,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -318,7 +318,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		System.out.println("ESTA ES ----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("ESTA ES ----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
@@ -348,7 +348,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		System.out.println("----> QUERY EXPRESSION " + queryExpression);
+		//System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		return queryResults;
