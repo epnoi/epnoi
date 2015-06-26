@@ -12,10 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
 import org.epnoi.uia.domains.DomainsHandler;
+import org.epnoi.uia.harvester.HarvestersHandler;
 import org.epnoi.uia.harvester.rss.RSSHarvester;
 import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationhandler.InformationHandler;
@@ -51,9 +53,8 @@ public class Core {
 	private SearchHandler searchHandler = null;
 	private AnnotationHandler annotationHandler = null;
 	private DomainsHandler domainsHandler = null;
+	private HarvestersHandler harvestersHandler = null;
 	private EventBus eventBus = null;
-
-	// ----------------------------------------------------------------------------------------------------------
 
 	/**
 	 * The initialization method for the epnoiCore
@@ -63,7 +64,8 @@ public class Core {
 	 *            epnoiCore.
 	 */
 
-	public synchronized void init(ParametersModel parametersModel) {
+	public synchronized void init(ParametersModel parametersModel)
+			throws EpnoiInitializationException {
 		logger.info("Initializing the epnoi uia core with the following parameters ");
 		logger.info(parametersModel.toString());
 		this.informationStores = new HashMap<String, InformationStore>();
@@ -228,10 +230,17 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _harvestersInitialization() {
-		logger.info("Initializing harvesters");
+	private void _harvestersInitialization()
+			throws EpnoiInitializationException {
+		logger.info("Initializing the HarvestersHandler");
+
+		this.harvestersHandler = new HarvestersHandler();
+		this.harvestersHandler.init(this);
+
+		logger.info("Initializing the RSSHarvester");
 		RSSHarvesterParameters parameters = this.parametersModel
 				.getRssHarvester();
+		
 		if (parameters != null) {
 			this.rssHarvester = new RSSHarvester(this, parameters);
 			this.rssHarvester.start();
@@ -339,7 +348,7 @@ public class Core {
 
 	private void _initGATE() {
 		logger.info("Initializing Gate");
-			String gateHomePath = this.parametersModel.getGatePath();
+		String gateHomePath = this.parametersModel.getGatePath();
 		String pluginsPath = gateHomePath + "/plugins";
 		String grammarsPath = gateHomePath + "/grammars/nounphrases";
 
@@ -366,6 +375,7 @@ public class Core {
 			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
 					"Parser_Stanford").toURI().toURL();
 			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
+			
 
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
@@ -391,4 +401,17 @@ public class Core {
 	public ParametersModel getParameters() {
 		return this.parametersModel;
 	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	public HarvestersHandler getHarvestersHandler() {
+		return harvestersHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+	
+	public void setHarvestersHandler(HarvestersHandler harvestersHandler) {
+		this.harvestersHandler = harvestersHandler;
+	}
+
 }

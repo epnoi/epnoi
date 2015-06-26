@@ -30,11 +30,12 @@ public class ResearchObjectWrapper implements Wrapper {
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
 		informationStore.put(resource, context);
+		/*
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 
 		informationStore.put(resource, context);
-
+*/
 	}
 
 	// ------------------------------------------------------------------------------------
@@ -66,11 +67,11 @@ public class ResearchObjectWrapper implements Wrapper {
 				RDFHelper.RESEARCH_OBJECT_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
-
+/*
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
-
+*/
 	}
 
 	// -------------------------------------------------------------------------------------

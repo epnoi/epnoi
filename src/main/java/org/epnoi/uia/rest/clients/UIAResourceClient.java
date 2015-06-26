@@ -10,7 +10,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class UIAServiceClient {
+public class UIAResourceClient {
 
 	public static void main(String[] args) {
 		try {

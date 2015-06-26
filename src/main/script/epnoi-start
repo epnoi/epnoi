@@ -9,7 +9,9 @@ TMP_DIR=$EPNOI_HOME/tmp
 SOLR_DIR=$EPNOI_HOME/"epnoideployment/solr"
 CASSANDRA_DIR=$EPNOI_HOME/"epnoideployment/apache-cassandra-2.1.3"
 VIRTUOSO_DIR="/usr/local/virtuoso-opensource"
-VERBOSE_PARAMETER=$1
+FIRST_SCRIPT_PARAMETER=$1
+VERBOSE_PARAMETER="verbose"
+echo $VERBOSE_PARAMETER
 
 start_solr () {
 echo "Starting SOLR!--------------------------------------------------------------------------------"
@@ -39,13 +41,11 @@ start_epnoi () {
 echo "Starting epnoi!---------------------------------------------------------------------------"
 cd $EPNOI_HOME/epnoi
 
-if [ $VERBOSE_PARAMETER == "verbose" ]; then
-	mvn jetty:run | tee $TMP_DIR/epnoi.output.log &
-#	echo "es verbose"
+if [ "$VERBOSE_PARAMETER" = "verbose" ]; then
+	mvn jetty:run | tee $TMP_DIR/epnoi.output.log 
+
 else
-#if [ ! $VERBOSE_PARAMETER == "verbose" ];then 
 	mvn jetty:run > $TMP_DIR/epnoi.output.log 2>&1 &
-#echo "no es verbose"
 fi 
 
 echo $! > $TMP_DIR/epnoi.pid 

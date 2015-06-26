@@ -85,7 +85,8 @@ public class DomainWrapper implements Wrapper {
 
 	@Override
 	public void update(Resource resource) {
-		// TODO Auto-generated method stub
+		this.remove(resource.getURI());
+		this.put(resource, Context.getEmptyContext());
 
 	}
 
@@ -145,7 +146,7 @@ public class DomainWrapper implements Wrapper {
 		domain.setURI("http://www.epnoi.org/lauri");
 		domain.setExpression("sparqlexpression");
 		domain.setLabel("name");
-		domain.setConsideredResource(RDFHelper.DOMAIN_CLASS);
+		domain.setType(RDFHelper.DOMAIN_CLASS);
 
 		domain.setResources("http://www.epnoi.org/lauri");
 		core.getInformationHandler().put(domain, Context.getEmptyContext());

@@ -14,15 +14,11 @@ public class DomainsHandler {
 			.getName());
 	private Core core;
 
-
-
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core) {
-		logger.info("Initializing the DomainsHandler with the following parameters: ");
-		
+		logger.info("Initializing the DomainsHandler");
 		this.core = core;
-		
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -32,21 +28,26 @@ public class DomainsHandler {
 
 		logger.info("Gathering the domain " + domain);
 		List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
-				domain.getLabel(), domain.getConsideredResource());
+				domain.getURI(), domain.getType());
 		logger.info("Found initially " + foundURIs.size()
 				+ " elements in the domain " + domain.getURI());
 
-		List<String> cleanedURI = _cleanResources(foundURIs, domain);
+		List<String> cleanedURI = _cleanMissingResources(foundURIs, domain);
 		return cleanedURI;
 	}
 
 	// -----------------------------------------------------------------------------------
-
-	private List<String> _cleanResources(List<String> foundURIs, Domain domain) {
+	/**
+	 * Method that removes from a list of resources URIs those that are not stored in the UIA.
+	 * @param foundURIs List of URIs that were initially found for the domain
+	 * @param domain The current domain
+	 * @return
+	 */
+	private List<String> _cleanMissingResources(List<String> foundURIs,
+			Domain domain) {
 		List<String> cleanedURIs = new ArrayList<String>();
 		for (String uri : foundURIs) {
-			if (core.getInformationHandler().contains(uri,
-					domain.getConsideredResource())) {
+			if (core.getInformationHandler().contains(uri, domain.getType())) {
 				cleanedURIs.add(uri);
 			}
 		}

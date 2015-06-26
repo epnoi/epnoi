@@ -10,6 +10,7 @@ import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.commons.DateConverter;
+import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 import virtuoso.jena.driver.VirtGraph;
@@ -54,13 +55,13 @@ public class FeedRDFDAO extends RDFDAO {
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{FEED_LINK}", feed.getLink())
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
-				.replace("{FEED_TITLE}", cleanOddCharacters(feed.getTitle()))
+				.replace("{FEED_TITLE}", StringUtils.cleanOddCharacters(feed.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
 				.replace("{FEED_DESCRIPTION}",
-						cleanOddCharacters(feed.getDescription()))
+						StringUtils.cleanOddCharacters(feed.getDescription()))
 				.replace("{FEED_PUB_DATE}",
 						DateConverter.convertDateFormat(feed.getPubDate()));
 	

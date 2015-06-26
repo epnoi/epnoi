@@ -3,9 +3,11 @@ package org.epnoi.uia.informationhandler.wrapper;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
+import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
@@ -31,11 +33,11 @@ public class PaperWrapper implements Wrapper {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-
+/*
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-
+*/
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
@@ -112,11 +114,11 @@ public class PaperWrapper implements Wrapper {
 				+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 		exists = informationStore.exists(selector);
 		if (exists) {
-
+/*
 			informationStore = this.core.getInformationStoresByType(
 					InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 			exists = informationStore.exists(selector);
-
+*/
 			if (exists) {
 
 				informationStore = this.core.getInformationStoresByType(
@@ -189,5 +191,39 @@ public class PaperWrapper implements Wrapper {
 	}
 
 	// -------------------------------------------------------------------------------------
+	
+	public static void main(String[] args) {
+		Core core = CoreUtility.getUIACore();
+		
+		Paper domain = new Paper();
+		domain.setTitle("title");
+		domain.setDescription("Mi mama me mima, yo mimo a mi mama");
+		
+		String uRI = "http://www.epnoi.org/paperconlauri";
+		domain.setURI(uRI);
+		core.getInformationHandler().put(domain, Context.getEmptyContext());
+
+		System.out.println("-------> "
+				+ core.getInformationHandler().get(
+						uRI, RDFHelper.PAPER_CLASS));
+
+		if (core.getInformationHandler().contains(domain.getURI(),
+				RDFHelper.PAPER_CLASS)) {
+			System.out.println("The paper exists!");
+		} else {
+			System.out.println("It doesn't exist, something went wrong :(");
+		}
+
+		core.getInformationHandler().remove(domain);
+
+		if (!core.getInformationHandler().contains(domain.getURI(),
+				RDFHelper.PAPER_CLASS)) {
+			System.out.println("The domain doesn't exist!");
+		} else {
+			System.out.println("It exists, something went wrong :(");
+		}
+
+	}
+
 
 }

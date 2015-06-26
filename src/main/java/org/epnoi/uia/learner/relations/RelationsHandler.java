@@ -259,7 +259,7 @@ public class RelationsHandler {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
 			domain.setURI(domainURI);
-			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 
 		//List<Domain> consideredDomains = Arrays.asList(domain);

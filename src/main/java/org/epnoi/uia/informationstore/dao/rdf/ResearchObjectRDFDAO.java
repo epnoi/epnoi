@@ -62,7 +62,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 				.replace("{RESOURCE_MAP_CLASS}",
 						OAIORERDFHelper.RESOURCE_MAP_CLASS);
 
-		//System.out.println("queryExpression ----------------------->"+ queryExpression);
+		System.out.println("queryExpression ----------------------->"+ queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();

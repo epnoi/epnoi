@@ -69,6 +69,15 @@ public class StringUtils {
 		// System.out.println("cleaned line > " + matching);
 		return matching;
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------------------------
+
+	public static String cleanOddCharacters(String text) {
+		String cleanedText;
+		cleanedText = text.replaceAll("[^a-zA-Z0-9]"," ");
+		return cleanedText;
+	}
+	
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
