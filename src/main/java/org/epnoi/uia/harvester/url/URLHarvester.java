@@ -52,6 +52,24 @@ public class URLHarvester {
 
 	}
 
+	// -------------------------------------------------------------------------------------------------------------------
+
+	public void init(Core core, URLHarvesterParameters parameters)
+			throws EpnoiInitializationException {
+
+		this.core = core;
+		this.termCandidatesFinder = new TermCandidatesFinder();
+		this.termCandidatesFinder.init(core);
+		this.parameters = parameters;
+		this.logger
+				.info("Initializing the URLHarvester with the following parameters"
+						+ this.parameters.toString());
+
+		this.verbose = (boolean) this.parameters
+				.getParameterValue(URLHarvesterParameters.VERBOSE_PARAMETER);
+
+	}
+
 	// ----------------------------------------------------------------------------------------
 
 	private String _scanContent(String resourceURI) {
@@ -122,7 +140,6 @@ public class URLHarvester {
 	private void _addDocumentAnnotatedContent(Paper paper) {
 		Document annotatedContent = this.termCandidatesFinder
 				.findTermCandidates(paper.getDescription());
-
 		Selector annotationSelector = new Selector();
 		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
@@ -169,37 +186,12 @@ public class URLHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public void init(Core core, URLHarvesterParameters parameters)
-			throws EpnoiInitializationException {
-
-		this.core = core;
-		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init(core);
-		this.parameters = parameters;
-		this.logger
-				.info("Initializing the URLHarvester with the following parameters"
-						+ this.parameters.toString());
-		
-		this.verbose = (boolean) this.parameters
-				.getParameterValue(URLHarvesterParameters.VERBOSE_PARAMETER);
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
 	public static void main(String[] args) {
 		logger.info("Starting the harvesting!");
 
-		URLHarvester harvester = new URLHarvester();
-		URLHarvesterParameters parameters = new URLHarvesterParameters();
-
-		parameters.setParameter(URLHarvesterParameters.VERBOSE_PARAMETER, true);
-
-		parameters.setParameter(URLHarvesterParameters.OVERWRITE_PARAMETER,
-				true);
-
 		String url = "file:///opt/epnoi/epnoideployment/firstReviewResources/CGCorpus/A32_C02_Animating_Wrinkles_on_Clothes__CORPUS__v3.xml";
 		String domainURI = "http://www.epnoi.org/testDomain";
+		String domainLabel = "testDomain";
 
 		Domain domain = new Domain();
 		domain.setURI(domainURI);
@@ -227,9 +219,12 @@ public class URLHarvester {
 		annotationSelector.setProperty(SelectorHelper.TYPE,
 				RDFHelper.PAPER_CLASS);
 
-		System.out.println("This is teh annotated content "
-				+ core.getInformationHandler().getAnnotatedContent(
-						annotationSelector));
+		System.out.println("This is the annotated content "
+				+ core.getInformationHandler()
+						.getAnnotatedContent(annotationSelector).getContent()
+						.getClass());
+
+		System.out.println(core.getAnnotationHandler().getLabeledAs(domainURI));
 
 		logger.info("Ending the harvesting!");
 	}

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.StringUtils;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -44,7 +45,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 				.replace("{INFORMATION_SOURCE_URL}", informationSource.getURL())
 				.replace("{NAME_PROPERTY}", RDFHelper.NAME_PROPERTY)
 				.replace("{INFORMATION_SOURCE_NAME}",
-						cleanOddCharacters(informationSource.getName()))
+						StringUtils.cleanOddCharacters(informationSource.getName()))
 				.replace("{HAS_INFORMATION_UNIT_TYPE_PROPERTY}", InformationSourceRDFHelper.HAS_INFORMATION_UNIT_TYPE)
 				.replace("{INFORMATION_SOURCE_UNIT_TYPE}", informationSource.getInformationUnitType());
 

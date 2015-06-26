@@ -28,21 +28,25 @@ public class TermCandidatesFinder {
 
 	// ----------------------------------------------------------------------------------
 
-	synchronized public Document findTermCandidates(String content) {
+	public Document findTermCandidates(String content) {
 		Document document = null;
 		try {
+			
 			document = Factory.newDocument(content);
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+	
 		if (document.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
-
+			
 			this.corpus.add(document);
 
 			try {
+				
 				controller.execute();
+			
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -74,58 +78,7 @@ public class TermCandidatesFinder {
 		this.controller.setCorpus(this.corpus);
 	}
 
-	// ----------------------------------------------------------------------------------
-
-	public static void main(String[] args) {
-
-		System.out
-				.println("TermCandidatesFinder test================================================================");
-
-		Core core = CoreUtility.getUIACore();
-
-		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
-		termCandidatesFinder.init(core);
-		/*
-		 * Document document = termCandidatesFinder .findTermCandidates(
-		 * "My  taylor is rich, and my pretty mom is in the big kitchen");
-		 */
-		/*
-		 * Document document = termCandidatesFinder .findTermCandidates(
-		 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
-		 * );
-		 */
-		Document document = termCandidatesFinder
-				.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
-
-		String documentAsString = document.toXml();
-		/*
-		 * System.out.println("---"); System.out.println(documentAsString);
-		 * System.out.println("---");
-		 */
-		Document document2 = null;
-
-		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-				documentAsString,
-				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
-		try {
-			document2 = (Document) Factory
-					.createResource(
-							"gate.corpora.DocumentImpl",
-							Utils.featureMap(
-									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									documentAsString,
-									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-									"text/xml"));
-		} catch (ResourceInstantiationException e) {
-			e.printStackTrace();
-		}
-		// System.out.println("mmm>  " + document2.toXml());
-		createDependencyGraph(document);
-
-		System.out
-				.println("TermCandidatesFinder test is over!================================================================");
-	}
-
+	
 	// ----------------------------------------------------------------------------------
 
 	private static void showTerms(Document document) {
@@ -216,4 +169,60 @@ public class TermCandidatesFinder {
 		System.out.println("--> " + patternGraph.toString());
 
 	}
+	
+	// ----------------------------------------------------------------------------------
+
+		public static void main(String[] args) {
+
+			System.out
+					.println("TermCandidatesFinder test================================================================");
+
+			Core core = CoreUtility.getUIACore();
+
+			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+			termCandidatesFinder.init(core);
+			
+			
+			/*
+			 * Document document = termCandidatesFinder .findTermCandidates(
+			 * "My  taylor is rich, and my pretty mom is in the big kitchen");
+			 */
+			/*
+			 * Document document = termCandidatesFinder .findTermCandidates(
+			 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
+			 * );
+			 */
+			Document document = termCandidatesFinder
+					.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
+
+			String documentAsString = document.toXml();
+			/*
+			 * System.out.println("---"); System.out.println(documentAsString);
+			 * System.out.println("---");
+			 */
+			Document document2 = null;
+
+			Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+					documentAsString,
+					gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
+			try {
+				document2 = (Document) Factory
+						.createResource(
+								"gate.corpora.DocumentImpl",
+								Utils.featureMap(
+										gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+										documentAsString,
+										gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
+										"text/xml"));
+			} catch (ResourceInstantiationException e) {
+				e.printStackTrace();
+			}
+			// System.out.println("mmm>  " + document2.toXml());
+			createDependencyGraph(document);
+			System.out.println(">>> "+document.toString());
+
+			System.out
+					.println("TermCandidatesFinder test is over!================================================================");
+		}
+
 }

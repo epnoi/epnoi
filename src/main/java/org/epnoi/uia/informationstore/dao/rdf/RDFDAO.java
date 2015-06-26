@@ -129,13 +129,6 @@ public abstract class RDFDAO {
 				.println("-----------------------------------------------------------------------------------------------------");
 	}
 
-	// ---------------------------------------------------------------------------------------------------------------------------------------
 
-	protected String cleanOddCharacters(String text) {
-		String cleanedText;
-		cleanedText = text.replaceAll("[^a-zA-Z0-9]"," ");
-		return cleanedText;
-	}
-	
 	
 }

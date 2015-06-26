@@ -6,6 +6,7 @@ import java.util.List;
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
@@ -130,6 +131,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setLabel(label);
 		annotation.setURI(URI + "label" + label.hashCode());
 		core.getInformationHandler().put(annotation, new Context());
+		System.out.println("annotation " + annotation);
 		return annotation;
 	}
 
@@ -193,10 +195,8 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.replace("{ANNOTATION_CLASS}",
 						AnnotationRDFHelper.ANNOTATION_CLASS);
 
-		
 		List<String> queryResults = informationStore.query(queryExpression);
 
-		
 		for (String annotationURI : queryResults) {
 			core.getInformationHandler().remove(annotationURI,
 					AnnotationRDFHelper.ANNOTATION_CLASS);
@@ -211,10 +211,10 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-
+		String cleanLabel = StringUtils.cleanOddCharacters(label);
 		String queryExpression = "SELECT  DISTINCT ?uri FROM <{GRAPH}>"
 				+ "{ ?annotationURI <{ANNOTATES_DOCUMENT_PROPERTY}> ?uri . "
-				+ "  ?annotationURI <{LABEL_PROPERTY}> \"" + label + "\" ."
+				+ "  ?annotationURI <{LABEL_PROPERTY}> \"" + cleanLabel + "\" ."
 				+ "}";
 
 		queryExpression = queryExpression
@@ -240,9 +240,11 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
+		String cleanLabel = StringUtils.cleanOddCharacters(label);
+		
 		String queryExpression = "SELECT  DISTINCT ?uri FROM <{GRAPH}>"
 				+ "{ ?annotationURI <{ANNOTATES_DOCUMENT_PROPERTY}> ?uri . "
-				+ " ?annotationURI <{LABEL_PROPERTY}> \"" + label + "\" . "
+				+ " ?annotationURI <{LABEL_PROPERTY}> \"" + cleanLabel + "\" . "
 				+ " ?uri a <" + type + "> . " + "}";
 
 		queryExpression = queryExpression

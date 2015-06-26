@@ -93,7 +93,7 @@ public class DomainResource extends UIAService {
 	}
 
 	// -----------------------------------------------------------------------------------------
-
+/*
 	@PUT
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -101,7 +101,7 @@ public class DomainResource extends UIAService {
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "The domain has been created"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
-	public Response createDomain(Domain domain) {
+	public Response storeDomain(Domain domain) {
 		logger.info("PUT Domain > " + domain);
 
 		URI domainURI = null;
@@ -123,7 +123,7 @@ public class DomainResource extends UIAService {
 
 		return Response.created(domainURI).build();
 	}
-
+*/
 	// -----------------------------------------------------------------------------------------
 
 	@GET

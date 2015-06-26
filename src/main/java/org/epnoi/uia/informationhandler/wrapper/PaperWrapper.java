@@ -41,7 +41,7 @@ public class PaperWrapper implements Wrapper {
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-System.out.println("========> Meter lo mete");
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------

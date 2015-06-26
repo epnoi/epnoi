@@ -143,6 +143,15 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>gate-stanford</groupId>
+			<artifactId>gate-stanford</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${lib.dir}/gate-stanford/stanford-parser.jar</systemPath>
+		</dependency>
+		 
 		<!-- <dependency> <groupId>org.javatuples</groupId> <artifactId>javatuples</artifactId> 
 			<version>1.2</version> <scope>compile</scope> </dependency> -->
 		<dependency>

@@ -36,7 +36,7 @@ public class HarvestersHandler {
 	// -----------------------------------------------------------------------------------
 
 	public void harvestURL(String url, Domain domain) {
-		urlHarvester.harvest(url, domain);
+		this.urlHarvester.harvest(url, domain);
 	}
 
 	// -----------------------------------------------------------------------------------

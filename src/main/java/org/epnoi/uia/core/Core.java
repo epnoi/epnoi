@@ -375,6 +375,7 @@ public class Core {
 			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
 					"Parser_Stanford").toURI().toURL();
 			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
+			
 
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block

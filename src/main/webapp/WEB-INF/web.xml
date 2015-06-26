@@ -78,6 +78,8 @@
 		</init-param> <load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> 
 		<servlet-name>Jersey REST Service</servlet-name> <url-pattern>/rest/*</url-pattern> 
 		</servlet-mapping> -->
+		
+		
 	 <filter> <filter-name>CORS</filter-name> <filter-class> 
 		org.eclipse.jetty.servlets.CrossOriginFilter </filter-class> <init-param> 
 		<param-name>allowedOrigins</param-name> <param-value>*</param-value> </init-param> 
@@ -86,6 +88,7 @@
 		origin, content-type, accept, authorization, x-requested-with </param-value> 
 		</init-param> </filter> <filter-mapping> <filter-name>CORS</filter-name> 
 		<url-pattern>/*</url-pattern> </filter-mapping> 
+		
 		<!-- 
 	<filter>
 		<filter-name>CORS Filter</filter-name>
