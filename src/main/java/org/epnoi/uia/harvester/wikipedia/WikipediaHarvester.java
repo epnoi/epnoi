@@ -36,7 +36,7 @@ import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
 public class WikipediaHarvester {
 	// -Xmx1g
-	private static String wikipediaDumpPath = "/epnoi/epnoideployment/firstReviewResources/wikipedia/";
+	private static String wikipediaDumpPath = "/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
 	public static boolean INCREMENTAL = true;
 
