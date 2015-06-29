@@ -1,0 +1,11 @@
+#!/bin/sh
+EPNOI_HOME="/opt/epnoi"
+MAIN_CLASS=org.epnoi.uia.learner.knowledgebase.wikidata.WikidataViewCreator
+cd $EPNOI_HOME/epnoi
+
+
+mvn -e exec:java -Dexec.mainClass="$MAIN_CLASS" -Dexec.args="arg0 arg1 arg2"  -Dexec.classpathScope=compile 
+
+
+
+

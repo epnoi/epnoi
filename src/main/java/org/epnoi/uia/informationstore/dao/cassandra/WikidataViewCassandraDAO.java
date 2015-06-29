@@ -20,6 +20,7 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
 
 import com.google.common.base.Joiner;
@@ -292,7 +293,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 				Context.getEmptyContext());
 
 		System.out.println("Wikidataview  "
-				+ core.getInformationHandler().get("http://wikidataView",
+				+ core.getInformationHandler().get(WikidataHandlerParameters.DEFAULT_URI,
 						RDFHelper.WIKIDATA_VIEW_CLASS));
 
 		System.out.println("WikidataView Cassandra Test--------------");
@@ -318,7 +319,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		labelDictionary.add("http://testTargetB");
 		labelsDictionary.put("test label", labelDictionary);
 
-		WikidataView wikidataView = new WikidataView("http://wikidataView",
+		WikidataView wikidataView = new WikidataView(WikidataHandlerParameters.DEFAULT_URI,
 				labelsDictionary, labelsReverseDictionary, relations);
 		return wikidataView;
 	}

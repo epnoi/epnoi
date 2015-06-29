@@ -2,7 +2,7 @@ package org.epnoi.uia.learner.knowledgebase.wikidata;
 
 import org.epnoi.uia.commons.Parameters;
 
-public class WikidataHandlerParameters extends Parameters<Object> {
+public class WikidataViewCreatorParameters extends Parameters<Object> {
 	public static String WIKIDATA_VIEW_URI = "URI_PARAMETER";
 	
 	/**
@@ -40,12 +40,4 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	 */
 	public static final String TIMEOUT = "TIMEOUT_PARAMETER";
 
-	public static final String RETRIEVE_WIKIDATA_VIEW = "RETRIEVE_WIKIDATA_VIEW_PARAMETER";
-	
-	public static final String STORE_WIKIDATA_VIEW = "STORE_WIKIDATA_VIEW_PARAMETER";
-
-	// public static final int TIMEOUT_SEC = 10;
-
-	
-	public static final String DEFAULT_URI= "http://www.epnoi.org/wikidataView";
 }

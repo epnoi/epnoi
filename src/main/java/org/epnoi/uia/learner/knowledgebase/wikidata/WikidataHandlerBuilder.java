@@ -49,6 +49,7 @@ public class WikidataHandlerBuilder {
 	private boolean retrieve;
 	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
+	private WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
 
 	private Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
@@ -84,45 +85,8 @@ public class WikidataHandlerBuilder {
 
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
-
-		// Controller object for processing dumps:
-		this.dumpProcessingController = new DumpProcessingController(
-				"wikidatawiki");
-		this.dumpProcessingController.setOfflineMode(this.offlineMode);
-		try {
-			this.dumpProcessingController.setDownloadDirectory(this.dumpPath);
-		} catch (IOException ioException) {
-
-			ioException.printStackTrace();
-		}
-
-		// Should we process historic revisions or only current ones?
-		boolean onlyCurrentRevisions;
-		switch (this.dumpProcessingMode) {
-		case ALL_REVS:
-		case ALL_REVS_WITH_DAILIES:
-			onlyCurrentRevisions = false;
-			break;
-		case CURRENT_REVS:
-		case CURRENT_REVS_WITH_DAILIES:
-		case JSON:
-		case JUST_ONE_DAILY_FOR_TEST:
-		default:
-			onlyCurrentRevisions = true;
-		}
-
-		HypernymRelationsEntityProcessor entityStatisticsProcessor = new HypernymRelationsEntityProcessor();
-
-		// Subscribe to the most recent entity documents of type wikibase item:
-		dumpProcessingController.registerEntityDocumentProcessor(
-				entityStatisticsProcessor, null, onlyCurrentRevisions);
-
-		// Also add a timer that reports some basic progress information:
-		EntityTimerProcessor entityTimerProcessor = new EntityTimerProcessor(
-				this.timeout);
-		dumpProcessingController.registerEntityDocumentProcessor(
-				entityTimerProcessor, null, onlyCurrentRevisions);
-
+		wikidataViewCreator.init(core, parameters);
+		
 	}
 
 	// --------------------------------------------------------------------------------------------------
@@ -148,13 +112,13 @@ public class WikidataHandlerBuilder {
 			wikidataView = (WikidataView) this.core.getInformationHandler()
 					.get(this.wikidataViewURI, RDFHelper.WIKIDATA_VIEW_CLASS);
 			logger.info("The WikidataView " + this.wikidataViewURI
-					+ " has been retrieved: "+wikidataView.toString());
+					+ " has been retrieved: " + wikidataView.toString());
 
 		} else {
 			logger.info("Creating a new WikidataView, since the retrieve flag was set false");
-			processEntitiesFromWikidataDump();
-			wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
-					labelsReverseDictionary, relationsTable);
+
+			wikidataView = this.wikidataViewCreator.create();
+
 		}
 
 		if (this.store) {
@@ -180,56 +144,7 @@ public class WikidataHandlerBuilder {
 
 	}
 
-	// --------------------------------------------------------------------------------------------------
-
-	private void processEntitiesFromWikidataDump() {
-
-		// Also add a timer that reports some basic progress information:
-		EntityTimerProcessor entityTimerProcessor = new EntityTimerProcessor(
-				this.timeout);
-		try {
-			// Start processing (may trigger downloads where needed):
-			switch (this.dumpProcessingMode) {
-			case ALL_REVS:
-			case CURRENT_REVS:
-				dumpProcessingController.processMostRecentMainDump();
-				break;
-			case ALL_REVS_WITH_DAILIES:
-			case CURRENT_REVS_WITH_DAILIES:
-				dumpProcessingController.processAllRecentRevisionDumps();
-				break;
-			case JSON:
-				// MwDumpFile dumpFile
-				// =dumpProcessingController.getMostRecentDump(DumpContentType.JSON);
-				try {
-					dumpProcessingController
-							.setDownloadDirectory((String) this.parameters
-									.getParameterValue(WikidataHandlerParameters.DUMP_PATH));
-				} catch (IOException e) {
-
-					e.printStackTrace();
-					System.exit(-1);
-				}
-
-				dumpProcessingController.processMostRecentJsonDump();
-
-				break;
-			case JUST_ONE_DAILY_FOR_TEST:
-				dumpProcessingController.processDump(dumpProcessingController
-						.getMostRecentDump(DumpContentType.DAILY));
-				break;
-			default:
-				throw new RuntimeException("Unsupported dump processing type "
-						+ this.dumpProcessingMode);
-			}
-		} catch (TimeoutException e) {
-
-		}
-
-		// Print final timer results:
-		entityTimerProcessor.close();
-	}
-
+	
 	// --------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) throws IOException {
@@ -240,7 +155,7 @@ public class WikidataHandlerBuilder {
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
 		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
+				WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW,
 				true);
 
@@ -369,109 +284,5 @@ public class WikidataHandlerBuilder {
 
 	}
 
-	// -------------------------------------------------------------------------------------------------------------------------------------
 
-	class HypernymRelationsEntityProcessor implements EntityDocumentProcessor {
-		private static final String EN = "en";
-		public static final String INSTANCE_OF = "http://www.wikidata.org/entity/P31";
-
-		// --------------------------------------------------------------------------------------------------
-
-		@Override
-		public void processItemDocument(ItemDocument itemDocument) {
-
-			processItem(itemDocument);
-
-			processStatements(itemDocument);
-
-		}
-
-		// --------------------------------------------------------------------------------------------------
-		/**
-		 * 
-		 * @param itemDocument
-		 */
-
-		private void processItem(ItemDocument itemDocument) {
-			String itemIRI = itemDocument.getEntityId().getId();
-
-			// First we add the label->IRI relation
-			if (itemDocument.getLabels().get(
-					HypernymRelationsEntityProcessor.EN) != null) {
-				String label = itemDocument.getLabels()
-						.get(HypernymRelationsEntityProcessor.EN).getText();
-
-				_addToDictionary(label, itemIRI, labelsDictionary);
-				_addToDictionary(itemIRI, label, labelsReverseDictionary);
-			}
-			// Now, for each alias of the label we also add the relation
-			// alias->IRI
-			if (itemDocument.getAliases().get(
-					HypernymRelationsEntityProcessor.EN) != null) {
-				for (MonolingualTextValue alias : itemDocument.getAliases()
-						.get(HypernymRelationsEntityProcessor.EN)) {
-					_addToDictionary(alias.getText(), itemIRI, labelsDictionary);
-					_addToDictionary(itemIRI, alias.getText(),
-							labelsReverseDictionary);
-				}
-			}
-
-		}
-
-		// ---------------------------------------------------------------------
-
-		/**
-		 * 
-		 * @param value
-		 * @param key
-		 * @param dictionary
-		 */
-		private void _addToDictionary(String key, String value,
-				Map<String, Set<String>> dictionary) {
-			Set<String> values = dictionary.get(key);
-			if (values == null) {
-				values = new HashSet<>();
-				dictionary.put(key, values);
-			}
-			values.add(value);
-		}
-
-		// --------------------------------------------------------------------------------------------------
-
-		@Override
-		public void processPropertyDocument(PropertyDocument propertyDocument) {
-
-		}
-
-		// --------------------------------------------------------------------------------------------------
-
-		protected void processStatements(StatementDocument statementDocument) {
-
-			for (StatementGroup statementGroup : statementDocument
-					.getStatementGroups()) {
-
-				String property = statementGroup.getProperty().getIri();
-
-				if (INSTANCE_OF.equals(property)) {
-					String subject = statementGroup.getSubject().getId();
-
-					Set<String> hyponyms = new HashSet<String>();
-
-					for (Statement statement : statementGroup.getStatements()) {
-						Snak mainSnak = statement.getClaim().getMainSnak();
-						if (mainSnak instanceof ValueSnak) {
-							String object = ((ItemIdValue) ((ValueSnak) mainSnak)
-									.getValue()).getId();
-
-							hyponyms.add(object);
-						}
-					}
-					hypernymRelations.put(subject, hyponyms);
-				}
-
-			}
-		}
-		// --------------------------------------------------------------------------------------------------
-
-	}
 }

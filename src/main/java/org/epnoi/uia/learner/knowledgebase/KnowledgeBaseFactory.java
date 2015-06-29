@@ -22,7 +22,6 @@ public class KnowledgeBaseFactory {
 
 	public void init(Core core, KnowledgeBaseParameters parameters)
 			throws EpnoiInitializationException {
-		System.out.println("ENTRA");
 		this.core = core;
 		this.parameters = parameters;
 		this.wordnetHandler = new WordNetHandler();
@@ -59,7 +58,7 @@ public class KnowledgeBaseFactory {
 	public static void main(String[] args) {
 		System.out.println("Starting the Knowledge Base test!!");
 
-		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
+		String filepath = "opt/epnoi/epnoi/epnoideployment/wordnet/dictWN3.1/";
 
 		Core core = CoreUtility.getUIACore();
 
@@ -72,7 +71,7 @@ public class KnowledgeBaseFactory {
 
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
+				WikidataHandlerParameters.DEFAULT_URI);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
 		wikidataParameters.setParameter(
