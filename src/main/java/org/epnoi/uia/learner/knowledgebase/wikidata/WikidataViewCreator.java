@@ -94,21 +94,30 @@ public class WikidataViewCreator {
 		return wikidataView;
 	}
 
+	// --------------------------------------------------------------------------------------------------
+
 	public void store(WikidataView wikidataView) {
-		this.core.getInformationHandler().remove(this.wikidataViewURI,
+		this.core.getInformationHandler().remove(wikidataView.getURI(),
 				RDFHelper.WIKIDATA_VIEW_CLASS);
 
 		this.core.getInformationHandler().put(wikidataView,
 				Context.getEmptyContext());
 	}
 
+	// ---------------------------------------------------------------------------------------------------
+
+	public WikidataView retrieve(String uri) {
+		return (WikidataView) this.core.getInformationHandler().get(uri,
+				RDFHelper.WIKIDATA_VIEW_CLASS);
+	}
+
 	// --------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Starting the WikidataViewCreator");
-		
-		for(String arg: args){
-			System.out.println("----------------> "+arg);
+
+		for (String arg : args) {
+			System.out.println("----------------> " + arg);
 		}
 
 		Core core = CoreUtility.getUIACore();
@@ -116,12 +125,13 @@ public class WikidataViewCreator {
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
 		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
+				WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
 		parameters.setParameter(WikidataViewCreatorParameters.TIMEOUT, 100);
-		parameters.setParameter(WikidataViewCreatorParameters.DUMP_PATH, "/opt/epnoi/epnoideployment/wikidata");
+		parameters.setParameter(WikidataViewCreatorParameters.DUMP_PATH,
+				"/opt/epnoi/epnoideployment/wikidata");
 
 		WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();
 		try {
@@ -135,7 +145,7 @@ public class WikidataViewCreator {
 
 		System.out.println("Ending the WikidataViewCreator");
 	}
-	
+
 	// -------------------------------------------------------------------------------------------------------------------------------------
 
 	class HypernymRelationsEntityProcessor implements EntityDocumentProcessor {
@@ -148,9 +158,12 @@ public class WikidataViewCreator {
 		public void processItemDocument(ItemDocument itemDocument) {
 
 			processItem(itemDocument);
-
-			processStatements(itemDocument);
-
+			if (itemDocument.getLabels() != null) {
+				if (itemDocument.getLabels()
+						.get(HypernymRelationsEntityProcessor.EN) != null) {
+					processStatements(itemDocument);
+				}
+			}
 		}
 
 		// --------------------------------------------------------------------------------------------------
@@ -165,6 +178,7 @@ public class WikidataViewCreator {
 			// First we add the label->IRI relation
 			if (itemDocument.getLabels().get(
 					HypernymRelationsEntityProcessor.EN) != null) {
+
 				String label = itemDocument.getLabels()
 						.get(HypernymRelationsEntityProcessor.EN).getText();
 
@@ -180,6 +194,7 @@ public class WikidataViewCreator {
 					_addToDictionary(alias.getText(), itemIRI, labelsDictionary);
 					_addToDictionary(itemIRI, alias.getText(),
 							labelsReverseDictionary);
+
 				}
 			}
 

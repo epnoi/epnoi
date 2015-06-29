@@ -46,4 +46,6 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 
 	// public static final int TIMEOUT_SEC = 10;
 
+	
+	public static final String DEFAULT_URI= "http://www.epnoi.org/wikidataView";
 }

@@ -127,7 +127,7 @@ public class RelationsResource extends UIAService {
 
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-					"http://wikidataView");
+					WikidataHandlerParameters.DEFAULT_URI);
 			wikidataParameters.setParameter(
 					WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
 			wikidataParameters.setParameter(

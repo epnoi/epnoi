@@ -205,8 +205,9 @@ public class RelationsHandler {
 
 	public Double areRelated(String sourceTermSurfaceForm,
 			String targetTermSurfaceForm, String type, String domain) {
-		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm+" targetTermSurfaceForm " + targetTermSurfaceForm
-				+ ", type " + type + ", domain " + domain);
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm
+				+ " targetTermSurfaceForm " + targetTermSurfaceForm + ", type "
+				+ type + ", domain " + domain);
 		Double existenceProbability = 0.;
 		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
 				targetTermSurfaceForm)) {
@@ -235,7 +236,8 @@ public class RelationsHandler {
 			}
 
 		}
-		System.out.println("-----------------------------> "+existenceProbability);
+		System.out.println("-----------------------------> "
+				+ existenceProbability);
 		return existenceProbability;
 	}
 
@@ -262,10 +264,9 @@ public class RelationsHandler {
 			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 
-		//List<Domain> consideredDomains = Arrays.asList(domain);
-		
+		// List<Domain> consideredDomains = Arrays.asList(domain);
 
-		List<Domain> consideredDomains = new ArrayList<Domain>();	
+		List<Domain> consideredDomains = new ArrayList<Domain>();
 		String targetDomain = domainURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
@@ -285,12 +286,12 @@ public class RelationsHandler {
 
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
+				WikidataHandlerParameters.DEFAULT_URI);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-	
+
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
 				true);
 		wikidataParameters.setParameter(
@@ -371,7 +372,7 @@ public class RelationsHandler {
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("dog", "animal",
 						RelationHelper.HYPERNYM, "http://whatever"));
-		
+
 		System.out.println("Ending the RelationsHandler Process!");
 	}
 
