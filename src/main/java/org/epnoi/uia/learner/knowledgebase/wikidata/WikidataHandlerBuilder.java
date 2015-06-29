@@ -155,7 +155,7 @@ public class WikidataHandlerBuilder {
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
 		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
+				WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW,
 				true);
 
