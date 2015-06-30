@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.knowledgebase.wikidata;
+package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.util.Set;
 

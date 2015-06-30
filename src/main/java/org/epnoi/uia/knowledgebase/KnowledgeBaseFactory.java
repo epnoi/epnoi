@@ -1,14 +1,15 @@
-package org.epnoi.uia.learner.knowledgebase;
+package org.epnoi.uia.knowledgebase;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerBuilder;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerBuilder;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
+
 
 public class KnowledgeBaseFactory {
 	private Core core; // The UIA core

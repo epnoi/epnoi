@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -20,8 +19,8 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;

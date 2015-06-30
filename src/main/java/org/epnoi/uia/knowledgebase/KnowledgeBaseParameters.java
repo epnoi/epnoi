@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.knowledgebase;
+package org.epnoi.uia.knowledgebase;
 
 import org.epnoi.uia.commons.Parameters;
 

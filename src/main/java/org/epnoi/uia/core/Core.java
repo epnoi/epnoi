@@ -27,6 +27,7 @@ import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseHandler;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
@@ -55,6 +56,8 @@ public class Core {
 	private DomainsHandler domainsHandler = null;
 	private HarvestersHandler harvestersHandler = null;
 	private EventBus eventBus = null;
+	private KnowledgeBaseHandler knowledgeBaseHandler = null;
+
 
 	/**
 	 * The initialization method for the epnoiCore
@@ -82,6 +85,7 @@ public class Core {
 		this._initDomainsHandler();
 		this._hoardersInitialization();
 		this._harvestersInitialization();
+		this._knowedlgeBaseHandlerInitialization();
 
 	}
 
@@ -386,6 +390,14 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	private void _knowedlgeBaseHandlerInitialization() {
+	this.knowledgeBaseHandler = new KnowledgeBaseHandler();
+	this.knowledgeBaseHandler.init(this);
+		
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
 	public DomainsHandler getDomainsHandler() {
 		return domainsHandler;
 	}
@@ -413,5 +425,15 @@ public class Core {
 	public void setHarvestersHandler(HarvestersHandler harvestersHandler) {
 		this.harvestersHandler = harvestersHandler;
 	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	
+	public KnowledgeBaseHandler getKnowledgeBaseHandler() {
+		return knowledgeBaseHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
 
 }

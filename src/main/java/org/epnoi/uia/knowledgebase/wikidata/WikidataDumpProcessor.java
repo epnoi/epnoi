@@ -1,15 +1,15 @@
-package org.epnoi.uia.learner.knowledgebase.wikidata;
+package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.io.IOException;
 
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.dumpfiles.DumpContentType;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor.TimeoutException;
 
-public class WikidataDumProcessor {
+public class WikidataDumpProcessor {
 	private DumpProcessingController dumpProcessingController;
 	private WikidataHandlerParameters parameters;
 	private boolean offlineMode;
@@ -101,7 +101,7 @@ public class WikidataDumProcessor {
 				try {
 					dumpProcessingController
 							.setDownloadDirectory((String) this.parameters
-									.getParameterValue(WikidataViewCreatorParameters.DUMP_PATH));
+									.getParameterValue(WikidataHandlerParameters.DUMP_PATH));
 				} catch (IOException e) {
 
 					e.printStackTrace();

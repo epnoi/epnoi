@@ -23,11 +23,10 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataViewCreator;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataViewCreatorParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataViewCreator;
 import org.epnoi.uia.rest.services.response.WikidataViewSummary;
 
 import com.sun.jersey.api.Responses;
@@ -115,8 +114,8 @@ public class WikidataViewResource extends UIAService {
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		parameters.setParameter(WikidataViewCreatorParameters.TIMEOUT, timeout);
-		parameters.setParameter(WikidataViewCreatorParameters.DUMP_PATH,
+		parameters.setParameter(WikidataHandlerParameters.TIMEOUT, timeout);
+		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/opt/epnoi/epnoideployment/wikidata");
 		return parameters;
 	}

@@ -23,14 +23,13 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.relations.RelationsHandler;
 import org.epnoi.uia.learner.relations.RelationsHandlerParameters;
 
-import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;

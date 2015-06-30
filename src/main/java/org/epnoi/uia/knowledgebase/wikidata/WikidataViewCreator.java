@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.knowledgebase.wikidata;
+package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.datamodel.interfaces.ItemIdValue;
@@ -24,10 +24,6 @@ import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.datamodel.interfaces.StatementDocument;
 import org.wikidata.wdtk.datamodel.interfaces.StatementGroup;
 import org.wikidata.wdtk.datamodel.interfaces.ValueSnak;
-import org.wikidata.wdtk.dumpfiles.DumpContentType;
-import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
-import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor;
-import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor.TimeoutException;
 
 public class WikidataViewCreator {
 	private static final Logger logger = Logger
@@ -39,7 +35,7 @@ public class WikidataViewCreator {
 	private DumpProcessingMode dumpProcessingMode;
 	private int timeout;
 	private String wikidataViewURI;
-	private WikidataDumProcessor wikidataDumpProcessor;
+	private WikidataDumpProcessor wikidataDumpProcessor;
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
 
 	private Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
@@ -69,7 +65,7 @@ public class WikidataViewCreator {
 
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
-		this.wikidataDumpProcessor = new WikidataDumProcessor();
+		this.wikidataDumpProcessor = new WikidataDumpProcessor();
 		this.wikidataDumpProcessor.init(parameters);
 
 		HypernymRelationsEntityProcessor wikidataEntitiesProcessor = new HypernymRelationsEntityProcessor();
@@ -91,6 +87,7 @@ public class WikidataViewCreator {
 		this.wikidataDumpProcessor.processEntitiesFromWikidataDump();
 		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
 				labelsReverseDictionary, relationsTable);
+		wikidataView.clean();
 		return wikidataView;
 	}
 
@@ -129,8 +126,8 @@ public class WikidataViewCreator {
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
 				DumpProcessingMode.JSON);
-		parameters.setParameter(WikidataViewCreatorParameters.TIMEOUT, 100);
-		parameters.setParameter(WikidataViewCreatorParameters.DUMP_PATH,
+		parameters.setParameter(WikidataHandlerParameters.TIMEOUT, 100);
+		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/opt/epnoi/epnoideployment/wikidata");
 
 		WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();

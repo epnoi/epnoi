@@ -1,7 +1,6 @@
 package org.epnoi.uia.learner.relations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,13 +18,13 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.knowledgebase.KnowledgeBase;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseFactory;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBase;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseFactory;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.terms.TermsRetriever;
 import org.epnoi.uia.learner.terms.TermsTable;
 

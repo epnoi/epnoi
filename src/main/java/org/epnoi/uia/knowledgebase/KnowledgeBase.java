@@ -1,11 +1,13 @@
-package org.epnoi.uia.learner.knowledgebase;
+package org.epnoi.uia.knowledgebase;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
 
 import com.google.common.collect.Sets;
 
@@ -35,7 +37,6 @@ public class KnowledgeBase {
 	// -----------------------------------------------------------------------------------------------
 
 	public boolean areRelatedInWordNet(String source, String target) {
-	
 
 		String stemmedSource = this.wordNetHandler.stemNoun(source);
 		stemmedSource = (stemmedSource == null) ? stemmedSource = source
@@ -43,7 +44,7 @@ public class KnowledgeBase {
 		String stemmedTarget = this.wordNetHandler.stemNoun(target);
 		stemmedTarget = (stemmedTarget == null) ? stemmedTarget = source
 				: stemmedTarget;
-		
+
 		Set<String> sourceHypernyms = this.wordNetHandler
 				.getNounFirstMeaningHypernyms(stemmedSource);
 		return (sourceHypernyms != null && sourceHypernyms
@@ -95,5 +96,13 @@ public class KnowledgeBase {
 	}
 
 	// -----------------------------------------------------------------------------------------------
+
+	public static void main(String[] args) {
+
+		Core core = CoreUtility.getUIACore();
+		KnowledgeBase knowledgeBase =core.getKnowledgeBaseHandler().getKnowledgeBase();
+		
+		
+	}
 
 }
