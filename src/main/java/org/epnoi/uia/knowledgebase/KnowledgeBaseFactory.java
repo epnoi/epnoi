@@ -1,5 +1,6 @@
 package org.epnoi.uia.knowledgebase;
 
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
@@ -104,15 +105,15 @@ public class KnowledgeBaseFactory {
 		KnowledgeBase curatedRelationsTable = knowledgeBaseCreator.build();
 		System.out
 				.println("Testing for dog-canine-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dog", "canrine"));
+		System.out.println(curatedRelationsTable.areRelated("dog", "canrine", RelationHelper.HYPERNYM));
 
 		System.out
 				.println("Testing for dogs-canine-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dogs", "canine"));
+		System.out.println(curatedRelationsTable.areRelated("dogs", "canine",RelationHelper.HYPERNYM));
 
 		System.out
 				.println("Testing for dog-canines-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dog", "canines "));
+		System.out.println(curatedRelationsTable.areRelated("dog", "canines ",RelationHelper.HYPERNYM));
 
 		System.out.println("Starting the CuratedRelationsTableCreator test!!");
 	}

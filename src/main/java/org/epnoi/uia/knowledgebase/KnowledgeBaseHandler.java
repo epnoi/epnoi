@@ -34,7 +34,9 @@ public class KnowledgeBaseHandler {
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
 		wikidataParameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
+				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
+		wikidataParameters.setParameter(
+				WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, false);
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
 				true);
 		wikidataParameters.setParameter(

@@ -34,6 +34,7 @@ public class WikidataHandlerBuilder {
 	private int timeout;
 	private boolean store;
 	private boolean retrieve;
+	private boolean create;
 	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
 	private WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();
@@ -70,8 +71,12 @@ public class WikidataHandlerBuilder {
 		this.retrieve = (boolean) this.parameters
 				.getParameterValue(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW);
 
+		this.create = (boolean) this.parameters
+				.getParameterValue(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW);
+
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
+
 		wikidataViewCreator.init(core, parameters);
 
 	}
@@ -101,11 +106,19 @@ public class WikidataHandlerBuilder {
 			logger.info("The WikidataView " + this.wikidataViewURI
 					+ " has been retrieved: " + wikidataView.toString());
 
-		} else {
-			logger.info("Creating a new WikidataView, since the retrieve flag was set false");
+		} else if (this.create) {
+			logger.info("Creating a new WikidataView, since the retrieve flag was set false, and the create flag was set as true");
 
 			wikidataView = this.wikidataViewCreator.create();
 
+		} else {
+			// This case is left for development purposes, since it uses an
+			// empty wikidata view
+			wikidataView = new WikidataView(
+					WikidataHandlerParameters.DEFAULT_URI,
+					new HashMap<String, Set<String>>(),
+					new HashMap<String, Set<String>>(),
+					new HashMap<String, Map<String, Set<String>>>());
 		}
 
 		if (this.store) {
@@ -230,18 +243,20 @@ public class WikidataHandlerBuilder {
 			// Firstly we retrieve the IRIs
 			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
 					.get(sourceLabel);
-		//	System.out.println("Inital sourceIRIs obtained from the label" + sourceIRIs);
+			// System.out.println("Inital sourceIRIs obtained from the label" +
+			// sourceIRIs);
 			if (sourceIRIs != null) {
 
 				for (String sourceIRI : sourceIRIs) {
 					// System.out.println("sourceIRI " + sourceIRI);
 					Set<String> targetIRIs = consideredRelations.get(sourceIRI);
-				//	System.out.println("	("+sourceIRI+") targetIRIs " + targetIRIs);
+					// System.out.println("	("+sourceIRI+") targetIRIs " +
+					// targetIRIs);
 					if (targetIRIs != null) {
 						for (String targetIRI : targetIRIs) {
-						//	System.out.println("	trying > "+ targetIRI);
-						////	.getLabelsReverseDictionary().get(
-						//			targetIRI));
+							// System.out.println("	trying > "+ targetIRI);
+							// // .getLabelsReverseDictionary().get(
+							// targetIRI));
 							if (targetIRI != null) {
 								if (this.wikidataView
 										.getLabelsReverseDictionary().get(
