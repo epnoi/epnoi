@@ -73,7 +73,7 @@ public class WikidataHandlerBuilder {
 		this.wikidataViewURI = (String) this.parameters
 				.getParameterValue(WikidataHandlerParameters.WIKIDATA_VIEW_URI);
 		wikidataViewCreator.init(core, parameters);
-		
+
 	}
 
 	// --------------------------------------------------------------------------------------------------
@@ -131,7 +131,6 @@ public class WikidataHandlerBuilder {
 
 	}
 
-	
 	// --------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) throws IOException {
@@ -171,7 +170,7 @@ public class WikidataHandlerBuilder {
 
 		System.exit(0);
 		System.out.println("(size)---------------> "
-				+ wikidataHandler.getView());
+				+ wikidataHandler.getWikidataView());
 
 		Long endTime = System.currentTimeMillis();
 		System.out.println("It took " + ((endTime - startTime) / 1000)
@@ -180,7 +179,7 @@ public class WikidataHandlerBuilder {
 		startTime = System.currentTimeMillis();
 
 		WikidataHandler handler = wikidataBuilder.retrieve();
-		System.out.println("---------------> " + handler.getView());
+		System.out.println("---------------> " + handler.getWikidataView());
 
 		endTime = System.currentTimeMillis();
 
@@ -191,9 +190,9 @@ public class WikidataHandlerBuilder {
 		 * RelationHelper.HYPERNYM));
 		 */
 
-		for (String label : wikidataHandler.getView().getLabelsDictionary()
-				.keySet()) {
-			if (!handler.getView().getLabelsDictionary().keySet()
+		for (String label : wikidataHandler.getWikidataView()
+				.getLabelsDictionary().keySet()) {
+			if (!handler.getWikidataView().getLabelsDictionary().keySet()
 					.contains(label)) {
 				System.out.println("....> este no esta " + label);
 			}
@@ -214,7 +213,7 @@ public class WikidataHandlerBuilder {
 		}
 
 		@Override
-		public WikidataView getView() {
+		public WikidataView getWikidataView() {
 			return this.wikidataView;
 		}
 
@@ -231,22 +230,31 @@ public class WikidataHandlerBuilder {
 			// Firstly we retrieve the IRIs
 			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary()
 					.get(sourceLabel);
+		//	System.out.println("Inital sourceIRIs obtained from the label" + sourceIRIs);
 			if (sourceIRIs != null) {
 
 				for (String sourceIRI : sourceIRIs) {
 					// System.out.println("sourceIRI " + sourceIRI);
-					for (String targetIRI : consideredRelations.get(sourceIRI)) {
-						if (targetIRI != null) {
-							if (this.wikidataView.getLabelsReverseDictionary()
-									.get(targetIRI) != null) {
-
-								for (String destinationTarget : this.wikidataView
+					Set<String> targetIRIs = consideredRelations.get(sourceIRI);
+				//	System.out.println("	("+sourceIRI+") targetIRIs " + targetIRIs);
+					if (targetIRIs != null) {
+						for (String targetIRI : targetIRIs) {
+						//	System.out.println("	trying > "+ targetIRI);
+						////	.getLabelsReverseDictionary().get(
+						//			targetIRI));
+							if (targetIRI != null) {
+								if (this.wikidataView
 										.getLabelsReverseDictionary().get(
-												targetIRI)) {
-									targetLabels.add(destinationTarget);
-								}
-							}
+												targetIRI) != null) {
 
+									for (String destinationTarget : this.wikidataView
+											.getLabelsReverseDictionary().get(
+													targetIRI)) {
+										targetLabels.add(destinationTarget);
+									}
+								}
+
+							}
 						}
 					}
 				}
@@ -270,6 +278,5 @@ public class WikidataHandlerBuilder {
 		// --------------------------------------------------------------------------------------------------
 
 	}
-
 
 }

@@ -59,12 +59,7 @@ public class RelationalSentencesCorpusCreator {
 		this.corpus = new RelationalSentencesCorpus();
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.termCandidatesFinder.init(core);
-		KnowledgeBaseParameters wordNetParameters = (KnowledgeBaseParameters) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER);
-
-		KnowledgeBaseFactory knowledgeBaseBuilder = new KnowledgeBaseFactory();
-		knowledgeBaseBuilder.init(core, wordNetParameters);
-		this.knowledgeBase = knowledgeBaseBuilder.build();
+		this.knowledgeBase= core.getKnowledgeBaseHandler().getKnowledgeBase();
 
 		this.storeResult = (boolean) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
@@ -415,23 +410,9 @@ public class RelationalSentencesCorpusCreator {
 		Core core = CoreUtility.getUIACore();
 
 		RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
-		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
-
-		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
-		String filepath = "/epnoi/epnoideployment/wordnet/dictWN3.1/";
+	
 		String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
-		wordnetParameters.setParameter(
-				WordNetHandlerParameters.DICTIONARY_LOCATION, filepath);
-
-		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS,
-				wordnetParameters);
-
-		parameters
-				.setParameter(
-						RelationalSentencesCorpusCreationParameters.KNOWLEDGE_BASE_PARAMETERS_PARAMETER,
-						knowledgeBaseParameters);
-
+		
 		parameters
 				.setParameter(
 						RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,

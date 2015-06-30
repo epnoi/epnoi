@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.apache.cassandra.thrift.Cassandra.system_add_column_family_args;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
@@ -156,8 +157,8 @@ public class WikidataViewCreator {
 
 			processItem(itemDocument);
 			if (itemDocument.getLabels() != null) {
-				if (itemDocument.getLabels()
-						.get(HypernymRelationsEntityProcessor.EN) != null) {
+				if (itemDocument.getLabels().get(
+						HypernymRelationsEntityProcessor.EN) != null) {
 					processStatements(itemDocument);
 				}
 			}
@@ -171,33 +172,44 @@ public class WikidataViewCreator {
 
 		private void processItem(ItemDocument itemDocument) {
 			String itemIRI = itemDocument.getEntityId().getId();
-
+	
 			// First we add the label->IRI relation
 			if (itemDocument.getLabels().get(
 					HypernymRelationsEntityProcessor.EN) != null) {
 
 				String label = itemDocument.getLabels()
 						.get(HypernymRelationsEntityProcessor.EN).getText();
-
+				//Though we don't stemm the label, we at least use only lowercase letters
+				label = label.toLowerCase();
+				if (_validLabel(label)){
 				_addToDictionary(label, itemIRI, labelsDictionary);
 				_addToDictionary(itemIRI, label, labelsReverseDictionary);
-			}
+				}
+				}
 			// Now, for each alias of the label we also add the relation
 			// alias->IRI
 			if (itemDocument.getAliases().get(
 					HypernymRelationsEntityProcessor.EN) != null) {
 				for (MonolingualTextValue alias : itemDocument.getAliases()
 						.get(HypernymRelationsEntityProcessor.EN)) {
-					_addToDictionary(alias.getText(), itemIRI, labelsDictionary);
-					_addToDictionary(itemIRI, alias.getText(),
+					String aliasText = alias.getText();
+				
+					if (_validLabel(aliasText)){
+					_addToDictionary(aliasText, itemIRI, labelsDictionary);
+					_addToDictionary(itemIRI, aliasText,
 							labelsReverseDictionary);
-
+					}
 				}
 			}
 
 		}
 
 		// ---------------------------------------------------------------------
+
+		private boolean _validLabel(String label) {
+			return ((label != null) && (!label.contains("disambiguation")));
+
+		}
 
 		/**
 		 * 

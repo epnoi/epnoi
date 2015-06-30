@@ -71,18 +71,8 @@ public class RelationsHandler {
 		this.consideredDomains = (List<Domain>) this.parameters
 				.getParameterValue(RelationsHandlerParameters.CONSIDERED_DOMAINS);
 
-		KnowledgeBaseParameters knowledgeBaseParameters = (KnowledgeBaseParameters) this.parameters
-				.getParameterValue(RelationsHandlerParameters.KNOWLEDGE_BASE_PARAMETERS);
+		this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
 
-		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
-		try {
-			knowledgeBaseCreator.init(core, knowledgeBaseParameters);
-		} catch (EpnoiInitializationException e) {
-			logger.severe("The KnowledgeBase couldn't be initialized");
-			e.printStackTrace();
-
-		}
-		this.knowledgeBase = knowledgeBaseCreator.build();
 		_initDomainsRelationsTables();
 
 	}
@@ -209,7 +199,7 @@ public class RelationsHandler {
 				+ type + ", domain " + domain);
 		Double existenceProbability = 0.;
 		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
-				targetTermSurfaceForm)) {
+				targetTermSurfaceForm, type)) {
 			existenceProbability = 1.;
 		} else {
 			if (this.relationsTable.get(domain) != null) {
@@ -275,44 +265,11 @@ public class RelationsHandler {
 		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		// First of all we initialize the KnowledgeBase
-		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
-		WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
-
-		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
-		wordnetParameters.setParameter(
-				WordNetHandlerParameters.DICTIONARY_LOCATION,
-				"/opt/epnoi/epnoideployment/wordnet/dictWN3.1/");
-
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				WikidataHandlerParameters.DEFAULT_URI);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-
-		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
-				true);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_FILE_MODE,
-				DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 40);
-		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
-				"/opt/epnoi/epnoideployment/wikidata/");
-
-		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
-
-		knowledgeBaseParameters
-				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
-						wikidataParameters);
+	
 
 		RelationsHandlerParameters relationsHandlerParameters = new RelationsHandlerParameters();
 
-		relationsHandlerParameters.setParameter(
-				RelationsHandlerParameters.KNOWLEDGE_BASE_PARAMETERS,
-				knowledgeBaseParameters);
-
+		
 		relationsHandlerParameters.setParameter(
 				RelationsHandlerParameters.CONSIDERED_DOMAINS,
 				consideredDomains);

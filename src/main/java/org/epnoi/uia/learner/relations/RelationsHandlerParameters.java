@@ -7,5 +7,5 @@ public class RelationsHandlerParameters extends Parameters<Object> {
 	// The domains considered in the ontology learning process. It includes the
 	// target domain plus the ones used as a reference.
 	
-	public static final String KNOWLEDGE_BASE_PARAMETERS = "KNOWLEDGE_BASE_PARAMETERS_PARAMETER";
+	
 }

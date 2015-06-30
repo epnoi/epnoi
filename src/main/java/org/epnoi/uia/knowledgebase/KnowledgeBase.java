@@ -11,9 +11,12 @@ import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
 
 import com.google.common.collect.Sets;
 
+import edu.stanford.nlp.ling.CoreAnnotations.StemAnnotation;
+
 public class KnowledgeBase {
 
 	WordNetHandler wordNetHandler;
+
 	WikidataHandler wikidataHandler;
 
 	// -----------------------------------------------------------------------------------------------
@@ -27,11 +30,12 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	public boolean areRelated(String source, String target) {
-
-		return (areRelatedInWordNet(source, target) || areRelatedInWikidata(
-				source, target));
-
+	public boolean areRelated(String source, String target, String type) {
+		if (RelationHelper.HYPERNYM.equals(type)) {
+			return (areRelatedInWordNet(source, target) || areRelatedInWikidata(
+					source, target));
+		} else
+			return false;
 	}
 
 	// -----------------------------------------------------------------------------------------------
@@ -55,12 +59,27 @@ public class KnowledgeBase {
 	// -----------------------------------------------------------------------------------------------
 
 	public boolean areRelatedInWikidata(String source, String target) {
+		System.out.println("> " + source + " " + target);
+		source = source.toLowerCase();
+		target = target.toLowerCase();
+
 		String stemmedSource = this.wikidataHandler.stem(source);
+		System.out.println(">> stemmedSource " + stemmedSource);
 		String stemmedTarget = this.wikidataHandler.stem(target);
-		Set<String> sourceHypernyms = this.wikidataHandler.getRelated(
+		System.out.println(">> stemmedTarget " + stemmedTarget);
+		Set<String> stemmedSourceHypernyms = this.wikidataHandler.getRelated(
 				stemmedSource, RelationHelper.HYPERNYM);
-		return (sourceHypernyms != null && sourceHypernyms
-				.contains(stemmedTarget));
+		Set<String> sourceHypernyms = this.wikidataHandler.getRelated(source,
+				RelationHelper.HYPERNYM);
+		System.out.println(">> stemmedSourceHypernyms "
+				+ stemmedSourceHypernyms);
+
+		System.out.println(">> sourceHypernyms " + sourceHypernyms);
+
+		sourceHypernyms.addAll(stemmedSourceHypernyms);
+
+		return (sourceHypernyms != null && (sourceHypernyms
+				.contains(stemmedTarget) || sourceHypernyms.contains(target)));
 
 	}
 
@@ -97,12 +116,36 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	public WordNetHandler getWordNetHandler() {
+		return wordNetHandler;
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	public void setWordNetHandler(WordNetHandler wordNetHandler) {
+		this.wordNetHandler = wordNetHandler;
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	public WikidataHandler getWikidataHandler() {
+		return wikidataHandler;
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	public void setWikidataHandler(WikidataHandler wikidataHandler) {
+		this.wikidataHandler = wikidataHandler;
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
 	public static void main(String[] args) {
 
 		Core core = CoreUtility.getUIACore();
-		KnowledgeBase knowledgeBase =core.getKnowledgeBaseHandler().getKnowledgeBase();
-		
-		
+		KnowledgeBase knowledgeBase = core.getKnowledgeBaseHandler()
+				.getKnowledgeBase();
+
 	}
 
 }

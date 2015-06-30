@@ -76,8 +76,8 @@ public class WikidataViewResource extends UIAService {
 
 		WikidataView wikidataView = _createWikidataView(parameters);
 
-		_storeWikidataview(wikidataView);
-
+		_storeWikidataview(wikidataView);		
+		
 		return Response.created(wikidataViewURI).build();
 	}
 
