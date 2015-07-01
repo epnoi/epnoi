@@ -33,9 +33,7 @@ public class WikidataDumpProcessor {
 		this.timeout = (int) this.parameters
 				.getParameterValue(WikidataHandlerParameters.TIMEOUT);
 
-				
-		this.dumpProcessingController = new DumpProcessingController(
-				"wikidata");
+		this.dumpProcessingController = new DumpProcessingController("wikidata");
 		this.dumpProcessingController.setOfflineMode(this.offlineMode);
 		try {
 			this.dumpProcessingController.setDownloadDirectory(this.dumpPath);
@@ -122,7 +120,7 @@ public class WikidataDumpProcessor {
 		} catch (TimeoutException e) {
 
 		}
-
+		System.out.println("AQUI IRIA LA COMPACTACION!!!");
 		// Print final timer results:
 		entityTimerProcessor.close();
 	}

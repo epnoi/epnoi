@@ -1,0 +1,10 @@
+#!/bin/sh
+EPNOI_HOME="/opt/epnoi"
+MAIN_CLASS=org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreator
+cd $EPNOI_HOME/epnoi
+
+
+mvn -X exec:java -Dexec.classpathScope=compile
+
+
+   

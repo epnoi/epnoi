@@ -97,7 +97,10 @@ public class KnowledgeBase {
 				.getNounFirstMeaningHypernyms(source);
 		Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source,
 				RelationHelper.HYPERNYM);
-		return (Sets.union(wordNetHypernyms, wikidataHypernyms));
+		Set<String> hypernyms = new HashSet<String>();
+		hypernyms.addAll(wordNetHypernyms);
+		hypernyms.addAll(wikidataHypernyms);
+		return hypernyms;
 	}
 
 	// -----------------------------------------------------------------------------------------------

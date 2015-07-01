@@ -143,7 +143,7 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>gate-stanford</groupId>
 			<artifactId>gate-stanford</artifactId>
@@ -151,7 +151,7 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/gate-stanford/stanford-parser.jar</systemPath>
 		</dependency>
-		 
+
 		<!-- <dependency> <groupId>org.javatuples</groupId> <artifactId>javatuples</artifactId> 
 			<version>1.2</version> <scope>compile</scope> </dependency> -->
 		<dependency>
@@ -257,7 +257,6 @@
 			<artifactId>mahout-core</artifactId>
 			<version>0.9</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<finalName>epnoi</finalName>
@@ -283,7 +282,17 @@
 				</configuration>
 
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<configuration>
 
+					<mainClass>org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreator</mainClass>
+					<includeProjectDependencies>true</includeProjectDependencies>
+					<classpathScope></classpathScope>
+				</configuration>
+			</plugin>
 		</plugins>
 
 	</build>

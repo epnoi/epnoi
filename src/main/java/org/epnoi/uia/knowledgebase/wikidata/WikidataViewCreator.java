@@ -88,7 +88,11 @@ public class WikidataViewCreator {
 		this.wikidataDumpProcessor.processEntitiesFromWikidataDump();
 		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
 				labelsReverseDictionary, relationsTable);
-		wikidataView.clean();
+		
+		WikidataViewCompressor wikidataViewCompressor = new WikidataViewCompressor();
+		
+		wikidataView= wikidataViewCompressor.compress(wikidataView);
+
 		return wikidataView;
 	}
 
@@ -155,13 +159,20 @@ public class WikidataViewCreator {
 		@Override
 		public void processItemDocument(ItemDocument itemDocument) {
 
-			processItem(itemDocument);
-			if (itemDocument.getLabels() != null) {
-				if (itemDocument.getLabels().get(
-						HypernymRelationsEntityProcessor.EN) != null) {
-					processStatements(itemDocument);
-				}
+			if (_valuableItem(itemDocument)) {
+
+				processStatements(itemDocument);
+
+				processItem(itemDocument);
+
 			}
+		}
+
+		private boolean _valuableItem(ItemDocument itemDocument) {
+
+			return (itemDocument.getLabels().get(
+					HypernymRelationsEntityProcessor.EN) != null);
+
 		}
 
 		// --------------------------------------------------------------------------------------------------
@@ -172,20 +183,21 @@ public class WikidataViewCreator {
 
 		private void processItem(ItemDocument itemDocument) {
 			String itemIRI = itemDocument.getEntityId().getId();
-	
+
 			// First we add the label->IRI relation
 			if (itemDocument.getLabels().get(
 					HypernymRelationsEntityProcessor.EN) != null) {
 
 				String label = itemDocument.getLabels()
 						.get(HypernymRelationsEntityProcessor.EN).getText();
-				//Though we don't stemm the label, we at least use only lowercase letters
+				// Though we don't stemm the label, we at least use only
+				// lowercase letters
 				label = label.toLowerCase();
-				if (_validLabel(label)){
-				_addToDictionary(label, itemIRI, labelsDictionary);
-				_addToDictionary(itemIRI, label, labelsReverseDictionary);
+				if (_validLabel(label)) {
+					//_addToDictionary(label, itemIRI, labelsDictionary);
+					_addToDictionary(itemIRI, label, labelsReverseDictionary);
 				}
-				}
+			}
 			// Now, for each alias of the label we also add the relation
 			// alias->IRI
 			if (itemDocument.getAliases().get(
@@ -193,11 +205,11 @@ public class WikidataViewCreator {
 				for (MonolingualTextValue alias : itemDocument.getAliases()
 						.get(HypernymRelationsEntityProcessor.EN)) {
 					String aliasText = alias.getText();
-				
-					if (_validLabel(aliasText)){
-					_addToDictionary(aliasText, itemIRI, labelsDictionary);
-					_addToDictionary(itemIRI, aliasText,
-							labelsReverseDictionary);
+					aliasText = aliasText.toLowerCase();
+					if (_validLabel(aliasText)) {
+					//	_addToDictionary(aliasText, itemIRI, labelsDictionary);
+						_addToDictionary(itemIRI, aliasText,
+						labelsReverseDictionary);
 					}
 				}
 			}
@@ -210,6 +222,8 @@ public class WikidataViewCreator {
 			return ((label != null) && (!label.contains("disambiguation")));
 
 		}
+
+		// ---------------------------------------------------------------------
 
 		/**
 		 * 
@@ -237,7 +251,8 @@ public class WikidataViewCreator {
 		// --------------------------------------------------------------------------------------------------
 
 		protected void processStatements(StatementDocument statementDocument) {
-
+			// We consider that isValid if contains instanceOf properties
+			
 			for (StatementGroup statementGroup : statementDocument
 					.getStatementGroups()) {
 
@@ -257,10 +272,12 @@ public class WikidataViewCreator {
 							hyponyms.add(object);
 						}
 					}
+				
 					hypernymRelations.put(subject, hyponyms);
 				}
 
 			}
+			
 		}
 		// --------------------------------------------------------------------------------------------------
 

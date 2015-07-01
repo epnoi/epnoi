@@ -99,7 +99,7 @@ public class WikidataView implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------
 
-	public void clean() {
+	public void count() {
 		System.out.println("Initially we had "
 				+ this.relations.get(RelationHelper.HYPERNYM).size()
 				+ " hypernymy relations");
@@ -155,7 +155,7 @@ public class WikidataView implements Resource {
 		System.out.println("It took "+(System.currentTimeMillis()-currentTime)+" to retrieve the wikidata view");
 		
 		currentTime=System.currentTimeMillis();
-		wikidataView.clean();
+		wikidataView.count();
 		System.out.println("It took "+(System.currentTimeMillis()-currentTime)+" to clean the wikidata view");
 	}
 }

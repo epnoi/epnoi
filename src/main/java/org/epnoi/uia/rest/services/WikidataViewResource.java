@@ -144,7 +144,7 @@ public class WikidataViewResource extends UIAService {
 				+ " to retrieve the wikidata view");
 
 		currentTime = System.currentTimeMillis();
-		wikidataView.clean();
+		wikidataView.count();
 		System.out.println("It took "
 				+ (System.currentTimeMillis() - currentTime)
 				+ " to clean the wikidata view");
