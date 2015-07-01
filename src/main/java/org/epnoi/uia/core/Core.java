@@ -58,7 +58,6 @@ public class Core {
 	private EventBus eventBus = null;
 	private KnowledgeBaseHandler knowledgeBaseHandler = null;
 
-
 	/**
 	 * The initialization method for the epnoiCore
 	 * 
@@ -69,6 +68,7 @@ public class Core {
 
 	public synchronized void init(ParametersModel parametersModel)
 			throws EpnoiInitializationException {
+		logger.info("\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
 		logger.info("Initializing the epnoi uia core with the following parameters ");
 		logger.info(parametersModel.toString());
 		this.informationStores = new HashMap<String, InformationStore>();
@@ -86,7 +86,11 @@ public class Core {
 		this._hoardersInitialization();
 		this._harvestersInitialization();
 		this._knowedlgeBaseHandlerInitialization();
-
+		logger.info("");
+		logger.info("");
+		logger.info("===================================================================================================");
+		logger.info("");
+		logger.info("");
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -244,7 +248,7 @@ public class Core {
 		logger.info("Initializing the RSSHarvester");
 		RSSHarvesterParameters parameters = this.parametersModel
 				.getRssHarvester();
-		
+
 		if (parameters != null) {
 			this.rssHarvester = new RSSHarvester(this, parameters);
 			this.rssHarvester.start();
@@ -379,7 +383,6 @@ public class Core {
 			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
 					"Parser_Stanford").toURI().toURL();
 			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
-			
 
 		} catch (MalformedURLException | GateException e) {
 			// TODO Auto-generated catch block
@@ -391,11 +394,11 @@ public class Core {
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _knowedlgeBaseHandlerInitialization() {
-	this.knowledgeBaseHandler = new KnowledgeBaseHandler();
-	this.knowledgeBaseHandler.init(this);
-		
+		this.knowledgeBaseHandler = new KnowledgeBaseHandler();
+		this.knowledgeBaseHandler.init(this);
+
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public DomainsHandler getDomainsHandler() {
@@ -421,19 +424,17 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-	
+
 	public void setHarvestersHandler(HarvestersHandler harvestersHandler) {
 		this.harvestersHandler = harvestersHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	
 	public KnowledgeBaseHandler getKnowledgeBaseHandler() {
 		return knowledgeBaseHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-
 
 }

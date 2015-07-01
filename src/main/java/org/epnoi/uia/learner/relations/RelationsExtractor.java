@@ -79,8 +79,10 @@ public class RelationsExtractor {
 		RelationsTable relationsTable = new RelationsTable();
 		// The relations finding task is only performed in the target domain,
 		// these are the resources that we should consider
+		
+		System.out.println(">>>> "+domainsTable.getTargetDomain());
 		for (String domainResourceURI : domainsTable.getDomainResources().get(
-				domainsTable.getTargetDomain())) {
+				domainsTable.getTargetDomain().getURI())) {
 			logger.info("Indexing the resource " + domainResourceURI);
 			_findRelationsInResource(domainResourceURI);
 		}
@@ -189,6 +191,7 @@ public class RelationsExtractor {
 		for (LexicalRelationalPattern pattern : generatedPatterns) {
 			double relationProbability = this.softPatternModel
 					.calculatePatternProbability(pattern);
+			System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
 			if (relationProbability > this.hypernymExtractionThreshold) {
 				String sourceTermWord = termCandidateBuilder
 						.buildTermCandidate(source).getWord();

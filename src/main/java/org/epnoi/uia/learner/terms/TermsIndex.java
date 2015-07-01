@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class TermsIndex {
 
+	// -------------------------------------------------------------------------------------------------------
+	
 	static final Comparator<AnnotatedWord<TermMetadata>> TERMS_ORDER = new Comparator<AnnotatedWord<TermMetadata>>() {
 		public int compare(AnnotatedWord<TermMetadata> term1,
 				AnnotatedWord<TermMetadata> term2) {

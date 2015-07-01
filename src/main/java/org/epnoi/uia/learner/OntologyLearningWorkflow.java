@@ -40,6 +40,7 @@ public class OntologyLearningWorkflow {
 	private double hypernymRelationsThreshold;
 	private boolean extractTerms;
 	private boolean extractRelations;
+	
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
@@ -140,6 +141,8 @@ public class OntologyLearningWorkflow {
 		// In future versions the ontology graph should be cleaned here.
 
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		System.out.println("Starting the Ontology Learning Process!");

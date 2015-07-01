@@ -40,6 +40,7 @@ class FilesystemHarvester {
 	public String path = "/JUNK/drinventorcorpus/corpus";
 	private boolean verbose;
 	private String corpusLabel;
+	private String corpusURI;
 
 	private static final Logger logger = Logger
 			.getLogger(FilesystemHarvester.class.getName());
@@ -120,7 +121,7 @@ class FilesystemHarvester {
 					// corpus
 					long startTme = System.currentTimeMillis();
 					core.getAnnotationHandler().label(paper.getURI(),
-							this.corpusLabel);
+							this.corpusURI);
 
 					long totalTime = Math.abs(startTme
 							- System.currentTimeMillis());
@@ -255,6 +256,9 @@ class FilesystemHarvester {
 
 		this.corpusLabel = (String) parameters
 				.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER);
+		
+		this.corpusURI = (String) parameters
+				.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI_PARAMETER);
 
 	}
 
@@ -269,6 +273,10 @@ class FilesystemHarvester {
 		parameters.setParameter(
 				FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER,
 				"CGTestCorpus");
+		
+		parameters.setParameter(
+				FilesystemHarvesterParameters.CORPUS_URI_PARAMETER,
+				"http://CGTestCorpus");
 		parameters.setParameter(
 				FilesystemHarvesterParameters.VERBOSE_PARAMETER, true);
 
@@ -279,7 +287,7 @@ class FilesystemHarvester {
 		
 		parameters.setParameter(
 				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
-				"/epnoi/epnoideployment/firstReviewResources/CGCorpus");
+				"/opt/epnoi/epnoideployment/firstReviewResources/CGCorpus");
 
 		Core core = CoreUtility.getUIACore();
 		try {

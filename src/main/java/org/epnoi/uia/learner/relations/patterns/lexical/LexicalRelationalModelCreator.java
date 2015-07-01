@@ -104,6 +104,8 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void create() {
+		logger.info("Starting the creation of a lexical BigramSoftPatternModel with the following parameters: "
+				+ this.parameters);
 		this.model = buildModel();
 
 		if (this.verbose) {
@@ -126,7 +128,7 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		System.out.println("Starting the Lexical Relational Model creation");
+		logger.info("Starting the Lexical Relational Model creation");
 		RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
 		parameters
 				.setParameter(
@@ -139,16 +141,13 @@ public class LexicalRelationalModelCreator {
 
 		parameters.setParameter(
 				RelationalPatternsModelCreationParameters.MODEL_PATH,
-				"/JUNK/model.bin");
-
-		parameters
-				.setParameter(
-						RelationalSentencesCorpusCreationParameters.STORE,
-						true);
+				"/home/rgonza/Escritorio/model.bin");
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE,
-				false);
+				RelationalSentencesCorpusCreationParameters.STORE, true);
+
+		parameters.setParameter(
+				RelationalSentencesCorpusCreationParameters.VERBOSE, false);
 
 		Core core = CoreUtility.getUIACore();
 
@@ -162,7 +161,7 @@ public class LexicalRelationalModelCreator {
 
 		modelCreator.create();
 
-		System.out.println("Ending the Lexical Relational Model creation");
+		logger.info("Ending the Lexical Relational Model creation");
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------

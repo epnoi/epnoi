@@ -8,6 +8,7 @@ public class FilesystemHarvesterParameters extends Parameters<Object> {
 	public static final String VERBOSE_PARAMETER = "VERBOSE_PARAMETER"; 
 	public static final String FILEPATH_PARAMETER = "FILEPATH_PARAMETER"; //Filepath were the files to be harvested are deployed
 	public static final String OVERWRITE_PARAMETER = "OVERWRITE_PARAMETER";
+	public static final String CORPUS_URI_PARAMETER = "CORPUS_URI_PARAMETER";
 
 	//---------------------------------------------------------------------------------------------------------------------
 

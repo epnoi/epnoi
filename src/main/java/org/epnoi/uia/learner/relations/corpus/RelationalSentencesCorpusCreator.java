@@ -4,12 +4,12 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 import gate.DocumentContent;
-import gate.util.InvalidOffsetException;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -29,9 +29,6 @@ import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBase;
-import org.epnoi.uia.knowledgebase.KnowledgeBaseFactory;
-import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.learner.relations.RelationalSentence;
@@ -48,13 +45,15 @@ public class RelationalSentencesCorpusCreator {
 	private RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
-	private int MAX_SENTENCE_LENGTH = 600;
+	private int MAX_SENTENCE_LENGTH = 100;
+	private long nonRelationalSentencesCounter = 0;
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
 			RelationalSentencesCorpusCreationParameters parameters)
 			throws EpnoiInitializationException {
+		logger.info("Initializing the RelationalSentencesCorpusCreator with the following parameters "+parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
@@ -67,6 +66,7 @@ public class RelationalSentencesCorpusCreator {
 
 		this.verbose = (boolean) parameters
 				.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
+		this.MAX_SENTENCE_LENGTH=(int) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER);
 
 	}
 
@@ -94,8 +94,9 @@ public class RelationalSentencesCorpusCreator {
 		if (this.storeResult) {
 			_storeCorpus();
 		}
-
 	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
 
 	private void _storeCorpus() {
 		core.getInformationHandler().remove(this.corpus.getURI(),
@@ -127,7 +128,8 @@ public class RelationalSentencesCorpusCreator {
 		}
 		System.out.println("The average length is " + average
 				/ this.corpus.getSentences().size());
-
+		System.out.println("There were " + nonRelationalSentencesCounter
+				+ " that were left out as no relational");
 		System.out
 				.println("------------------------------------------------------------------------------------------");
 
@@ -259,23 +261,31 @@ public class RelationalSentencesCorpusCreator {
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
-			Long sentenceStartOffset = sentenceAnnotation.getStartNode()
-					.getOffset();
-			Long sentenceEndOffset = sentenceAnnotation.getEndNode()
-					.getOffset();
 
-			sentenceContent = GateUtils.extractAnnotationContent(
-					sentenceAnnotation, document);
-			if (sentenceContent != null
-					&& sentenceContent.size() < MAX_SENTENCE_LENGTH) {
-
-				_testSentence(sentenceAnnotation, sentenceContent,
-						sentencesAnnotations.getContained(sentenceStartOffset,
-								sentenceEndOffset));
-			}
+			_searchSentence(document, sentencesAnnotations, sentenceAnnotation);
 
 		}
 
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------------------
+
+	private void _searchSentence(Document document,
+			AnnotationSet sentencesAnnotations, Annotation sentenceAnnotation) {
+		DocumentContent sentenceContent;
+		Long sentenceStartOffset = sentenceAnnotation.getStartNode()
+				.getOffset();
+		Long sentenceEndOffset = sentenceAnnotation.getEndNode().getOffset();
+
+		sentenceContent = GateUtils.extractAnnotationContent(
+				sentenceAnnotation, document);
+		if (sentenceContent != null
+				&& sentenceContent.size() < MAX_SENTENCE_LENGTH) {
+
+			_testSentence(sentenceAnnotation, sentenceContent,
+					sentencesAnnotations.getContained(sentenceStartOffset,
+							sentenceEndOffset));
+		}
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -285,11 +295,81 @@ public class RelationalSentencesCorpusCreator {
 			AnnotationSet sentenceAnnotationsSet) {
 		Long sentenceStartOffset = sentence.getStartNode().getOffset();
 		Long sentenceEndOffset = sentence.getEndNode().getOffset();
+
 		Set<String> sentenceTerms = new HashSet<String>();
 		// This table stores the string representation of each sentence terms
 		// and their corresponding annotation
-		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<>();
+		Map<String, Annotation> termsAnnotationsTable = _createTermsAnnotationsTable(
+				sentenceContent, sentenceAnnotationsSet, sentenceStartOffset,
+				sentenceTerms);
+		for (String term : sentenceTerms) {
+			if (term != null && term.length() > 0) {
+				// For each term we retrieve its well-known hypernyms
+				Set<String> termHypernyms = this.knowledgeBase
+						.getHypernyms(term);
+				termHypernyms.retainAll(sentenceTerms);
 
+				// If the intersection of the well-known hypernyms and the terms
+				// that belong to the sentence, this is a relational sentence
+				if (termHypernyms.size() > 0) {
+
+					_createRelationalSentence(sentenceContent,
+							sentenceStartOffset, termsAnnotationsTable, term,
+							termHypernyms);
+
+				} else {
+					nonRelationalSentencesCounter++;
+				}
+			}
+		}
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
+
+	private void _createRelationalSentence(DocumentContent sentenceContent,
+			Long sentenceStartOffset,
+			Map<String, Annotation> termsAnnotationsTable, String term,
+			Set<String> termHypernyms) {
+		Annotation sourceTermAnnotation = termsAnnotationsTable.get(term);
+
+		// Note that the offset is relative to the beginning of the
+		// sentence
+		OffsetRangeSelector source = new OffsetRangeSelector(
+				sourceTermAnnotation.getStartNode().getOffset()
+						- sentenceStartOffset, sourceTermAnnotation
+						.getEndNode().getOffset() - sentenceStartOffset);
+		// For each target term a relational sentence is created
+		for (String destinationTerm : termHypernyms) {
+
+			Annotation destinationTermAnnotation = termsAnnotationsTable
+					.get(destinationTerm);
+
+			// Note that the offset is relative to the beginning of
+			// the
+			// sentence
+			OffsetRangeSelector target = new OffsetRangeSelector(
+					destinationTermAnnotation.getStartNode().getOffset()
+							- sentenceStartOffset, destinationTermAnnotation
+							.getEndNode().getOffset() - sentenceStartOffset);
+
+			Document annotatedContent = termCandidatesFinder
+					.findTermCandidates(sentenceContent.toString());
+
+			RelationalSentence relationalSentence = new RelationalSentence(
+					source, target, sentenceContent.toString(),
+					annotatedContent.toXml());
+
+			corpus.getSentences().add(relationalSentence);
+		}
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
+
+	private Map<String, Annotation> _createTermsAnnotationsTable(
+			DocumentContent sentenceContent,
+			AnnotationSet sentenceAnnotationsSet, Long sentenceStartOffset,
+			Set<String> sentenceTerms) {
+		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<String, Annotation>();
 		for (Annotation termAnnotation : sentenceAnnotationsSet
 				.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 			Long startOffset = termAnnotation.getStartNode().getOffset()
@@ -297,81 +377,41 @@ public class RelationalSentencesCorpusCreator {
 			Long endOffset = termAnnotation.getEndNode().getOffset()
 					- sentenceStartOffset;
 
-			/*
-			 * System.out.println("startOffset >" + startOffset + "| endOffset "
-			 * + endOffset + ")");
-			 */
+			String term = "";
 			try {
 				// First of all we retrieve the surface form of the term
-				String term = sentenceContent
-						.getContent(startOffset, endOffset).toString();
 
-				// We stem the surface form (we left open the possibility of
-				// different stemming results so we consider a set of stemmed
-				// forms)
-				for (String stemmedTerm : this.knowledgeBase.stem(term)) {
-
-					termsAnnotationsTable.put(stemmedTerm, termAnnotation);
-					sentenceTerms.add(stemmedTerm);
-
-				}
+				term = sentenceContent.getContent(startOffset, endOffset)
+						.toString();
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				term = "";
+
 			}
 
+			// We stem the surface form (we left open the possibility of
+			// different stemming results so we consider a set of stemmed
+			// forms)
+			_addTermToTermsTable(sentenceTerms, termsAnnotationsTable,
+					termAnnotation, term);
 		}
-		for (String term : sentenceTerms) {
-			if (term != null && term.length() > 0) {
-				// For each term we retrieve its well-known hypernyms
-				Set<String> termHypernyms = this.knowledgeBase
-						.getHypernyms(term);
-				// System.out.println("hypernyms(" + term + "---> "
-				// + termHypernyms);
-				termHypernyms.retainAll(sentenceTerms);
+		return termsAnnotationsTable;
+	}
 
-				// If the intersection of the well-known hypernyms and the terms
-				// that belong to the sentence, this is a relational sentence
-				if (termHypernyms.size() > 0) {
+	// ----------------------------------------------------------------------------------------------------------------------
 
-					Annotation sourceTermAnnotation = termsAnnotationsTable
-							.get(term);
+	private void _addTermToTermsTable(Set<String> sentenceTerms,
+			HashMap<String, Annotation> termsAnnotationsTable,
+			Annotation termAnnotation, String term) {
+		if (term.length() > 2) {
+			for (String stemmedTerm : this.knowledgeBase.stem(term)) {
 
-					// Note that the offset is relative to the beginning of the
-					// sentence
-					OffsetRangeSelector source = new OffsetRangeSelector(
-							sourceTermAnnotation.getStartNode().getOffset()
-									- sentenceStartOffset, sourceTermAnnotation
-									.getEndNode().getOffset()
-									- sentenceStartOffset);
-					// For each target term a relational sentence is created
-					for (String destinationTerm : termHypernyms) {
+				termsAnnotationsTable.put(stemmedTerm, termAnnotation);
+				sentenceTerms.add(stemmedTerm);
 
-						Annotation destinationTermAnnotation = termsAnnotationsTable
-								.get(destinationTerm);
-
-						// Note that the offset is relative to the beginning of
-						// the
-						// sentence
-						OffsetRangeSelector target = new OffsetRangeSelector(
-								destinationTermAnnotation.getStartNode()
-										.getOffset() - sentenceStartOffset,
-								destinationTermAnnotation.getEndNode()
-										.getOffset() - sentenceStartOffset);
-
-						Document annotatedContent = termCandidatesFinder
-								.findTermCandidates(sentenceContent.toString());
-
-						RelationalSentence relationalSentence = new RelationalSentence(
-								source, target, sentenceContent.toString(),
-								annotatedContent.toXml());
-
-						corpus.getSentences().add(relationalSentence);
-					}
-
-				}
 			}
+			termsAnnotationsTable.put(term, termAnnotation);
+			sentenceTerms.add(term);
 		}
 	}
 
@@ -453,10 +493,10 @@ public class RelationalSentencesCorpusCreator {
 		parameters
 				.setParameter(
 						RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER,
-						1000);
+						80);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.STORE, false);
+				RelationalSentencesCorpusCreationParameters.STORE, true);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.VERBOSE, true);

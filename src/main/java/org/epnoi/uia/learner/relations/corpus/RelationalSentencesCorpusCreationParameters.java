@@ -15,12 +15,4 @@ public class RelationalSentencesCorpusCreationParameters extends
 	public static final String MAX_SENTENCE_LENGTH_PARAMETER = "MAX_SENTENCE_LENGTH_PARAMETER";
 	public static final String TEST = "TEST_PARAMETER";
 
-	//---------------------------------------------------------------------------------------------------
-	
-	@Override
-	public String toString() {
-		return "RelationalSentencesCorpusCreationParameters [parmaters:"
-				+ super.parameters.entrySet() + "]";
-	}
-
 }
