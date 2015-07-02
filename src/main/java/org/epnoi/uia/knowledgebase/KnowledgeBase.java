@@ -32,6 +32,8 @@ public class KnowledgeBase {
 
 	public boolean areRelated(String source, String target, String type) {
 		if (RelationHelper.HYPERNYM.equals(type)) {
+			System.out.println("RelatedWordnet> "+areRelatedInWordNet(source, target));
+			System.out.println("RelatedWikidata> "+areRelatedInWikidata(source, target));
 			return (areRelatedInWordNet(source, target) || areRelatedInWikidata(
 					source, target));
 		} else

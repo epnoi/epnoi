@@ -25,8 +25,9 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
-import org.epnoi.uia.informationstore.dao.rdf.DublinCoreRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.learner.OntologyLearningTask;
+import org.epnoi.uia.learner.terms.TermsTable;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;
@@ -154,6 +155,37 @@ public class DomainResource extends UIAService {
 		if (domain != null) {
 
 			return Response.ok(domain, MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(Responses.NOT_FOUND).build();
+
+	}
+
+	// -----------------------------------------------------------------------------------------
+
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/terms")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The terminology of the domain has been successfully retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A domain with such URI,, or a terminology for such domain,, could not be found") })
+	@ApiOperation(value = "Returns the domain with the provided URI", notes = "", response = Domain.class)
+	public Response getDomainTerminology(
+			@ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
+
+		logger.info("GET uri=" + uri);
+
+		Domain domain = (Domain) core.getInformationHandler().get(uri,
+				RDFHelper.DOMAIN_CLASS);
+
+		if (domain != null) {
+			OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
+			ontologyLearningTask.perform(core, domain);
+			TermsTable termsTable = ontologyLearningTask.getTermsTable();
+
+			if (termsTable != null) {
+				return Response.ok(domain, MediaType.APPLICATION_JSON).build();
+			}
 		}
 		return Response.status(Responses.NOT_FOUND).build();
 

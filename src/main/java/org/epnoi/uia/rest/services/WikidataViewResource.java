@@ -62,7 +62,7 @@ public class WikidataViewResource extends UIAService {
 			@ApiResponse(code = 201, message = "The wikidataview has been created"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
 	public Response createWikidataView(
-			@ApiParam(value = "Wikidata view timeout", required = false, allowMultiple = false) @QueryParam("timeout") Integer timeout) {
+			@ApiParam(value = "Wikidata view timeout", required = true, allowMultiple = false) @QueryParam("timeout") Integer timeout) {
 		logger.info("PUT timout> " + timeout);
 
 		URI wikidataViewURI = null;
