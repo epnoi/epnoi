@@ -58,6 +58,8 @@ public class RelationsExtractor {
 		this.parameters = parameters;
 		String hypernymModelPath = (String) parameters
 				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH);
+		this.hypernymExtractionThreshold = (double) parameters
+				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
 		this.targetDomain = (String) parameters
 				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 		this.patternsGenerator = new LexicalRelationalPatternGenerator();
@@ -79,8 +81,7 @@ public class RelationsExtractor {
 		RelationsTable relationsTable = new RelationsTable();
 		// The relations finding task is only performed in the target domain,
 		// these are the resources that we should consider
-		
-		System.out.println(">>>> "+domainsTable.getTargetDomain());
+
 		for (String domainResourceURI : domainsTable.getDomainResources().get(
 				domainsTable.getTargetDomain().getURI())) {
 			logger.info("Indexing the resource " + domainResourceURI);
@@ -93,14 +94,16 @@ public class RelationsExtractor {
 
 	private void _findRelationsInResource(String domainResourceURI) {
 		Content<Object> annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
-		Document annotatedResourceDocument = (Document)annotatedResource.getContent();
-		
-		AnnotationSet sentenceAnnotations = annotatedResourceDocument.getAnnotations()
-				.get(NLPAnnotationsConstants.SENTENCE);
+		Document annotatedResourceDocument = (Document) annotatedResource
+				.getContent();
+
+		AnnotationSet sentenceAnnotations = annotatedResourceDocument
+				.getAnnotations().get(NLPAnnotationsConstants.SENTENCE);
 
 		System.out.println("There are " + sentenceAnnotations.size());
 		DocumentContent sentenceContent = null;
-		AnnotationSet resourceAnnotations = annotatedResourceDocument.getAnnotations();
+		AnnotationSet resourceAnnotations = annotatedResourceDocument
+				.getAnnotations();
 
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
@@ -191,12 +194,14 @@ public class RelationsExtractor {
 		for (LexicalRelationalPattern pattern : generatedPatterns) {
 			double relationProbability = this.softPatternModel
 					.calculatePatternProbability(pattern);
-			System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
+			//System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
 			if (relationProbability > this.hypernymExtractionThreshold) {
 				String sourceTermWord = termCandidateBuilder
 						.buildTermCandidate(source).getWord();
 				String targetTermWord = termCandidateBuilder
 						.buildTermCandidate(target).getWord();
+				System.out.println(" sourceTermWord> " + sourceTermWord);
+				System.out.println(" targetTermWord> " + targetTermWord);
 
 				/*
 				 * String sourceToken = (String) source.getFeatures()
@@ -213,14 +218,18 @@ public class RelationsExtractor {
 						targetTermWord, this.targetDomain));
 
 				if (sourceTerm != null && targetTerm != null) {
+					System.out
+							.println("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA>");
 					this.relationsTable.introduceRelation(this.targetDomain,
 							sourceTerm, targetTerm, RelationHelper.HYPERNYM,
 							sentenceContent, relationProbability);
 				} else {
-					System.out.println("S_word " + sourceTermWord + " S_term "
-							+ sourceTerm);
-					System.out.println("T_word " + targetTermWord + " T_term "
-							+ targetTerm);
+					// System.out.println("S_word " + sourceTermWord +
+					// " S_term "
+					// + sourceTerm);
+					// System.out.println("T_word " + targetTermWord +
+					// " T_term "
+					// + targetTerm);
 
 				}
 

@@ -137,28 +137,6 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private void _showRelationalSentenceInfo(
-			RelationalSentence relationalSencente) {
-
-		String source = relationalSencente
-				.getSentence()
-				.subSequence(
-						relationalSencente.getSource().getStart().intValue(),
-						relationalSencente.getSource().getEnd().intValue())
-				.toString();
-
-		String target = relationalSencente
-				.getSentence()
-				.subSequence(
-						relationalSencente.getTarget().getStart().intValue(),
-						relationalSencente.getTarget().getEnd().intValue())
-				.toString();
-
-		System.out.println("[" + source + "," + target + "]>"
-				+ relationalSencente.getSentence());
-
-	}
-
 	private void _searchReutersCorpus() {
 		// TODO Auto-generated method stub
 
@@ -308,6 +286,9 @@ public class RelationalSentencesCorpusCreator {
 				Set<String> termHypernyms = this.knowledgeBase
 						.getHypernyms(term);
 				termHypernyms.retainAll(sentenceTerms);
+				termHypernyms.removeAll(this.knowledgeBase.stem(term));
+			
+				
 
 				// If the intersection of the well-known hypernyms and the terms
 				// that belong to the sentence, this is a relational sentence

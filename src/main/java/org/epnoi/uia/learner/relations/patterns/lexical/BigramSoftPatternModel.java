@@ -18,7 +18,7 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 	private RelationalPatternsModelCreationParameters parmeters;
 	// private int maxPatternLength;
 	// private LexicalRelationalModelCreationParameters parameters;
-	private double interpolation_constant = 0.3d; // Set to this value using the
+	private double interpolation_constant = 0.7d; // Set to this value using the
 													// experimental value set in
 													// Generic Soft Pattern
 													// Models for Definitional
@@ -90,18 +90,18 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 			String nodeToken = relationalPattern.getNodes().get(0)
 					.getGeneratedToken();
 
-			double probability = Math.log(this.getUnigramProbability(nodeToken,
-					0));
+			double probability = this.getUnigramProbability(nodeToken,
+					0);
 			for (int position = 1; position < relationalPattern.getLength(); position++) {
 				pastNodeToken = relationalPattern.getNodes().get(position - 1)
 						.getGeneratedToken();
 				nodeToken = relationalPattern.getNodes().get(position)
 						.getGeneratedToken();
-				probability += this.interpolation_constant
-						* Math.log(this.getUnigramProbability(nodeToken,
-								position))
+				probability += (this.interpolation_constant
+						* this.getUnigramProbability(nodeToken,
+								position)
 						+ (1 - this.interpolation_constant)
-						* Math.log(this.getBigramProbability(pastNodeToken,
+						* this.getBigramProbability(pastNodeToken,
 								nodeToken, position));
 			}
 			// The probability is normalized
@@ -109,7 +109,7 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 
 			// And finally brought back to the [0,1] range
 			// System.out.println(Math.exp(probability));
-			return Math.exp(probability);
+			return probability;
 		}
 	}
 

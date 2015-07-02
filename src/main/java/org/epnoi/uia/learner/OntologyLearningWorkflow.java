@@ -169,7 +169,7 @@ public class OntologyLearningWorkflow {
 		String targetDomain = corpusURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
-		Double hypernymExtractionMinimumThresohold = 0.1;
+		Double hypernymExtractionMinimumThresohold = 0.28;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
 		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
@@ -189,7 +189,7 @@ public class OntologyLearningWorkflow {
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
-						hyperymExpansionMinimumThreshold);
+						hypernymExtractionMinimumThresohold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
