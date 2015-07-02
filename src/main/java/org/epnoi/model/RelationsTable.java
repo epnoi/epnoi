@@ -225,5 +225,38 @@ public class RelationsTable implements Resource {
 	}
 
 	// --------------------------------------------------------------------
+	
+
+	public void show(int numberOfDeatiledTerms) {
+
+		System.out
+				.println("=====================================================================================================================");
+		System.out.println("Terms Table");
+
+		System.out
+				.println("=====================================================================================================================");
+
+		System.out.println("# of candidate relations: " + this.size());
+		System.out.println("The top most " + numberOfDeatiledTerms
+				+ " probable relations are: ");
+		int i = 1;
+		for (Relation term : this.getMostProbable(numberOfDeatiledTerms)) {
+			System.out.println("(" + i++ + ")"
+					+ term.getSource() +" > "+term.getType()+" > "+term.getTarget()
+				);
+
+			System.out
+					.println("------------------------------------------------------");
+			System.out.println(term);
+			System.out
+					.println("------------------------------------------------------");
+
+		}
+
+		System.out
+				.println("=====================================================================================================================");
+		System.out
+				.println("=====================================================================================================================");
+	}
 
 }

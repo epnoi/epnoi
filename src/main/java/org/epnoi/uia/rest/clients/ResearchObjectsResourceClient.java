@@ -33,7 +33,7 @@ public class ResearchObjectsResourceClient {
 			Client client = Client.create(config);
 
 			WebResource service = client
-					.resource("http://localhost:8081/epnoiUIA/rest");
+					.resource("http://localhost:8081/epnoi/rest");
 
 			// UIA/ResearchObjects/ResearchObject";
 

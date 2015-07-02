@@ -200,6 +200,7 @@ public class WikidataViewCreator {
 			}
 			// Now, for each alias of the label we also add the relation
 			// alias->IRI
+			/*
 			if (itemDocument.getAliases().get(
 					HypernymRelationsEntityProcessor.EN) != null) {
 				for (MonolingualTextValue alias : itemDocument.getAliases()
@@ -213,6 +214,7 @@ public class WikidataViewCreator {
 					}
 				}
 			}
+			*/
 
 		}
 
