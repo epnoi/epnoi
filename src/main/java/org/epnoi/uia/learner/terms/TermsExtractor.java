@@ -82,7 +82,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void indexResources() {
-
+		logger.info("Indexing the textual resources to extract the terminology");
 		for (String domain : this.domainsTable.getConsideredDomains()) {
 			logger.info("Indexing the domain: " + domain);
 			this._indexDomainResoures(domain);
@@ -173,10 +173,13 @@ public class TermsExtractor {
 
 	public void extractTerms() {
 		this.indexResources();
-		this.calculateCValues();
-		this.calculateDomainConsensus();
-		this.calculateDomainPertinence();
-		this.normalizeAnDeriveMeasures();
+		if (!this.domainsTable.getDomainResources().get(this.targetDomain)
+				.isEmpty()) {
+			this.calculateCValues();
+			this.calculateDomainConsensus();
+			this.calculateDomainPertinence();
+			this.normalizeAnDeriveMeasures();
+		}
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -482,6 +485,7 @@ public class TermsExtractor {
 	public TermsTable extract() {
 		this.extractTerms();
 		TermsTable termsTable = new TermsTable();
+		System.out.println("........................::>    "+this.termsIndex);
 		for (AnnotatedWord<TermMetadata> term : this.termsIndex
 				.getTerms(this.targetDomain)) {
 
