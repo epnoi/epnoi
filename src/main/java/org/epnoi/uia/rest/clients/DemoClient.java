@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.lucene.index.Terms;
 import org.epnoi.model.Domain;
+import org.epnoi.model.Relation;
 import org.epnoi.model.ResearchObject;
 
 import com.sun.jersey.api.client.Client;
@@ -52,16 +53,13 @@ public class DemoClient {
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 				.get(Domain.class);
 		System.out.println(retrievedDomain);
-		
-		  List<Terms> response = service.path(domainsPath + "/terms")
-		  .queryParam("uri", domainURI)
-		  .type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-		  .get(ArrayList.class); System.out.println("The list of terms is " +
-		  response);
-		 
 
-		
-		
+		List<Terms> response = service.path(domainsPath + "/terms")
+				.queryParam("uri", domainURI)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+				.get(ArrayList.class);
+		System.out.println("The list of terms is " + response);
+
 		System.out.println("Let's add a resource");
 
 		int numberOfResources = 1;
@@ -81,13 +79,12 @@ public class DemoClient {
 			}
 			i++;
 		}
-		
-		  response = service.path(domainsPath + "/terms")
-				  .queryParam("uri", domainURI)
-				  .type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-				  .get(ArrayList.class); System.out.println("The list of terms now is " +
-				  response);
-				 
+
+		response = service.path(domainsPath + "/terms")
+				.queryParam("uri", domainURI)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+				.get(ArrayList.class);
+		System.out.println("The list of terms now is " + response);
 
 		System.out.println("Then we retrieve it");
 		retrievedDomain = service.path(domainsPath)
@@ -98,21 +95,27 @@ public class DemoClient {
 
 		System.out
 				.println("Then we get it, again after modifiying the resources");
-		ResearchObject retrievedResearchObject = service.path(researchObjectsPath)
+		ResearchObject retrievedResearchObject = service
+				.path(researchObjectsPath)
 				.queryParam("uri", domainURI + "/resources")
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 				.get(ResearchObject.class);
 		System.out.println("The modified with the POST RO response was: "
 				+ retrievedResearchObject);
-	
+
+		List<Relation> relationsResponse = service
+				.path(domainsPath + "/relations").queryParam("uri", domainURI)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+				.get(ArrayList.class);
+		System.out.println("The list of relations is " + relationsResponse);
+
 		System.out.println("Lets delete the domain!");
-/*
-		service.path(domainsPath).queryParam("uri", domainURI)
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
-	*/
+		/*
+		 * service.path(domainsPath).queryParam("uri", domainURI)
+		 * .type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
+		 */
 	}
 
-	
 	// ----------------------------------------------------------------------------------------
 
 	public static String[] scanFilesToHarverst(File directoryToHarvest) {

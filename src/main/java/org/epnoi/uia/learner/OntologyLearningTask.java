@@ -47,7 +47,7 @@ public class OntologyLearningTask {
 		logger.info(ontologyLearningParameters.toString());
 
 		this.ontologyLearningParameters = ontologyLearningParameters;
-	
+
 		this.hypernymRelationsThreshold = (double) this.ontologyLearningParameters
 				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
 		this.extractTerms = (boolean) this.ontologyLearningParameters
@@ -87,7 +87,7 @@ public class OntologyLearningTask {
 			this.termsTable = this.termsRetriever.retrieve(targetDomain);
 		}
 
-		termsTable.show(30);
+		// termsTable.show(30);
 
 		System.out.println("Extracting relations table");
 
@@ -104,7 +104,7 @@ public class OntologyLearningTask {
 
 	public void perform(Core core, Domain domain) {
 		System.out.println("Starting the Ontology Learning Task");
-this.domain=domain;
+		this.domain = domain;
 		List<Domain> consideredDomains = Arrays.asList(domain);
 
 		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
@@ -113,7 +113,8 @@ this.domain=domain;
 				consideredDomains);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.TARGET_DOMAIN, domain.getURI());
+				OntologyLearningWorkflowParameters.TARGET_DOMAIN,
+				domain.getURI());
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
@@ -122,7 +123,7 @@ this.domain=domain;
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
-						0.28);
+						0.25);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.EXTRACT_TERMS, true);
 		ontologyLearningParameters.setParameter(
@@ -148,11 +149,19 @@ this.domain=domain;
 	public TermsTable getTermsTable() {
 		return this.termsTable;
 	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	public RelationsTable getRelationsTable() {
+		return this.relationsTable;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
-		
+
 		String domainURI = "http://www.epnoi.org/CGTestCorpusDomain";
 		String domainType = "paper";
 		String domainsPath = "/uia/domains/domain";
@@ -161,17 +170,12 @@ this.domain=domain;
 		Domain domain = new Domain();
 
 		domain.setURI(domainURI);
-		domain.setResources(domain.getURI()+"/resources");
+		domain.setResources(domain.getURI() + "/resources");
 		domain.setExpression("");
 		domain.setType(RDFHelper.PAPER_CLASS);
-		
-		
-		
-		
-		
+
 		ontologyLearningTask.perform(core, domain);
-		
-		
+
 	}
 
 }
