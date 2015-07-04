@@ -78,7 +78,7 @@ public class RelationsExtractor {
 	public RelationsTable extract(TermsTable termsTable) {
 		logger.info("Extracting the Relations Table");
 		this.termsTable = termsTable;
-		RelationsTable relationsTable = new RelationsTable();
+		this.relationsTable = new RelationsTable();
 		// The relations finding task is only performed in the target domain,
 		// these are the resources that we should consider
 

@@ -3,6 +3,7 @@ package org.epnoi.uia.rest.services;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -25,6 +26,7 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.model.Term;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.OntologyLearningTask;
 import org.epnoi.uia.learner.terms.TermsTable;
@@ -184,8 +186,11 @@ public class DomainResource extends UIAService {
 			TermsTable termsTable = ontologyLearningTask.getTermsTable();
 
 			if (termsTable != null) {
-				return Response.ok(domain, MediaType.APPLICATION_JSON).build();
+				List<Term> terms = termsTable.getMostProbable(10);
+
+				return Response.ok(terms, MediaType.APPLICATION_JSON).build();
 			}
+
 		}
 		return Response.status(Responses.NOT_FOUND).build();
 
@@ -208,8 +213,13 @@ public class DomainResource extends UIAService {
 
 		Domain domain = (Domain) core.getInformationHandler().get(URI,
 				RDFHelper.DOMAIN_CLASS);
-
+		System.out.println();
+		System.out.println();
+		System.out.println("DOMAIN >     " + domain);
+		System.out.println();
+		System.out.println();
 		if (domain != null) {
+			System.out.println("DOMAIN " + domain);
 			ResearchObject researchObject = (ResearchObject) core
 					.getInformationHandler().get(URI + resourcesPathSubfix,
 							RDFHelper.RESEARCH_OBJECT_CLASS);
@@ -221,8 +231,10 @@ public class DomainResource extends UIAService {
 					core.getInformationHandler().update(researchObject);
 				}
 			}
-
-			return Response.ok().build();
+		 domain = (Domain) core.getInformationHandler().get(URI,
+					RDFHelper.DOMAIN_CLASS);
+		System.out.println("--------------DOMAIN-----> "+domain);
+		 return Response.ok().build();
 		} else {
 			return Response.status(Responses.NOT_FOUND).build();
 		}

@@ -56,14 +56,17 @@ public class DomainsHandler {
 	// -----------------------------------------------------------------------------------
 
 	private List<String> _extractExtensionallySpecifiedResources(Domain domain) {
+		
 		ResearchObject resources = (ResearchObject) core
 				.getInformationHandler().get(domain.getResources(),
 						RDFHelper.RESEARCH_OBJECT_CLASS);
+		
+		//System.out.println("( "+domain.getResources()+" )RESOUUCE OBJSCT "+ resources);
 		if (resources != null) {
 			List<String> foundURIs = resources.getAggregatedResources();
 			if (foundURIs != null) {
-				logger.info("Found initially " + foundURIs.size()
-						+ " elements in the domain " + domain.getURI());
+				logger.info("Initially " + foundURIs.size()
+						+ " are defined as belonging to the domain " + domain.getURI());
 				return foundURIs;
 			}
 		}
@@ -86,6 +89,7 @@ public class DomainsHandler {
 			Domain domain) {
 		List<String> cleanedURIs = new ArrayList<String>();
 		for (String uri : foundURIs) {
+			System.out.println(">>> "+domain);
 			if (core.getInformationHandler().contains(uri, domain.getType())) {
 				cleanedURIs.add(uri);
 			}

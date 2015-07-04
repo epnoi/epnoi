@@ -120,7 +120,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
 				.hasNext();) {
 			Triple triple = (Triple) i.next();
-
+System.out.println("---------------------------------------------------------___>"+triple.toString());
 			graph.remove(triple);
 
 		}
@@ -144,7 +144,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public ResearchObject read(String URI) {
-
+System.out.println("............URI................> "+URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

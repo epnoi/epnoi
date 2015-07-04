@@ -45,17 +45,12 @@ public class DomainWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.DOMAIN_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
-		Domain domain = (Domain) informationStore.get(selector);
-		String resourcesURI = domain.getResources();
-
-		informationStore = this.core.getInformationStoresByType(
+		
+		InformationStore informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
-		domain = (Domain) informationStore.get(selector);
-		domain.setResources(resourcesURI);
+		Domain domain = (Domain) informationStore.get(selector);
+	
 
 		return domain;
 	}
@@ -146,9 +141,13 @@ public class DomainWrapper implements Wrapper {
 		domain.setURI("http://www.epnoi.org/lauri");
 		domain.setExpression("sparqlexpression");
 		domain.setLabel("name");
-		domain.setType(RDFHelper.DOMAIN_CLASS);
-
-		domain.setResources("http://www.epnoi.org/lauri");
+		domain.setType(RDFHelper.PAPER_CLASS);
+		domain.setResources("http://www.epnoi.org/lauri/resources");
+		
+		if(core.getInformationHandler().contains(domain.getURI(), RDFHelper.DOMAIN_CLASS)){
+			core.getInformationHandler().remove(domain.getURI(),  RDFHelper.DOMAIN_CLASS);
+		}
+		
 		core.getInformationHandler().put(domain, Context.getEmptyContext());
 
 		System.out.println("-------> "

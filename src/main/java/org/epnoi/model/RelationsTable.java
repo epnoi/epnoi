@@ -61,6 +61,7 @@ public class RelationsTable implements Resource {
 
 	public List<Relation> getRelations(String sourceURI, String type,
 			double expansionProbabilityThreshold) {
+		System.out.println("size> " + this.orderedRelations.size());
 		List<Relation> relations = new ArrayList<>();
 		for (Relation relationFromSource : this.relationsBySource
 				.get(sourceURI)) {
@@ -75,6 +76,7 @@ public class RelationsTable implements Resource {
 	// --------------------------------------------------------------------
 
 	public List<Relation> getMostProbable(int initialNumberOfRelations) {
+		System.out.println("size> " + this.orderedRelations.size());
 		List<Relation> mostProblableRelations = new ArrayList<Relation>();
 		Iterator<Relation> relationsIt = this.orderedRelations.keySet()
 				.iterator();
@@ -115,7 +117,7 @@ public class RelationsTable implements Resource {
 		String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
 				.getWord(), targetTerm.getAnnotatedTerm().getWord(), type,
 				domain);
-
+		System.out.println("RelationURI > " + relationURI);
 		if (this.hasRelation(relationURI)) {
 			// If the relation is already in the Relations Table, we have to
 			// update just
@@ -128,6 +130,8 @@ public class RelationsTable implements Resource {
 			// update its position in the ordered MapTree
 			this.orderedRelations.remove(storedRelation);
 			this.orderedRelations.put(storedRelation, relationURI);
+			System.out
+					.println("ME SALE QUE ESTABA! " + orderedRelations.size());
 
 		} else {
 			// If the relation is not already stored, we simply add it
@@ -135,7 +139,7 @@ public class RelationsTable implements Resource {
 			relation.setURI(relationURI);
 			relation.setSource(sourceTerm.getURI());
 			relation.setTarget(targetTerm.getURI());
-
+			relation.setType(type);
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 
 			this.orderedRelations.put(relation, relation.getURI());
@@ -148,6 +152,7 @@ public class RelationsTable implements Resource {
 			}
 
 			relations.add(relation);
+			System.out.println("NO ESTABA " + orderedRelations.size());
 
 		}
 	}
@@ -225,7 +230,6 @@ public class RelationsTable implements Resource {
 	}
 
 	// --------------------------------------------------------------------
-	
 
 	public void show(int numberOfDeatiledTerms) {
 
@@ -241,9 +245,8 @@ public class RelationsTable implements Resource {
 				+ " probable relations are: ");
 		int i = 1;
 		for (Relation term : this.getMostProbable(numberOfDeatiledTerms)) {
-			System.out.println("(" + i++ + ")"
-					+ term.getSource() +" > "+term.getType()+" > "+term.getTarget()
-				);
+			System.out.println("(" + i++ + ")" + term.getSource() + " > "
+					+ term.getType() + " > " + term.getTarget());
 
 			System.out
 					.println("------------------------------------------------------");
