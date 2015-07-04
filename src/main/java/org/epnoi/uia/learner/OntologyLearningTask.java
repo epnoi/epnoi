@@ -9,6 +9,7 @@ import org.epnoi.model.RelationsTable;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.RelationsExtractor;
 import org.epnoi.uia.learner.relations.RelationsHandler;
 import org.epnoi.uia.learner.relations.RelationsRetriever;
@@ -161,6 +162,8 @@ this.domain=domain;
 
 		domain.setURI(domainURI);
 		domain.setResources(domain.getURI()+"/resources");
+		domain.setExpression("");
+		domain.setType(RDFHelper.PAPER_CLASS);
 		
 		
 		

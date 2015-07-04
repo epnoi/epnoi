@@ -7,6 +7,7 @@ public class DomainCassandraHelper {
 	public static final String LABEL = "LABEL";
 	public static final String TYPE = "TYPE";
 	public static final String EXPRESSION = "EXPRESSION";
+	public static final String RESOURCES = "RESOURCES";
 
 
 }

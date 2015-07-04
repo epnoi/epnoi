@@ -45,6 +45,7 @@ public class DomainRDFDAO extends RDFDAO {
 				.replace("{DOMAIN_CLASS}", RDFHelper.DOMAIN_CLASS)
 				.replace("{HAS_RESOURCES_PROPERTY}", RDFHelper.HAS_RESOURCES_PROPERTY)
 				.replace("{RESOURCES_URI}", domain.getResources());
+		System.out.println("DOMAIN EXPRESSION ...> "+queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, graph);
 
@@ -104,20 +105,22 @@ public class DomainRDFDAO extends RDFDAO {
 		if (!g.find(Node.ANY, Node.ANY, Node.ANY).hasNext()) {
 			return null;
 		}
-		Domain researchObject = new Domain();
-		researchObject.setURI(URI);
+		Domain domain = new Domain();
+		domain.setURI(URI);
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
 				.hasNext();) {
 			Triple t = i.next();
 			String predicateURI = t.getPredicate().getURI();
-
+			
+			System.out.println(predicateURI);
 			if (RDFHelper.HAS_RESOURCES_PROPERTY.equals(predicateURI)) {
-				researchObject.setResources(
+				System.out.println("ENTRA");
+				domain.setResources(
 						t.getObject().getURI().toString());
 			}
 		
 		}
-		return researchObject;
+		return domain;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------

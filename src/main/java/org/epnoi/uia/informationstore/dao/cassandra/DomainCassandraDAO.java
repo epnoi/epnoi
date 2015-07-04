@@ -25,7 +25,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-
+System.out.println("DOMAIN "+resource);
 		Domain domain = (Domain) resource;
 
 		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
@@ -35,9 +35,12 @@ public class DomainCassandraDAO extends CassandraDAO {
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
 				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
-		
+
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.TYPE,
 				domain.getType(), DomainCassandraHelper.COLUMN_FAMILLY);
+		
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.RESOURCES,
+				domain.getResources(), DomainCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -55,9 +58,9 @@ public class DomainCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, DomainCassandraHelper.COLUMN_FAMILLY);
 
 		if (columnsIterator.hasNext()) {
-			Domain term = new Domain();
+			Domain domain = new Domain();
 
-			term.setURI(URI);
+			domain.setURI(URI);
 
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
@@ -66,20 +69,24 @@ public class DomainCassandraDAO extends CassandraDAO {
 				String columnValue = column.getValue();
 				switch (columnName) {
 				case DomainCassandraHelper.LABEL:
-					term.setLabel(columnValue);
+					domain.setLabel(columnValue);
 					break;
 
 				case DomainCassandraHelper.EXPRESSION:
-					term.setExpression(columnValue);
+					domain.setExpression(columnValue);
 					break;
 
 				case DomainCassandraHelper.TYPE:
-					term.setType(columnValue);
+					domain.setType(columnValue);
 					break;
-				}
 
+				case DomainCassandraHelper.RESOURCES:
+					domain.setResources(columnValue);
+					break;
+
+				}
 			}
-			return term;
+			return domain;
 		}
 
 		return null;

@@ -6,7 +6,7 @@
 		<path></path>
 		<host>localhost</host>
 		<port>1111</port>
-		<graph>http://informationSourceTest2</graph>
+		<graph>http://drInventorFirstReview</graph>
 		<user>dba</user>
 		<password>dba</password>
 	</virtuosoInformationStore>
@@ -23,6 +23,12 @@
 		<host>localhost</host>
 		<port>8983</port>
 	</cassandraInformationStore>
+		<mapInformationStore>
+		<URI>http://mapInformationStore</URI>
+		<path>/opt/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
+		<host>localhost</host>
+		<port>0</port>
+	</mapInformationStore>
 	<!-- 
 <rssHoarder>
 		<URI>http://epnoi.org/rssHoarder</URI>

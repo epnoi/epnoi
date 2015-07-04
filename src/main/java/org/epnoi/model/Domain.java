@@ -10,7 +10,7 @@ public class Domain implements Resource {
 	private String expression="";// Expression that defines such resources
 
 	//Intensional definition
-	private String resources=""; // Each domain can define an aggregation
+	private String resources; // Each domain can define an aggregation
 										// of the resources that belong to it in
 										// an explicit manner
 
