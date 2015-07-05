@@ -199,6 +199,7 @@ public class OntologyLearningWorkflow {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
+		ontologyLearningParameters.setParameter(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE, false);
 
 		OntologyLearningWorkflow ontologyLearningProcess = new OntologyLearningWorkflow();
 

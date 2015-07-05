@@ -133,6 +133,8 @@ public class OntologyLearningTask {
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
 						"/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin");
+		ontologyLearningParameters.setParameter(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE, true);
+		
 
 		try {
 			init(core, ontologyLearningParameters);

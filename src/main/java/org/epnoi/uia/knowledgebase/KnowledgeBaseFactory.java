@@ -19,6 +19,9 @@ public class KnowledgeBaseFactory {
 	private WikidataHandler wikidataHandler;
 	private KnowledgeBaseParameters parameters;
 	private boolean retrieveWikidataView = true;
+	private boolean considerWikidata;
+	private boolean considerWordNet;
+	
 
 	// ------------------------------------------------------------------------------------
 
@@ -30,6 +33,7 @@ public class KnowledgeBaseFactory {
 		this.wordnetHandler.init((WordNetHandlerParameters) parameters
 				.getParameterValue(KnowledgeBaseParameters.WORDNET_PARAMETERS));
 
+		
 		this.wikidataHandlerBuilder = new WikidataHandlerBuilder();
 		this.wikidataHandlerBuilder
 				.init(core,
@@ -41,16 +45,25 @@ public class KnowledgeBaseFactory {
 			this.retrieveWikidataView = (boolean) this.parameters
 					.getParameterValue(KnowledgeBaseParameters.RETRIEVE_WIKIDATA_VIEW);
 		}
-
+		
+		this.considerWikidata =(boolean) this.parameters
+				.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
+	
+		this.considerWikidata =(boolean) this.parameters
+				.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
+	
 	}
 
 	// ------------------------------------------------------------------------------------
 
 	public KnowledgeBase build() {
 		
+		if (this.considerWikidata){
 		this.wikidataHandler = wikidataHandlerBuilder.build();
+		}
 		KnowledgeBase knowledgeBase = new KnowledgeBase(this.wordnetHandler,
 				this.wikidataHandler);
+		knowledgeBase.init(this.parameters);
 
 		return knowledgeBase;
 	}
@@ -93,6 +106,11 @@ public class KnowledgeBaseFactory {
 		knowledgeBaseParameters
 				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
 						wikidataParameters);
+		
+		knowledgeBaseParameters.setParameter(
+				KnowledgeBaseParameters.CONSIDER_WIKIDATA, false);
+		knowledgeBaseParameters.setParameter(
+				KnowledgeBaseParameters.CONSIDER_WORDNET, true);
 
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {

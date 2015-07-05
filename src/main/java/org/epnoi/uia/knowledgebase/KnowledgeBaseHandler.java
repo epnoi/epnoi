@@ -53,6 +53,11 @@ public class KnowledgeBaseHandler {
 				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
 						wikidataParameters);
 
+		knowledgeBaseParameters.setParameter(
+				KnowledgeBaseParameters.CONSIDER_WIKIDATA, false);
+		knowledgeBaseParameters.setParameter(
+				KnowledgeBaseParameters.CONSIDER_WORDNET, true);
+
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
 			knowledgeBaseCreator.init(core, knowledgeBaseParameters);
