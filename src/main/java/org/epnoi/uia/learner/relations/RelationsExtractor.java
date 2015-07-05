@@ -23,6 +23,7 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.knowledgebase.KnowledgeBase;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
@@ -46,6 +47,8 @@ public class RelationsExtractor {
 	private RelationsTable relationsTable;
 	private double hypernymExtractionThreshold;
 	private String targetDomain;
+	private boolean considerKnowledgeBase = false;
+	private KnowledgeBase knowledgeBase;
 
 	// ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -62,10 +65,21 @@ public class RelationsExtractor {
 				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
 		this.targetDomain = (String) parameters
 				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+
+		this.considerKnowledgeBase = (boolean) parameters
+				.getParameterValue(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE);
 		this.patternsGenerator = new LexicalRelationalPatternGenerator();
 		this.domainsTable = domainsTable;
 		this.relationsTable = new RelationsTable();
+		// We retrieve the knowledge base just in case that it must be
+		// considered when searching for relations
+		if (considerKnowledgeBase) {
+			this.knowledgeBase = core.getKnowledgeBaseHandler()
+					.getKnowledgeBase();
+		}
+
 		try {
+
 			this.softPatternModel = RelationalPatternsModelSerializer
 					.deserialize(hypernymModelPath);
 		} catch (EpnoiResourceAccessException e) {
@@ -189,51 +203,57 @@ public class RelationsExtractor {
 	private void _extractProbableRelationsFromSentence(Annotation source,
 			Annotation target, Document annotatedResource,
 			String sentenceContent, TermCandidateBuilder termCandidateBuilder) {
-		List<LexicalRelationalPattern> generatedPatterns = this.patternsGenerator
-				.generate(source, target, annotatedResource);
-		for (LexicalRelationalPattern pattern : generatedPatterns) {
-			double relationProbability = this.softPatternModel
-					.calculatePatternProbability(pattern);
-			//System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
-			if (relationProbability > this.hypernymExtractionThreshold) {
-				String sourceTermWord = termCandidateBuilder
-						.buildTermCandidate(source).getWord();
-				String targetTermWord = termCandidateBuilder
-						.buildTermCandidate(target).getWord();
-				System.out.println(" sourceTermWord> " + sourceTermWord);
-				System.out.println(" targetTermWord> " + targetTermWord);
+		String sourceTermWord = termCandidateBuilder.buildTermCandidate(source)
+				.getWord();
+		String targetTermWord = termCandidateBuilder.buildTermCandidate(target)
+				.getWord();
+		if (this.knowledgeBase.areRelated(sourceTermWord, targetTermWord,
+				RelationHelper.HYPERNYM)) {
+			_createRelation(sentenceContent, sourceTermWord, targetTermWord,
+					1.0);
+		} else {
 
-				/*
-				 * String sourceToken = (String) source.getFeatures()
-				 * .get("string");
-				 */
-				Term sourceTerm = this.termsTable.getTerm(Term.buildURI(
-						sourceTermWord, this.targetDomain));
-				/*
-				 * String targetToken = (String) target.getFeatures()
-				 * .get("string");
-				 */
+			List<LexicalRelationalPattern> generatedPatterns = this.patternsGenerator
+					.generate(source, target, annotatedResource);
+			for (LexicalRelationalPattern pattern : generatedPatterns) {
+				double relationProbability = this.softPatternModel
+						.calculatePatternProbability(pattern);
+				// System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
+				if (relationProbability > this.hypernymExtractionThreshold) {
 
-				Term targetTerm = this.termsTable.getTerm(Term.buildURI(
-						targetTermWord, this.targetDomain));
-
-				if (sourceTerm != null && targetTerm != null) {
-					System.out
-							.println("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA>");
-					this.relationsTable.introduceRelation(this.targetDomain,
-							sourceTerm, targetTerm, RelationHelper.HYPERNYM,
-							sentenceContent, relationProbability);
-				} else {
-					// System.out.println("S_word " + sourceTermWord +
-					// " S_term "
-					// + sourceTerm);
-					// System.out.println("T_word " + targetTermWord +
-					// " T_term "
-					// + targetTerm);
+					_createRelation(sentenceContent, sourceTermWord,
+							targetTermWord, relationProbability);
 
 				}
-
 			}
+		}
+	}
+
+	private void _createRelation(String sentenceContent, String sourceTermWord,
+			String targetTermWord, double relationProbability) {
+		Term sourceTerm = this.termsTable.getTerm(Term.buildURI(sourceTermWord,
+				this.targetDomain));
+		/*
+		 * String targetToken = (String) target.getFeatures() .get("string");
+		 */
+
+		Term targetTerm = this.termsTable.getTerm(Term.buildURI(targetTermWord,
+				this.targetDomain));
+
+		if (sourceTerm != null && targetTerm != null) {
+			System.out
+					.println("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA>");
+			this.relationsTable.introduceRelation(this.targetDomain,
+					sourceTerm, targetTerm, RelationHelper.HYPERNYM,
+					sentenceContent, relationProbability);
+		} else {
+			// System.out.println("S_word " + sourceTermWord +
+			// " S_term "
+			// + sourceTerm);
+			// System.out.println("T_word " + targetTermWord +
+			// " T_term "
+			// + targetTerm);
+
 		}
 	}
 

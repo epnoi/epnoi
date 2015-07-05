@@ -39,5 +39,7 @@ public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 	// process
 
 	public static final String RELATIONS_HANDLER_PARAMETERS = "RELATIONS_HANDLER_PARAMETER";
+	
+	public static final String CONSIDER_KNOWLEDGE_BASE= "CONSIDER_KNOWLDEDGE_BASE";
 
 }

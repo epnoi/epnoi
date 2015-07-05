@@ -18,6 +18,9 @@ public class KnowledgeBase {
 	WordNetHandler wordNetHandler;
 
 	WikidataHandler wikidataHandler;
+	private boolean considerWordNet = true;
+	private boolean considerWikidata = true;
+	KnowledgeBaseParameters parameters;
 
 	// -----------------------------------------------------------------------------------------------
 
@@ -30,14 +33,29 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	public void init(KnowledgeBaseParameters parameters) {
+		this.parameters = parameters;
+		this.considerWikidata = (boolean) this.parameters
+				.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
+		this.considerWordNet = (boolean) this.parameters
+				.getParameterValue(KnowledgeBaseParameters.CONSIDER_WORDNET);
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
 	public boolean areRelated(String source, String target, String type) {
-		if (RelationHelper.HYPERNYM.equals(type)) {
-			System.out.println("RelatedWordnet> "+areRelatedInWordNet(source, target));
-			System.out.println("RelatedWikidata> "+areRelatedInWikidata(source, target));
-			return (areRelatedInWordNet(source, target) || areRelatedInWikidata(
-					source, target));
-		} else
-			return false;
+		if (RelationHelper.HYPERNYM.equals(type) && (source.length() > 0)
+				&& (target.length() > 0)) {
+
+			if (this.considerWikidata) {
+				return (areRelatedInWikidata(source, target));
+			}
+
+			if (this.considerWordNet) {
+				return (areRelatedInWordNet(source, target));
+			}
+		}
+		return false;
 	}
 
 	// -----------------------------------------------------------------------------------------------
@@ -100,8 +118,12 @@ public class KnowledgeBase {
 		Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source,
 				RelationHelper.HYPERNYM);
 		Set<String> hypernyms = new HashSet<String>();
-		hypernyms.addAll(wordNetHypernyms);
-		hypernyms.addAll(wikidataHypernyms);
+		if (this.considerWikidata) {
+			hypernyms.addAll(wikidataHypernyms);
+		}
+		if (this.considerWordNet) {
+			hypernyms.addAll(wordNetHypernyms);
+		}
 		return hypernyms;
 	}
 
@@ -110,12 +132,15 @@ public class KnowledgeBase {
 	public Set<String> stem(String term) {
 
 		Set<String> stemmedTerm = new HashSet<String>();
-		String wordNetStemmedTerm = this.wordNetHandler.stemNoun(term);
-		if (wordNetStemmedTerm != null) {
-			stemmedTerm.add(wordNetStemmedTerm);
+		if (this.considerWordNet) {
+			String wordNetStemmedTerm = this.wordNetHandler.stemNoun(term);
+			if (wordNetStemmedTerm != null) {
+				stemmedTerm.add(wordNetStemmedTerm);
+			}
 		}
-		stemmedTerm.add(this.wikidataHandler.stem(term));
-
+		if (this.considerWikidata) {
+			stemmedTerm.add(this.wikidataHandler.stem(term));
+		}
 		return stemmedTerm;
 	}
 
@@ -152,5 +177,4 @@ public class KnowledgeBase {
 				.getKnowledgeBase();
 
 	}
-
 }
