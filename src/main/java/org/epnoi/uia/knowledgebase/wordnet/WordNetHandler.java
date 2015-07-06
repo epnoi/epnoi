@@ -89,7 +89,7 @@ public class WordNetHandler {
 
 		Set<String> nounHypernyms = new HashSet<String>();
 
-		System.out.println("-------------> "+noun);
+		//System.out.println("-------------> "+noun);
 		IIndexWord idxWord = this.wordNetDictionary
 				.getIndexWord(noun, POS.NOUN);
 		if (idxWord != null) {

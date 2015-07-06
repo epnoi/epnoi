@@ -8,9 +8,11 @@ public class ParametersModelReaderMain {
 		 * <entry key="server.hostname">localhost</entry> <entry
 		 * key="server.path"></entry> <entry key="server.port">8015</entry>
 		 */
-
+/*
 		System.out
 				.println("(START) Testing the parameterization of recommendation algorithms");
+	*/
+		
 		String parametersModelPath = "/parametersModelPath.xml";
 		ParametersModel parametersModel = new ParametersModel();
 

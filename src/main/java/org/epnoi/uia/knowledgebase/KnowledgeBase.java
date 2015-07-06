@@ -113,15 +113,19 @@ public class KnowledgeBase {
 	 * @return
 	 */
 	public Set<String> getHypernyms(String source) {
-		Set<String> wordNetHypernyms = this.wordNetHandler
-				.getNounFirstMeaningHypernyms(source);
-		Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source,
-				RelationHelper.HYPERNYM);
+		
+		
 		Set<String> hypernyms = new HashSet<String>();
 		if (this.considerWikidata) {
+			
+			Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source,
+					RelationHelper.HYPERNYM);
+			
 			hypernyms.addAll(wikidataHypernyms);
 		}
 		if (this.considerWordNet) {
+			Set<String> wordNetHypernyms = this.wordNetHandler
+					.getNounFirstMeaningHypernyms(source);
 			hypernyms.addAll(wordNetHypernyms);
 		}
 		return hypernyms;

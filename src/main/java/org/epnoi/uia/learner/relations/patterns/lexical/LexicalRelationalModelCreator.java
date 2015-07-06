@@ -22,8 +22,8 @@ public class LexicalRelationalModelCreator {
 	private Core core;
 	private RelationalPatternsCorpusCreator patternsCorpusCreator;
 	private RelationalPatternsCorpus patternsCorpus;
-	private BigramSoftPatternModelBuilder modelBuilder;
-	private BigramSoftPatternModel model;
+	private RelaxedBigramSoftPatternModelBuilder modelBuilder;
+	private RelaxedBigramSoftPatternModel model;
 	private boolean store;
 	private boolean verbose;
 	private boolean test;
@@ -65,7 +65,7 @@ public class LexicalRelationalModelCreator {
 			logger.info("The RelationalPatternsCorpus has "
 					+ patternsCorpus.getPatterns().size() + " patterns");
 		}
-		modelBuilder = new BigramSoftPatternModelBuilder(parameters);
+		modelBuilder = new RelaxedBigramSoftPatternModelBuilder(parameters);
 
 		this.path = (String) parameters
 				.getParameterValue(RelationalPatternsModelCreationParameters.MODEL_PATH);
@@ -88,14 +88,15 @@ public class LexicalRelationalModelCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public BigramSoftPatternModel buildModel() {
+	public RelaxedBigramSoftPatternModel buildModel() {
 		long startingTime = System.currentTimeMillis();
 		logger.info("Adding all the patterns to the model");
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
 			this.modelBuilder.addPattern(((LexicalRelationalPattern) pattern));
 		}
-		logger.info("Building the model");
-		BigramSoftPatternModel model = this.modelBuilder.build();
+		System.out.println("......................................................");
+		logger.info("Building the model "+this.modelBuilder);
+		RelaxedBigramSoftPatternModel model = this.modelBuilder.build();
 		long totalTime = startingTime - System.currentTimeMillis();
 		logger.info("It took " + Math.abs(totalTime) + " ms to build the model");
 		return model;
@@ -147,7 +148,7 @@ public class LexicalRelationalModelCreator {
 				RelationalSentencesCorpusCreationParameters.STORE, true);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE, false);
+				RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 
 		Core core = CoreUtility.getUIACore();
 
