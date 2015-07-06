@@ -36,9 +36,10 @@ import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 
 public class WikipediaHarvester {
 	// -Xmx1g
-	private static String wikipediaDumpPath = "/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/";
+	private WikipediaHarvesterParameters parameters;
+	private String wikipediaDumpPath = "/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
-	public static boolean INCREMENTAL = true;
+	public static boolean incremental = false;
 
 	private TermCandidatesFinder termCandidatesFinder;
 
@@ -61,7 +62,13 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public void init(Core core) throws EpnoiInitializationException {
+	public void init(Core core, WikipediaHarvesterParameters parameters)
+			throws EpnoiInitializationException {
+		this.parameters = parameters;
+		this.incremental = (boolean) parameters
+				.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
+		this.wikipediaDumpPath = (String) parameters
+				.getParameterValue(WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH);
 		this.termCandidatesFinder = new TermCandidatesFinder();
 		this.core = core;
 		this.termCandidatesFinder.init(core);
@@ -74,7 +81,7 @@ public class WikipediaHarvester {
 	public void harvest() {
 		logger.info("Starting the harvesting ----------------------------------------------------------------------");
 
-		File folder = new File(WikipediaHarvester.wikipediaDumpPath);
+		File folder = new File(this.wikipediaDumpPath);
 
 		File[] listOfFiles = folder.listFiles();
 		logger.info("Harvesting the directory/repository "
@@ -137,49 +144,38 @@ public class WikipediaHarvester {
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
-
-	private String _createTermDefinition(WikipediaPage wikipediaPage,
-			Context context) {
-
-		String annotatedFirstSectionSerialized = (String) context.getElements()
-				.get(wikipediaPage.getURI() + "/first/"
-						+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-
-		Document annotatedFirstSection = GateUtils
-				.deserializeGATEDocument(annotatedFirstSectionSerialized);
-
-		AnnotationSet sentenceAnnotations = annotatedFirstSection
-				.getAnnotations().get("Sentence");
-		if (!sentenceAnnotations.isEmpty()) {
-			Long offset = annotatedFirstSection.getAnnotations()
-					.get("Sentence").firstNode().getOffset();
-			Annotation annotation = sentenceAnnotations.get("Sentence")
-					.get(offset).iterator().next();
-
-			String firstSentence = "";
-			try {
-
-				firstSentence = annotatedFirstSection
-						.getContent()
-						.getContent(annotation.getStartNode().getOffset(),
-								annotation.getEndNode().getOffset()).toString();
-
-				firstSentence = StringUtils.outerMatching(firstSentence, "\\(",
-						'(', ')');
-			} catch (InvalidOffsetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Factory.deleteResource(annotatedFirstSection);
-
-			return firstSentence;
-
-		} else {
-			Factory.deleteResource(annotatedFirstSection);
-			return "";
-		}
-	}
-
+	/*
+	 * private String _createTermDefinition(WikipediaPage wikipediaPage, Context
+	 * context) {
+	 * 
+	 * String annotatedFirstSectionSerialized = (String) context.getElements()
+	 * .get(wikipediaPage.getURI() + "/first/" +
+	 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+	 * 
+	 * Document annotatedFirstSection = GateUtils
+	 * .deserializeGATEDocument(annotatedFirstSectionSerialized);
+	 * 
+	 * AnnotationSet sentenceAnnotations = annotatedFirstSection
+	 * .getAnnotations().get("Sentence"); if (!sentenceAnnotations.isEmpty()) {
+	 * Long offset = annotatedFirstSection.getAnnotations()
+	 * .get("Sentence").firstNode().getOffset(); Annotation annotation =
+	 * sentenceAnnotations.get("Sentence") .get(offset).iterator().next();
+	 * 
+	 * String firstSentence = ""; try {
+	 * 
+	 * firstSentence = annotatedFirstSection .getContent()
+	 * .getContent(annotation.getStartNode().getOffset(),
+	 * annotation.getEndNode().getOffset()).toString();
+	 * 
+	 * firstSentence = StringUtils.outerMatching(firstSentence, "\\(", '(',
+	 * ')'); } catch (InvalidOffsetException e) { // TODO Auto-generated catch
+	 * block e.printStackTrace(); }
+	 * Factory.deleteResource(annotatedFirstSection);
+	 * 
+	 * return firstSentence;
+	 * 
+	 * } else { Factory.deleteResource(annotatedFirstSection); return ""; } }
+	 */
 	// -------------------------------------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -216,7 +212,7 @@ public class WikipediaHarvester {
 
 			selector.setProperty(SelectorHelper.TYPE,
 					RDFHelper.WIKIPEDIA_PAGE_CLASS);
-		//	System.out.println("selector--------> " + selector);
+			// System.out.println("selector--------> " + selector);
 			core.getInformationHandler()
 					.setAnnotatedContent(
 							selector,
@@ -242,7 +238,6 @@ public class WikipediaHarvester {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	private void _introduceWikipediaPage(WikipediaPage page, Context context) {
-
 		String termDefinition = "";
 		// String termDefinition = _createTermDefinition(page, context);
 		// System.out.println("----> " + termDefinition);
@@ -255,14 +250,20 @@ public class WikipediaHarvester {
 		 * "=========================================================================="
 		 * );
 		 */
-		if (!core.getInformationHandler().contains(page.getURI(),
+
+		if (core.getInformationHandler().contains(page.getURI(),
 				RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
-			long currenttime = System.currentTimeMillis();
-			_introduceAnnotatedContent(page, context);
-			core.getInformationHandler().put(page, context);
-			long time = System.currentTimeMillis() - currenttime;
-			System.out.println(page.getURI() + " took " + time);
+			this.core.getInformationHandler().remove(page.getURI(),
+					RDFHelper.WIKIPEDIA_PAGE_CLASS);
+			
+			
 		}
+
+		long currenttime = System.currentTimeMillis();
+		_introduceAnnotatedContent(page, context);
+		core.getInformationHandler().put(page, context);
+		long time = System.currentTimeMillis() - currenttime;
+		System.out.println(page.getURI() + " took " + time);
 
 	}
 
@@ -304,9 +305,16 @@ public class WikipediaHarvester {
 			String cleanedPageTitle = page.getTitle().replaceAll("\\n", "")
 					.replaceAll("\\s+$", "");
 
-			String localPartOfTermURI = page.getTitle().replaceAll("\\n", "")
+			
+			String localPartOfTermURI=StringUtils.cleanOddCharacters(page.getTitle());
+
+			
+			
+			localPartOfTermURI = localPartOfTermURI.replaceAll("\\n", "")
 					.replaceAll("\\s+$", "").replaceAll("\\s+", "_");
 
+			
+			
 			wikipediaPage.setURI(WikipediaHarvester.wikipediaPath
 					+ localPartOfTermURI);
 			wikipediaPage.setTerm(cleanedPageTitle);
@@ -360,7 +368,7 @@ public class WikipediaHarvester {
 				wikipediaPage.getSectionsContent().put("first", "");
 			}
 			if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
-				if (WikipediaHarvester.INCREMENTAL) {
+				if (incremental) {
 					if (!core.getInformationHandler().contains(
 							wikipediaPage.getURI(),
 							RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
@@ -393,7 +401,9 @@ public class WikipediaHarvester {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	private void _introduce(WikipediaPage wikipediaPage) {
+
 		try {
+
 			_introduceWikipediaPage(wikipediaPage, Context.getEmptyContext());
 
 		} catch (Exception e) {
@@ -407,11 +417,18 @@ public class WikipediaHarvester {
 
 	public static void main(String[] args) {
 		WikipediaHarvester wikipediaHarvester = new WikipediaHarvester();
+		WikipediaHarvesterParameters parameters = new WikipediaHarvesterParameters();
+
+		parameters.setParameter(
+				WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH,
+				"/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/");
+		parameters
+				.setParameter(WikipediaHarvesterParameters.INCREMENTAL, true);
 		// Core core = null;
 		Core core = CoreUtility.getUIACore();
 
 		try {
-			wikipediaHarvester.init(core);
+			wikipediaHarvester.init(core, parameters);
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

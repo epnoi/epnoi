@@ -132,6 +132,7 @@ public class WikipediaHarvesterResultsReader {
 
 		logger.info("The number of retrived Wikipeda articles are "
 				+ queryResults.size());
+		System.exit(0);
 		return queryResults;
 	}
 
