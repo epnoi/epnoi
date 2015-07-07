@@ -1,5 +1,7 @@
 package org.epnoi.uia.informationhandler;
 
+import java.util.List;
+
 import org.epnoi.model.Content;
 import org.epnoi.model.ContentSummary;
 import org.epnoi.model.Context;
@@ -45,6 +47,8 @@ public interface InformationHandler {
 	public void  setContent(Selector selector, Content<String> content);
 	
 	public void  setAnnotatedContent(Selector selector, Content<Object> annotatedContent);
+
+	public List<String> getAll(String resourceClass);
 
 	
 }

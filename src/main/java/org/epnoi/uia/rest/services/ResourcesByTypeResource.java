@@ -1,6 +1,7 @@
 package org.epnoi.uia.rest.services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -33,9 +34,9 @@ import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
-@Path("/uia/resources")
-@Api(value = "/uia/resources", description = "Operations for handling resources")
-public class ResourcesResource extends UIAService {
+@Path("/uia/resources/bytype")
+@Api(value = "/uia/resources/bytype", description = "Operations for handling resources of different types")
+public class ResourcesByTypeResource extends UIAService {
 
 	@Context
 	ServletContext context;
@@ -62,7 +63,7 @@ public class ResourcesResource extends UIAService {
 	@PostConstruct
 	public void init() {
 
-		logger = Logger.getLogger(ResourcesResource.class.getName());
+		logger = Logger.getLogger(ResourcesByTypeResource.class.getName());
 		logger.info("Initializing " + getClass());
 		this.core = this.getUIACore();
 
@@ -72,7 +73,7 @@ public class ResourcesResource extends UIAService {
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Path("/{RESOURCE_TYPE}")
+	@Path("/{RESOURCE_TYPE}/resource")
 	@ApiOperation(value = "Update a resource of a given type", notes = "")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "The resource has been updated"),
@@ -90,7 +91,7 @@ public class ResourcesResource extends UIAService {
 
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
-	@Path("/{RESOURCE_TYPE}")
+	@Path("/{RESOURCE_TYPE}/resource")
 	@ApiOperation(value = "Creates a resource of a given type", notes = "")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "The resource has been created"),
@@ -109,7 +110,7 @@ public class ResourcesResource extends UIAService {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("/{RESOURCE_TYPE}")
+	@Path("/{RESOURCE_TYPE}/resource")
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "The resource has been retrieved"),
@@ -121,14 +122,48 @@ public class ResourcesResource extends UIAService {
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("GET: UIA uri> " + URI + " reourceType > " + resourceType);
 
-		String resourceClass = ResourcesResource.resourceTypesTable
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable
 				.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
 
 			this.core = this.getUIACore();
 			System.out.println("Getting the resource "
-					+ ResourcesResource.resourceTypesTable.get(resourceType));
+					+ ResourcesByTypeResource.resourceTypesTable.get(resourceType));
 			Resource resource = this.core.getInformationHandler().get(URI,
+					resourceClass);
+
+			if (resource != null) {
+				return Response.ok(resource, MediaType.APPLICATION_JSON)
+						.build();
+			}
+		}
+		return Response.status(Responses.NOT_FOUND).build();
+	}
+	
+	// --------------------------------------------------------------------------------
+
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{RESOURCE_TYPE}")
+	// @Consumes(MediaType.APPLICATION_JSON)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "The resource has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
+	@ApiOperation(value = "Returns the resource with the provided URI", notes = "List", response = String.class)
+	public Response getAllResources(
+	
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+		
+
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable
+				.get(resourceType);
+		if ((resourceClass != null)) {
+
+			this.core = this.getUIACore();
+			System.out.println("Getting the resource "
+					+ ResourcesByTypeResource.resourceTypesTable.get(resourceType));
+			List<String> resource = this.core.getInformationHandler().getAll(
 					resourceClass);
 
 			if (resource != null) {
@@ -154,7 +189,7 @@ public class ResourcesResource extends UIAService {
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("DELETE: UIA uri> " + URI + " reourceType > "
 				+ resourceType);
-		String resourceClass = ResourcesResource.resourceTypesTable
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable
 				.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
 			this.core.getInformationHandler().remove(URI, resourceType);
@@ -163,34 +198,5 @@ public class ResourcesResource extends UIAService {
 		return Response.status(Responses.NOT_FOUND).build();
 	}
 
-	// --------------------------------------------------------------------------------
-	/*
-	 * @GET
-	 * 
-	 * @Produces({ MediaType.APPLICATION_JSON })
-	 * 
-	 * @Path("/notifications")
-	 * 
-	 * public Response getResource(
-	 * 
-	 * @DefaultValue("none") @QueryParam("URI") String URI) {
-	 * System.out.println("GET: UIA");
-	 * 
-	 * List<InformationSourceNotification> notifications = new
-	 * ArrayList<InformationSourceNotification>();
-	 * 
-	 * for (InformationSourceNotification notification : core
-	 * .getInformationSourcesHandler().retrieveNotifications(URI)) {
-	 * 
-	 * notifications.add(notification); }
-	 * 
-	 * InformationSourceNotificationsSet notificationsSet = new
-	 * InformationSourceNotificationsSet();
-	 * 
-	 * notificationsSet.setNotifications(notifications);
-	 * notificationsSet.setURI(URI);
-	 * 
-	 * return Response.ok(notificationsSet, MediaType.APPLICATION_JSON)
-	 * .build(); }
-	 */
+	
 }

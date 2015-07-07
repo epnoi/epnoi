@@ -17,7 +17,9 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.VirtuosoInformationStore;
+import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.uia.parameterization.ParametersModel;
+import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class InformationHandlerImp implements InformationHandler {
 
@@ -183,6 +185,31 @@ public class InformationHandlerImp implements InformationHandler {
 		Wrapper wrapper = this.wrapperFactory.build(resourceType);
 		return wrapper.exists(URI);
 
+	}
+
+	// ---------------------------------------------------------------------------
+
+	@Override
+	public List<String> getAll(String resourceType) {
+		// ------------------------------------------------------------------------------
+
+		InformationStore informationStore = this.core
+				.getInformationStoresByType(
+						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+
+		String queryExpression = "SELECT DISTINCT ?uri FROM <{GRAPH}>"
+				+ "{ ?uri a <" + resourceType + "> ." + "}";
+
+		queryExpression = queryExpression
+				.replace(
+						"{GRAPH}",
+						((VirtuosoInformationStoreParameters) informationStore
+								.getParameters()).getGraph());
+
+		 System.out.println("QUERY EXPRESSION ----------> " +queryExpression);
+		List<String> queryResults = informationStore.query(queryExpression);
+
+		return queryResults;
 	}
 
 	// ---------------------------------------------------------------------------
