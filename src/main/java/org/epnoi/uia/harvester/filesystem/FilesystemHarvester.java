@@ -33,7 +33,7 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.xml.sax.ContentHandler;
 
-class FilesystemHarvester {
+public class FilesystemHarvester {
 	private Core core;
 	private String datePattern = "MM/dd/yyyy";
 	private FilesystemHarvesterParameters parameters;
