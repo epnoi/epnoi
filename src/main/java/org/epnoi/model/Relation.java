@@ -110,7 +110,7 @@ public class Relation implements Resource {
 			String domain) {
 		String uri = "http://" + domain + "/"
 				+ StringUtils.replace(source, "[^a-zA-Z0-9]", "_") + "/"
-				+ StringUtils.replace(source, "[^a-zA-Z0-9]", "_") + "/" + type;
+				+ StringUtils.replace(target, "[^a-zA-Z0-9]", "_") + "/" + type;
 		return uri;
 
 	}

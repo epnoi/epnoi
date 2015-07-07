@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.uia.learner.relations.patterns.lexical.BigramSoftPatternModel;
+import org.epnoi.uia.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModel;
 
 public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------
@@ -35,13 +35,13 @@ public class RelationalPatternsModelSerializer {
 
 	public static RelationalPatternsModel deserialize(String filename)
 			throws EpnoiResourceAccessException {
-		BigramSoftPatternModel model = null;
+		RelaxedBigramSoftPatternModel model = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		try {
 			fis = new FileInputStream(filename);
 			in = new ObjectInputStream(fis);
-			model = (BigramSoftPatternModel) in.readObject();
+			model = (RelaxedBigramSoftPatternModel) in.readObject();
 			in.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -53,18 +53,19 @@ public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		BigramSoftPatternModel newModel = new BigramSoftPatternModel();
+		RelaxedBigramSoftPatternModel newModel = new RelaxedBigramSoftPatternModel();
+	/*
 		try {
 			RelationalPatternsModelSerializer.serialize(
-					"/home/rgonzalez/Desktop/model.bin", newModel);
+					"/home/rgonza/Desktop/model.bin", newModel);
 		} catch (EpnoiResourceAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		BigramSoftPatternModel readedModel=null;
+*/
+		RelaxedBigramSoftPatternModel readedModel=null;
 		try {
-			readedModel = (BigramSoftPatternModel) RelationalPatternsModelSerializer
+			readedModel = (RelaxedBigramSoftPatternModel) RelationalPatternsModelSerializer
 					.deserialize("/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin");
 		} catch (EpnoiResourceAccessException e) {
 			// TODO Auto-generated catch block

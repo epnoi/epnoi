@@ -485,7 +485,7 @@ public class TermsExtractor {
 	public TermsTable extract() {
 		this.extractTerms();
 		TermsTable termsTable = new TermsTable();
-		System.out.println("........................::>    "+this.termsIndex);
+	
 		for (AnnotatedWord<TermMetadata> term : this.termsIndex
 				.getTerms(this.targetDomain)) {
 

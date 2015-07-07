@@ -93,7 +93,7 @@ public class OntologyLearningWorkflow {
 			this.termsTable = this.termsRetriever.retrieve(targetDomain);
 		}
 
-		termsTable.show(30);
+		//termsTable.show(30);
 
 		System.out.println("Extracting relations table");
 
@@ -169,7 +169,7 @@ public class OntologyLearningWorkflow {
 		String targetDomain = corpusURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
-		Double hypernymExtractionMinimumThresohold = 0.28;
+		Double hypernymExtractionMinimumThresohold = 0.09;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
 		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";

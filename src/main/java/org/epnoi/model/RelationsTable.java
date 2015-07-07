@@ -142,6 +142,9 @@ public class RelationsTable implements Resource {
 			relation.setType(type);
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 
+		
+			
+			
 			this.orderedRelations.put(relation, relation.getURI());
 			this.relations.put(relation.getURI(), relation);
 			List<Relation> relations = this.relationsBySource.get(relation

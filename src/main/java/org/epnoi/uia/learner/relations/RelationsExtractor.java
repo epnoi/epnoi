@@ -207,7 +207,9 @@ public class RelationsExtractor {
 				.getWord();
 		String targetTermWord = termCandidateBuilder.buildTermCandidate(target)
 				.getWord();
-		if (this.knowledgeBase.areRelated(sourceTermWord, targetTermWord,
+		
+		
+		if (this.considerKnowledgeBase&&this.knowledgeBase.areRelated(sourceTermWord, targetTermWord,
 				RelationHelper.HYPERNYM)) {
 			_createRelation(sentenceContent, sourceTermWord, targetTermWord,
 					1.0);
@@ -241,8 +243,7 @@ public class RelationsExtractor {
 				this.targetDomain));
 
 		if (sourceTerm != null && targetTerm != null) {
-			System.out
-					.println("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA>");
+			
 			this.relationsTable.introduceRelation(this.targetDomain,
 					sourceTerm, targetTerm, RelationHelper.HYPERNYM,
 					sentenceContent, relationProbability);
