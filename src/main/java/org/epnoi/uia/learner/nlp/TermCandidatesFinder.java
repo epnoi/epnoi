@@ -55,10 +55,18 @@ public class TermCandidatesFinder {
 			}
 			corpus.remove(0);
 		}
-
+		
 		return document;
 	}
 
+	public void release(Document document){
+		try{
+		Factory.deleteResource(document);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		}
+	
 	// ----------------------------------------------------------------------------------
 
 	public void init(Core core) {

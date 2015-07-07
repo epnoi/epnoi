@@ -192,6 +192,9 @@ public class RelationalSentencesCorpusCreator {
 
 						_searchDocument(annotatedContentDocument);
 						sectionsCount++;
+						annotatedContentDocument.cleanup();
+						annotatedContent=null;
+						//this.termCandidatesFinder.release(annotatedContentDocument);
 
 					} else {
 						/*
@@ -247,9 +250,13 @@ public class RelationalSentencesCorpusCreator {
 		Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
 		while (sentencesIt.hasNext()) {
 			Annotation sentenceAnnotation = sentencesIt.next();
-
+			if(!(sentenceAnnotation.getEndNode().getOffset()-sentenceAnnotation.getStartNode().getOffset()>MAX_SENTENCE_LENGTH)){
+				//System.out.println("OK!");
 			_searchSentence(document, sentencesAnnotations, sentenceAnnotation);
-
+			}else{
+			//	System.out.println("MUY LARGA!"+(sentenceAnnotation.getEndNode().getOffset()-sentenceAnnotation.getStartNode().getOffset()));
+			}
+			
 		}
 
 	}
@@ -359,17 +366,21 @@ public class RelationalSentencesCorpusCreator {
 
 			Document annotatedContent = termCandidatesFinder
 					.findTermCandidates(sentenceContent.toString());
+			
 
 			RelationalSentence relationalSentence = new RelationalSentence(
 					source, target, sentenceContent.toString(),
 					annotatedContent.toXml());
-			
+			annotatedContent.cleanup();
+			//annotatedContent=null;
+			this.termCandidatesFinder.release(annotatedContent);
 			if (!target.equals(source)){
 				
 			
 
 			corpus.getSentences().add(relationalSentence);
 			}
+			
 			}
 	}
 

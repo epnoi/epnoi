@@ -4,11 +4,11 @@ import org.epnoi.uia.commons.Parameters;
 
 public class FilesystemHarvesterParameters extends Parameters<Object> {
 
-	public static final String CORPUS_LABEL_PARAMETER = "DOMAIN_LABEL_PARAMETER"; //How the harvested items are labeled to be discovered later
-	public static final String VERBOSE_PARAMETER = "VERBOSE_PARAMETER"; 
-	public static final String FILEPATH_PARAMETER = "FILEPATH_PARAMETER"; //Filepath were the files to be harvested are deployed
-	public static final String OVERWRITE_PARAMETER = "OVERWRITE_PARAMETER";
-	public static final String CORPUS_URI_PARAMETER = "CORPUS_URI_PARAMETER";
+	public static final String CORPUS_LABEL = "DOMAIN_LABEL_PARAMETER"; //How the harvested items are labeled to be discovered later
+	public static final String VERBOSE = "VERBOSE_PARAMETER"; 
+	public static final String FILEPATH = "FILEPATH_PARAMETER"; //Filepath were the files to be harvested are deployed
+	public static final String OVERWRITE = "OVERWRITE_PARAMETER";
+	public static final String CORPUS_URI = "CORPUS_URI_PARAMETER";
 
 	//---------------------------------------------------------------------------------------------------------------------
 
