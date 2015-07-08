@@ -113,7 +113,7 @@ public class FilesystemHarvester {
 						+ fileToHarvest);
 				Context context = new Context();
 				Paper paper = _harvestFile(directoryToHarvest + "/"
-						+ fileToHarvest);
+						+ fileToHarvest, fileToHarvest);
 
 				if (core.getInformationHandler().contains(paper.getURI(),
 						RDFHelper.PAPER_CLASS)) {
@@ -218,13 +218,13 @@ public class FilesystemHarvester {
 
 	// ----------------------------------------------------------------------------------------
 
-	public Paper _harvestFile(String filePath) {
+	public Paper _harvestFile(String filePath, String fileName) {
 
 		Paper paper = new Paper();
 
 		String fileContent = _scanContent("file://" + filePath);
 		paper.setURI("file://" + filePath);
-		paper.setTitle(filePath);
+		paper.setTitle(fileName);
 		paper.setDescription(fileContent);
 		paper.setPubDate("2015-07-07");
 		return paper;

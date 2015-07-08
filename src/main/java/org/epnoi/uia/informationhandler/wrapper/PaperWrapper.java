@@ -33,11 +33,11 @@ public class PaperWrapper implements Wrapper {
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-/*
+
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-*/
+
 		informationStore = this.core.getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
