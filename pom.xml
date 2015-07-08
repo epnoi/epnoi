@@ -282,17 +282,15 @@
 				</configuration>
 
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<configuration>
-
-					<mainClass>org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreator</mainClass>
-					<includeProjectDependencies>true</includeProjectDependencies>
-					<classpathScope></classpathScope>
-				</configuration>
-			</plugin>
+			
+<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+                <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>					
 		</plugins>
 
 	</build>
