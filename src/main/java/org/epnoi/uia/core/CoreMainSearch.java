@@ -20,15 +20,7 @@ public class CoreMainSearch {
 	public static Core getUIACore() {
 
 		long time = System.currentTimeMillis();
-		Core core = new Core();
-		ParametersModel parametersModel = _readParameters();
-		try {
-			core.init(parametersModel);
-		} catch (EpnoiInitializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
-		}
+		Core core = CoreUtility.getUIACore();
 
 		long afterTime = System.currentTimeMillis();
 		logger.info("It took " + (Long) (afterTime - time) / 1000.0
@@ -38,26 +30,7 @@ public class CoreMainSearch {
 
 	}
 
-	// ----------------------------------------------------------------------------------------
-
-	public static ParametersModel _readParameters() {
-		ParametersModel parametersModel = null;
-
-		try {
-
-			URL configFileURL = CoreMain.class.getResource("CoreMainSearch.xml");
-
-			parametersModel = ParametersModelReader.read(configFileURL
-					.getPath());
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return parametersModel;
-	}
-
+	
 	// ----------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -66,20 +39,18 @@ public class CoreMainSearch {
 
 		SelectExpression selectExpression = new SelectExpression();
 
-		selectExpression.setSolrExpression("content:scalability");
+		selectExpression.setSolrExpression("content:clothes");
 
 		SearchContext searchContext = new SearchContext();
 		searchContext.getFacets().add("date");
-		searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
-		//searchContext.getFilterQueries().add("date:\"2014-03-04T17:56:05Z\"");
+//		searchContext.getFilterQueries().add("date:\"2013-12-06T17:54:21Z\"");
+		// searchContext.getFilterQueries().add("date:\"2014-03-04T17:56:05Z\"");
 
 		SearchResult searchResult = core.getSearchHandler().search(
 				selectExpression, searchContext);
+		
+		System.out.println("Search result --> "+searchResult);
 		System.out.println("Facets ---> " + searchResult.getFacets().size());
-		
-		
-		
-		Resource resource =core.getInformationHandler().get("http://rss.slashdot.org/~r/Slashdot/slashdot/~3/-FraYC4r__w/story01.htm", FeedRDFHelper.ITEM_CLASS);
-		System.out.println("---> "+resource);
+
 	}
 }
