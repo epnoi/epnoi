@@ -123,7 +123,7 @@ public class OntologyLearningTask {
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
-						0.25);
+						0.00195);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.EXTRACT_TERMS, true);
 		ontologyLearningParameters.setParameter(

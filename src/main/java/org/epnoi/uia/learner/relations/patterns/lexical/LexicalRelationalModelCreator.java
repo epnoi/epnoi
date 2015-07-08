@@ -27,6 +27,7 @@ public class LexicalRelationalModelCreator {
 	private boolean store;
 	private boolean verbose;
 	private boolean test;
+	private double interpolationConstant;
 	private String path;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -84,6 +85,10 @@ public class LexicalRelationalModelCreator {
 		} else {
 			this.test = false;
 		}
+
+		this.interpolationConstant = (double) parameters
+				.getParameterValue(RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT);
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -94,8 +99,8 @@ public class LexicalRelationalModelCreator {
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
 			this.modelBuilder.addPattern(((LexicalRelationalPattern) pattern));
 		}
-		System.out.println("......................................................");
-		logger.info("Building the model "+this.modelBuilder);
+
+		logger.info("Building the model " + this.modelBuilder);
 		RelaxedBigramSoftPatternModel model = this.modelBuilder.build();
 		long totalTime = startingTime - System.currentTimeMillis();
 		logger.info("It took " + Math.abs(totalTime) + " ms to build the model");
@@ -149,6 +154,11 @@ public class LexicalRelationalModelCreator {
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.VERBOSE, true);
+
+		parameters
+				.setParameter(
+						RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT,
+						0.0);
 
 		Core core = CoreUtility.getUIACore();
 

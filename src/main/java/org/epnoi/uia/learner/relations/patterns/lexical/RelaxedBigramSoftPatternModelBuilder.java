@@ -22,6 +22,7 @@ public class RelaxedBigramSoftPatternModelBuilder implements
 	private RelationalPatternsModelCreationParameters parameters;
 	private int maxPatternLenght = 20;
 	private int minPatternLenght = 2;
+	private double interpolationConstant;
 	private Map<String, Map<String, Double>> bigramProbability;
 
 	private Map<String, Double> unigramProbability;
@@ -46,7 +47,8 @@ public class RelaxedBigramSoftPatternModelBuilder implements
 		this.nodesCount = 0L;
 		this.bigramProbability = new HashMap<>();
 		this.unigramProbability = new HashMap<>();
-
+		this.interpolationConstant = (double) parameters
+				.getParameterValue(RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -200,8 +202,8 @@ public class RelaxedBigramSoftPatternModelBuilder implements
 
 		}
 
-		return new RelaxedBigramSoftPatternModel(this.parameters,
-				this.unigramProbability, this.bigramProbability, 0.5);
+		return new RelaxedBigramSoftPatternModel(
+				this.unigramProbability, this.bigramProbability, this.interpolationConstant);
 
 	}
 
@@ -209,12 +211,13 @@ public class RelaxedBigramSoftPatternModelBuilder implements
 
 	private void _calculateUnigramProbability(String nodeToken,
 			NodeInformation nodeInformation) {
-		
+
 		/*
-		Double unigramProbability = ((double) (nodeInformation.getCardinality() + this.LAPLACE_CONSTANT) / (double) (nodesCount + this.LAPLACE_CONSTANT
-				* this.nodesInformation.size()));
-*/
-		Double unigramProbability = ((double) (nodeInformation.getCardinality() ) / (double) (nodesCount));
+		 * Double unigramProbability = ((double)
+		 * (nodeInformation.getCardinality() + this.LAPLACE_CONSTANT) / (double)
+		 * (nodesCount + this.LAPLACE_CONSTANT this.nodesInformation.size()));
+		 */
+		Double unigramProbability = ((double) (nodeInformation.getCardinality()) / (double) (nodesCount));
 		this.unigramProbability.put(nodeToken, unigramProbability);
 	}
 

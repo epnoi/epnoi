@@ -18,11 +18,11 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 	private RelationalPatternsModelCreationParameters parmeters;
 	// private int maxPatternLength;
 	// private LexicalRelationalModelCreationParameters parameters;
-	private double interpolation_constant = 0.3d; // Set to this value using the
-													// experimental value set in
-													// Generic Soft Pattern
-													// Models for Definitional
-													// Question Answering
+	private double interpolationConstant; // Set to this value using the
+											// experimental value set in
+											// Generic Soft Pattern
+											// Models for Definitional
+											// Question Answering
 
 	// ---------------------------------------------------------------------------------------------------------
 
@@ -33,8 +33,8 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 	}
 
 	protected RelaxedBigramSoftPatternModel(
-			RelationalPatternsModelCreationParameters parameters,
-			Map<String, Double> unigramProbability,
+
+	Map<String, Double> unigramProbability,
 			Map<String, Map<String, Double>> bigramProbability,
 			double interpolationConstant) {
 		// this.maxPatternLength = (Integer) this.parameters
@@ -42,7 +42,7 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 
 		this.bigramProbability = bigramProbability;
 		this.unigramProbability = unigramProbability;
-		this.interpolation_constant = interpolationConstant;
+		this.interpolationConstant = interpolationConstant;
 
 	}
 
@@ -92,7 +92,7 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 				|| (relationalPattern.getLength() > MAX_PATTERN_LENGTH)) {
 			return 0d;
 		} else {// Generic case...
-			String nextNodeToken;
+			String nextNodeToken = null;
 			String nodeToken = relationalPattern.getNodes().get(0)
 					.getGeneratedToken();
 
@@ -107,12 +107,17 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 				if (position < patternLength - 1) {
 					nextNodeToken = nodes.get(position + 1).getGeneratedToken();
 
-					probability *= (this.interpolation_constant * this
+					probability *= (this.interpolationConstant * this
 							.getUnigramProbability(nextNodeToken))
-							+ ((1 - this.interpolation_constant) * this
+							+ ((1 - this.interpolationConstant) * this
 									.getBigramProbability(nodeToken,
 											nextNodeToken));
+
+					// System.out.println("token>"+nodeToken);
+					// System.out.println("nextToken>"+nextNodeToken);
+
 				}
+
 				position++;
 			}
 
@@ -161,7 +166,7 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 		return "BigramSoftPatternModel [unigramProbability="
 				+ _unigramProbabilityToString() + ", bigramProbability="
 				+ _bigramProbabilityToString() + ", parmeters=" + parmeters
-				+ ", interpolation_constant=" + interpolation_constant + "]";
+				+ ", interpolation_constant=" + interpolationConstant + "]";
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
@@ -186,6 +191,12 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 			}
 		}
 		return result;
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	private double getInterpolationConstant() {
+		return this.interpolationConstant;
 	}
 
 }

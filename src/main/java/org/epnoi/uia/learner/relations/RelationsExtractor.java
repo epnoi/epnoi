@@ -50,8 +50,8 @@ public class RelationsExtractor {
 	private boolean considerKnowledgeBase = false;
 	private KnowledgeBase knowledgeBase;
 
-	// ------------------------------------------------------------------------------------------------------------------------------------
-
+	// --------------------------------------------------------------------------------------
+	
 	public void init(Core core, DomainsTable domainsTable, Parameters parameters)
 			throws EpnoiInitializationException {
 		logger.info("Initializing the Relations Extractor with the following parameters");
@@ -87,7 +87,7 @@ public class RelationsExtractor {
 		}
 	}
 
-	// ------------------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------
 
 	public RelationsTable extract(TermsTable termsTable) {
 		logger.info("Extracting the Relations Table");
@@ -141,7 +141,7 @@ public class RelationsExtractor {
 
 	}
 
-	// ------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------
 
 	private void _testSentence(Long sentenceStartOffset,
 			Long sentenceEndOffset, Document annotatedResource,
@@ -192,13 +192,15 @@ public class RelationsExtractor {
 
 	}
 
-	// ------------------------------------------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------
 
 	private boolean _areFar(Annotation source, Annotation target) {
 		return (Math.abs(target.getEndNode().getOffset()
 				- source.getEndNode().getOffset()) > MAX_DISTANCE);
 
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
 	private void _extractProbableRelationsFromSentence(Annotation source,
 			Annotation target, Document annotatedResource,
@@ -220,7 +222,7 @@ public class RelationsExtractor {
 			for (LexicalRelationalPattern pattern : generatedPatterns) {
 				double relationProbability = this.softPatternModel
 						.calculatePatternProbability(pattern);
-				// System.out.println(relationProbability+">"+this.hypernymExtractionThreshold);
+				
 				if (relationProbability > this.hypernymExtractionThreshold) {
 
 					_createRelation(sentenceContent, sourceTermWord,
@@ -230,6 +232,8 @@ public class RelationsExtractor {
 			}
 		}
 	}
+	
+	// --------------------------------------------------------------------------------------
 
 	private void _createRelation(String sentenceContent, String sourceTermWord,
 			String targetTermWord, double relationProbability) {
@@ -258,7 +262,7 @@ public class RelationsExtractor {
 		}
 	}
 
-	// ------------------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------
 
 	private Content<Object> retrieveAnnotatedDocument(String URI) {
 

@@ -91,6 +91,8 @@ public class DomainResource extends UIAService {
 		domain.setType(typesURIsResolutionTable.get(newDomainType));
 		domain.setResources(newDomainURI + resourcesPathSubfix);
 
+		System.out.println("DOMAIN> "+domain);
+		
 		// We create an empty research object
 		ResearchObject resources = new ResearchObject();
 		resources.setURI(newDomainURI + resourcesPathSubfix);
@@ -104,38 +106,6 @@ public class DomainResource extends UIAService {
 		return Response.created(domainURI).build();
 	}
 
-	// -----------------------------------------------------------------------------------------
-	/*
-	 * @PUT
-	 * 
-	 * @Path("")
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON)
-	 * 
-	 * @ApiOperation(value = "Stores a domain", notes = "")
-	 * 
-	 * @ApiResponses(value = {
-	 * 
-	 * @ApiResponse(code = 201, message = "The domain has been created"),
-	 * 
-	 * @ApiResponse(code = 500, message = "Something went wrong in the UIA") })
-	 * public Response storeDomain(Domain domain) { logger.info("PUT Domain > "
-	 * + domain);
-	 * 
-	 * URI domainURI = null; try { domainURI = new URI(domain.getURI()); } catch
-	 * (URISyntaxException e) { throw new WebApplicationException(); }
-	 * 
-	 * // We create an empty research object ResearchObject resources = new
-	 * ResearchObject(); resources.setURI(domain.getResources());
-	 * 
-	 * this.core.getInformationHandler().put(resources,
-	 * org.epnoi.model.Context.getEmptyContext());
-	 * 
-	 * this.core.getInformationHandler().put(domain,
-	 * org.epnoi.model.Context.getEmptyContext());
-	 * 
-	 * return Response.created(domainURI).build(); }
-	 */
 	// -----------------------------------------------------------------------------------------
 
 	@GET
@@ -218,6 +188,11 @@ public class DomainResource extends UIAService {
 		System.out.println("DOMAIN >     " + domain);
 		System.out.println();
 		System.out.println();
+		
+		if(!core.getInformationHandler().contains(resourceURI, domain.getType())){
+			core.getHarvestersHandler().harvestURL(resourceURI, domain);
+		}
+				
 		if (domain != null) {
 			System.out.println("DOMAIN " + domain);
 			ResearchObject researchObject = (ResearchObject) core
