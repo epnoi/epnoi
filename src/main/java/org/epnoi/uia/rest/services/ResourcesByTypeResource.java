@@ -132,8 +132,13 @@ public class ResourcesByTypeResource extends UIAService {
 			System.out.println("Getting the resource "
 					+ ResourcesByTypeResource.resourceTypesTable
 							.get(resourceType));
-			Resource resource = this.core.getInformationHandler().get(URI,
-					resourceClass);
+			Resource resource = null;
+			try {
+				resource = this.core.getInformationHandler().get(URI,
+						resourceClass);
+			} catch (Exception e) {
+
+			}
 
 			if (resource != null) {
 				return Response.ok(resource, MediaType.APPLICATION_JSON)
