@@ -9,24 +9,21 @@ import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 public class KnowledgeBaseHandler {
 	Core core = null;
 	private KnowledgeBase knowledgeBase;
+	private KnowledgeBaseParameters knowledgeBaseParameters; 
+	
 	private volatile boolean initialized = false;
 
 	// ---------------------------------------------------------------------------------------------
 
 	public void init(Core core) {
 		this.core = core;
-	}
-
-	// ---------------------------------------------------------------------------------------------
-
-	private void _initializeKnowledgeBase(Core core) {
-		String filepath = "/opt/epnoi/epnoideployment/wordnet/dictWN3.1";
-		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
+		this.knowledgeBaseParameters = new KnowledgeBaseParameters();
+		String wordnetDictionaryfilepath = "/opt/epnoi/epnoideployment/wordnet/dictWN3.1";
 		WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
 
 		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 		wordnetParameters.setParameter(
-				WordNetHandlerParameters.DICTIONARY_LOCATION, filepath);
+				WordNetHandlerParameters.DICTIONARY_LOCATION, wordnetDictionaryfilepath);
 
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
@@ -54,13 +51,21 @@ public class KnowledgeBaseHandler {
 						wikidataParameters);
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.CONSIDER_WIKIDATA, false);
+				KnowledgeBaseParameters.CONSIDER_WIKIDATA, true);
 		knowledgeBaseParameters.setParameter(
 				KnowledgeBaseParameters.CONSIDER_WORDNET, true);
 
+	}
+
+	// ---------------------------------------------------------------------------------------------
+
+	private void _initializeKnowledgeBase(Core core) {
+		
+		
+		
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
-			knowledgeBaseCreator.init(core, knowledgeBaseParameters);
+			knowledgeBaseCreator.init(core, this.knowledgeBaseParameters);
 		} catch (EpnoiInitializationException e) {
 			System.out.println("The KnowledgeBase couldn't be initialized");
 			e.printStackTrace();
@@ -81,4 +86,14 @@ public class KnowledgeBaseHandler {
 	}
 
 	// ---------------------------------------------------------------------------------------------
+	
+	public synchronized boolean isKnowledgeBaseInitialized(){
+		return this.initialized;
+	}
+	
+	// ---------------------------------------------------------------------------------------------
+	
+	public KnowledgeBaseParameters getKnowledgeBaseParameters(){
+		return this.knowledgeBaseParameters;
+	}
 }

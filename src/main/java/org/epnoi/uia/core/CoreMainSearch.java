@@ -17,25 +17,13 @@ public class CoreMainSearch {
 	private static final Logger logger = Logger.getLogger(CoreMainSearch.class
 			.getName());
 
-	public static Core getUIACore() {
-
-		long time = System.currentTimeMillis();
-		Core core = CoreUtility.getUIACore();
-
-		long afterTime = System.currentTimeMillis();
-		logger.info("It took " + (Long) (afterTime - time) / 1000.0
-				+ "to load the UIA core");
-
-		return core;
-
-	}
-
 	
 	// ----------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 
-		Core core = getUIACore();
+		Core core = CoreUtility.getUIACore();
+		System.exit(0);
 
 		SelectExpression selectExpression = new SelectExpression();
 

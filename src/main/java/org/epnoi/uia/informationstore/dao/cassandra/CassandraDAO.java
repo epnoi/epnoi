@@ -164,13 +164,13 @@ public abstract class CassandraDAO {
 
 				for (ColumnFamilyDefinition cfdef : columnFamilyDefinitions) {
 
-					logger.info("Adding the definition "
-							+ cfdef.getName());
+				//	logger.info("Adding the definition "
+					//		+ cfdef.getName());
 					try {
 						cluster.addColumnFamily(cfdef);
 					} catch (Exception e) {
-						logger.info("Trying to add the column definition "
-										+ cfdef.getName());
+						//logger.info("Trying to add the column definition "
+						//				+ cfdef.getName());
 					}
 				}
 
