@@ -32,7 +32,6 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 	public void create(Resource resource, Context context) {
 		ResearchObject researchObject = (ResearchObject) resource;
 
-		// System.out.println("--------------------------------------------------------->"+feed);
 		String researchObjectURI = researchObject.getURI();
 
 		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
@@ -63,27 +62,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 				.replace("{RESOURCE_MAP_CLASS}",
 						OAIORERDFHelper.RESOURCE_MAP_CLASS);
 
-		/*
-		 * .replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
-		 * .replace("{FEED_TITLE}", cleanOddCharacters(feed.getTitle()))
-		 * .replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY);
-		 * 
-		 * + "<{PUB_DATE_PROPERTY}> \"{FEED_PUB_DATE}\"^^xsd:dateTime ; " +
-		 * "<{DESCRIPTION_PROPERTY}> \"{FEED_DESCRIPTION}\" ; "
-		 * 
-		 * + "<{TITLE_PROPERTY}>  \"{FEED_TITLE}\" . }";
-		 * 
-		 * .replace("{DESCRIPTION_PROPERTY}",
-		 * FeedRDFHelper.DESCRIPTION_PROPERTY) .replace("{FEED_DESCRIPTION}",
-		 * cleanOddCharacters(feed.getDescription()))
-		 * .replace("{FEED_PUB_DATE}",
-		 * 
-		 * 
-		 * 
-		 * DateConverter.convertDateFormat(feed.getPubDate()));
-		 */
-		System.out.println("queryExpression ----------------------->"
-				+ queryExpression);
+		System.out.println("queryExpression ----------------------->"+ queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, this.graph);
 		vur.exec();
@@ -119,7 +98,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 			String propertyURI = dublinCoreEntry.getKey();
 			Node propertyNode = Node.createURI(propertyURI);
 			for (String value : dublinCoreEntry.getValue()) {
-				System.out.println("p:> " + propertyURI + " v:>" + value);
+				//System.out.println("p:> " + propertyURI + " v:>" + value);
 				graph.add(new Triple(uriNode, propertyNode, Node
 						.createURI(value)));
 			}
@@ -137,11 +116,11 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results:");
+		//System.out.println("\nDESCRIBE results:");
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
 				.hasNext();) {
 			Triple triple = (Triple) i.next();
-
+System.out.println("---------------------------------------------------------___>"+triple.toString());
 			graph.remove(triple);
 
 		}
@@ -165,7 +144,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------
 
 	public ResearchObject read(String URI) {
-
+System.out.println("............URI................> "+URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
@@ -189,7 +168,8 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 						t.getObject().getURI().toString());
 			}
 
-			DublinCoreMetadataElementsSet dcProperties = this.readDC(URI+MANIFEST);
+			DublinCoreMetadataElementsSet dcProperties = this.readDC(URI
+					+ MANIFEST);
 			researchObject.setDcProperties(dcProperties);
 		}
 		return researchObject;
@@ -217,13 +197,16 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 			Triple t = i.next();
 			String predicateURI = t.getPredicate().getURI();
 
-			if (DublinCoreMetadataElementsSetHelper.isDublinCoreProperty(predicateURI)) {
+			if (DublinCoreMetadataElementsSetHelper
+					.isDublinCoreProperty(predicateURI)) {
 
-				if (DublinCoreMetadataElementsSetHelper.isDatatypeProperty(predicateURI)) {
+				if (DublinCoreMetadataElementsSetHelper
+						.isDatatypeProperty(predicateURI)) {
 
 					dcProperties.addPropertyValue(predicateURI, t.getObject()
 							.getURI().toString());
-				} else if (DublinCoreMetadataElementsSetHelper.isObjectProperty(predicateURI)) {
+				} else if (DublinCoreMetadataElementsSetHelper
+						.isObjectProperty(predicateURI)) {
 					dcProperties.addPropertyValue(predicateURI, t.getObject()
 							.getLiteral().getValue().toString());
 				}
@@ -233,54 +216,14 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 		return dcProperties;
 	}
 
-	// ---------------------------------------------------------------------------------------------------
-
-	/*
-	 * if (DublinCoreRDFHelper.TITLE_PROPERTY.equals(predicateURI)) {
-	 * feed.setTitle(t.getObject().getLiteral().getValue().toString()); } else
-	 * if (RDFHelper.URL_PROPERTY.equals(predicateURI)) {
-	 * feed.setLink(t.getObject().getLiteral().getValue().toString()); } else if
-	 * (FeedRDFHelper.DESCRIPTION_PROPERTY.equals(predicateURI)) {
-	 * feed.setDescription(t.getObject().toString()); } else if
-	 * (FeedRDFHelper.PUB_DATE_PROPERTY.equals(predicateURI)) {
-	 * System.out.println("----------->" + t.getObject().toString());
-	 * feed.setPubDate(t.getObject().getLiteral().getValue() .toString()); }
-	 * else if (FeedRDFHelper.COPYRIGHT_PROPERTY.equals(predicateURI)) {
-	 * feed.setCopyright(t.getObject().getURI().toString()); } else if
-	 * (FeedRDFHelper.LANGUAGE_PROPERTY.equals(predicateURI)) {
-	 * feed.setLanguage(t.getObject().getURI().toString());
-	 */
-
-	// ---------------------------------------------------------------------------------------------------
-
 	public Boolean exists(String URI) {
-
+		System.out.println("AQUI PINTO > " + URI);
 		Node foo1 = NodeFactory.createURI(URI);
 
 		return graph.find(new Triple(foo1, Node.ANY, Node.ANY)).hasNext();
 
 	}
 
-	// ---------------------------------------------------------------------------------------------------
-	/*
-	 * String convertDateFormat(String dateExpression) { List<SimpleDateFormat>
-	 * knownPatterns = new ArrayList<SimpleDateFormat>(); knownPatterns.add(new
-	 * SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH));
-	 * 
-	 * knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH));
-	 * knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-	 * Locale.ENGLISH)); knownPatterns.add(new
-	 * SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH));
-	 * 
-	 * for (SimpleDateFormat pattern : knownPatterns) { try { // Take a try Date
-	 * parsedDate = pattern.parse(dateExpression); SimpleDateFormat dt1 = new
-	 * SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH); return
-	 * (dt1.format(parsedDate)); } catch (ParseException pe) { // Loop on } }
-	 * System.err.println("No known Date format found: " + dateExpression);
-	 * return null;
-	 * 
-	 * }
-	 */
 	// ---------------------------------------------------------------------------------------------------
 
 	public void update(Resource resource) {

@@ -6,6 +6,7 @@ import org.epnoi.model.Annotation;
 import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.StringUtils;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -65,7 +66,7 @@ public class AnnotationRDFDAO extends RDFDAO {
 							AnnotationRDFHelper.ANNOTATION_CLASS)
 					.replace("{LABEL_PROPERTY}", RDFHelper.LABEL_PROPERTY)
 					.replace("{LABEL}",
-							cleanOddCharacters(annotation.getLabel()))
+							StringUtils.cleanOddCharacters(annotation.getLabel()))
 					.replace(
 							"{ANNOTATES_DOCUMENT_PROPERTY}",
 							AnnotationOntologyRDFHelper.ANNOTATES_DOCUMENT_PROPERTY)
@@ -73,10 +74,8 @@ public class AnnotationRDFDAO extends RDFDAO {
 							annotation.getAnnotatesResource());
 		}
 
-		// System.out.println(" ------> queryExpression " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, graph);
-
 		vur.exec();
 
 		/*

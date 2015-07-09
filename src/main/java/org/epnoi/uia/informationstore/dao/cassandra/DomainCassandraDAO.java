@@ -11,6 +11,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class DomainCassandraDAO extends CassandraDAO {
@@ -24,19 +25,22 @@ public class DomainCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-
+System.out.println("DOMAIN "+resource);
 		Domain domain = (Domain) resource;
 
 		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
 
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.NAME,
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.LABEL,
 				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILLY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
 				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
+
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.TYPE,
+				domain.getType(), DomainCassandraHelper.COLUMN_FAMILLY);
 		
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.CONSIDERED_RESOURCES,
-				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
+		super.updateColumn(domain.getURI(), DomainCassandraHelper.RESOURCES,
+				domain.getResources(), DomainCassandraHelper.COLUMN_FAMILLY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -54,9 +58,9 @@ public class DomainCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, DomainCassandraHelper.COLUMN_FAMILLY);
 
 		if (columnsIterator.hasNext()) {
-			Domain term = new Domain();
+			Domain domain = new Domain();
 
-			term.setURI(URI);
+			domain.setURI(URI);
 
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
@@ -64,21 +68,25 @@ public class DomainCassandraDAO extends CassandraDAO {
 				String columnName = column.getName();
 				String columnValue = column.getValue();
 				switch (columnName) {
-				case DomainCassandraHelper.NAME:
-					term.setLabel(columnValue);
+				case DomainCassandraHelper.LABEL:
+					domain.setLabel(columnValue);
 					break;
 
 				case DomainCassandraHelper.EXPRESSION:
-					term.setExpression(columnValue);
+					domain.setExpression(columnValue);
 					break;
 
-				case DomainCassandraHelper.CONSIDERED_RESOURCES:
-					term.setConsideredResource(columnValue);
+				case DomainCassandraHelper.TYPE:
+					domain.setType(columnValue);
 					break;
+
+				case DomainCassandraHelper.RESOURCES:
+					domain.setResources(columnValue);
+					break;
+
 				}
-
 			}
-			return term;
+			return domain;
 		}
 
 		return null;
@@ -130,7 +138,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 		domain.setURI("lauri");
 		domain.setExpression("sparqlexpression");
 		domain.setLabel("name");
-		domain.setConsideredResource(RDFHelper.DOMAIN_CLASS);
+		domain.setType(RDFHelper.DOMAIN_CLASS);
 
 		core.getInformationHandler().put(domain, Context.getEmptyContext());
 
@@ -140,7 +148,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 
 	@Override
 	public boolean exists(Selector selector) {
-		// TODO Auto-generated method stub
-		return false;
+		return (super.getAllCollumns(selector.getProperty(SelectorHelper.URI),
+				DomainCassandraHelper.COLUMN_FAMILLY).hasNext());
 	}
 }

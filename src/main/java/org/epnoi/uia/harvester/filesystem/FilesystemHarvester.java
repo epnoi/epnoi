@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.tika.metadata.Metadata;
@@ -32,14 +33,16 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.xml.sax.ContentHandler;
 
-class FilesystemHarvester {
+public class FilesystemHarvester {
 	private Core core;
 	private String datePattern = "MM/dd/yyyy";
 	private FilesystemHarvesterParameters parameters;
 
 	public String path = "/JUNK/drinventorcorpus/corpus";
 	private boolean verbose;
+	private boolean overwrite;
 	private String corpusLabel;
+	private String corpusURI;
 
 	private static final Logger logger = Logger
 			.getLogger(FilesystemHarvester.class.getName());
@@ -110,65 +113,76 @@ class FilesystemHarvester {
 						+ fileToHarvest);
 				Context context = new Context();
 				Paper paper = _harvestFile(directoryToHarvest + "/"
-						+ fileToHarvest);
-				if (this.core != null) {
-					// First the paper is added to the UIA
-					core.getInformationHandler().put(paper,
-							Context.getEmptyContext());
+						+ fileToHarvest, fileToHarvest);
 
-					// Later it is annotated as belonging to the harvested
-					// corpus
-					long startTme = System.currentTimeMillis();
-					core.getAnnotationHandler().label(paper.getURI(),
-							this.corpusLabel);
+				if (core.getInformationHandler().contains(paper.getURI(),
+						RDFHelper.PAPER_CLASS)) {
+					if (overwrite) {
+						_removePaper(paper);
 
-					long totalTime = Math.abs(startTme
-							- System.currentTimeMillis());
-					logger.info("It took " + totalTime
-							+ " ms to add it to the UIA and label it");
-					// The annotated version of the paper is also stored in the
-					// UIA
-
-					startTme = System.currentTimeMillis();
-					Document annotatedContent = this.termCandidatesFinder
-							.findTermCandidates(paper.getDescription());
-
-					Selector annotationSelector = new Selector();
-					annotationSelector.setProperty(SelectorHelper.URI,
-							paper.getURI());
-					annotationSelector
-							.setProperty(
-									SelectorHelper.ANNOTATED_CONTENT_URI,
-									paper.getURI()
-											+ "/"
-											+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
-					annotationSelector.setProperty(SelectorHelper.TYPE,
-							RDFHelper.PAPER_CLASS);
-
-					core.getInformationHandler().setAnnotatedContent(
-							annotationSelector,
-							new Content<Object>(annotatedContent,
-									AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
-					
-					totalTime = Math.abs(startTme
-							- System.currentTimeMillis());
-					logger.info("It took "
-							+ totalTime
-							+ "ms to add it to annotate its content and add it to the UIA");
+						_addPaper(paper);
+					} else {
+						logger.info("Skipping " + fileToHarvest
+								+ " since it was already in the UIA");
+					}
 
 				} else {
-
-					logger.info("Paper: " + paper);
-
-					logger.info("Result: " + context);
+					_addPaper(paper);
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void _addPaper(Paper paper) {
+		// First the paper is added to the UIA
+		core.getInformationHandler().put(paper, Context.getEmptyContext());
+
+		// Later it is annotated as belonging to the harvested
+		// corpus
+		long startTme = System.currentTimeMillis();
+
+		core.getAnnotationHandler().label(paper.getURI(), this.corpusURI);
+		core.getAnnotationHandler().label(paper.getURI(), this.corpusLabel);
+
+		long totalTime = Math.abs(startTme - System.currentTimeMillis());
+		logger.info("It took " + totalTime
+				+ " ms to add it to the UIA and label it");
+		// The annotated version of the paper is also stored in the
+		// UIA
+
+		startTme = System.currentTimeMillis();
+		Document annotatedContent = this.termCandidatesFinder
+				.findTermCandidates(paper.getDescription());
+
+		Selector annotationSelector = new Selector();
+		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
+				paper.getURI() + "/"
+						+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
+		annotationSelector.setProperty(SelectorHelper.TYPE,
+				RDFHelper.PAPER_CLASS);
+
+		core.getInformationHandler().setAnnotatedContent(
+				annotationSelector,
+				new Content<Object>(annotatedContent,
+						AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
+
+		totalTime = Math.abs(startTme - System.currentTimeMillis());
+		logger.info("It took " + totalTime
+				+ "ms to add it to annotate its content and add it to the UIA");
+	}
+
+	// ----------------------------------------------------------------------------------------
+
+	private void _removePaper(Paper paper) {
+		logger.info("The paper was already in the UIA, lets delete it (and its associated annotation)");
+		core.getAnnotationHandler().removeLabel(paper.getURI(), this.corpusURI);
+		core.getAnnotationHandler().removeLabel(paper.getURI(), this.corpusLabel);
+		core.getInformationHandler().remove(paper.getURI(),
+				RDFHelper.PAPER_CLASS);
 	}
 
 	// ----------------------------------------------------------------------------------------
@@ -204,14 +218,15 @@ class FilesystemHarvester {
 
 	// ----------------------------------------------------------------------------------------
 
-	public Paper _harvestFile(String filePath) {
+	public Paper _harvestFile(String filePath, String fileName) {
 
 		Paper paper = new Paper();
 
 		String fileContent = _scanContent("file://" + filePath);
 		paper.setURI("file://" + filePath);
-		paper.setTitle(filePath);
+		paper.setTitle(fileName);
 		paper.setDescription(fileContent);
+		paper.setPubDate("2015-07-07");
 		return paper;
 	}
 
@@ -248,13 +263,18 @@ class FilesystemHarvester {
 		this.termCandidatesFinder.init(core);
 
 		this.path = (String) parameters
-				.getParameterValue(FilesystemHarvesterParameters.FILEPATH_PARAMETER);
+				.getParameterValue(FilesystemHarvesterParameters.FILEPATH);
 
 		this.verbose = (boolean) parameters
-				.getParameterValue(FilesystemHarvesterParameters.VERBOSE_PARAMETER);
+				.getParameterValue(FilesystemHarvesterParameters.VERBOSE);
 
 		this.corpusLabel = (String) parameters
-				.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER);
+				.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
+
+		this.corpusURI = (String) parameters
+				.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI);
+		this.overwrite = (boolean) parameters
+				.getParameterValue(FilesystemHarvesterParameters.OVERWRITE);
 
 	}
 
@@ -266,20 +286,17 @@ class FilesystemHarvester {
 		FilesystemHarvester harvester = new FilesystemHarvester();
 		FilesystemHarvesterParameters parameters = new FilesystemHarvesterParameters();
 
-		parameters.setParameter(
-				FilesystemHarvesterParameters.CORPUS_LABEL_PARAMETER,
+		parameters.setParameter(FilesystemHarvesterParameters.CORPUS_LABEL,
 				"CGTestCorpus");
-		parameters.setParameter(
-				FilesystemHarvesterParameters.VERBOSE_PARAMETER, true);
 
-		parameters.setParameter(
-				FilesystemHarvesterParameters.OVERWRITE_PARAMETER, true);
+		parameters.setParameter(FilesystemHarvesterParameters.CORPUS_URI,
+				"http://CGTestCorpus");
+		parameters.setParameter(FilesystemHarvesterParameters.VERBOSE, true);
 
-		
-		
-		parameters.setParameter(
-				FilesystemHarvesterParameters.FILEPATH_PARAMETER,
-				"/epnoi/epnoideployment/firstReviewResources/CGCorpus");
+		parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, true);
+
+		parameters.setParameter(FilesystemHarvesterParameters.FILEPATH,
+				"/opt/epnoi/epnoideployment/firstReviewResources/CGCorpus");
 
 		Core core = CoreUtility.getUIACore();
 		try {
@@ -289,6 +306,24 @@ class FilesystemHarvester {
 			e.printStackTrace();
 		}
 		harvester.run();
+
+		System.out
+				.println("These are the resources annotated as belonging to the corpus");
+
+		List<String> corpusURIs = core.getAnnotationHandler().getLabeledAs(
+				"CGTestCorpus");
+		for (String uri : corpusURIs) {
+			System.out.println(" >" + uri);
+		}
+		System.out
+				.println("==========================================================================");
+		System.out
+				.println("These are the resources annotated as belonging to the corpus");
+		corpusURIs = core.getAnnotationHandler().getLabeledAs(
+				"http://CGTestCorpus");
+		for (String uri : corpusURIs) {
+			System.out.println(" >" + uri);
+		}
 
 		logger.info("Ending the harvesting!");
 	}

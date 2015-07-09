@@ -2,9 +2,12 @@ package org.epnoi.uia.informationhandler.wrapper;
 
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
+import org.epnoi.model.Domain;
+import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
@@ -42,13 +45,14 @@ public class DomainWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.DOMAIN_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
-				.get(0);
 
-		return informationStore.get(selector);
+		
+		InformationStore informationStore = this.core.getInformationStoresByType(
+				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
+		Domain domain = (Domain) informationStore.get(selector);
+	
 
+		return domain;
 	}
 
 	// -------------------------------------------------------------------------------------
@@ -76,7 +80,8 @@ public class DomainWrapper implements Wrapper {
 
 	@Override
 	public void update(Resource resource) {
-		// TODO Auto-generated method stub
+		this.remove(resource.getURI());
+		this.put(resource, Context.getEmptyContext());
 
 	}
 
@@ -84,7 +89,6 @@ public class DomainWrapper implements Wrapper {
 
 	@Override
 	public boolean exists(String URI) {
-
 		InformationStore informationStore = this.core
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
@@ -126,6 +130,45 @@ public class DomainWrapper implements Wrapper {
 	public void setAnnotatedContent(Selector selector,
 			Content<Object> annotatedContent) {
 		// TODO Auto-generated method stub
+
+	}
+
+	// -------------------------------------------------------------------------------------
+
+	public static void main(String[] args) {
+		Core core = CoreUtility.getUIACore();
+		Domain domain = new Domain();
+		domain.setURI("http://www.epnoi.org/lauri");
+		domain.setExpression("sparqlexpression");
+		domain.setLabel("name");
+		domain.setType(RDFHelper.PAPER_CLASS);
+		domain.setResources("http://www.epnoi.org/lauri/resources");
+		
+		if(core.getInformationHandler().contains(domain.getURI(), RDFHelper.DOMAIN_CLASS)){
+			core.getInformationHandler().remove(domain.getURI(),  RDFHelper.DOMAIN_CLASS);
+		}
+		
+		core.getInformationHandler().put(domain, Context.getEmptyContext());
+
+		System.out.println("-------> "
+				+ core.getInformationHandler().get(
+						"http://www.epnoi.org/lauri", RDFHelper.DOMAIN_CLASS));
+
+		if (core.getInformationHandler().contains(domain.getURI(),
+				RDFHelper.DOMAIN_CLASS)) {
+			System.out.println("The domain exists!");
+		} else {
+			System.out.println("It doesn't exist, something went wrong :(");
+		}
+
+		core.getInformationHandler().remove(domain);
+
+		if (!core.getInformationHandler().contains(domain.getURI(),
+				RDFHelper.DOMAIN_CLASS)) {
+			System.out.println("The domain doesn't exist!");
+		} else {
+			System.out.println("It exists, something went wrong :(");
+		}
 
 	}
 

@@ -68,7 +68,7 @@ public class TermsExtractor {
 		this.parameters = parameters;
 
 		this.domainsTable = domainsTable;
-		
+
 		this.targetDomain = (String) parameters
 				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
@@ -82,7 +82,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void indexResources() {
-
+		logger.info("Indexing the textual resources to extract the terminology");
 		for (String domain : this.domainsTable.getConsideredDomains()) {
 			logger.info("Indexing the domain: " + domain);
 			this._indexDomainResoures(domain);
@@ -93,8 +93,9 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexDomainResoures(String domain) {
-		List<String> resourcesURIs = this.domainsTable.getDomainResources().get(domain);
-		System.out.println(" resourceURIS"+ resourcesURIs);
+		List<String> resourcesURIs = this.domainsTable.getDomainResources()
+				.get(domain);
+		System.out.println(" resourceURIS" + resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
@@ -106,13 +107,17 @@ public class TermsExtractor {
 		}
 		AnnotatedWord<DomainMetadata> indexedDomain = this.domainsIndex
 				.lookUp(domain);
-		indexedDomain.getAnnotation().setNumberOfTerms(total);
+		if (indexedDomain != null) {
+
+			indexedDomain.getAnnotation().setNumberOfTerms(total);
+		}
 	}
 
 	// -----------------------------------------------------------------------------------
 
 	private void _indexResource(String domain, String URI) {
-		Document annotatedDocument = (Document)retrieveAnnotatedDocument(URI).getContent();
+		Document annotatedDocument = (Document) retrieveAnnotatedDocument(URI)
+				.getContent();
 		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 				annotatedDocument);
 
@@ -149,24 +154,18 @@ public class TermsExtractor {
 
 		Content<Object> annotatedContent = core.getInformationHandler()
 				.getAnnotatedContent(selector);
-	/*
-		Document document = null;
-		try {
-			document = (Document) Factory
-					.createResource(
-							"gate.corpora.DocumentImpl",
-							Utils.featureMap(
-									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-									(String)annotatedContent.getContent(),
-									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-									"text/xml"));
-
-		} catch (ResourceInstantiationException e) { // TODO Auto-generated
-			logger.severe("Couldn't retrieve the GATE document that represents the annotated content of "
-					+ URI);
-			logger.severe(e.getMessage());
-		}
-		*/
+		/*
+		 * Document document = null; try { document = (Document) Factory
+		 * .createResource( "gate.corpora.DocumentImpl", Utils.featureMap(
+		 * gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+		 * (String)annotatedContent.getContent(),
+		 * gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
+		 * 
+		 * } catch (ResourceInstantiationException e) { // TODO Auto-generated
+		 * logger.severe(
+		 * "Couldn't retrieve the GATE document that represents the annotated content of "
+		 * + URI); logger.severe(e.getMessage()); }
+		 */
 		return annotatedContent;
 	}
 
@@ -174,10 +173,13 @@ public class TermsExtractor {
 
 	public void extractTerms() {
 		this.indexResources();
-		this.calculateCValues();
-		this.calculateDomainConsensus();
-		this.calculateDomainPertinence();
-		this.normalizeAnDeriveMeasures();
+		if (!this.domainsTable.getDomainResources().get(this.targetDomain)
+				.isEmpty()) {
+			this.calculateCValues();
+			this.calculateDomainConsensus();
+			this.calculateDomainPertinence();
+			this.normalizeAnDeriveMeasures();
+		}
 	}
 
 	// -----------------------------------------------------------------------------------
@@ -478,12 +480,12 @@ public class TermsExtractor {
 
 	}
 
-	
 	// -----------------------------------------------------------------------------------
 
 	public TermsTable extract() {
 		this.extractTerms();
 		TermsTable termsTable = new TermsTable();
+	
 		for (AnnotatedWord<TermMetadata> term : this.termsIndex
 				.getTerms(this.targetDomain)) {
 
@@ -499,7 +501,6 @@ public class TermsExtractor {
 		return termsTable;
 	}
 
-	
 	// -----------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -552,7 +553,6 @@ public class TermsExtractor {
 				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
-
 		Core core = CoreUtility.getUIACore();
 		DomainsGatherer domainGatherer = new DomainsGatherer();
 		domainGatherer.init(core, ontologyLearningParameters);
@@ -563,7 +563,7 @@ public class TermsExtractor {
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);
-		
+
 	}
 
 }

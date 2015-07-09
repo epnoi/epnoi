@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.Set;
 
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
@@ -34,9 +35,11 @@ import me.prettyprint.hector.api.query.SliceQuery;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.Selector;
 
 public abstract class CassandraDAO {
+	private static final Logger logger = Logger.getLogger(CassandraDAO.class.getName());
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
 
@@ -94,7 +97,7 @@ public abstract class CassandraDAO {
 					WikidataViewCassandraHelper.COLUMN_FAMILLY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
-				System.out.println("Intializing columnFamilyDefinitions");
+				logger.info("Intializing columnFamilyDefinitions");
 				ColumnFamilyDefinition columnFamilyDefinition = null;
 
 				CassandraDAO.columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
@@ -125,8 +128,10 @@ public abstract class CassandraDAO {
 								.createColumnFamilyDefinition(KEYSPACE,
 										columnFamilyName,
 										ComparatorType.UTF8TYPE);
+					/*
 						System.out.println("Initializing" + columnFamilyName
 								+ " > " + columnFamilyDefinition);
+								*/
 					}
 					CassandraDAO.columnFamilyDefinitions
 							.add(columnFamilyDefinition);
@@ -152,21 +157,20 @@ public abstract class CassandraDAO {
 								columnFamilyDefinitions);
 
 				cluster.addKeyspace(CassandraDAO.keyspaceDefinition, true);
-				System.out.println("Keyspace " + KEYSPACE + " created");
+				logger.info("Keyspace " + KEYSPACE + " created");
 			} else {
 
-				System.out.println("The keyspace was already initialized");
+				logger.info("The keyspace was already initialized");
 
 				for (ColumnFamilyDefinition cfdef : columnFamilyDefinitions) {
 
-					System.out.println("adding the definition "
-							+ cfdef.getName());
+				//	logger.info("Adding the definition "
+					//		+ cfdef.getName());
 					try {
 						cluster.addColumnFamily(cfdef);
 					} catch (Exception e) {
-						System.out
-								.println("Trying to add the column definition "
-										+ cfdef.getName());
+						//logger.info("Trying to add the column definition "
+						//				+ cfdef.getName());
 					}
 				}
 
@@ -174,7 +178,7 @@ public abstract class CassandraDAO {
 			if (CassandraDAO.keyspace == null) {
 				CassandraDAO.keyspace = HFactory.createKeyspace(KEYSPACE,
 						CassandraDAO.cluster);
-				System.out.println("Keyspace " + KEYSPACE + " instantiated");
+				logger.info("Keyspace " + KEYSPACE + " instantiated");
 			}
 
 			// Column family templates
@@ -185,12 +189,14 @@ public abstract class CassandraDAO {
 				ColumnFamilyTemplate<String, String> columnFamilyTemplate;
 
 				for (String columnFamilyName : columnFamillyNames) {
-					System.out.println("ct " + columnFamilyName);
+					//System.out.println("ct " + columnFamilyName);
 					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
 							CassandraDAO.keyspace, columnFamilyName,
 							StringSerializer.get(), StringSerializer.get());
+					/*
 					System.out.println("(" + columnFamilyName + ","
 							+ columnFamilyTemplate + ")");
+					*/
 					CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
 							columnFamilyTemplate);
 				}

@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.StringUtils;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -53,7 +54,7 @@ public class PaperRDFDAO extends RDFDAO {
 						DublinCoreRDFHelper.DATE_PROPERTY)
 				.replace("{PAPER_PUB_DATE}",datePubDate)
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
-				.replace("{PAPER_TITLE}", cleanOddCharacters(paper.getTitle()));
+				.replace("{PAPER_TITLE}", StringUtils.cleanOddCharacters(paper.getTitle()));
 		System.out.println("----> " + queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, graph);

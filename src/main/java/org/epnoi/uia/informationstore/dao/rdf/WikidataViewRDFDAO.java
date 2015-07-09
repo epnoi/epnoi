@@ -6,7 +6,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;

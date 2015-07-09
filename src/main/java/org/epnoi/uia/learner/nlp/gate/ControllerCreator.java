@@ -30,7 +30,7 @@ public class ControllerCreator {
 			long startLoadResourcesTime = System.currentTimeMillis(); // start
 																		// //
 																		// time
-			String grammarsPath = ControllerCreator.class.getResource(
+			String grammarsPath = Core.class.getResource(
 					"grammars/nounphrases").getPath();
 
 			String gateHomePath = this.core.getParameters().getGatePath();
@@ -46,9 +46,13 @@ public class ControllerCreator {
 
 			ProcessingResource POStagger = (ProcessingResource) Factory
 					.createResource("gate.creole.POSTagger");
-
+			FeatureMap dependencyParserFeature = Factory.newFeatureMap();
+			dependencyParserFeature.put("addConstituentAnnotations",false);
+			dependencyParserFeature.put("reusePosTags", true);
+			dependencyParserFeature.put("addDependencyFeatures", false);
+			
 			ProcessingResource dependencyParser = (ProcessingResource) Factory
-					.createResource("gate.stanford.Parser");
+					.createResource("gate.stanford.Parser", dependencyParserFeature);
 
 			FeatureMap mainGrammarFeature = Factory.newFeatureMap();
 			mainGrammarFeature.put("grammarURL", new File(grammarsPath
@@ -87,7 +91,7 @@ public class ControllerCreator {
 			sac.add(englishTokeniser);
 			sac.add(sentenceSplitter);
 			sac.add(POStagger);
-			sac.add(dependencyParser);
+		//	sac.add(dependencyParser);
 			sac.add(mainGrammarTransducer);
 
 			long endLoadResourcesTime = System.currentTimeMillis(); // end time

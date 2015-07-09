@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parametersModel>
 	<path>algo</path>
-	<gatePath>/epnoi/epnoideployment/gate</gatePath>
+	<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
@@ -26,7 +26,7 @@
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>
-		<path>/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
+		<path>/opt/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
 		<host>localhost</host>
 		<port>0</port>
 	</mapInformationStore>

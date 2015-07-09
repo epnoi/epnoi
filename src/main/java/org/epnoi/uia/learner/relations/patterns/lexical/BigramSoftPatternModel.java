@@ -1,11 +1,12 @@
 package org.epnoi.uia.learner.relations.patterns.lexical;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 
 public class BigramSoftPatternModel implements RelationalPatternsModel {
@@ -17,13 +18,19 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 	private RelationalPatternsModelCreationParameters parmeters;
 	// private int maxPatternLength;
 	// private LexicalRelationalModelCreationParameters parameters;
-	private double interpolation_constant = 0.3d; // Set to this value using the
+	private double interpolation_constant = 0.7d; // Set to this value using the
 													// experimental value set in
 													// Generic Soft Pattern
 													// Models for Definitional
 													// Question Answering
 
 	// ---------------------------------------------------------------------------------------------------------
+
+	public BigramSoftPatternModel() {
+		this.unigramProbability = new HashMap<String, Double[]>();
+		this.bigramProbability = new HashMap<String, Map<String, Double[]>>();
+		this.unigramProbability.put("algo", new Double[] { 1.0, 2.0, 3.0 });
+	}
 
 	protected BigramSoftPatternModel(
 			RelationalPatternsModelCreationParameters parameters,
@@ -83,18 +90,18 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 			String nodeToken = relationalPattern.getNodes().get(0)
 					.getGeneratedToken();
 
-			double probability = Math.log(this.getUnigramProbability(nodeToken,
-					0));
+			double probability = this.getUnigramProbability(nodeToken,
+					0);
 			for (int position = 1; position < relationalPattern.getLength(); position++) {
 				pastNodeToken = relationalPattern.getNodes().get(position - 1)
 						.getGeneratedToken();
 				nodeToken = relationalPattern.getNodes().get(position)
 						.getGeneratedToken();
-				probability += this.interpolation_constant
-						* Math.log(this.getUnigramProbability(nodeToken,
-								position))
+				probability += (this.interpolation_constant
+						* this.getUnigramProbability(nodeToken,
+								position)
 						+ (1 - this.interpolation_constant)
-						* Math.log(this.getBigramProbability(pastNodeToken,
+						* this.getBigramProbability(pastNodeToken,
 								nodeToken, position));
 			}
 			// The probability is normalized
@@ -102,7 +109,7 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 
 			// And finally brought back to the [0,1] range
 			// System.out.println(Math.exp(probability));
-			return Math.exp(probability);
+			return probability;
 		}
 	}
 
@@ -170,4 +177,5 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 		}
 		return result;
 	}
+
 }

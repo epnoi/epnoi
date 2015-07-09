@@ -1,10 +1,11 @@
 package org.epnoi.uia.commons;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class Parameters<T> {
-
+	
 	protected HashMap<String, T> parameters = new HashMap<String, T>();
 
 	// --------------------------------------------------------------------------------------------------
@@ -18,6 +19,12 @@ public class Parameters<T> {
 	public void setParameter(String parameter, T value) {
 		this.parameters.put(parameter, value);
 	}
+	
+	// --------------------------------------------------------------------------------------------------
+
+	public Map<String, T> getParameters(){
+		return this.parameters;
+	}
 
 	// --------------------------------------------------------------------------------------------------
 
@@ -29,12 +36,14 @@ public class Parameters<T> {
 
 	@Override
 	public String toString() {
+		/*
 		String expression = " \n ---------------------------------------------------------------------------------------------------------------------";
 		for (Entry<String, T> parametersEntry : parameters.entrySet()) {
 			expression += " \n " + parametersEntry.getKey() + " -> "
 					+ parametersEntry.getValue() + " ";
 		}
 		return expression + " \n ---------------------------------------------------------------------------------------------------------------------";
+*/return this.parameters.toString();
 	}
 
 }

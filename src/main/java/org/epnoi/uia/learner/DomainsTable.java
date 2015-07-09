@@ -69,6 +69,7 @@ public class DomainsTable {
 	// ------------------------------------------------------------------------------------------
 
 	public void addDomain(Domain domain) {
+		System.out.println(domain);
 		this.domains.put(domain.getURI(), domain);
 	}
 	

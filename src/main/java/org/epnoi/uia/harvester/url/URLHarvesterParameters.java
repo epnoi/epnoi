@@ -1,0 +1,18 @@
+package org.epnoi.uia.harvester.url;
+
+import org.epnoi.uia.commons.Parameters;
+
+public class URLHarvesterParameters extends Parameters<Object> {
+
+	public static final String VERBOSE_PARAMETER = "VERBOSE_PARAMETER";
+	public static final String OVERWRITE_PARAMETER = "OVERWRITE_PARAMETER";
+
+	// ---------------------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "URLHarvesterParameters [parmaters:"
+				+ super.parameters.entrySet() + "]";
+	}
+
+}

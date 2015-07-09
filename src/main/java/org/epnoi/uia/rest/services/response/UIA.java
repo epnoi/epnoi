@@ -8,7 +8,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UIA {
 	private String timestamp;
 	private ArrayList<InformationStore> informationStores = new ArrayList<InformationStore>();
-
+	private KnowledgeBase knowledgeBase;
+	
+	
+	
 	public String getTimestamp() {
 		return timestamp;
 	}
@@ -29,5 +32,14 @@ public class UIA {
 	public void addInformationStores(InformationStore informationStore) {
 		this.informationStores.add(informationStore);
 	}
+	public KnowledgeBase getKnowledgeBase() {
+		return knowledgeBase;
+	}
 
+	public void setKnowledgeBase(KnowledgeBase knowledgeBase) {
+		this.knowledgeBase = knowledgeBase;
+	}
+
+
+	
 }
