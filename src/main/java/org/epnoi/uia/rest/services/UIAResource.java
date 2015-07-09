@@ -1,7 +1,6 @@
 package org.epnoi.uia.rest.services;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -11,12 +10,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.epnoi.model.Annotation;
 import org.epnoi.uia.demo.DemoDataLoader;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.knowledgebase.KnowledgeBase;
@@ -25,7 +22,6 @@ import org.epnoi.uia.rest.services.response.UIA;
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
@@ -75,11 +71,20 @@ public class UIAResource extends UIAService {
 			informationStoreResponse.setStatus(informationStore.test());
 			uia.addInformationStores(informationStoreResponse);
 
-		}
+			org.epnoi.uia.rest.services.response.KnowledgeBase knowledgeBase = new org.epnoi.uia.rest.services.response.KnowledgeBase();
+			knowledgeBase.setStatus(this.core.getKnowledgeBaseHandler()
+					.isKnowledgeBaseInitialized());
 
-		DemoDataLoader demoDataLoader = new DemoDataLoader();
-		demoDataLoader.init(core);
-		demoDataLoader.load();
+			for (Entry<String, Object> entry : this.core
+					.getKnowledgeBaseHandler().getKnowledgeBaseParameters()
+					.getParameters().entrySet()) {
+				
+				knowledgeBase.getParameters().put(entry.getKey(),
+						entry.getValue().toString());
+			}
+			uia.setKnowledgeBase(knowledgeBase);
+
+		}
 
 		if (uia != null) {
 			return Response.ok(uia).build();

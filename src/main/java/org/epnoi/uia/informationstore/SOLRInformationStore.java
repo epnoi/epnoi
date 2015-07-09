@@ -39,7 +39,6 @@ public class SOLRInformationStore implements InformationStore {
 	// ------------------------------------------------------------------------
 
 	public boolean test() {
-
 		return SOLRDAO.test(this.parameters);
 	}
 
