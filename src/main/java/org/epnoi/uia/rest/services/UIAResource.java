@@ -107,8 +107,8 @@ public class UIAResource extends UIAService {
 
 		// We retrieve the knowledge base, since it is lazy
 		logger.info("Retrieving the knowledge base");
-		// KnowledgeBase knowledgeBase =
-		// this.core.getKnowledgeBaseHandler().getKnowledgeBase();
+		KnowledgeBase knowledgeBase = this.core.getKnowledgeBaseHandler()
+				.getKnowledgeBase();
 
 		return Response.ok().build();
 
