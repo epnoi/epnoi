@@ -193,7 +193,7 @@ public class ResourcesByTypeResource extends UIAService {
 		String resourceClass = ResourcesByTypeResource.resourceTypesTable
 				.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
-			this.core.getInformationHandler().remove(URI, resourceType);
+			this.core.getInformationHandler().remove(URI, resourceClass);
 			return Response.ok().build();
 		}
 		return Response.status(Responses.NOT_FOUND).build();
