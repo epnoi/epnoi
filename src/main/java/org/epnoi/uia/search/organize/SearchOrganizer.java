@@ -25,16 +25,20 @@ public class SearchOrganizer {
 		logger.info("Organizing the searh select result ");
 		SearchOrganizationResult searchOrganizationResult = new SearchOrganizationResult();
 		for (SelectionResultTuple selectPair : searchSelection.getResources()) {
-			
-			
-			System.out.println("peta ----------------> "+selectPair.getResourceURI());
-			Resource resource = this.core.getInformationHandler().get(
-					selectPair.getResourceURI(), selectPair.getType());
 
-			OrganizationResultPair organizationPair = new OrganizationResultPair();
-			organizationPair.setResource(resource);
-			organizationPair.setScore(selectPair.getScore());
-			searchOrganizationResult.getElements().add(organizationPair);
+			System.out.println("peta ----------------> "
+					+ selectPair.getResourceURI());
+
+			if (this.core.getInformationHandler().contains(
+					selectPair.getResourceURI(), selectPair.getType())) {
+				Resource resource = this.core.getInformationHandler().get(
+						selectPair.getResourceURI(), selectPair.getType());
+
+				OrganizationResultPair organizationPair = new OrganizationResultPair();
+				organizationPair.setResource(resource);
+				organizationPair.setScore(selectPair.getScore());
+				searchOrganizationResult.getElements().add(organizationPair);
+			}
 		}
 
 		searchOrganizationResult.setFacets(searchSelection.getFacets());

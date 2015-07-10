@@ -8,7 +8,7 @@
 		<port>1111</port>
 		<graph>http://drInventorFirstReview</graph>
 		<user>dba</user>
-		<password>dba</password>
+		<password>inVent.77</password>
 	</virtuosoInformationStore>
 	<solrInformationStore>
 		<URI>http://solrInformationStore</URI>
