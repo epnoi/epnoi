@@ -81,7 +81,7 @@ public class RelationsResource extends UIAService {
 			@ApiParam(value = "Surface form of the source term of the relation", required = true, allowMultiple = false) @QueryParam("source") String source,
 			@ApiParam(value = "Surface form of the target term of the relation", required = true, allowMultiple = false) @QueryParam("target") String target,
 			@ApiParam(value = "Relation type", required = true, allowMultiple = false, allowableValues = "hypernymy,mereology") @PathParam("RELATION_TYPE") String type,
-			@ApiParam(value = "Considered domain for the relation", required = true, allowMultiple = false) @QueryParam("domain") String domain) {
+			@ApiParam(value = "Considered domain for the relation", required = false, allowMultiple = false) @QueryParam("domain") String domain) {
 
 		logger.info("GET:> source=" + source + " target=" + target + " type="
 				+ type + " domain" + domain);

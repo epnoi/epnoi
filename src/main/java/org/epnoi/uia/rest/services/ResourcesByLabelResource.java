@@ -7,13 +7,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -21,11 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.model.Resource;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;
@@ -34,7 +24,7 @@ import com.wordnik.swagger.annotations.ApiParam;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
-@Path("/uia/resources/label")
+@Path("/uia/resources/bylabel")
 @Api(value = "/uia/resources/bylabel", description = "Operations for retrieving resources by label")
 public class ResourcesByLabelResource extends UIAService {
 
@@ -48,7 +38,7 @@ public class ResourcesByLabelResource extends UIAService {
 	@PostConstruct
 	public void init() {
 
-		logger = Logger.getLogger(ResourcesByTypeResource.class.getName());
+		logger = Logger.getLogger(ResourcesByLabelResource.class.getName());
 		logger.info("Initializing " + getClass());
 		this.core = this.getUIACore();
 
@@ -58,7 +48,7 @@ public class ResourcesByLabelResource extends UIAService {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("")
+	@Path("/")
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "The list of resource has been retrieved"),

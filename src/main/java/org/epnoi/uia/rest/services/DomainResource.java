@@ -91,8 +91,8 @@ public class DomainResource extends UIAService {
 		domain.setType(typesURIsResolutionTable.get(newDomainType));
 		domain.setResources(newDomainURI + resourcesPathSubfix);
 
-		System.out.println("DOMAIN> "+domain);
-		
+		System.out.println("DOMAIN> " + domain);
+
 		// We create an empty research object
 		ResearchObject resources = new ResearchObject();
 		resources.setURI(newDomainURI + resourcesPathSubfix);
@@ -188,13 +188,14 @@ public class DomainResource extends UIAService {
 		System.out.println("DOMAIN >     " + domain);
 		System.out.println();
 		System.out.println();
-		
-		if(!core.getInformationHandler().contains(resourceURI, domain.getType())){
-			core.getHarvestersHandler().harvestURL(resourceURI, domain);
-		}
-				
+
 		if (domain != null) {
-			System.out.println("DOMAIN " + domain);
+
+			if (!core.getInformationHandler().contains(resourceURI,
+					domain.getType())) {
+				core.getHarvestersHandler().harvestURL(resourceURI, domain);
+			}
+
 			ResearchObject researchObject = (ResearchObject) core
 					.getInformationHandler().get(URI + resourcesPathSubfix,
 							RDFHelper.RESEARCH_OBJECT_CLASS);
@@ -206,10 +207,9 @@ public class DomainResource extends UIAService {
 					core.getInformationHandler().update(researchObject);
 				}
 			}
-		 domain = (Domain) core.getInformationHandler().get(URI,
+			domain = (Domain) core.getInformationHandler().get(URI,
 					RDFHelper.DOMAIN_CLASS);
-		System.out.println("--------------DOMAIN-----> "+domain);
-		 return Response.ok().build();
+			return Response.ok().build();
 		} else {
 			return Response.status(Responses.NOT_FOUND).build();
 		}
@@ -258,12 +258,15 @@ public class DomainResource extends UIAService {
 
 	private void _updateResourcesProperty(String URI, String propertyURI,
 			String value) {
+
 		ResearchObject researchObject = (ResearchObject) core
 				.getInformationHandler().get(URI + resourcesPathSubfix,
 						RDFHelper.RESEARCH_OBJECT_CLASS);
-
-		researchObject.getDcProperties().addPropertyValue(propertyURI, value);
-		this.core.getInformationHandler().update(researchObject);
+		if (researchObject != null) {
+			researchObject.getDcProperties().addPropertyValue(propertyURI,
+					value);
+			this.core.getInformationHandler().update(researchObject);
+		}
 	}
 
 	// -----------------------------------------------------------------------------------------
@@ -272,20 +275,22 @@ public class DomainResource extends UIAService {
 			String value) {
 		Domain domain = (Domain) core.getInformationHandler().get(URI,
 				RDFHelper.DOMAIN_CLASS);
+		if (domain != null) {
 
-		switch (propertyName) {
-		case DomainResource.EXPRESSION_PROPERTY:
-			domain.setExpression(value);
-			break;
-		case DomainResource.LABEL_PROPERTY:
-			domain.setLabel(value);
-			break;
-		case DomainResource.TYPE_PROPERTY:
-			domain.setType(value);
-			break;
-		default:
+			switch (propertyName) {
+			case DomainResource.EXPRESSION_PROPERTY:
+				domain.setExpression(value);
+				break;
+			case DomainResource.LABEL_PROPERTY:
+				domain.setLabel(value);
+				break;
+			case DomainResource.TYPE_PROPERTY:
+				domain.setType(value);
+				break;
+			default:
+			}
+			this.core.getInformationHandler().update(domain);
 		}
-		this.core.getInformationHandler().update(domain);
 	}
 
 	// -----------------------------------------------------------------------------------------

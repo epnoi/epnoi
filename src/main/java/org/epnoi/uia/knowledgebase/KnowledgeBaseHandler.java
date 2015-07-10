@@ -51,7 +51,7 @@ public class KnowledgeBaseHandler {
 						wikidataParameters);
 
 		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.CONSIDER_WIKIDATA, false);
+				KnowledgeBaseParameters.CONSIDER_WIKIDATA, true);
 		knowledgeBaseParameters.setParameter(
 				KnowledgeBaseParameters.CONSIDER_WORDNET, true);
 

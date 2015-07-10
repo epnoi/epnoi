@@ -2,15 +2,13 @@ package org.epnoi.uia.harvester.url;
 
 import gate.Document;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.apache.tika.metadata.Metadata;
@@ -22,7 +20,6 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
-import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
@@ -101,7 +98,7 @@ public class URLHarvester {
 		String content = handler.toString();
 		content = content.replaceAll("\\r\\n|\\r|\\n", " ");
 		content = content.replaceAll("\\s+", " ");
-		// System.out.println("----> " + content);
+		System.out.println("--------------> " + content);
 		return content;
 	}
 
@@ -181,6 +178,11 @@ public class URLHarvester {
 		paper.setURI(filePath);
 		paper.setTitle(filePath);
 		paper.setDescription(fileContent);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
+		paper.setPubDate(dateFormat.format(date));
+
 		return paper;
 	}
 

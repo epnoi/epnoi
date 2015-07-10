@@ -71,17 +71,7 @@ public class UIAResource extends UIAService {
 			informationStoreResponse.setStatus(informationStore.test());
 			uia.addInformationStores(informationStoreResponse);
 
-			org.epnoi.uia.rest.services.response.KnowledgeBase knowledgeBase = new org.epnoi.uia.rest.services.response.KnowledgeBase();
-			knowledgeBase.setStatus(this.core.getKnowledgeBaseHandler()
-					.isKnowledgeBaseInitialized());
-
-			for (Entry<String, Object> entry : this.core
-					.getKnowledgeBaseHandler().getKnowledgeBaseParameters()
-					.getParameters().entrySet()) {
-				
-				knowledgeBase.getParameters().put(entry.getKey(),
-						entry.getValue().toString());
-			}
+			org.epnoi.uia.rest.services.response.KnowledgeBase knowledgeBase = _generateKnowledgeBaseStatus();
 			uia.setKnowledgeBase(knowledgeBase);
 
 		}
@@ -93,13 +83,30 @@ public class UIAResource extends UIAService {
 	}
 
 	// --------------------------------------------------------------------------------
+	
+	private org.epnoi.uia.rest.services.response.KnowledgeBase _generateKnowledgeBaseStatus() {
+		org.epnoi.uia.rest.services.response.KnowledgeBase knowledgeBase = new org.epnoi.uia.rest.services.response.KnowledgeBase();
+		knowledgeBase.setStatus(this.core.getKnowledgeBaseHandler()
+				.isKnowledgeBaseInitialized());
+
+		for (Entry<String, Object> entry : this.core
+				.getKnowledgeBaseHandler().getKnowledgeBaseParameters()
+				.getParameters().entrySet()) {
+			
+			knowledgeBase.getParameters().put(entry.getKey(),
+					entry.getValue().toString());
+		}
+		return knowledgeBase;
+	}
+
+	// --------------------------------------------------------------------------------
 
 	@POST
 	@Path("/init")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Initializes the UIA", notes = "")
 	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "The UIA successfully initialized"),
+			@ApiResponse(code = 200, message = "The UIA successfully initialized"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA initialization") })
 	public Response label() {
 		logger.info("POST");
@@ -110,11 +117,13 @@ public class UIAResource extends UIAService {
 		demoDataLoader.init(core);
 		demoDataLoader.load();
 
-		// We retrieve the knowledge base, since it is lazy
+		// We retrieve the knowledge base, since it is initialized in a lazy manner
+	
+		
 		logger.info("Retrieving the knowledge base");
+	
 		KnowledgeBase knowledgeBase = this.core.getKnowledgeBaseHandler()
 				.getKnowledgeBase();
-
 		return Response.ok().build();
 
 	}
