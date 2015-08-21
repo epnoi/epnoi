@@ -346,7 +346,7 @@ public class WikipediaHarvesterOld {
 
 		// -------------------------------------------------------------------------------------------------------------------
 
-		public void process(WikiPage page) {
+		public void processWikipediaPage(WikiPage page) {
 			// System.out.println("> " + page.getTitle() + " " + count++);
 
 			ParsedPage parsedPage = parser.parse(page.getWikiText());

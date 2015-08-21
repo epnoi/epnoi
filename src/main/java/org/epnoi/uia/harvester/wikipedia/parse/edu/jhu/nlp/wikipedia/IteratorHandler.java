@@ -8,7 +8,7 @@ public class IteratorHandler implements PageCallbackHandler {
 		parser = myParser;
 	}
 	
-	public void process(WikiPage page) {
+	public void processWikipediaPage(WikiPage page) {
 		parser.notifyPage(page);
 	}
 

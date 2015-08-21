@@ -23,5 +23,5 @@ public interface PageCallbackHandler {
 	 * @param page a wikipedia page object
 	 * @see   WikiPage
 	 */
-	public void process(WikiPage page);
+	public void processWikipediaPage(WikiPage page);
 }

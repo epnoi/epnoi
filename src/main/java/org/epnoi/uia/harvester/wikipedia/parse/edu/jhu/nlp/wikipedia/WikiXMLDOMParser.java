@@ -102,7 +102,7 @@ public class WikiXMLDOMParser extends WikiXMLParser {
 			}
 			
 			if(pageHandler != null) {
-				pageHandler.process(wpage);
+				pageHandler.processWikipediaPage(wpage);
 			} else pageList.add(wpage);
 		}	
 	}
