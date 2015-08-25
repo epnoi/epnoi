@@ -9,11 +9,11 @@ import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.learner.nlp.gate.AnnotationsComparator;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
+import org.epnoi.uia.nlp.gate.AnnotationsComparator;
+import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 
 
 

@@ -18,10 +18,10 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.uia.nlp.NLPProcessor;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
@@ -231,7 +231,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 				.println("Initialization --------------------------------------------");
 
 		Core core = CoreUtility.getUIACore();
-		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+		NLPProcessor termCandidatesFinder = new NLPProcessor();
 		termCandidatesFinder.init(core);
 
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
@@ -241,7 +241,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
 		Document annotatedContent = termCandidatesFinder
-				.findTermCandidates("A dog is a canine");
+				.process("A dog is a canine");
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
 						15L), "A dog is a canine", annotatedContent.toXml());
@@ -255,7 +255,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		 * ._createRelationalSentenceRepresentation(relationalSentence));
 		 */
 		annotatedContent = termCandidatesFinder
-				.findTermCandidates("A dog, is a canine (and other things!)");
+				.process("A dog, is a canine (and other things!)");
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
 				._readRelationalSentenceRepresentation("[2,5][12,18]A dog, is a canine (and other things!)"
 						+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator

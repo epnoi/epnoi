@@ -26,13 +26,13 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBase;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModel;
+import org.epnoi.uia.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.uia.learner.terms.TermCandidateBuilder;
 import org.epnoi.uia.learner.terms.TermsTable;
+import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 
 public class RelationsExtractor {
 	private static final Logger logger = Logger

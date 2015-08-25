@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.nlp;
+package org.epnoi.uia.nlp;
 
 import gate.Annotation;
 import gate.Corpus;
@@ -15,12 +15,12 @@ import java.util.List;
 
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
 import org.epnoi.uia.learner.relations.patterns.syntactic.SyntacticPatternGraphEdge;
+import org.epnoi.uia.nlp.gate.ControllerCreator;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleGraph;
 
-public class TermCandidatesFinder {
+public class NLPProcessor {
 	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
@@ -28,7 +28,7 @@ public class TermCandidatesFinder {
 
 	// ----------------------------------------------------------------------------------
 
-	public Document findTermCandidates(String content) {
+	public Document process(String content) {
 		Document document = null;
 		try {
 			
@@ -39,7 +39,7 @@ public class TermCandidatesFinder {
 		}
 		
 	
-		if (document.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
+		if (document.getContent().size() > NLPProcessor.MIN_CONTENT_LENGHT) {
 			
 			this.corpus.add(document);
 
@@ -187,7 +187,7 @@ public class TermCandidatesFinder {
 
 			Core core = CoreUtility.getUIACore();
 
-			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
+			NLPProcessor termCandidatesFinder = new NLPProcessor();
 			termCandidatesFinder.init(core);
 			
 			
@@ -201,7 +201,7 @@ public class TermCandidatesFinder {
 			 * );
 			 */
 			Document document = termCandidatesFinder
-					.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
+					.process("Bell, a company which is based in LA, makes and distributes computer products");
 
 			String documentAsString = document.toXml();
 			/*

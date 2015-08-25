@@ -30,7 +30,7 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
+import org.epnoi.uia.nlp.NLPProcessor;
 import org.xml.sax.ContentHandler;
 
 public class FilesystemHarvester {
@@ -46,7 +46,7 @@ public class FilesystemHarvester {
 
 	private static final Logger logger = Logger
 			.getLogger(FilesystemHarvester.class.getName());
-	TermCandidatesFinder termCandidatesFinder;
+	NLPProcessor termCandidatesFinder;
 
 	// ----------------------------------------------------------------------------------------
 
@@ -155,7 +155,7 @@ public class FilesystemHarvester {
 
 		startTme = System.currentTimeMillis();
 		Document annotatedContent = this.termCandidatesFinder
-				.findTermCandidates(paper.getDescription());
+				.process(paper.getDescription());
 
 		Selector annotationSelector = new Selector();
 		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
@@ -259,7 +259,7 @@ public class FilesystemHarvester {
 			throws EpnoiInitializationException {
 
 		this.core = core;
-		this.termCandidatesFinder = new TermCandidatesFinder();
+		this.termCandidatesFinder = new NLPProcessor();
 		this.termCandidatesFinder.init(core);
 
 		this.path = (String) parameters
