@@ -16,26 +16,27 @@ import org.epnoi.uia.core.Core;
 public class ControllerCreator {
 	private Core core;
 
-	// -----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 
 	public void init(Core core) {
 		this.core = core;
 	}
+	
+	//-----------------------------------------------------------------------------
 
 	public SerialAnalyserController createController() {
 		// In this piece of code we just initialize the processing resources.
 		// Gate + the associated plugins are initialized in the core
 		// initialization
 		try {
-			long startLoadResourcesTime = System.currentTimeMillis(); // start
-																		// //
-																		// time
-			String grammarsPath = Core.class.getResource(
-					"grammars/nounphrases").getPath();
+	
+			
 
 			String gateHomePath = this.core.getParameters().getGatePath();
+			String grammarsPath = gateHomePath+
+					"grammars/nounphrases";
 
-			SerialAnalyserController sac = (SerialAnalyserController) Factory
+			SerialAnalyserController controller = (SerialAnalyserController) Factory
 					.createResource("gate.creole.SerialAnalyserController");
 
 			ProcessingResource englishTokeniser = (ProcessingResource) Factory
@@ -62,44 +63,14 @@ public class ControllerCreator {
 					.createResource("gate.creole.Transducer",
 							mainGrammarFeature);
 
-			/*
-			 * FeatureMap startJapeFeature = Factory.newFeatureMap();
-			 * startJapeFeature.put("grammarURL", new File(grammarsPath +
-			 * "starttag.jape").toURI().toURL());
-			 * 
-			 * 
-			 * 
-			 * FeatureMap startJapeFeature = Factory.newFeatureMap();
-			 * startJapeFeature.put("grammarURL", new File(grammarsPath +
-			 * "starttag.jape").toURI().toURL());
-			 * 
-			 * FeatureMap endJapeFeature = Factory.newFeatureMap();
-			 * endJapeFeature.put("grammarURL", new File(grammarsPath +
-			 * "value.jape").toURI().toURL()); FeatureMap columnNameJapeFeature
-			 * = Factory.newFeatureMap();
-			 * columnNameJapeFeature.put("grammarURL", new File(grammarsPath +
-			 * "columnname.jape").toURI().toURL());
-			 * 
-			 * LanguageAnalyser startTagJape = (LanguageAnalyser) Factory
-			 * .createResource("gate.creole.Transducer", startJapeFeature);
-			 * LanguageAnalyser endTagJape = (LanguageAnalyser) Factory
-			 * .createResource("gate.creole.Transducer", endJapeFeature);
-			 * LanguageAnalyser colNameJape = (LanguageAnalyser) Factory
-			 * .createResource("gate.creole.Transducer", columnNameJapeFeature);
-			 */
-
-			sac.add(englishTokeniser);
-			sac.add(sentenceSplitter);
-			sac.add(POStagger);
+			controller.add(englishTokeniser);
+			controller.add(sentenceSplitter);
+			controller.add(POStagger);
 		//	sac.add(dependencyParser);
-			sac.add(mainGrammarTransducer);
+			controller.add(mainGrammarTransducer);
 
-			long endLoadResourcesTime = System.currentTimeMillis(); // end time
-			long loadResourcesTime = endLoadResourcesTime
-					- startLoadResourcesTime; // total time
-			System.out.println("Time to load Processing resources: "
-					+ loadResourcesTime + "ms");
-			return sac;
+		
+			return controller;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

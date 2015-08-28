@@ -52,7 +52,7 @@ public class Core {
 	private HarvestersHandler harvestersHandler = null;
 	private EventBus eventBus = null;
 	private KnowledgeBaseHandler knowledgeBaseHandler = null;
-	private NLPHandler NLPHandler = null;
+	private NLPHandler nlpHandler = null;
 
 	/**
 	 * The initialization method for the epnoiCore
@@ -91,6 +91,8 @@ public class Core {
 
 	private void _initNLPHandler() {
 	
+		this.nlpHandler= new NLPHandler();
+		this.nlpHandler.init(this, parametersModel);
 		
 	}
 
