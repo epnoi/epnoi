@@ -30,7 +30,7 @@ public class GATEInitializer {
 	public void init(ParametersModel parameters) {
 		this.parameters=parameters;
 		logger.info("Initializing Gate");
-		String gateHomePath = this.parameters.getGatePath();
+		String gateHomePath = this.parameters.getNlp().getGatePath();
 		String pluginsPath = gateHomePath + "/plugins";
 		// String grammarsPath = gateHomePath + "/grammars/nounphrases";
 

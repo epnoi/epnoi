@@ -32,7 +32,7 @@ public class ControllerCreator {
 	
 			
 
-			String gateHomePath = this.core.getParameters().getGatePath();
+			String gateHomePath = this.core.getParameters().getNlp().getGatePath();
 			String grammarsPath = gateHomePath+
 					"grammars/nounphrases";
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parametersModel>
 	<path>algo</path>
-	<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
+	<nlp>
+		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
+		<numberOfProcessors>2</numberOfProcessors>
+	</nlp>
+
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>

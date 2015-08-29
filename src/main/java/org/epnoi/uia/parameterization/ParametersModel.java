@@ -13,7 +13,8 @@ public class ParametersModel {
 	private String port;
 	private String path;
 	// private String scope;
-	private String gatePath;
+	//private String gatePath;
+	private NLPParameters nlp;
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
@@ -64,18 +65,20 @@ public class ParametersModel {
 		 */
 	}
 
-	// ---------------------------------------------------------------------------------
-
-	public String getGatePath() {
-		return this.gatePath;
-	}
+	
 
 	// ---------------------------------------------------------------------------------
 
-	public void setGatePath(String gatePath) {
-		this.gatePath=gatePath;
+	public NLPParameters getNlp() {
+		return nlp;
 	}
+	
+	// ---------------------------------------------------------------------------------
 
+	public void setNlp(NLPParameters nlp) {
+		this.nlp = nlp;
+	}
+	
 	// ---------------------------------------------------------------------------------
 
 	public RSSHoarderParameters getRssHoarder() {
@@ -138,13 +141,15 @@ public class ParametersModel {
 			ArrayList<MapInformationStoreParameters> mapInformationStores) {
 		this.mapInformationStores = mapInformationStores;
 	}
+	
+	
 
 	// ---------------------------------------------------------------------------------
-
+	
 	@Override
 	public String toString() {
-		return "CoreParametersModel [hostname=" + hostname + ", port=" + port
-				+ ", path=" + path + ", gatePath=" + gatePath
+		return "ParametersModel [hostname=" + hostname + ", port=" + port
+				+ ", path=" + path + ", nlp=" + nlp
 				+ ", virtuosoInformationStores=" + virtuosoInformationStores
 				+ ", solrInformationStores=" + solrInformationStores
 				+ ", cassandraInformationStores=" + cassandraInformationStores

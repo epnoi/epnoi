@@ -71,7 +71,7 @@ public class Core {
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
 		this._initEventBus();
-		this._initNLPHandler();
+		//this._initNLPHandler();
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();

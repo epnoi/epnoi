@@ -55,8 +55,10 @@ public class URLHarvester {
 			throws EpnoiInitializationException {
 
 		this.core = core;
+		/*
 		this.termCandidatesFinder = new NLPProcessor();
 		this.termCandidatesFinder.init(core);
+		*/
 		this.parameters = parameters;
 		this.logger
 				.info("Initializing the URLHarvester with the following parameters"
