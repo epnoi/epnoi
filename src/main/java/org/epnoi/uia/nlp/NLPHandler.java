@@ -1,5 +1,7 @@
 package org.epnoi.uia.nlp;
 
+import gate.Document;
+
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
@@ -19,24 +21,27 @@ public class NLPHandler {
 	// ----------------------------------------------------------------------------------------------------------
 
 	public void init(Core core, ParametersModel parameters) {
+
 		logger.info("Initializing the NLPHandler");
 		this.core = core;
 		this.parameters = parameters;
 		GATEInitializer gateInitializer = new GATEInitializer();
 		gateInitializer.init(parameters);
 		this.pool = new NLPProcessorsPool();
+		this.pool.init(core, parameters);
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public void process(String content) throws EpnoiResourceAccessException {
+	public Document process(String content) throws EpnoiResourceAccessException {
 		NLPProcessor processor = null;
-
+System.out.println("ENTRA!");
 		processor = pool.borrowProcessor();
-
-		processor.process(content);
+		System.out.println("SALE!");
+		Document document = processor.process(content);
 		pool.returnProcessor(processor);
+		return document;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -44,5 +49,14 @@ public class NLPHandler {
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		System.out.println(core.getParameters().getNlp());
+		try {
+			System.out.println(">> "
+					+ core.getNLPHandler().process("My house is big")
+							.toString());
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }

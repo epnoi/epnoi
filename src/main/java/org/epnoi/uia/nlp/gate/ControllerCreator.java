@@ -31,10 +31,10 @@ public class ControllerCreator {
 		try {
 	
 			
-
+System.out.println("......> "+this.core);
 			String gateHomePath = this.core.getParameters().getNlp().getGatePath();
 			String grammarsPath = gateHomePath+
-					"grammars/nounphrases";
+					"/grammars/nounphrases";
 
 			SerialAnalyserController controller = (SerialAnalyserController) Factory
 					.createResource("gate.creole.SerialAnalyserController");

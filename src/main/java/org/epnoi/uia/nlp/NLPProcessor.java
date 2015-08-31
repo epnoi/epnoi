@@ -24,6 +24,7 @@ public class NLPProcessor {
 	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
+	private ControllerCreator controllerCreator = null;
 	private Corpus corpus = null;
 
 	// ----------------------------------------------------------------------------------
@@ -72,9 +73,9 @@ public class NLPProcessor {
 
 	public void init(Core core) {
 		this.core = core;
-		ControllerCreator controllerCreator = new ControllerCreator();
+		this.controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
-		controllerCreator.init(core);
+		this.controllerCreator.init(core);
 		this.controller = controllerCreator.createController();
 
 		try {

@@ -71,11 +71,10 @@ public class Core {
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
 		this._initEventBus();
-		//this._initNLPHandler();
+		this._initNLPHandler();
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();
-
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
 		this._initDomainsHandler();
@@ -88,7 +87,21 @@ public class Core {
 		logger.info("");
 		logger.info("");
 	}
+	
+	
 
+	public NLPHandler getNLPHandler() {
+		return nlpHandler;
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setNLPHandler(NLPHandler nlpHandler) {
+		this.nlpHandler = nlpHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+	
 	private void _initNLPHandler() {
 	
 		this.nlpHandler= new NLPHandler();
@@ -103,6 +116,9 @@ public class Core {
 		this.domainsHandler.init(this);
 
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
 
 	private void _initEventBus() {
 
