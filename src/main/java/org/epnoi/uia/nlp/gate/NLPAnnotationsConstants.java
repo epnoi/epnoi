@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.nlp.gate;
+package org.epnoi.uia.nlp.gate;
 
 public class NLPAnnotationsConstants {
 	public static final String TERM_CANDIDATE = "TermCandidate";

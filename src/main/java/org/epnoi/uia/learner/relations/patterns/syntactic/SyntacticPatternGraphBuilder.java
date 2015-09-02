@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleGraph;
 

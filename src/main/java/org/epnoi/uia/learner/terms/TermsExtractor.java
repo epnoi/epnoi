@@ -2,16 +2,11 @@ package org.epnoi.uia.learner.terms;
 
 import gate.Annotation;
 import gate.Document;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -19,18 +14,15 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Term;
-import org.epnoi.uia.commons.Parameters;
-import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.DomainsGatherer;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 
 public class TermsExtractor {
 

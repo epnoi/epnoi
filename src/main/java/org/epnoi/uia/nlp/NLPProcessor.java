@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.nlp;
+package org.epnoi.uia.nlp;
 
 import gate.Annotation;
 import gate.Corpus;
@@ -15,38 +15,38 @@ import java.util.List;
 
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.nlp.gate.ControllerCreator;
 import org.epnoi.uia.learner.relations.patterns.syntactic.SyntacticPatternGraphEdge;
+import org.epnoi.uia.nlp.gate.ControllerCreator;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleGraph;
 
-public class TermCandidatesFinder {
+public class NLPProcessor {
 	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
+	private ControllerCreator controllerCreator = null;
 	private Corpus corpus = null;
 
 	// ----------------------------------------------------------------------------------
 
-	public Document findTermCandidates(String content) {
+	public Document process(String content) {
 		Document document = null;
 		try {
-			
+
 			document = Factory.newDocument(content);
 		} catch (ResourceInstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	
-		if (document.getContent().size() > TermCandidatesFinder.MIN_CONTENT_LENGHT) {
-			
+
+		if (document.getContent().size() > NLPProcessor.MIN_CONTENT_LENGHT) {
+
 			this.corpus.add(document);
 
 			try {
-				
+
 				controller.execute();
-			
+
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,25 +55,27 @@ public class TermCandidatesFinder {
 			}
 			corpus.remove(0);
 		}
-		
+
 		return document;
 	}
+	
+	// ----------------------------------------------------------------------------------
 
-	public void release(Document document){
-		try{
-		Factory.deleteResource(document);
-		}catch(Exception e){
+	public void release(Document document) {
+		try {
+			Factory.deleteResource(document);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		}
-	
+	}
+
 	// ----------------------------------------------------------------------------------
 
 	public void init(Core core) {
 		this.core = core;
-		ControllerCreator controllerCreator = new ControllerCreator();
+		this.controllerCreator = new ControllerCreator();
 		// MainFrame.getInstance().setVisible(true);
-		controllerCreator.init(core);
+		this.controllerCreator.init(core);
 		this.controller = controllerCreator.createController();
 
 		try {
@@ -86,7 +88,6 @@ public class TermCandidatesFinder {
 		this.controller.setCorpus(this.corpus);
 	}
 
-	
 	// ----------------------------------------------------------------------------------
 
 	private static void showTerms(Document document) {
@@ -177,60 +178,59 @@ public class TermCandidatesFinder {
 		System.out.println("--> " + patternGraph.toString());
 
 	}
-	
+
 	// ----------------------------------------------------------------------------------
 
-		public static void main(String[] args) {
+	public static void main(String[] args) {
 
-			System.out
-					.println("TermCandidatesFinder test================================================================");
+		System.out
+				.println("TermCandidatesFinder test================================================================");
 
-			Core core = CoreUtility.getUIACore();
+		Core core = CoreUtility.getUIACore();
 
-			TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
-			termCandidatesFinder.init(core);
-			
-			
-			/*
-			 * Document document = termCandidatesFinder .findTermCandidates(
-			 * "My  taylor is rich, and my pretty mom is in the big kitchen");
-			 */
-			/*
-			 * Document document = termCandidatesFinder .findTermCandidates(
-			 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
-			 * );
-			 */
-			Document document = termCandidatesFinder
-					.findTermCandidates("Bell, a company which is based in LA, makes and distributes computer products");
+		NLPProcessor termCandidatesFinder = new NLPProcessor();
+		termCandidatesFinder.init(core);
 
-			String documentAsString = document.toXml();
-			/*
-			 * System.out.println("---"); System.out.println(documentAsString);
-			 * System.out.println("---");
-			 */
-			Document document2 = null;
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "My  taylor is rich, and my pretty mom is in the big kitchen");
+		 */
+		/*
+		 * Document document = termCandidatesFinder .findTermCandidates(
+		 * "Bills on ports and immigration were submitted by Senator Brownback, Republican of Kansas"
+		 * );
+		 */
+		Document document = termCandidatesFinder
+				.process("Bell, a company which is based in LA, makes and distributes computer products");
 
-			Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-					documentAsString,
-					gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
-			try {
-				document2 = (Document) Factory
-						.createResource(
-								"gate.corpora.DocumentImpl",
-								Utils.featureMap(
-										gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-										documentAsString,
-										gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
-										"text/xml"));
-			} catch (ResourceInstantiationException e) {
-				e.printStackTrace();
-			}
-			// System.out.println("mmm>  " + document2.toXml());
-			createDependencyGraph(document);
-			System.out.println(">>> "+document.toString());
+		String documentAsString = document.toXml();
+		/*
+		 * System.out.println("---"); System.out.println(documentAsString);
+		 * System.out.println("---");
+		 */
+		Document document2 = null;
 
-			System.out
-					.println("TermCandidatesFinder test is over!================================================================");
+		Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+				documentAsString,
+				gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml");
+		try {
+			document2 = (Document) Factory
+					.createResource(
+							"gate.corpora.DocumentImpl",
+							Utils.featureMap(
+									gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
+									documentAsString,
+									gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME,
+									"text/xml"));
+		} catch (ResourceInstantiationException e) {
+			e.printStackTrace();
 		}
+		// System.out.println("mmm>  " + document2.toXml());
+		createDependencyGraph(document);
+		System.out.println(">>> " + document.toString());
+
+		System.out
+				.println("TermCandidatesFinder test is over!================================================================");
+	}
 
 }

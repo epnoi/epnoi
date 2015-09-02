@@ -1,11 +1,5 @@
 package org.epnoi.uia.core;
 
-import gate.Gate;
-import gate.util.GateException;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,6 +22,7 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBaseHandler;
+import org.epnoi.uia.nlp.NLPHandler;
 import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 import org.epnoi.uia.parameterization.ParametersModel;
@@ -57,6 +52,7 @@ public class Core {
 	private HarvestersHandler harvestersHandler = null;
 	private EventBus eventBus = null;
 	private KnowledgeBaseHandler knowledgeBaseHandler = null;
+	private NLPHandler nlpHandler = null;
 
 	/**
 	 * The initialization method for the epnoiCore
@@ -75,11 +71,10 @@ public class Core {
 		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
 		this.parametersModel = parametersModel;
 		this._initEventBus();
-		this._initGATE();
+		this._initNLPHandler();
 		this._informationStoresInitialization();
 		this._initInformationHandler();
 		this._initInformationSourcesHandler();
-
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
 		this._initDomainsHandler();
@@ -92,6 +87,27 @@ public class Core {
 		logger.info("");
 		logger.info("");
 	}
+	
+	
+
+	public NLPHandler getNLPHandler() {
+		return nlpHandler;
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
+	public void setNLPHandler(NLPHandler nlpHandler) {
+		this.nlpHandler = nlpHandler;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+	
+	private void _initNLPHandler() {
+	
+		this.nlpHandler= new NLPHandler();
+		this.nlpHandler.init(this, parametersModel);
+		
+	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
@@ -100,6 +116,9 @@ public class Core {
 		this.domainsHandler.init(this);
 
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
+
 
 	private void _initEventBus() {
 
@@ -347,49 +366,7 @@ public class Core {
 		this.eventBus = eventBus;
 	}
 
-	// ----------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Initializtion of the Gate natural language processing framework and the
-	 * needed Gate plugins
-	 */
-
-	private void _initGATE() {
-		logger.info("Initializing Gate");
-		String gateHomePath = this.parametersModel.getGatePath();
-		String pluginsPath = gateHomePath + "/plugins";
-		String grammarsPath = gateHomePath + "/grammars/nounphrases";
-
-		logger.info("The gateHomePath is set to " + gateHomePath
-				+ ", the pluginsPath is set to " + pluginsPath
-				+ " and finally the grammarsPath is set to " + grammarsPath);
-
-		File gateHomeDirectory = new File(gateHomePath);
-		File pluginsDirectory = new File(pluginsPath);
-
-		Gate.setPluginsHome(pluginsDirectory);
-
-		Gate.setGateHome(gateHomeDirectory);
-		Gate.setUserConfigFile(new File(gateHomeDirectory, "user-gate.xml"));
-
-		try {
-			Gate.init(); // to prepare the GATE library
-
-			URL anniePlugin = new File(pluginsDirectory, "ANNIE").toURI()
-					.toURL();
-
-			Gate.getCreoleRegister().registerDirectories(anniePlugin);
-
-			URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
-					"Parser_Stanford").toURI().toURL();
-			Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
-
-		} catch (MalformedURLException | GateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 
 	// ----------------------------------------------------------------------------------------------------------
 

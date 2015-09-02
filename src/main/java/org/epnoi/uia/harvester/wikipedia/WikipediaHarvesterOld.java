@@ -32,7 +32,7 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLPars
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
+import org.epnoi.uia.nlp.NLPProcessor;
 
 public class WikipediaHarvesterOld {
 	// -Xmx1g
@@ -40,7 +40,7 @@ public class WikipediaHarvesterOld {
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
 	public static boolean INCREMENTAL = true;
 
-	private TermCandidatesFinder termCandidatesFinder;
+	private NLPProcessor termCandidatesFinder;
 
 	private int count = 0;
 	private Core core;
@@ -62,7 +62,7 @@ public class WikipediaHarvesterOld {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core) throws EpnoiInitializationException {
-		this.termCandidatesFinder = new TermCandidatesFinder();
+		this.termCandidatesFinder = new NLPProcessor();
 		this.core = core;
 		this.termCandidatesFinder.init(core);
 		pf = new MediaWikiParserFactory();
@@ -259,7 +259,7 @@ public class WikipediaHarvesterOld {
 					sections.get(i),
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 			Document annotatedContent = this.termCandidatesFinder
-					.findTermCandidates(sectionContent);
+					.process(sectionContent);
 			serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE

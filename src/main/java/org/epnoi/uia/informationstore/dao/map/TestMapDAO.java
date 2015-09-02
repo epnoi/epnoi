@@ -12,7 +12,7 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
+import org.epnoi.uia.nlp.NLPProcessor;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 import com.rits.cloning.Cloner;
@@ -67,9 +67,9 @@ public class TestMapDAO extends MapDAO {
 
 		testMapDAO.init(parameters);
 
-		TermCandidatesFinder termCandidatesFinder;
+		NLPProcessor termCandidatesFinder;
 
-		termCandidatesFinder = new TermCandidatesFinder();
+		termCandidatesFinder = new NLPProcessor();
 
 		termCandidatesFinder.init(core);
 		String annotatedContentURI = "http://testAnnotated"
@@ -84,7 +84,7 @@ public class TestMapDAO extends MapDAO {
 		System.out.println("-> " + content);
 
 		Document annotatedContentDocument = termCandidatesFinder
-				.findTermCandidates(content);
+				.process(content);
 
 		// Once it has been serialized, we must free the associated GATE
 		// resources

@@ -26,7 +26,7 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLPars
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
+import org.epnoi.uia.nlp.NLPProcessor;
 
 public class WikipediaHarvester {
 	// -Xmx1g
@@ -35,7 +35,7 @@ public class WikipediaHarvester {
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
 	public static boolean incremental = false;
 
-	private TermCandidatesFinder termCandidatesFinder;
+	private NLPProcessor termCandidatesFinder;
 	private Core core;
 	private static final Logger logger = Logger
 			.getLogger(WikipediaHarvester.class.getName());
@@ -61,7 +61,7 @@ public class WikipediaHarvester {
 				.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
 		this.wikipediaDumpPath = (String) parameters
 				.getParameterValue(WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH);
-		this.termCandidatesFinder = new TermCandidatesFinder();
+		this.termCandidatesFinder = new NLPProcessor();
 		this.core = core;
 		this.termCandidatesFinder.init(core);
 		this.mediaWikiParserFactory = new MediaWikiParserFactory();
@@ -152,13 +152,16 @@ public class WikipediaHarvester {
 		}
 
 	}
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
 
 	private void _putWikipediaPageSectionAnnnotatedContent(
 			WikipediaPage wikipediaPage, String sectionContent,
 			String annotatedContentURI) {
 		//First we obtain the linguistic annotation of the content of the section
 		Document sectionAnnotatedContent = this.termCandidatesFinder
-				.findTermCandidates(sectionContent);
+				.process(sectionContent);
 
 		//Then we introduce it in the UIA
 		//We create the selector
