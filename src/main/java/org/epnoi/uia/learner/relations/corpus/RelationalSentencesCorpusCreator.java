@@ -30,7 +30,6 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBase;
 import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.nlp.NLPProcessor;
 import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
@@ -39,7 +38,6 @@ public class RelationalSentencesCorpusCreator {
 			.getLogger(RelationalSentencesCorpusCreator.class.getName());
 
 	private Core core;
-	private NLPProcessor termCandidatesFinder;
 	private RelationalSentencesCorpus corpus;
 	private KnowledgeBase knowledgeBase;
 	private RelationalSentencesCorpusCreationParameters parameters;
@@ -58,8 +56,7 @@ public class RelationalSentencesCorpusCreator {
 		this.core = core;
 		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
-		this.termCandidatesFinder = new NLPProcessor();
-		this.termCandidatesFinder.init(core);
+
 		this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
 
 		this.storeResult = (boolean) parameters
@@ -364,7 +361,7 @@ public class RelationalSentencesCorpusCreator {
 							- sentenceStartOffset, destinationTermAnnotation
 							.getEndNode().getOffset() - sentenceStartOffset);
 
-			Document annotatedContent = termCandidatesFinder
+			Document annotatedContent = core.getNLPHandler()
 					.process(sentenceContent.toString());
 			
 
@@ -373,7 +370,7 @@ public class RelationalSentencesCorpusCreator {
 					annotatedContent.toXml());
 			annotatedContent.cleanup();
 			//annotatedContent=null;
-			this.termCandidatesFinder.release(annotatedContent);
+
 			if (!target.equals(source)){
 				
 			
@@ -567,13 +564,13 @@ public class RelationalSentencesCorpusCreator {
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContentA = termCandidatesFinder
+		Document annotatedContentA = this.core.getNLPHandler()
 				.process("A dog is a canine");
 		RelationalSentence relationalSentenceA = new RelationalSentence(
 				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(11L,
 						17L), "A dog is a canine", annotatedContentA.toXml());
 
-		Document annotatedContentB = termCandidatesFinder
+		Document annotatedContentB = this.core.getNLPHandler()
 				.process("A dog, is a canine (and other things!)");
 
 		RelationalSentence relationalSentenceB = new RelationalSentence(

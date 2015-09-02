@@ -33,7 +33,6 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.nlp.NLPProcessor;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -60,7 +59,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 	//Core core = null;
 
 	 Core core = CoreUtility.getUIACore();
-	 NLPProcessor termCandidatesFinder;
+	
 
 	/*
 	 * OAIPMHIndexer -in where-oaipmh-harvest-dir -repository name
@@ -73,9 +72,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 	 */
 	 
 	 public OAIPMHHarvester(){
-		 this.termCandidatesFinder = new NLPProcessor();
-		 this.termCandidatesFinder.init(core);
-		 
+		
 		 
 		 org.w3c.dom.Node testNode = null;
 		 
@@ -202,7 +199,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 								 
 				Content<String> content=core.getInformationHandler().getContent(selector);
 
-				Document annotatedContent=this.termCandidatesFinder.process(content.getContent());
+				Document annotatedContent=this.core.getNLPHandler().process(content.getContent());
 				System.out.println("------)> "+annotatedContent.toXml());
 											
 

@@ -27,7 +27,6 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.nlp.NLPProcessor;
 import org.xml.sax.ContentHandler;
 
 public class URLHarvester {
@@ -41,7 +40,6 @@ public class URLHarvester {
 
 	private static final Logger logger = Logger.getLogger(URLHarvester.class
 			.getName());
-	NLPProcessor termCandidatesFinder;
 
 	// ----------------------------------------------------------------------------------------
 
@@ -55,10 +53,7 @@ public class URLHarvester {
 			throws EpnoiInitializationException {
 
 		this.core = core;
-		/*
-		this.termCandidatesFinder = new NLPProcessor();
-		this.termCandidatesFinder.init(core);
-		*/
+	
 		this.parameters = parameters;
 		this.logger
 				.info("Initializing the URLHarvester with the following parameters"
@@ -137,8 +132,8 @@ public class URLHarvester {
 	}
 
 	private void _addDocumentAnnotatedContent(Paper paper) {
-		Document annotatedContent = this.termCandidatesFinder
-				.process(paper.getDescription());
+		Document annotatedContent = this.core.getNLPHandler().process(
+				paper.getDescription());
 		Selector annotationSelector = new Selector();
 		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,

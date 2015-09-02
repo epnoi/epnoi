@@ -12,7 +12,6 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.nlp.NLPProcessor;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 import com.rits.cloning.Cloner;
@@ -67,11 +66,8 @@ public class TestMapDAO extends MapDAO {
 
 		testMapDAO.init(parameters);
 
-		NLPProcessor termCandidatesFinder;
 
-		termCandidatesFinder = new NLPProcessor();
 
-		termCandidatesFinder.init(core);
 		String annotatedContentURI = "http://testAnnotated"
 				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
 
@@ -83,7 +79,7 @@ public class TestMapDAO extends MapDAO {
 		}
 		System.out.println("-> " + content);
 
-		Document annotatedContentDocument = termCandidatesFinder
+		Document annotatedContentDocument = core.getNLPHandler()
 				.process(content);
 
 		// Once it has been serialized, we must free the associated GATE

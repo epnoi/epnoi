@@ -28,16 +28,20 @@ public class NLPHandler {
 		GATEInitializer gateInitializer = new GATEInitializer();
 		gateInitializer.init(parameters);
 		this.pool = new NLPProcessorsPool();
-		this.pool.init(core, parameters);
+		this.pool.init(this.core, this.parameters);
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public Document process(String content) throws EpnoiResourceAccessException {
+	public Document process(String content) {
 		NLPProcessor processor = null;
 
-		processor = pool.borrowProcessor();
+		try {
+			processor = pool.borrowProcessor();
+		} catch (EpnoiResourceAccessException e) {
+			return null;
+		}
 
 		Document document = processor.process(content);
 		pool.returnProcessor(processor);
@@ -49,11 +53,10 @@ public class NLPHandler {
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		System.out.println(core.getParameters().getNlp());
-		
 
 		_testComplexConcurrentNLPRequests(core);
 
-	//	_testConcurrentNLPAccess(core);
+		// _testConcurrentNLPAccess(core);
 
 	}
 
@@ -126,17 +129,13 @@ class TestThread implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			System.out.println("["
-					+ name
-					+ "]>"
-					+ this.core.getNLPHandler().process(this.sentence)
-							.getAnnotations().size());
-			System.out.println("It took "
-					+ (time - System.currentTimeMillis() + " !!!!!!"));
-		} catch (EpnoiResourceAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("["
+				+ name
+				+ "]>"
+				+ this.core.getNLPHandler().process(this.sentence)
+						.getAnnotations().size());
+		System.out.println("It took "
+				+ (time - System.currentTimeMillis() + " !!!!!!"));
+
 	}
 }

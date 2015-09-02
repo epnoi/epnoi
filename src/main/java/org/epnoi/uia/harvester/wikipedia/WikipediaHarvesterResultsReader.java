@@ -14,7 +14,6 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.nlp.NLPProcessor;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class WikipediaHarvesterResultsReader {
@@ -22,15 +21,12 @@ public class WikipediaHarvesterResultsReader {
 			.getLogger(WikipediaHarvesterResultsReader.class.getName());
 
 	private Core core;
-	private NLPProcessor termCandidatesFinder;
+
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
-
-		this.termCandidatesFinder = new NLPProcessor();
-		this.termCandidatesFinder.init(core);
 
 	}
 

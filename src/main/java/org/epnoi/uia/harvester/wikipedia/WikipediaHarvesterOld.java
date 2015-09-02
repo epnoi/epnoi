@@ -32,15 +32,12 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLPars
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.nlp.NLPProcessor;
 
 public class WikipediaHarvesterOld {
 	// -Xmx1g
 	private static String wikipediaDumpPath = "/epnoi/epnoideployment/firstReviewResources/wikipedia/";
 	public static String wikipediaPath = "http://en.wikipedia.org/wiki/";
 	public static boolean INCREMENTAL = true;
-
-	private NLPProcessor termCandidatesFinder;
 
 	private int count = 0;
 	private Core core;
@@ -62,9 +59,9 @@ public class WikipediaHarvesterOld {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core) throws EpnoiInitializationException {
-		this.termCandidatesFinder = new NLPProcessor();
+		
 		this.core = core;
-		this.termCandidatesFinder.init(core);
+	
 		pf = new MediaWikiParserFactory();
 		parser = pf.createParser();
 	}
@@ -258,7 +255,7 @@ public class WikipediaHarvesterOld {
 			String annotatedContentURI = _extractURI(wikipediaPage.getURI(),
 					sections.get(i),
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-			Document annotatedContent = this.termCandidatesFinder
+			Document annotatedContent = this.core.getNLPHandler()
 					.process(sectionContent);
 			serializedAnnotatedContent = annotatedContent.toXml();
 

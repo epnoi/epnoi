@@ -21,7 +21,6 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
-import org.epnoi.uia.nlp.NLPProcessor;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
@@ -231,8 +230,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 				.println("Initialization --------------------------------------------");
 
 		Core core = CoreUtility.getUIACore();
-		NLPProcessor termCandidatesFinder = new NLPProcessor();
-		termCandidatesFinder.init(core);
+		
 
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
@@ -240,7 +238,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContent = termCandidatesFinder
+		Document annotatedContent = core.getNLPHandler()
 				.process("A dog is a canine");
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
@@ -254,7 +252,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		 * System.out.println(relationalSentencesCorpusCassandraDAO
 		 * ._createRelationalSentenceRepresentation(relationalSentence));
 		 */
-		annotatedContent = termCandidatesFinder
+		annotatedContent = core.getNLPHandler()
 				.process("A dog, is a canine (and other things!)");
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
 				._readRelationalSentenceRepresentation("[2,5][12,18]A dog, is a canine (and other things!)"
