@@ -17,7 +17,7 @@ public class PooledNLPProcessorFactory implements PooledObjectFactory<NLPProcess
 	@Override
 	public void activateObject(PooledObject<NLPProcessor> object)
 			throws Exception {
-		// TODO Auto-generated method stub
+		//System.out.println("POOL:> ACTIVATING AN OBJECT! "+object);
 		
 	}
 	
@@ -25,8 +25,8 @@ public class PooledNLPProcessorFactory implements PooledObjectFactory<NLPProcess
 
 	@Override
 	public void destroyObject(PooledObject<NLPProcessor> object) throws Exception {
-		System.out.println("DESTROYING AN OBJECT!");
-		
+	//	System.out.println("DESTROYING AN OBJECT!");
+		//System.out.println("DESTROYING AN OBJECT!");
 	}
 	
 	//----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class PooledNLPProcessorFactory implements PooledObjectFactory<NLPProcess
 	@Override
 	public PooledObject<NLPProcessor> makeObject() throws Exception {
 		
-		System.out.println("POOL:> MAKING AN OBJECT! "+this.core);
+		//System.out.println("POOL:> MAKING AN OBJECT! "+this.core);
 		NLPProcessor newNLPProcessor = new NLPProcessor();
 		newNLPProcessor.init(core);
 		return new DefaultPooledObject<NLPProcessor>(newNLPProcessor);
@@ -45,7 +45,7 @@ public class PooledNLPProcessorFactory implements PooledObjectFactory<NLPProcess
 	@Override
 	public void passivateObject(PooledObject<NLPProcessor> object)
 			throws Exception {
-		System.out.println("POOL:> PASSIVATING AN OBJECT! "+object);
+		//System.out.println("POOL:> PASSIVATING AN OBJECT! "+object);
 		
 	}
 	
@@ -53,8 +53,8 @@ public class PooledNLPProcessorFactory implements PooledObjectFactory<NLPProcess
 
 	@Override
 	public boolean validateObject(PooledObject<NLPProcessor> object) {
-		System.out.println("POOL:> VATING AN OBJECT! "+object);
-				return false;
+		//System.out.println("POOL:> VATING AN OBJECT! "+object);
+				return true;
 	}
 	
 	//----------------------------------------------------------------------------

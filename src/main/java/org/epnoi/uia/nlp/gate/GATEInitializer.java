@@ -67,9 +67,11 @@ public class GATEInitializer {
 
 		Gate.getCreoleRegister().registerDirectories(anniePlugin);
 
+		/*Desactivated 
 		URL stanfordCoreNLPPlugin = new File(pluginsDirectory,
 				"Parser_Stanford").toURI().toURL();
 		Gate.getCreoleRegister().registerDirectories(stanfordCoreNLPPlugin);
+		*/
 	}
 
 	// ----------------------------------------------------------------------------------------------------------

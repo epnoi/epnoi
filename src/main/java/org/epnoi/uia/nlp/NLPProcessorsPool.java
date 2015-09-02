@@ -24,6 +24,7 @@ public class NLPProcessorsPool {
 		pool = new GenericObjectPool<NLPProcessor>(
 				new PooledNLPProcessorFactory(core));
 		pool.setBlockWhenExhausted(true);
+		pool.setMaxIdle(-1);
 		pool.setMaxTotal(this.parameters.getNlp().getNumberOfProcessors());
 		int i = this.parameters.getNlp().getNumberOfProcessors();
 		while (i > 0) {
