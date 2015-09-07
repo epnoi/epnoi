@@ -3,7 +3,7 @@
 	<path>algo</path>
 	<nlp>
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
-		<numberOfProcessors>25</numberOfProcessors>
+		<numberOfProcessors>1</numberOfProcessors>
 	</nlp>
 
 	<virtuosoInformationStore>

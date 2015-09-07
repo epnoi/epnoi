@@ -59,6 +59,8 @@ public class NLPHandler {
 		// _testConcurrentNLPAccess(core);
 
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
 
 	private static void _testComplexConcurrentNLPRequests(Core core) {
 		long time = System.currentTimeMillis();
@@ -74,6 +76,8 @@ public class NLPHandler {
 			threads[i].start();
 		}
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------
 
 	private static void _testSimpleConcurrentNLPRequests(Core core) {
 		long time = System.currentTimeMillis();

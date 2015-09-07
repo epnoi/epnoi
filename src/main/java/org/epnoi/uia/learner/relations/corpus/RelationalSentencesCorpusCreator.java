@@ -1,10 +1,5 @@
 package org.epnoi.uia.learner.relations.corpus;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-import gate.DocumentContent;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,17 +16,20 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.commons.GateUtils;
+import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.InformationStore;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBase;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
+import gate.DocumentContent;
 
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger
@@ -151,7 +149,15 @@ public class RelationalSentencesCorpusCreator {
 		int nullCounts = 1;
 		int sectionsCount = 1;
 		int count = 1;
-		List<String> wikipediaPages = _getWikipediaArticles();
+		
+		//logger.info("Retrieving the URIs of the Wikipedia articles ");
+
+		
+		
+		
+		
+		List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
+		//logger.info("The number of retrived Wikipeda articles are "+ queryResults.size());
 		logger.info(wikipediaPages.size() + " wikipedia pages were retrieved");
 		for (String uri : wikipediaPages) {
 
@@ -436,36 +442,7 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	/**
-	 * Method that obtains the list of URIs of the wikipedia articles in the
-	 * corpus
-	 * 
-	 * @return
-	 */
-
-	private List<String> _getWikipediaArticles() {
-		logger.info("Retrieving the URIs of the Wikipedia articles ");
-
-		InformationStore informationStore = this.core
-				.getInformationStoresByType(
-						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
-
-		String queryExpression = "SELECT DISTINCT  ?uri FROM <{GRAPH}>"
-				+ " { ?uri a <{WIKIPEDIA_PAPER_CLASS}> " + "}";
-
-		queryExpression = queryExpression.replace(
-				"{GRAPH}",
-				((VirtuosoInformationStoreParameters) informationStore
-						.getParameters()).getGraph()).replace(
-				"{WIKIPEDIA_PAPER_CLASS}", RDFHelper.WIKIPEDIA_PAGE_CLASS);
-
-		List<String> queryResults = informationStore.query(queryExpression);
-
-		logger.info("The number of retrived Wikipeda articles are "
-				+ queryResults.size());
-		return queryResults;
-	}
-
+	
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	private String _extractURI(String URI, String section, String annotationType) {

@@ -1,10 +1,9 @@
 package org.epnoi.uia.harvester.wikipedia;
 
-import gate.Document;
-import gate.Factory;
-
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.epnoi.model.AnnotatedContentHelper;
@@ -12,6 +11,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.commons.StringUtils;
+import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.Content;
@@ -26,6 +26,9 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLPars
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+
+import gate.Document;
+import gate.Factory;
 
 public class WikipediaHarvester {
 	// -Xmx1g
@@ -42,6 +45,7 @@ public class WikipediaHarvester {
 	public static final int MIN_SECTIONS = 2;
 	private MediaWikiParserFactory mediaWikiParserFactory;
 	private MediaWikiParser mediaWikiParser;
+	private Set<String> alreadyStoredWikipediaPages; 
 
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -63,6 +67,15 @@ public class WikipediaHarvester {
 		
 		this.mediaWikiParserFactory = new MediaWikiParserFactory();
 		mediaWikiParser = mediaWikiParserFactory.createParser();
+		 _findAlreadyStoredWikidpediaPages();
+	}
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	private void _findAlreadyStoredWikidpediaPages(){
+		List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
+		this.alreadyStoredWikipediaPages = new HashSet<String>(wikipediaPages);
+		logger.info("Found "+this.alreadyStoredWikipediaPages.size()+" already stored in the UIA" );
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -130,7 +143,6 @@ public class WikipediaHarvester {
 
 	public void _putWikipediaPageAnnotatedContent(WikipediaPage wikipediaPage,
 			Context context) {
-		String serializedAnnotatedContent = null;
 		List<String> sections = wikipediaPage.getSections();
 
 		for (int i = sections.size() - 1; i >= 0; i--) {
@@ -191,8 +203,9 @@ public class WikipediaHarvester {
 
 	private void _putWikipediaPage(WikipediaPage page, Context context) {
 		// If the wikipedia page is already stored, we delete it
-		if (core.getInformationHandler().contains(page.getURI(),
-				RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+		
+		
+		if (this.alreadyStoredWikipediaPages.contains(page.getURI())) {
 			this.core.getInformationHandler().remove(page.getURI(),
 					RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
@@ -224,9 +237,7 @@ public class WikipediaHarvester {
 			if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
 
 				if (incremental)
-					if (core.getInformationHandler().contains(
-							wikipediaPage.getURI(),
-							RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
+					if (!alreadyStoredWikipediaPages.contains(wikipediaPage.getURI())) {
 						logger.info("Introducing " + wikipediaPage.getURI());
 						_introduceWikipediaPage(wikipediaPage);
 					} else {
@@ -368,6 +379,7 @@ public class WikipediaHarvester {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		wikipediaHarvester.harvest();
 	}
 }

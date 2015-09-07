@@ -119,12 +119,11 @@ public class WikipediaPageWrapper implements Wrapper {
 
 				selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
 						annotatedContentURI);
-			//	System.out.println("Exists selector " + selector);
 				exists = this.core.getInformationHandler().getAnnotatedContent(
 						selector) != null;
-			//	System.out.println(this.core.getInformationHandler().getAnnotatedContent(selector).getContent().toString());
-
+	
 			}
+			
 		}
 
 		selector = null;
