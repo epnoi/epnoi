@@ -1,5 +1,8 @@
 package org.epnoi.uia.harvester.wikipedia;
 
+import gate.Document;
+import gate.Factory;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
@@ -26,9 +29,6 @@ import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLPars
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-
-import gate.Document;
-import gate.Factory;
 
 public class WikipediaHarvester {
 	// -Xmx1g

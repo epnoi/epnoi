@@ -20,12 +20,15 @@ import org.epnoi.uia.nlp.gate.ControllerCreator;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleGraph;
 
+import com.rits.cloning.Cloner;
+
 public class NLPProcessor {
 	private Core core;
 	private static final long MIN_CONTENT_LENGHT = 4;
 	private SerialAnalyserController controller = null;
 	private ControllerCreator controllerCreator = null;
 	private Corpus corpus = null;
+	private Cloner cloner = new Cloner();
 
 	// ----------------------------------------------------------------------------------
 
@@ -56,7 +59,10 @@ public class NLPProcessor {
 			corpus.remove(0);
 		}
 
-		return document;
+		Document clonedDocument  = cloner
+				.deepClone(document);
+		release(document);
+		return clonedDocument;
 	}
 	
 	// ----------------------------------------------------------------------------------
