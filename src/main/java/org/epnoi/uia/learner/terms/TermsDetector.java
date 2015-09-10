@@ -35,7 +35,7 @@ public class TermsDetector {
 
 		}
 		
-		return new ArrayList(detectedTerms.values());
+		return new ArrayList<AnnotatedWord<TermMetadata>>(detectedTerms.values());
 	}
 
 	// ---------------------------------------------------------------------------------------
