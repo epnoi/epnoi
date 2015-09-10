@@ -492,7 +492,7 @@ public class RelationalSentencesCorpusCreator {
 						80);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.STORE, true);
+				RelationalSentencesCorpusCreationParameters.STORE, false);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.VERBOSE, true);
