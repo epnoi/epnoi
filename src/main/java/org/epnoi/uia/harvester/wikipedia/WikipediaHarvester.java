@@ -32,7 +32,8 @@ public class WikipediaHarvester {
 	public static boolean incremental = false;
 
 	private Core core;
-	private static final Logger logger = Logger.getLogger(WikipediaHarvester.class.getName());
+	private static final Logger logger = Logger
+			.getLogger(WikipediaHarvester.class.getName());
 
 	public static final int MIN_SECTIONS = 2;
 
@@ -46,9 +47,11 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public void init(Core core, WikipediaHarvesterParameters parameters) throws EpnoiInitializationException {
+	public void init(Core core, WikipediaHarvesterParameters parameters)
+			throws EpnoiInitializationException {
 		this.parameters = parameters;
-		incremental = (boolean) parameters.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
+		incremental = (boolean) parameters
+				.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
 		this.wikipediaDumpPath = (String) parameters
 				.getParameterValue(WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH);
 		this.core = core;
@@ -59,9 +62,11 @@ public class WikipediaHarvester {
 	// -------------------------------------------------------------------------------------------------------------------
 
 	private void _findAlreadyStoredWikidpediaPages() {
-		List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
+		List<String> wikipediaPages = WikipediaPagesRetriever
+				.getWikipediaArticles(core);
 		this.alreadyStoredWikipediaPages = new HashSet<String>(wikipediaPages);
-		logger.info("Found " + this.alreadyStoredWikipediaPages.size() + " already stored in the UIA");
+		logger.info("Found " + this.alreadyStoredWikipediaPages.size()
+				+ " already stored in the UIA");
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -71,8 +76,7 @@ public class WikipediaHarvester {
 		logger.info("The parameters are: " + this.parameters);
 		_harvestWikipediaDumpsPath();
 
-		logger.info(
-				"Finishing the harvesting  ---------------------------------------------------------------------> ");
+		logger.info("Finishing the harvesting  ---------------------------------------------------------------------> ");
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -95,8 +99,10 @@ public class WikipediaHarvester {
 	private void _harvestWikipediaDump(File dump) {
 		logger.info("Harvesting the wikipedia dump " + dump);
 
-		WikiXMLParser wikipediaDumpParser = WikiXMLParserFactory.getSAXParser(dump.getAbsolutePath());
-		WikipediaPageHandler wikipediaPageHandler = new WikipediaPageHandler();
+		WikiXMLParser wikipediaDumpParser = WikiXMLParserFactory
+				.getSAXParser(dump.getAbsolutePath());
+		WikipediaPageHandler wikipediaPageHandler = new WikipediaPageHandler(
+				core, alreadyStoredWikipediaPages, parameters);
 		try {
 
 			wikipediaDumpParser.setPageCallback(wikipediaPageHandler);
@@ -117,126 +123,16 @@ public class WikipediaHarvester {
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	private String _extractURI(String URI, String section, String annotationType) {
-
-		String cleanedSection = section.replaceAll("\\s+$", "").replaceAll("\\s+", "_");
-
-		return URI + "/" + cleanedSection + "/" + annotationType;
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
-	public void _putWikipediaPageAnnotatedContent(WikipediaPage wikipediaPage, Context context) {
-		List<String> sections = wikipediaPage.getSections();
-
-		for (int i = sections.size() - 1; i >= 0; i--) {
-
-			String sectionContent = wikipediaPage.getSectionsContent().get(sections.get(i));
-
-			String annotatedContentURI = _extractURI(wikipediaPage.getURI(), sections.get(i),
-
-			AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
-			_putWikipediaPageSectionAnnnotatedContent(wikipediaPage, sectionContent, annotatedContentURI);
-		}
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
-	private void _putWikipediaPageSectionAnnnotatedContent(WikipediaPage wikipediaPage, String sectionContent,
-			String annotatedContentURI) {
-		// First we obtain the linguistic annotation of the content of the
-		// section
-		Document sectionAnnotatedContent = this.core.getNLPHandler().process(sectionContent);
-
-		// Then we introduce it in the UIA
-		// We create the selector
-		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
-		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, annotatedContentURI);
-
-		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
-
-		// Then we store it
-		core.getInformationHandler().setAnnotatedContent(selector, new org.epnoi.model.Content<Object>(
-				sectionAnnotatedContent, AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
-		Factory.deleteResource(sectionAnnotatedContent);
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
-	private void _putWikipediaPage(WikipediaPage page, Context context) {
-		// If the wikipedia page is already stored, we delete it
-
-		if (this.alreadyStoredWikipediaPages.contains(page.getURI())) {
-			this.core.getInformationHandler().remove(page.getURI(), RDFHelper.WIKIPEDIA_PAGE_CLASS);
-
-		}
-
-		long currenttime = System.currentTimeMillis();
-		_putWikipediaPageAnnotatedContent(page, context);
-		core.getInformationHandler().put(page, context);
-		long time = System.currentTimeMillis() - currenttime;
-		logger.info(page.getURI() + " took " + time + " to be annotated and stored");
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
-	class WikipediaPageHandler implements PageCallbackHandler {
-
-		// -------------------------------------------------------------------------------------------------------------------
-
-		public WikipediaPageHandler() {
-
-		}
-
-		// -------------------------------------------------------------------------------------------------------------------
-
-		public void processWikipediaPage(WikiPage page) {
-			WikipediaPageParser parser = new WikipediaPageParser();
-
-			WikipediaPage wikipediaPage = parser.parse(page);
-			if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
-
-				if (incremental)
-					if (!alreadyStoredWikipediaPages.contains(wikipediaPage.getURI())) {
-						logger.info("Introducing " + wikipediaPage.getURI());
-						_introduceWikipediaPage(wikipediaPage);
-					} else {
-						logger.info("The WikipediaPage " + wikipediaPage.getURI() + " was already stored");
-					}
-
-				else {
-					_introduceWikipediaPage(wikipediaPage);
-				}
-			}
-		}
-
-		// -------------------------------------------------------------------------------------------------------------------
-
-		private void _introduceWikipediaPage(WikipediaPage wikipediaPage) {
-
-			try {
-
-				_putWikipediaPage(wikipediaPage, Context.getEmptyContext());
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.severe("This wikipedia page couldn't be introduced " + wikipediaPage.getURI());
-			}
-		}
-	}
-	// -------------------------------------------------------------------------------------------------------------------
-
 	public static void main(String[] args) {
 		WikipediaHarvester wikipediaHarvester = new WikipediaHarvester();
 		WikipediaHarvesterParameters parameters = new WikipediaHarvesterParameters();
 
-		parameters.setParameter(WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH,
+		parameters.setParameter(
+				WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH,
 				"/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/");
 		parameters.setParameter(WikipediaHarvesterParameters.INCREMENTAL, true);
-		parameters.setParameter(WikipediaHarvesterParameters.NUMBER_OF_THREADS, 3);
+		parameters.setParameter(WikipediaHarvesterParameters.NUMBER_OF_THREADS,
+				3);
 		// Core core = null;
 		Core core = CoreUtility.getUIACore();
 
