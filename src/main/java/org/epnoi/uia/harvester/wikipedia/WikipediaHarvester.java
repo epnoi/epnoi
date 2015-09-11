@@ -114,7 +114,7 @@ public class WikipediaHarvester {
 
 		parameters.setParameter(WikipediaHarvesterParameters.DUMPS_DIRECTORY_PATH,
 				"/opt/epnoi/epnoideployment/firstReviewResources/wikipedia/");
-		parameters.setParameter(WikipediaHarvesterParameters.INCREMENTAL, false);
+		parameters.setParameter(WikipediaHarvesterParameters.INCREMENTAL, true);
 		parameters.setParameter(WikipediaHarvesterParameters.NUMBER_OF_THREADS, 12);
 
 		Core core = CoreUtility.getUIACore();

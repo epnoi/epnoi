@@ -34,7 +34,7 @@ public abstract class MapDAO implements DAO {
 			 * );
 			 */
 			databaseFile = new File(parameters.getPath());
-			database = DBMaker.newFileDB(databaseFile).compressionEnable().transactionDisable().closeOnJvmShutdown().make();
+			database = DBMaker.newFileDB(databaseFile).cacheDisable().compressionEnable().transactionDisable().closeOnJvmShutdown().make();
 
 			map = database.getTreeMap(ANNOTATED_CONTENT_COLLECTION);
 			initialized = true;
