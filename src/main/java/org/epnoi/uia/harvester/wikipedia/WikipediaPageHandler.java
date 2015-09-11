@@ -12,6 +12,7 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.BoundedExecutor;
+import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
@@ -22,72 +23,77 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 //-------------------------------------------------------------------------------------------------------------------
 
 class WikipediaPageHandler implements PageCallbackHandler {
-	private static final Logger logger = Logger
-			.getLogger(WikipediaPageHandler.class.getName());
+	private static final Logger logger = Logger.getLogger(WikipediaPageHandler.class.getName());
 
 	Core core;
 	Set<String> alreadyStored;
 	WikipediaHarvesterParameters parameters;
 	private boolean incremental;
 	private BoundedExecutor executor;
-	
 
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public WikipediaPageHandler() {
 	}
-	
-	public void init(Core core, Set<String> alreadyStored,
-			WikipediaHarvesterParameters parameters){
+
+	public void init(Core core, Set<String> alreadyStored, WikipediaHarvesterParameters parameters) {
+		logger.info("Initializing the WikipediaPageHandler with the following parameters: " + parameters);
 		this.core = core;
 		this.alreadyStored = alreadyStored;
 		this.parameters = parameters;
-		this.incremental= (boolean) parameters.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
-		int numberOfThreads = (Integer) parameters
-				.getParameterValue(WikipediaHarvesterParameters.NUMBER_OF_THREADS);
-		this.executor = new BoundedExecutor(
-				Executors.newFixedThreadPool(numberOfThreads), numberOfThreads);
-	
+		this.incremental = (boolean) parameters.getParameterValue(WikipediaHarvesterParameters.INCREMENTAL);
+		int numberOfThreads = (Integer) this.parameters.getParameterValue(WikipediaHarvesterParameters.NUMBER_OF_THREADS);
+		this.executor = new BoundedExecutor(Executors.newFixedThreadPool(numberOfThreads), numberOfThreads);
+
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public void processWikipediaPage(WikiPage page) {
-		WikipediaPageParser parser = new WikipediaPageParser();
+	
 
-		WikipediaPage wikipediaPage = parser.parse(page);
-		if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
+		String cleanedPageTitle = page.getTitle().replaceAll("\\n", "").replaceAll("\\s+$", "");
+
+		String localPartOfTermURI = StringUtils.cleanOddCharacters(page.getTitle());
+
+		localPartOfTermURI = localPartOfTermURI.replaceAll("\\n", "").replaceAll("\\s+$", "").replaceAll("\\s+", "_");
+
+		String uri=WikipediaHarvester.wikipediaPath + localPartOfTermURI;
+		
+		
+		boolean isAlreadyStored = alreadyStored.contains(uri);
+
+		//if (wikipediaPage.getSections().size() > WikipediaHarvester.MIN_SECTIONS) {
 
 			if (incremental)
-				if (!alreadyStored.contains(wikipediaPage.getURI())) {
-					logger.info("Introducing " + wikipediaPage.getURI());
-					_introduceWikipediaPage(wikipediaPage);
+				if (!isAlreadyStored) {
+					logger.info("Introducing " + uri);
+					_introduceWikipediaPage(page, isAlreadyStored);
 				} else {
-					logger.info("The WikipediaPage " + wikipediaPage.getURI()
-							+ " was already stored");
+					logger.info("The WikipediaPage " + uri + " was already stored");
 				}
 
 			else {
-				_introduceWikipediaPage(wikipediaPage);
+				_introduceWikipediaPage(page, isAlreadyStored);
 			}
 		}
-	}
-	
+	//}
+
 	// -------------------------------------------------------------------------------------------------------------------
 
-	
-	private void _introduceWikipediaPage(WikipediaPage wikipediaPage) {
+	private void _introduceWikipediaPage(WikiPage wikipediaPage, boolean isAlreadyStored) {
 
 		try {
-
-	//		_putWikipediaPage(wikipediaPage, Context.getEmptyContext());
-
+			
+			Runnable task = new WikipediaPageIntroductionTask(core, wikipediaPage, Context.getEmptyContext(),
+					isAlreadyStored);
+			
+		//	System.out.println("TASK> "+task);
+			executor.submitTask(task);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.severe("This wikipedia page couldn't be introduced "
-					+ wikipediaPage.getURI());
+			logger.severe("This wikipedia page couldn't be introduced " + wikipediaPage.getTitle());
 		}
 	}
 
-	
 }
