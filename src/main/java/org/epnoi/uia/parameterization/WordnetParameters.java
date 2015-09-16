@@ -30,5 +30,14 @@ public class WordnetParameters {
 	public void setDictionaryPath(String dictionaryPath) {
 		this.dictionaryPath = dictionaryPath;
 	}
+	
+	//----------------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "WordnetParameters [considered=" + considered + ", dictionaryPath=" + dictionaryPath + "]";
+	}
+	
+	
 
 }

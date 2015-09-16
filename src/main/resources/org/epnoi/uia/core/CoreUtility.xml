@@ -3,8 +3,21 @@
 	<path>algo</path>
 	<nlp>
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
-		<numberOfProcessors>20</numberOfProcessors>
+		<numberOfProcessors>4</numberOfProcessors>
 	</nlp>
+	<knowledgeBase>
+		<wordnet>
+			<considered>true</considered>
+			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
+		</wordnet>
+		<wikidata>
+			<considered>true</considered>
+			<mode>load</mode><!-- load|create -->
+			<lazy>true</lazy>
+			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
+			<uri>http://www.epnoi.org/wikidataView</uri>
+		</wikidata>
+	</knowledgeBase>
 
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
