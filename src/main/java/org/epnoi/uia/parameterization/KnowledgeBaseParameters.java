@@ -9,9 +9,22 @@ import org.epnoi.uia.core.CoreUtility;
 public class KnowledgeBaseParameters {
 	private WordnetParameters wordnet;
 	private WikidataParameters wikidata;
+	private boolean lazy;
 
 	// ---------------------------------------------------------------------------------
 	
+	public boolean isLazy() {
+		return lazy;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setLazy(boolean lazy) {
+		this.lazy = lazy;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
 	public WikidataParameters getWikidata() {
 		return wikidata;
 	}
@@ -36,10 +49,6 @@ public class KnowledgeBaseParameters {
 
 	// ---------------------------------------------------------------------------------
 
-	@Override
-	public String toString() {
-		return "KnowledgeBaseParameters [wordnet=" + wordnet + ", wikidata=" + wikidata + "]";
-	}
 	
 	// ---------------------------------------------------------------------------------
 
@@ -48,6 +57,11 @@ public class KnowledgeBaseParameters {
 		Core core = CoreUtility.getUIACore();
 		System.out.println("------> "+core.getParameters());
 		
+	}
+
+	@Override
+	public String toString() {
+		return "KnowledgeBaseParameters [wordnet=" + wordnet + ", wikidata=" + wikidata + ", lazy=" + lazy + "]";
 	}
 
 	

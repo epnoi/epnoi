@@ -6,6 +6,7 @@
 		<numberOfProcessors>4</numberOfProcessors>
 	</nlp>
 	<knowledgeBase>
+		<lazy>true</lazy>
 		<wordnet>
 			<considered>true</considered>
 			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
@@ -13,7 +14,6 @@
 		<wikidata>
 			<considered>true</considered>
 			<mode>load</mode><!-- load|create -->
-			<lazy>true</lazy>
 			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
 			<uri>http://www.epnoi.org/wikidataView</uri>
 		</wikidata>

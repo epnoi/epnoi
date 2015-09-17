@@ -8,10 +8,10 @@ public class WikidataParameters {
 
 	private boolean considered;
 	private String mode;
-	private boolean lazy;
 	private String dumpPath;
 	private String uri;
 	
+
 	//-----------------------------------------------------------------
 	
 	public boolean isConsidered() {
@@ -34,18 +34,6 @@ public class WikidataParameters {
 	
 	public void setMode(String mode) {
 		this.mode = mode;
-	}
-	
-	//-----------------------------------------------------------------
-	
-	public boolean isLazy() {
-		return lazy;
-	}
-	
-	//-----------------------------------------------------------------
-	
-	public void setLazy(boolean lazy) {
-		this.lazy = lazy;
 	}
 	
 	//-----------------------------------------------------------------
@@ -76,7 +64,7 @@ public class WikidataParameters {
 
 	@Override
 	public String toString() {
-		return "WikidataParameters [considered=" + considered + ", mode=" + mode + ", lazy=" + lazy + ", dumpPath="
+		return "WikidataParameters [considered=" + considered + ", mode=" + mode + ", dumpPath="
 				+ dumpPath + ", uri=" + uri + "]";
 	}
 	

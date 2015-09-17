@@ -7,7 +7,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 //import javax.xml.bind.annotation.
 @XmlRootElement(name = "parametersModel")
 public class ParametersModel {
-
+	public static final String WIKIDATA_MODE_LOAD ="KNOWLEDGEBASE_WIKIDATA_MODE_LOAD";
+	
+	public static final String WIKIDATA_MODE_CREATE ="KNOWLEDGEBASE_WIKIDATA_MODE_CREATE";
+	
 	// Server related properties
 	private String hostname;
 	private String port;
