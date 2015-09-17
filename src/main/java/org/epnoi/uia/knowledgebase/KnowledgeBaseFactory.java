@@ -56,7 +56,7 @@ public class KnowledgeBaseFactory {
 
 	// ------------------------------------------------------------------------------------
 
-	public KnowledgeBase build() {
+	public KnowledgeBase build() throws EpnoiInitializationException {
 		
 		if (this.considerWikidata){
 		this.wikidataHandler = wikidataHandlerBuilder.build();
@@ -70,7 +70,7 @@ public class KnowledgeBaseFactory {
 
 	// ------------------------------------------------------------------------------------
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EpnoiInitializationException{
 		System.out.println("Starting the Knowledge Base test!!");
 
 		String filepath = "opt/epnoi/epnoi/epnoideployment/wordnet/dictWN3.1/";

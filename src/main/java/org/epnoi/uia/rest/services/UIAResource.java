@@ -122,8 +122,7 @@ public class UIAResource extends UIAService {
 		
 		logger.info("Retrieving the knowledge base");
 	
-		KnowledgeBase knowledgeBase = this.core.getKnowledgeBaseHandler()
-				.getKnowledgeBase();
+		
 		return Response.ok().build();
 
 	}

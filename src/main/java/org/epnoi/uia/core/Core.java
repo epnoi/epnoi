@@ -370,7 +370,7 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _knowedlgeBaseHandlerInitialization() {
+	private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
 		this.knowledgeBaseHandler = new KnowledgeBaseHandler();
 		this.knowledgeBaseHandler.init(this);
 

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
@@ -177,8 +178,13 @@ public class KnowledgeBase {
 	public static void main(String[] args) {
 
 		Core core = CoreUtility.getUIACore();
-		KnowledgeBase knowledgeBase = core.getKnowledgeBaseHandler()
-				.getKnowledgeBase();
+		try {
+			KnowledgeBase knowledgeBase = core.getKnowledgeBaseHandler()
+					.getKnowledgeBase();
+		} catch (EpnoiInitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

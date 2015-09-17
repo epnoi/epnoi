@@ -6,7 +6,7 @@
 		<numberOfProcessors>4</numberOfProcessors>
 	</nlp>
 	<knowledgeBase>
-		<lazy>true</lazy>
+		<lazy>false</lazy>
 		<wordnet>
 			<considered>true</considered>
 			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
