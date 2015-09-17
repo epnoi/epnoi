@@ -10,5 +10,6 @@ public class KnowledgeBaseParameters extends Parameters<Object> {
 	public static String WORDNET_PARAMETERS = "WORDNET_PARAMETERS";
 	public static String CONSIDER_WORDNET= "CONSIDER_WORDNET";
 	public static String CONSIDER_WIKIDATA = "CONSIDER_WIKIDATA";
+	public static String LAZY= "LAZY";
 	
 }
