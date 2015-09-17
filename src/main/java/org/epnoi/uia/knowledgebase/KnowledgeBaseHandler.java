@@ -20,23 +20,23 @@ public class KnowledgeBaseHandler {
 	public void init(Core core) {
 		this.core = core;
 		this.knowledgeBaseParameters = new KnowledgeBaseParameters();
-		String wordnetDictionaryfilepath = this.core.getParameters().getKnowledgeBase().getWordnet().getDictionaryPath();
+		String wordnetDictionaryfilepath = this.core.getParameters().getKnowledgeBase().getWordnet()
+				.getDictionaryPath();
 		WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
 
 		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
 		wordnetParameters.setParameter(WordNetHandlerParameters.DICTIONARY_LOCATION, wordnetDictionaryfilepath);
 
-		
-		
 		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WIKIDATA,
 				this.core.getParameters().getKnowledgeBase().getWikidata().isConsidered());
 		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WORDNET,
 				this.core.getParameters().getKnowledgeBase().getWordnet().isConsidered());
-		
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.LAZY, this.core.getParameters().getKnowledgeBase().isLazy());
+
+		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.LAZY,
+				this.core.getParameters().getKnowledgeBase().isLazy());
 		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				this.core.getParameters().getKnowledgeBase().getWikidata().getDumpPath());
-		
+
 		String mode = core.getParameters().getKnowledgeBase().getWikidata().getMode();
 		if (org.epnoi.uia.parameterization.ParametersModel.WIKIDATA_MODE_CREATE.equals(mode)) {
 
@@ -50,19 +50,20 @@ public class KnowledgeBaseHandler {
 			wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
 
 		}
-		
 
 		wikidataParameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
 		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 0);
-		
 
 		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
 
 		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS, wikidataParameters);
-
-	
+		// In case that the knowledge base is not initialized in a lazy fashion
+		// we initialize it
+		if (!this.core.getParameters().getKnowledgeBase().isLazy()) {
+			_initializeKnowledgeBase(core);
+		}
 
 	}
 
