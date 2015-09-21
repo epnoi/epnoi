@@ -94,6 +94,8 @@ public class CassandraQueryResolver extends CassandraDAO {
 			System.out.println("Seems that that the query didn't return anything");
 		}
 	}
+	
+	
 
 	public Set<String> getValues(String key, String column, String columnFamilyName) {
 
@@ -101,7 +103,7 @@ public class CassandraQueryResolver extends CassandraDAO {
 		Set<String> parsedValues = new HashSet<String>(Splitter.on(';').splitToList(values));
 		return parsedValues;
 	}
-	E::::::
+	
 	
 	
 

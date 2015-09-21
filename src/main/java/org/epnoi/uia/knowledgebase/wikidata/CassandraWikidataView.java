@@ -130,6 +130,7 @@ public class CassandraWikidataView {
 		Core core = CoreUtility.getUIACore();
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
+		/*
 		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI, WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
@@ -152,6 +153,7 @@ public class CassandraWikidataView {
 		currentTime = System.currentTimeMillis();
 		wikidataView.count();
 		System.out.println("It took " + (System.currentTimeMillis() - currentTime) + " to clean the wikidata view");
+	*/
 	}
 
 	// ------------------------------------------------------------------------------------------------------

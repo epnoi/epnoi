@@ -14,11 +14,11 @@ public class WikidataCassandraHandler  implements WikidataHandler {
 			this.wikidataView = wikidataView;
 		}
 
-		@Override
+		/*
 		public WikidataView getWikidataView() {
 			return this.wikidataView;
 		}
-
+*/
 		// --------------------------------------------------------------------------------------------------
 
 		@Override

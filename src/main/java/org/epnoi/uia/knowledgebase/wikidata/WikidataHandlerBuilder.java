@@ -2,7 +2,6 @@ package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -121,7 +120,7 @@ public class WikidataHandlerBuilder {
 
 			this.core.getInformationHandler().put(wikidataView, Context.getEmptyContext());
 		}
-		return new WikidataHandlerImpl(wikidataView);
+		return new WikidataHandlerInMemoryImpl(wikidataView);
 	}
 
 	// --------------------------------------------------------------------------------------------------
@@ -130,7 +129,7 @@ public class WikidataHandlerBuilder {
 		logger.info("Retrieving a WikidataHandler from a WikidataView stored in the UIA");
 		WikidataView wikidataView = null;
 
-		return new WikidataHandlerImpl(wikidataView);
+		return new WikidataHandlerInMemoryImpl(wikidataView);
 
 	}
 
@@ -168,7 +167,7 @@ public class WikidataHandlerBuilder {
 		System.out.println("------> " + wikidataHandler.stem("thieves"));
 
 		System.exit(0);
-		System.out.println("(size)---------------> " + wikidataHandler.getWikidataView());
+		//System.out.println("(size)---------------> " + wikidataHandler.getWikidataView());
 
 		Long endTime = System.currentTimeMillis();
 		System.out.println(
@@ -177,7 +176,7 @@ public class WikidataHandlerBuilder {
 		startTime = System.currentTimeMillis();
 
 		WikidataHandler handler = wikidataBuilder.retrieve();
-		System.out.println("---------------> " + handler.getWikidataView());
+		//System.out.println("---------------> " + handler.getWikidataView());
 
 		endTime = System.currentTimeMillis();
 
@@ -186,89 +185,17 @@ public class WikidataHandlerBuilder {
 		 * System.out.println("dog -----> " + wikidataHandler.getRelated("dog",
 		 * RelationHelper.HYPERNYM));
 		 */
-
+/*
 		for (String label : wikidataHandler.getWikidataView().getLabelsDictionary().keySet()) {
 			if (!handler.getWikidataView().getLabelsDictionary().keySet().contains(label)) {
 				System.out.println("....> este no esta " + label);
 			}
 		}
 		System.out.println("Ending the WikiDataHandlerBuilder");
+	*/
 	}
 
 	// --------------------------------------------------------------------------------------------------
 
-	private class WikidataHandlerImpl implements WikidataHandler {
-		private WikidataStemmer stemmer = new WikidataStemmer();
-		private WikidataView wikidataView;
-
-		// --------------------------------------------------------------------------------------------------
-
-		private WikidataHandlerImpl(WikidataView wikidataView) {
-			this.wikidataView = wikidataView;
-		}
-
-		@Override
-		public WikidataView getWikidataView() {
-			return this.wikidataView;
-		}
-
-		// --------------------------------------------------------------------------------------------------
-
-		@Override
-		public Set<String> getRelated(String sourceLabel, String type) {
-
-			Set<String> targetLabels = new HashSet<String>();
-
-			Map<String, Set<String>> consideredRelations = this.wikidataView.getRelations().get(type);
-
-			// Firstly we retrieve the IRIs
-			Set<String> sourceIRIs = this.wikidataView.getLabelsDictionary().get(sourceLabel);
-			// System.out.println("Inital sourceIRIs obtained from the label" +
-			// sourceIRIs);
-			if (sourceIRIs != null) {
-
-				for (String sourceIRI : sourceIRIs) {
-					// System.out.println("sourceIRI " + sourceIRI);
-					Set<String> targetIRIs = consideredRelations.get(sourceIRI);
-					// System.out.println(" ("+sourceIRI+") targetIRIs " +
-					// targetIRIs);
-					if (targetIRIs != null) {
-						for (String targetIRI : targetIRIs) {
-							// System.out.println(" trying > "+ targetIRI);
-							// // .getLabelsReverseDictionary().get(
-							// targetIRI));
-							if (targetIRI != null) {
-								if (this.wikidataView.getLabelsReverseDictionary().get(targetIRI) != null) {
-
-									for (String destinationTarget : this.wikidataView.getLabelsReverseDictionary()
-											.get(targetIRI)) {
-										targetLabels.add(destinationTarget);
-									}
-								}
-
-							}
-						}
-					}
-				}
-			}
-			return targetLabels;
-		}
-
-		// --------------------------------------------------------------------------------------------------
-		@Override
-		public String stem(String term) {
-			return this.stemmer.stem(term);
-		}
-
-		// --------------------------------------------------------------------------------------------------
-
-		@Override
-		public String toString() {
-			return "WikidataHandlerImpl [wikidataView=" + wikidataView + "]";
-		}
-
-		// --------------------------------------------------------------------------------------------------
-
-	}
 
 }

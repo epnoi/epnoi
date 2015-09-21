@@ -39,7 +39,8 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.Selector;
 
 public abstract class CassandraDAO {
-	private static final Logger logger = Logger.getLogger(CassandraDAO.class.getName());
+	private static final Logger logger = Logger.getLogger(CassandraDAO.class
+			.getName());
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
 
@@ -79,25 +80,25 @@ public abstract class CassandraDAO {
 					"localhost:9160");
 			// System.out.println("Cluster instantiated");
 
-			List<String> columnFamillyNames = Arrays.asList(
-					ExternalResourceCassandraHelper.COLUMN_FAMILLY,
-					UserCassandraHelper.COLUMN_FAMILLY,
-					SearchCassandraHelper.COLUMN_FAMILLY,
-					FeedCassandraHelper.COLUMN_FAMILLY,
-					ItemCassandraHelper.COLUMN_FAMILLY,
-					PaperCassandraHelper.COLUMN_FAMILLY,
-					WikipediaPageCassandraHelper.COLUMN_FAMILLY,
-					AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
-					ContentCassandraHelper.COLUMN_FAMILLY,
-					TermCassandraHelper.COLUMN_FAMILLY,
-					RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
-					DomainCassandraHelper.COLUMN_FAMILLY,
-					RelationsTableCassandraHelper.COLUMN_FAMILLY,
-					RelationCassandraHelper.COLUMN_FAMILLY,
-					WikidataViewCassandraHelper.COLUMN_FAMILLY,
-					WikidataViewCassandraHelper.DICTIONARY_COLUMN_FAMILY,
-					WikidataViewCassandraHelper.INVERSE_DICTIONARY_COLUMN_FAMILY,
-					WikidataViewCassandraHelper.RELATIONS_COLUMN_FAMILY);
+			List<String> columnFamillyNames = Arrays
+					.asList(ExternalResourceCassandraHelper.COLUMN_FAMILLY,
+							UserCassandraHelper.COLUMN_FAMILLY,
+							SearchCassandraHelper.COLUMN_FAMILLY,
+							FeedCassandraHelper.COLUMN_FAMILLY,
+							ItemCassandraHelper.COLUMN_FAMILLY,
+							PaperCassandraHelper.COLUMN_FAMILLY,
+							WikipediaPageCassandraHelper.COLUMN_FAMILLY,
+							AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
+							ContentCassandraHelper.COLUMN_FAMILLY,
+							TermCassandraHelper.COLUMN_FAMILLY,
+							RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
+							DomainCassandraHelper.COLUMN_FAMILLY,
+							RelationsTableCassandraHelper.COLUMN_FAMILLY,
+							RelationCassandraHelper.COLUMN_FAMILLY,
+							WikidataViewCassandraHelper.COLUMN_FAMILLY,
+							WikidataViewCassandraHelper.DICTIONARY_COLUMN_FAMILY,
+							WikidataViewCassandraHelper.INVERSE_DICTIONARY_COLUMN_FAMILY,
+							WikidataViewCassandraHelper.RELATIONS_COLUMN_FAMILY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				logger.info("Intializing columnFamilyDefinitions");
@@ -131,10 +132,10 @@ public abstract class CassandraDAO {
 								.createColumnFamilyDefinition(KEYSPACE,
 										columnFamilyName,
 										ComparatorType.UTF8TYPE);
-					/*
-						System.out.println("Initializing" + columnFamilyName
-								+ " > " + columnFamilyDefinition);
-								*/
+						/*
+						 * System.out.println("Initializing" + columnFamilyName
+						 * + " > " + columnFamilyDefinition);
+						 */
 					}
 					CassandraDAO.columnFamilyDefinitions
 							.add(columnFamilyDefinition);
@@ -167,13 +168,13 @@ public abstract class CassandraDAO {
 
 				for (ColumnFamilyDefinition cfdef : columnFamilyDefinitions) {
 
-				//	logger.info("Adding the definition "
-					//		+ cfdef.getName());
+					// logger.info("Adding the definition "
+					// + cfdef.getName());
 					try {
 						cluster.addColumnFamily(cfdef);
 					} catch (Exception e) {
-						//logger.info("Trying to add the column definition "
-						//				+ cfdef.getName());
+						// logger.info("Trying to add the column definition "
+						// + cfdef.getName());
 					}
 				}
 
@@ -192,14 +193,14 @@ public abstract class CassandraDAO {
 				ColumnFamilyTemplate<String, String> columnFamilyTemplate;
 
 				for (String columnFamilyName : columnFamillyNames) {
-					//System.out.println("ct " + columnFamilyName);
+					// System.out.println("ct " + columnFamilyName);
 					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
 							CassandraDAO.keyspace, columnFamilyName,
 							StringSerializer.get(), StringSerializer.get());
 					/*
-					System.out.println("(" + columnFamilyName + ","
-							+ columnFamilyTemplate + ")");
-					*/
+					 * System.out.println("(" + columnFamilyName + "," +
+					 * columnFamilyTemplate + ")");
+					 */
 					CassandraDAO.columnFamilyTemplates.put(columnFamilyName,
 							columnFamilyTemplate);
 				}
@@ -287,7 +288,7 @@ public abstract class CassandraDAO {
 			// update
 			if ((index % CassandraDAO.BATCH_SIZE == 0)
 					|| !pairsOfNameValuesIt.hasNext()) {
-				//System.out.println("Creating mutator and adding "+index);
+				// System.out.println("Creating mutator and adding "+index);
 				Mutator<String> mutator = columnFamilyTemplates.get(
 						columnFamilyName).createMutator();
 
@@ -354,6 +355,12 @@ public abstract class CassandraDAO {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * 
+	 * @param key
+	 * @param columnFamilyName
+	 * @return
+	 */
 	protected ColumnFamilyResult<String, String> readRow(String key,
 			String columnFamilyName) {
 		ColumnFamilyResult<String, String> result = null;
