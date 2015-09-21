@@ -118,13 +118,6 @@ public class WikidataView implements Resource {
 		}
 		System.out.println("There were " + relationsCount);
 	}
-	
-	// ------------------------------------------------------------------------------------------------------
-
-	
-	
-	
-	
 	// ------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {

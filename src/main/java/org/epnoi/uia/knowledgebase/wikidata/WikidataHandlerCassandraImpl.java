@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WikidataCassandraHandler  implements WikidataHandler {
+public class WikidataHandlerCassandraImpl  implements WikidataHandler {
 		private WikidataStemmer stemmer = new WikidataStemmer();
 		private CassandraWikidataView wikidataView;
 
 		// --------------------------------------------------------------------------------------------------
 
-		public WikidataCassandraHandler(CassandraWikidataView wikidataView) {
+		public WikidataHandlerCassandraImpl(CassandraWikidataView wikidataView) {
 			this.wikidataView = wikidataView;
 		}
 
