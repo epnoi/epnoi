@@ -94,7 +94,10 @@ public abstract class CassandraDAO {
 					DomainCassandraHelper.COLUMN_FAMILLY,
 					RelationsTableCassandraHelper.COLUMN_FAMILLY,
 					RelationCassandraHelper.COLUMN_FAMILLY,
-					WikidataViewCassandraHelper.COLUMN_FAMILLY);
+					WikidataViewCassandraHelper.COLUMN_FAMILLY,
+					WikidataViewCassandraHelper.DICTIONARY_COLUMN_FAMILY,
+					WikidataViewCassandraHelper.INVERSE_DICTIONARY_COLUMN_FAMILY,
+					WikidataViewCassandraHelper.RELATIONS_COLUMN_FAMILY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				logger.info("Intializing columnFamilyDefinitions");

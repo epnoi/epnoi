@@ -28,6 +28,8 @@ public class CassandraInformationStore implements InformationStore {
 	private InformationStoreParameters parameters;
 	private CassandraDAOFactory daoFactory;
 	private CassandraQueryResolver queryResolver;
+	
+
 	public static final Map<String, String> typesTable = new HashMap<>();
 	static {
 		typesTable.put(RDFHelper.PAPER_CLASS,
@@ -183,6 +185,14 @@ public class CassandraInformationStore implements InformationStore {
 		return null;
 	}
 
+	
+	public CassandraQueryResolver getQueryResolver() {
+		return queryResolver;
+	}
+
+	public void setQueryResolver(CassandraQueryResolver queryResolver) {
+		this.queryResolver = queryResolver;
+	}
 	// ------------------------------------------------------------------------
 
 }
