@@ -19,20 +19,21 @@ public class CassandraWikidataView {
 	private String URI;
 	Core core;
 	CassandraInformationStore cassandraInformationStore;
-	
+	private final String dictionaryURI;
+	private final String reverseDictionaryURI;
+	private final String relationsURI;
 	
 	// ------------------------------------------------------------------------------------------------------
 
 	public CassandraWikidataView(Core core, String URI) {
-		super();
+		
 		this.URI = URI;
 		this.cassandraInformationStore =(CassandraInformationStore) this.core
 				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
-	}
-
-	// ------------------------------------------------------------------------------------------------------
-
-	public CassandraWikidataView() {
+	this.dictionaryURI=this.URI+"/dictionary";
+	this.reverseDictionaryURI=this.URI+"/reverseDictionary";
+	this.relationsURI=this.URI+"/relations";
+	
 	}
 
 	// ------------------------------------------------------------------------------------------------------
@@ -40,13 +41,6 @@ public class CassandraWikidataView {
 	public String getURI() {
 		return URI;
 	}
-
-	// ------------------------------------------------------------------------------------------------------
-
-	public void setURI(String URI) {
-		this.URI = URI;
-	}
-
 	
 	// ------------------------------------------------------------------------------------------------------
 /*
@@ -122,9 +116,9 @@ public class CassandraWikidataView {
 
 		CassandraInformationStore cassandraInformationStore = (CassandraInformationStore) this.core
 				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-		String labelIRI = this.URI + "/labels/" + label;
-		return cassandraInformationStore.getQueryResolver().getValues(labelIRI, WikidataViewCassandraHelper.VALUES,
-				WikidataViewCassandraHelper.DICTIONARY);
+		String labelIRI = this.URI + "/labels#" + label;
+		return cassandraInformationStore.getQueryResolver().getValues(this.dictionaryURI,labelIRI,
+				WikidataViewCassandraHelper.WIKIDATA_COLUMN_FAMILY);
 
 		// cassandraInformationStore.qu
 	}
@@ -139,21 +133,21 @@ public class CassandraWikidataView {
 	 */
 	public Set<String> getIRIRelatedIRIs(String type, String sourceIRI) {
 		
-		return cassandraInformationStore.getQueryResolver().getValues(sourceIRI, type,
-				WikidataViewCassandraHelper.RELATIONS_COLUMN_FAMILY);
+		return cassandraInformationStore.getQueryResolver().getValues(this.relationsURI+type,sourceIRI,
+				WikidataViewCassandraHelper.WIKIDATA_COLUMN_FAMILY);
 	}
 
 	// ------------------------------------------------------------------------------------------------------
 
-	/**
-	 * 
-	 * @param targetIRI
-	 * @return
-	 */
+		/**
+		 * 
+		 * @param targetIRI
+		 * @return
+		 */
 
-	public Set<String> getLabelsOfIRI(String IRI) {
-		return this.cassandraInformationStore.getQueryResolver().getValues(IRI, WikidataViewCassandraHelper.VALUES,
-				WikidataViewCassandraHelper.REVERSE_DICTIONARY);
+		public Set<String> getLabelsOfIRI(String IRI) {
+			return this.cassandraInformationStore.getQueryResolver().getValues(this.reverseDictionaryURI, IRI,
+					WikidataViewCassandraHelper.WIKIDATA_COLUMN_FAMILY);
 
-	}
+		}
 }

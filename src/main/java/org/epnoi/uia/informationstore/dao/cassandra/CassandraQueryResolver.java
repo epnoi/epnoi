@@ -107,7 +107,14 @@ public class CassandraQueryResolver extends CassandraDAO {
 	}
 	
 	// ------------------------------------------------------------------------------------------
-
+/**
+ * Gets the set of values 
+ * @param key
+ * @param column
+ * @param columnFamilyName
+ * @return
+ */
+	
 	public Set<String> getValues(String key, String column,
 			String columnFamilyName) {
 

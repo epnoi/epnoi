@@ -26,6 +26,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 public class NewWikidataViewCassandraDAO extends CassandraDAO {
+	Joiner joiner = Joiner.on(";").skipNulls();
 
 	// --------------------------------------------------------------------------------
 
@@ -46,28 +47,19 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
-		super.createRow(wikidataView.getURI(),
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
-	
+		super.createRow(wikidataView.getURI(), WikidataViewCassandraHelper.COLUMN_FAMILLY);
 
 		Joiner joiner = Joiner.on(";").skipNulls();
 
-		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView
-				.getLabelsDictionary().entrySet()) {
+		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView.getLabelsDictionary().entrySet()) {
 			Set<String> labelIRIsSet = labelDictionaryEntry.getValue();
 			String labelIRIs = joiner.join(labelIRIsSet);
-			String serializedLabelDictionaryEntry = labelDictionaryEntry
-					.getKey() + ";" + labelIRIs;
-			pairsOfNameValues.put(serializedLabelDictionaryEntry,
-					WikidataViewCassandraHelper.DICTIONARY);
+			String serializedLabelDictionaryEntry = labelDictionaryEntry.getKey() + ";" + labelIRIs;
+			pairsOfNameValues.put(serializedLabelDictionaryEntry, WikidataViewCassandraHelper.DICTIONARY);
 		}
 
-		System.out.println("------------------------------> "
-				+ pairsOfNameValues.size());
-
-		super.updateManyColumns(wikidataView.getURI(), pairsOfNameValues,
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
-		System.out.println("Clear!!!");
+		super.updateManyColumns(wikidataView.getURI(), pairsOfNameValues, WikidataViewCassandraHelper.COLUMN_FAMILLY);
+	
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -77,55 +69,63 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 
 	private void _createRelations(WikidataView wikidataView) {
 		// Relations mapping
-		for (Entry<String, Map<String, Set<String>>> relationsEntry : wikidataView
-				.getRelations().entrySet()) {
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
+		for (Entry<String, Map<String, Set<String>>> relationsEntry : wikidataView.getRelations().entrySet()) {
 
 			String relationType = relationsEntry.getKey();
-			for (Entry<String, Set<String>> relationEntry : relationsEntry
-					.getValue().entrySet()) {
+			for (Entry<String, Set<String>> relationEntry : relationsEntry.getValue().entrySet()) {
 
 				String sourceIRI = relationEntry.getKey();
-				for (String targetIRI : relationEntry.getValue()) {
-/*
-					pairsOfNameValues.put(
-
-					_serializeRelation(relationType, sourceIRI, targetIRI),
-							WikidataViewCassandraHelper.RELATIONS);
-*/
-				}
+				String targetIRIs = joiner.join(relationEntry.getValue());
+				pairsOfNameValues.put(sourceIRI, targetIRIs);
 
 			}
-		}
 
+			super.updateManyColumns(wikidataView.getURI() + "/relations/" + relationType, pairsOfNameValues,
+					WikidataViewCassandraHelper.COLUMN_FAMILLY);
+		}
+		pairsOfNameValues.clear();
+		pairsOfNameValues = null;
 	}
+
+	
+
+	// --------------------------------------------------------------------------------
 
 	private void _createReverseDictionary(WikidataView wikidataView) {
-		// TODO Auto-generated method stub
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
+
+		for (Entry<String, Set<String>> reverseDictionaryEntry : wikidataView.getLabelsReverseDictionary().entrySet()) {
+
+			String labels = joiner.join(reverseDictionaryEntry.getValue());
+
+			pairsOfNameValues.put(reverseDictionaryEntry.getKey(), labels);
+		}
+
+		super.updateManyColumns(wikidataView.getURI() + "/reverseDictionary", pairsOfNameValues,
+				WikidataViewCassandraHelper.WIKIDATA_COLUMN_FAMILY);
+		
+		pairsOfNameValues.clear();
+		pairsOfNameValues = null;
 
 	}
+
+	// --------------------------------------------------------------------------------
 
 	private void _createDictionary(WikidataView wikidataView) {
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
-		Joiner joiner = Joiner.on(";").skipNulls();
 
-		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView
-				.getLabelsDictionary().entrySet()) {
+		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView.getLabelsDictionary().entrySet()) {
 
-			String labelAsociatedIRIs = joiner.join(labelDictionaryEntry
-					.getValue());
-			String labelIRI = wikidataView.getURI() + "/labels/"
-					+ labelDictionaryEntry.getKey();
+			String labelAsociatedIRIs = joiner.join(labelDictionaryEntry.getValue());
+			String labelIRI = wikidataView.getURI() + "/labels/" + labelDictionaryEntry.getKey();
 
 			pairsOfNameValues.put(labelIRI, labelAsociatedIRIs);
 		}
 
-		System.out.println("------------------------------> "
-				+ pairsOfNameValues.size());
-
-		super.updateManyColumns(wikidataView.getURI() + "/dictionary",
-				pairsOfNameValues,
+		super.updateManyColumns(wikidataView.getURI() + "/dictionary", pairsOfNameValues,
 				WikidataViewCassandraHelper.WIKIDATA_COLUMN_FAMILY);
-		System.out.println("Dicitionary Clear!!!");
+		
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -150,16 +150,14 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 	@Override
 	public Content<String> getContent(Selector selector) {
 
-		throw (new RuntimeException(
-				"The getContent method of the WikipediaPageCassandraDAO should not be invoked"));
+		throw (new RuntimeException("The getContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getAnnotatedContent(Selector selector) {
-		throw (new RuntimeException(
-				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
+		throw (new RuntimeException("The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
@@ -167,24 +165,20 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 	@Override
 	public void setContent(Selector selector, Content<String> content) {
 
-		throw (new RuntimeException(
-				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
+		throw (new RuntimeException("The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
 
 	@Override
-	public void setAnnotatedContent(Selector selector,
-			Content<String> annotatedContent) {
-		throw (new RuntimeException(
-				"The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
+	public void setAnnotatedContent(Selector selector, Content<String> annotatedContent) {
+		throw (new RuntimeException("The setContent method of the WikipediaPageCassandraDAO should not be invoked"));
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		System.out
-				.println("Starting WikidataView Cassandra Test--------------");
+		System.out.println("Starting WikidataView Cassandra Test--------------");
 
 		WikidataView wikidataView = _generateWikidataview();
 
@@ -192,13 +186,10 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 
 		System.out.println("Initial wikidataView> " + wikidataView);
 
-		core.getInformationHandler().put(wikidataView,
-				Context.getEmptyContext());
+		core.getInformationHandler().put(wikidataView, Context.getEmptyContext());
 
-		System.out.println("Wikidataview  "
-				+ core.getInformationHandler().get(
-						WikidataHandlerParameters.DEFAULT_URI,
-						RDFHelper.WIKIDATA_VIEW_CLASS));
+		System.out.println("Wikidataview  " + core.getInformationHandler().get(WikidataHandlerParameters.DEFAULT_URI,
+				RDFHelper.WIKIDATA_VIEW_CLASS));
 
 		System.out.println("WikidataView Cassandra Test--------------");
 	}
@@ -223,8 +214,7 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 		labelDictionary.add("http://testTargetB");
 		labelsDictionary.put("test label", labelDictionary);
 
-		WikidataView wikidataView = new WikidataView(
-				WikidataHandlerParameters.DEFAULT_URI, labelsDictionary,
+		WikidataView wikidataView = new WikidataView(WikidataHandlerParameters.DEFAULT_URI, labelsDictionary,
 				labelsReverseDictionary, relations);
 		return wikidataView;
 	}
@@ -235,8 +225,7 @@ public class NewWikidataViewCassandraDAO extends CassandraDAO {
 	public boolean exists(Selector selector) {
 		String URI = selector.getProperty(SelectorHelper.URI);
 
-		String content = super.readColumn(
-				selector.getProperty(SelectorHelper.URI), URI,
+		String content = super.readColumn(selector.getProperty(SelectorHelper.URI), URI,
 				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
 
 		return (content != null && content.length() > 5);
