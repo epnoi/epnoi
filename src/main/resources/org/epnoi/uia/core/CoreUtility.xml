@@ -14,6 +14,7 @@
 		<wikidata>
 			<considered>true</considered>
 			<mode>load</mode><!-- load|create -->
+			<inMemory>false</inMemory>
 			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
 			<uri>http://www.epnoi.org/wikidataView</uri>
 		</wikidata>

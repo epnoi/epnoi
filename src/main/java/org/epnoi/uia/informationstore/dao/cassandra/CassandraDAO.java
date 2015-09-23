@@ -80,34 +80,31 @@ public abstract class CassandraDAO {
 					"localhost:9160");
 			// System.out.println("Cluster instantiated");
 
-			List<String> columnFamillyNames = Arrays
-					.asList(ExternalResourceCassandraHelper.COLUMN_FAMILLY,
-							UserCassandraHelper.COLUMN_FAMILLY,
-							SearchCassandraHelper.COLUMN_FAMILLY,
-							FeedCassandraHelper.COLUMN_FAMILLY,
-							ItemCassandraHelper.COLUMN_FAMILLY,
-							PaperCassandraHelper.COLUMN_FAMILLY,
-							WikipediaPageCassandraHelper.COLUMN_FAMILLY,
-							AnnotatedContentCassandraHelper.COLUMN_FAMILLY,
-							ContentCassandraHelper.COLUMN_FAMILLY,
-							TermCassandraHelper.COLUMN_FAMILLY,
-							RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY,
-							DomainCassandraHelper.COLUMN_FAMILLY,
-							RelationsTableCassandraHelper.COLUMN_FAMILLY,
-							RelationCassandraHelper.COLUMN_FAMILLY,
-							WikidataViewCassandraHelper.COLUMN_FAMILLY,
-							WikidataViewCassandraHelper.DICTIONARY_COLUMN_FAMILY,
-							WikidataViewCassandraHelper.INVERSE_DICTIONARY_COLUMN_FAMILY,
-							WikidataViewCassandraHelper.RELATIONS_COLUMN_FAMILY);
+			List<String> columnFamilyNames = Arrays
+					.asList(ExternalResourceCassandraHelper.COLUMN_FAMILY,
+							UserCassandraHelper.COLUMN_FAMILY,
+							SearchCassandraHelper.COLUMN_FAMILY,
+							FeedCassandraHelper.COLUMN_FAMILY,
+							ItemCassandraHelper.COLUMN_FAMILY,
+							PaperCassandraHelper.COLUMN_FAMILY,
+							WikipediaPageCassandraHelper.COLUMN_FAMILY,
+							AnnotatedContentCassandraHelper.COLUMN_FAMILY,
+							ContentCassandraHelper.COLUMN_FAMILY,
+							TermCassandraHelper.COLUMN_FAMILY,
+							RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY,
+							DomainCassandraHelper.COLUMN_FAMILY,
+							RelationsTableCassandraHelper.COLUMN_FAMILY,
+							RelationCassandraHelper.COLUMN_FAMILY,
+							WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 			if (CassandraDAO.columnFamilyDefinitions == null) {
 				logger.info("Intializing columnFamilyDefinitions");
 				ColumnFamilyDefinition columnFamilyDefinition = null;
 
 				CassandraDAO.columnFamilyDefinitions = new ArrayList<ColumnFamilyDefinition>();
-				for (String columnFamilyName : columnFamillyNames) {
+				for (String columnFamilyName : columnFamilyNames) {
 					if (columnFamilyName
-							.equals(UserCassandraHelper.COLUMN_FAMILLY)) {
+							.equals(UserCassandraHelper.COLUMN_FAMILY)) {
 
 						BasicColumnDefinition columnDefinition = new BasicColumnDefinition();
 						columnDefinition.setName(StringSerializer.get()
@@ -192,7 +189,7 @@ public abstract class CassandraDAO {
 				CassandraDAO.columnFamilyTemplates = new HashMap<String, ColumnFamilyTemplate<String, String>>();
 				ColumnFamilyTemplate<String, String> columnFamilyTemplate;
 
-				for (String columnFamilyName : columnFamillyNames) {
+				for (String columnFamilyName : columnFamilyNames) {
 					// System.out.println("ct " + columnFamilyName);
 					columnFamilyTemplate = new ThriftColumnFamilyTemplate<String, String>(
 							CassandraDAO.keyspace, columnFamilyName,

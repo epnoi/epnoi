@@ -1,6 +1,7 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +44,45 @@ public class CassandraWikidataView {
 	}
 	
 	// ------------------------------------------------------------------------------------------------------
+	
+	
+	public Set<String> getRelated(String sourceLabel, String type) {
+
+		Set<String> targetLabels = new HashSet<String>();
+
+		//Map<String, Set<String>> consideredRelations = this.wikidataView.getRelations().get(type);
+
+		// Firstly we retrieve the IRIs of the source label
+		Set<String> sourceIRIs = this.getIRIsOfLabel(sourceLabel);
+		System.out.println("Inital sourceIRIs obtained from the label" +sourceIRIs);
+		if (sourceIRIs != null) {
+
+			for (String sourceIRI : sourceIRIs) {
+				// System.out.println("sourceIRI " + sourceIRI);
+				Set<String> targetIRIs = this.getIRIRelatedIRIs(type, sourceIRI);
+				// System.out.println(" ("+sourceIRI+") targetIRIs " +
+				// targetIRIs);
+				if (targetIRIs != null) {
+					for (String targetIRI : targetIRIs) {
+						// System.out.println(" trying > "+ targetIRI);
+						// // .getLabelsReverseDictionary().get(
+						// targetIRI));
+						if (targetIRI != null) {
+							if (this.getLabelsOfIRI(targetIRI) != null) {
+
+								for (String destinationTarget : this.getLabelsOfIRI(targetIRI)) {
+									targetLabels.add(destinationTarget);
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+		return targetLabels;
+	}
+
 /*
 	@Override
 	public String toString() {

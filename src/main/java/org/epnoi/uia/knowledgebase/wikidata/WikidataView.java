@@ -1,6 +1,7 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -120,6 +121,49 @@ public class WikidataView implements Resource {
 	}
 	// ------------------------------------------------------------------------------------------------------
 
+	public Set<String> getRelated(String sourceLabel, String type) {
+
+		Set<String> targetLabels = new HashSet<String>();
+
+		Map<String, Set<String>> consideredRelations = this.relations.get(type);
+
+		// Firstly we retrieve the IRIs
+		Set<String> sourceIRIs = this.labelsDictionary.get(
+				sourceLabel);
+		// System.out.println("Inital sourceIRIs obtained from the label" +
+		// sourceIRIs);
+		if (sourceIRIs != null) {
+
+			for (String sourceIRI : sourceIRIs) {
+				// System.out.println("sourceIRI " + sourceIRI);
+				Set<String> targetIRIs = consideredRelations.get(sourceIRI);
+				// System.out.println(" ("+sourceIRI+") targetIRIs " +
+				// targetIRIs);
+				if (targetIRIs != null) {
+					for (String targetIRI : targetIRIs) {
+						// System.out.println(" trying > "+ targetIRI);
+						// // .getLabelsReverseDictionary().get(
+						// targetIRI));
+						if (targetIRI != null) {
+							if (this.labelsReverseDictionary
+									.get(targetIRI) != null) {
+
+								for (String destinationTarget : this.labelsReverseDictionary.get(
+												targetIRI)) {
+									targetLabels.add(destinationTarget);
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+		return targetLabels;
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();

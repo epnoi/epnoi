@@ -22,7 +22,7 @@ public class TermCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, TermCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, TermCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -34,57 +34,57 @@ public class TermCassandraDAO extends CassandraDAO {
 		TermMetadata termMetadata = term.getAnnotatedTerm().getAnnotation();
 
 		// System.out.println("meto> " + term);
-		super.createRow(term.getURI(), TermCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(term.getURI(), TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.WORD, term
 				.getAnnotatedTerm().getWord(),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.LENGTH,
 				String.valueOf(termMetadata.getLength()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 		// System.out.println(">>> " + term.getAnnotatedTerm().getAnnotation());
 
 		for (String word : term.getAnnotatedTerm().getAnnotation().getWords()) {
 
 			super.updateColumn(term.getURI(), word, TermCassandraHelper.WORDS,
-					TermCassandraHelper.COLUMN_FAMILLY);
+					TermCassandraHelper.COLUMN_FAMILY);
 		}
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.OCURRENCES,
 				String.valueOf(termMetadata.getOcurrences()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(),
 				TermCassandraHelper.OCURRENCES_AS_SUBTERM,
 				String.valueOf(termMetadata.getOcurrencesAsSubterm()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(),
 				TermCassandraHelper.NUMBER_OF_SUPERTERMS,
 				String.valueOf(termMetadata.getNumberOfSuperterns()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.CVALUE,
 				String.valueOf(termMetadata.getCValue()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.DOMAIN_CONSENSUS,
 				String.valueOf(termMetadata.getDomainConsensus()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(),
 				TermCassandraHelper.DOMAIN_PERTINENCE,
 				String.valueOf(termMetadata.getDomainPertinence()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.TERMHOOD,
 				String.valueOf(termMetadata.getTermhood()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(term.getURI(), TermCassandraHelper.TERM_PROBABILITY,
 				String.valueOf(termMetadata.getTermProbability()),
-				TermCassandraHelper.COLUMN_FAMILLY);
+				TermCassandraHelper.COLUMN_FAMILY);
 
 		
 	}
@@ -100,17 +100,9 @@ public class TermCassandraDAO extends CassandraDAO {
 
 	public Resource read(String URI) {
 
-		/*
-		 * ColumnSliceIterator<String, String, String> columnsIteratorAux =
-		 * super .getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILLY); while
-		 * (columnsIteratorAux.hasNext()) { HColumn<String, String> column=
-		 * columnsIteratorAux.next(); System.out.println("----> "+ column);
-		 * 
-		 * }
-		 */
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, TermCassandraHelper.COLUMN_FAMILY);
 		//System.out.println("------------------------------READING " + URI);
 		if (columnsIterator.hasNext()) {
 			Term term = new Term();

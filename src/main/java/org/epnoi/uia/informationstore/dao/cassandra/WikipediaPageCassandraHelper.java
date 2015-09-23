@@ -2,7 +2,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 public interface WikipediaPageCassandraHelper {
 
-	public static final String COLUMN_FAMILLY = "WikipediaPage";
+	public static final String COLUMN_FAMILY = "WikipediaPage";
 	public static final String URI = "URI";
 
 	public static final String TERM = "TERM";

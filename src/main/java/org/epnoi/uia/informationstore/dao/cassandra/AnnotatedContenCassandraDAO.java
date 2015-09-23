@@ -12,7 +12,7 @@ public class AnnotatedContenCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, AnnotatedContentCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -56,12 +56,12 @@ public class AnnotatedContenCassandraDAO extends CassandraDAO {
 		String value = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				AnnotatedContentCassandraHelper.CONTENT,
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+				AnnotatedContentCassandraHelper.COLUMN_FAMILY);
 
 		String type = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				AnnotatedContentCassandraHelper.TYPE,
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+				AnnotatedContentCassandraHelper.COLUMN_FAMILY);
 
 		return new Content<>(value, type);
 	}
@@ -86,12 +86,12 @@ public class AnnotatedContenCassandraDAO extends CassandraDAO {
 		super.updateColumn(selector.getProperty(SelectorHelper.URI),
 				AnnotatedContentCassandraHelper.CONTENT,
 				annotatedContent.getContent(),
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+				AnnotatedContentCassandraHelper.COLUMN_FAMILY);
 		
 		super.updateColumn(selector.getProperty(SelectorHelper.URI),
 				AnnotatedContentCassandraHelper.TYPE,
 				annotatedContent.getType(),
-				AnnotatedContentCassandraHelper.COLUMN_FAMILLY);
+				AnnotatedContentCassandraHelper.COLUMN_FAMILY);
 		
 	}
 

@@ -30,7 +30,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 	}
 
@@ -43,7 +43,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
 		super.createRow(wikidataView.getURI(),
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
 		// Relations mapping
 		for (Entry<String, Map<String, Set<String>>> relationsEntry : wikidataView
 				.getRelations().entrySet()) {
@@ -81,7 +81,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 			+ pairsOfNameValues.size());
 
 		super.updateManyColumns(wikidataView.getURI(), pairsOfNameValues,
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
 		System.out.println("Clear!!!");
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
@@ -164,7 +164,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	public Resource read(String URI) {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, WikidataViewCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 		if (columnsIterator.hasNext()) {
 
@@ -331,7 +331,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 		String content = super.readColumn(
 				selector.getProperty(SelectorHelper.URI), URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		return (content != null && content.length() > 5);
 	}

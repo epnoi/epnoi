@@ -12,7 +12,7 @@ public class ContentCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, ContentCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, ContentCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class ContentCassandraDAO extends CassandraDAO {
 		String value = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				ContentCassandraHelper.CONTENT,
-				ContentCassandraHelper.COLUMN_FAMILLY);
+				ContentCassandraHelper.COLUMN_FAMILY);
 
 		return new Content<>(value, ContentHelper.CONTENT_TYPE_TEXT_PLAIN);
 	}
@@ -66,7 +66,7 @@ public class ContentCassandraDAO extends CassandraDAO {
 
 		super.updateColumn(selector.getProperty(SelectorHelper.URI),
 				ContentCassandraHelper.CONTENT, content.getContent(),
-				ContentCassandraHelper.COLUMN_FAMILLY);
+				ContentCassandraHelper.COLUMN_FAMILY);
 		
 		
 	}

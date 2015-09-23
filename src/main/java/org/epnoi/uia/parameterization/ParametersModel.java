@@ -157,19 +157,17 @@ public class ParametersModel {
 			ArrayList<MapInformationStoreParameters> mapInformationStores) {
 		this.mapInformationStores = mapInformationStores;
 	}
+	
+	// ---------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
 		return "ParametersModel [hostname=" + hostname + ", port=" + port + ", path=" + path + ", nlp=" + nlp
 				+ ", knowledgeBase=" + knowledgeBase + ", virtuosoInformationStores=" + virtuosoInformationStores
 				+ ", solrInformationStores=" + solrInformationStores + ", cassandraInformationStores="
-				+ cassandraInformationStores + ", mapInformationStores=" + mapInformationStores + "]";
+				+ cassandraInformationStores + ", mapInformationStores=" + mapInformationStores + ", rssHoarder="
+				+ rssHoarder + ", rssHarvester=" + rssHarvester + "]";
 	}
-	
-	
 
 	// ---------------------------------------------------------------------------------
-	
-	
-
 }

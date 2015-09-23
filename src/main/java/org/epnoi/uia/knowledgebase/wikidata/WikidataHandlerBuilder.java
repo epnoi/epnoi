@@ -36,6 +36,7 @@ public class WikidataHandlerBuilder {
 	private String wikidataViewURI;
 	private DumpProcessingController dumpProcessingController;
 	private WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();
+	
 	private Map<String, Set<String>> labelsDictionary = new HashMap<>();
 
 	private Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
@@ -90,6 +91,7 @@ public class WikidataHandlerBuilder {
 			// (the WikidataView) from the UIA
 			logger.info("Retrieving the  WikidataView, since the retrieve flag was activated");
 			try {
+				
 				wikidataView = (WikidataView) this.core.getInformationHandler().get(this.wikidataViewURI,
 						RDFHelper.WIKIDATA_VIEW_CLASS);
 				logger.info(

@@ -33,15 +33,15 @@ public class CassandraInformationStore implements InformationStore {
 	public static final Map<String, String> typesTable = new HashMap<>();
 	static {
 		typesTable.put(RDFHelper.PAPER_CLASS,
-				PaperCassandraHelper.COLUMN_FAMILLY);
+				PaperCassandraHelper.COLUMN_FAMILY);
 		typesTable.put(FeedRDFHelper.FEED_CLASS,
-				FeedCassandraHelper.COLUMN_FAMILLY);
+				FeedCassandraHelper.COLUMN_FAMILY);
 		typesTable.put(FeedRDFHelper.ITEM_CLASS,
-				ItemCassandraHelper.COLUMN_FAMILLY);
+				ItemCassandraHelper.COLUMN_FAMILY);
 		typesTable.put(RDFHelper.WIKIPEDIA_PAGE_CLASS,
-				WikipediaPageCassandraHelper.COLUMN_FAMILLY);
+				WikipediaPageCassandraHelper.COLUMN_FAMILY);
 		typesTable.put(RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// ---------------------------------------------------------------------

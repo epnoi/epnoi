@@ -19,7 +19,7 @@ public class DomainCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, DomainCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, DomainCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -28,19 +28,19 @@ public class DomainCassandraDAO extends CassandraDAO {
 System.out.println("DOMAIN "+resource);
 		Domain domain = (Domain) resource;
 
-		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.LABEL,
-				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILLY);
+				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
-				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILLY);
+				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILY);
 
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.TYPE,
-				domain.getType(), DomainCassandraHelper.COLUMN_FAMILLY);
+				domain.getType(), DomainCassandraHelper.COLUMN_FAMILY);
 		
 		super.updateColumn(domain.getURI(), DomainCassandraHelper.RESOURCES,
-				domain.getResources(), DomainCassandraHelper.COLUMN_FAMILLY);
+				domain.getResources(), DomainCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ System.out.println("DOMAIN "+resource);
 	public Resource read(String URI) {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, DomainCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, DomainCassandraHelper.COLUMN_FAMILY);
 
 		if (columnsIterator.hasNext()) {
 			Domain domain = new Domain();
@@ -149,6 +149,6 @@ System.out.println("DOMAIN "+resource);
 	@Override
 	public boolean exists(Selector selector) {
 		return (super.getAllCollumns(selector.getProperty(SelectorHelper.URI),
-				DomainCassandraHelper.COLUMN_FAMILLY).hasNext());
+				DomainCassandraHelper.COLUMN_FAMILY).hasNext());
 	}
 }

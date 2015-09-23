@@ -66,7 +66,7 @@ public class CassandraDAOFactory {
 			relationsTableDAO.init();
 			return relationsTableDAO;
 		} else if (resource instanceof WikidataView) {
-			WikidataViewCassandraDAO wikidataViewDAO = new WikidataViewCassandraDAO();
+			NewWikidataViewCassandraDAO wikidataViewDAO = new NewWikidataViewCassandraDAO();
 			wikidataViewDAO.init();
 			return wikidataViewDAO;
 		}

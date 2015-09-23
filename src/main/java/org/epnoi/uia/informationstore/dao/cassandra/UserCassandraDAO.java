@@ -17,33 +17,33 @@ import org.epnoi.uia.informationstore.Selector;
 public class UserCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
-		super.deleteRow(URI, UserCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, UserCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		
 		User user = (User) resource;
-		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILY);
 
 		if (user.getName() != null) {
 
 			super.updateColumn(user.getURI(), UserCassandraHelper.NAME,
-					user.getName(), UserCassandraHelper.COLUMN_FAMILLY);
+					user.getName(), UserCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		if (user.getPassword() != null) {
 			super.updateColumn(user.getURI(), UserCassandraHelper.PASSWORD,
-					user.getPassword(), UserCassandraHelper.COLUMN_FAMILLY);
+					user.getPassword(), UserCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		for (String searchURI : user.getSearchs()) {
 			super.updateColumn(user.getURI(), searchURI,
 					UserCassandraHelper.SEARCHS,
-					UserCassandraHelper.COLUMN_FAMILLY);
+					UserCassandraHelper.COLUMN_FAMILY);
 		}
 
 	}
@@ -60,26 +60,16 @@ public class UserCassandraDAO extends CassandraDAO {
 	public Resource read(String URI) {
 		
 		
-		/*
-		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
-		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
-		 * ExternalResourceCassandraHelper.COLUMN_FAMILLY);
-		 * 
-		 * while (columnsIteratorProof.hasNext()) { HColumn<String, String>
-		 * column = columnsIteratorProof.next(); System.out.println("Column   "
-		 * + column); }
-		 */
-		
-		//System.out.println("!!------> "+URI);
+	
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			User user = new User();
 			user.setURI(URI);
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
-				//System.out.println("--column " + column);
+		
 				if (UserCassandraHelper.NAME.equals(column.getName())) {
 					user.setName(column.getValue());
 
@@ -107,7 +97,7 @@ public class UserCassandraDAO extends CassandraDAO {
 	public void update(User externalResource) {
 		super.updateColumn(externalResource.getURI(), UserCassandraHelper.NAME,
 				externalResource.getDescription(),
-				UserCassandraHelper.COLUMN_FAMILLY);
+				UserCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -134,7 +124,7 @@ public class UserCassandraDAO extends CassandraDAO {
 	public List<User> getUsers() {
 		List<User> users = new ArrayList<User>();
 		List<Row<String, String, String>> result = (CassandraQueryResolver
-				.query("select * from " + UserCassandraHelper.COLUMN_FAMILLY));
+				.query("select * from " + UserCassandraHelper.COLUMN_FAMILY));
 
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
@@ -176,30 +166,7 @@ public class UserCassandraDAO extends CassandraDAO {
 					.getUserWithName("RafitaELOtro");
 			userCassandraDAO.remove(userToDelete.getURI());
 		}
-/*
-		User user = new User();
-		user.setURI("http://useruri");
-		user.setName("Rafita");
-		user.setPassword("PasswordDeRafita");
-		user.addSearch("searchA");
-		user.addSearch("searchB");
 
-		User userElOtro = new User();
-		userElOtro.setURI("http://useruri2");
-		userElOtro.setName("RafitaElOtro");
-		userElOtro.setPassword("PasswordDeRafita");
-		userElOtro.addSearch("searchC");
-		userElOtro.addSearch("searchD");
-
-		externalResourceCassandraDAO.create(externalResource);
-		userCassandraDAO.create(user);
-		userCassandraDAO.create(userElOtro);
-
-		ExternalResource readedExternalResource = (ExternalResource) externalResourceCassandraDAO
-				.read("http://externalresourceuri");
-		System.out.println("readedExternalResource> " + readedExternalResource);
-		externalResourceCassandraDAO.delete("http://externalresourceuri");
-*/
 		User readUser = (User) userCassandraDAO.read("http://userSara");
 		System.out.println("readed user> " + readUser);
 

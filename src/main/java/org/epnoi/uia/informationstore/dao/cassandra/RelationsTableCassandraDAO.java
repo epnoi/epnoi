@@ -23,7 +23,7 @@ import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 public class RelationsTableCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
-		super.deleteRow(URI, RelationsTableCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, RelationsTableCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		
 		RelationsTable relationsTable = (RelationsTable) resource;
 		super.createRow(relationsTable.getURI(),
-				RelationsTableCassandraHelper.COLUMN_FAMILLY);
+				RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 		for (Relation relation : relationsTable.getRelations()) {
 
@@ -42,7 +42,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(relationsTable.getURI(),
-						RelationsTableCassandraHelper.COLUMN_FAMILLY);
+						RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 
 	}
@@ -59,7 +59,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI,
-						RelationsTableCassandraHelper.COLUMN_FAMILLY);
+						RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 	
 		if (columnsIterator.hasNext()) {
@@ -90,7 +90,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		relation.setURI(URI);
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, RelationCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, RelationCassandraHelper.COLUMN_FAMILY);
 
 		while (columnsIterator.hasNext()) {
 
@@ -131,7 +131,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 	public void update(Search search) {
 		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
-				search.getDescription(), UserCassandraHelper.COLUMN_FAMILLY);
+				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -139,7 +139,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	private void _createRelation(String relationsTableURI, Relation relation) {
 
 		super.createRow(relation.getURI(),
-				RelationCassandraHelper.COLUMN_FAMILLY);
+				RelationCassandraHelper.COLUMN_FAMILY);
 
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
@@ -159,12 +159,12 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		}
 		
 		super.updateColumns(relation.getURI(), pairsOfNameValues,
-				RelationCassandraHelper.COLUMN_FAMILLY);
+				RelationCassandraHelper.COLUMN_FAMILY);
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 		super.updateColumn(relationsTableURI, relation.getURI(),
 				RelationsTableCassandraHelper.RELATIONS,
-				RelationsTableCassandraHelper.COLUMN_FAMILLY);
+				RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 	}
 
