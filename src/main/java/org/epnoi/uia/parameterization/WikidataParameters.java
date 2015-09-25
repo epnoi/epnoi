@@ -7,7 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class WikidataParameters {
 
 	private boolean considered;
+	private boolean inMemory;
+	
+
 	private String mode;
+	
 	private String dumpPath;
 	private String uri;
 	
@@ -58,6 +62,18 @@ public class WikidataParameters {
 
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+	
+	//-----------------------------------------------------------------
+	
+	public boolean isInMemory() {
+		return inMemory;
+	}
+	
+	//-----------------------------------------------------------------
+
+	public void setInMemory(boolean inMemory) {
+		this.inMemory = inMemory;
 	}
 	
 	//-----------------------------------------------------------------

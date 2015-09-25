@@ -23,7 +23,7 @@ public class WikidataViewCompressor {
 	private Set<String> validTargetIRIs = new HashSet<String>();
 
 	public WikidataView compress(WikidataView wikidataView) {
-		logger.info("Compressing: " + wikidataView);
+		//logger.info("Compressing: " + wikidataView);
 		this.URI = wikidataView.getURI();
 		this.labelsDictionary = wikidataView.getLabelsDictionary();
 		this.labelsReverseDictionary = wikidataView
@@ -36,7 +36,7 @@ public class WikidataViewCompressor {
 		WikidataView compressedWikidataView = new WikidataView(this.URI,
 				this.compressedDictionary,
 				this.compressedlabelsReverseDictionary, relations);
-		logger.info("Obtained: " + compressedWikidataView);
+		//logger.info("Obtained: " + compressedWikidataView);
 		return compressedWikidataView;
 	}
 

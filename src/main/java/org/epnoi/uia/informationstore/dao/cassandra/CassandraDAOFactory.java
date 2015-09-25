@@ -127,7 +127,7 @@ public class CassandraDAOFactory {
 			return relationsTableDAO;
 		} else if (typeSelector.equals(RDFHelper.WIKIDATA_VIEW_CLASS)) {
 
-			WikidataViewCassandraDAO wikidataViewDAO = new WikidataViewCassandraDAO();
+		WikidataViewCassandraDAO wikidataViewDAO = new WikidataViewCassandraDAO();
 			wikidataViewDAO.init();
 			return wikidataViewDAO;
 		} else {

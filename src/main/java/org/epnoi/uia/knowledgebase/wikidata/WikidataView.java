@@ -1,6 +1,7 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,7 +12,6 @@ import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 
-
 public class WikidataView implements Resource {
 	private String URI;
 	private Map<String, Set<String>> labelsDictionary;
@@ -21,8 +21,7 @@ public class WikidataView implements Resource {
 	// ------------------------------------------------------------------------------------------------------
 
 	public WikidataView(String URI, Map<String, Set<String>> labelsDictionary,
-			Map<String, Set<String>> labelsReverseDictionary,
-			Map<String, Map<String, Set<String>>> relations) {
+			Map<String, Set<String>> labelsReverseDictionary, Map<String, Map<String, Set<String>>> relations) {
 		super();
 		this.URI = URI;
 		this.labelsDictionary = labelsDictionary;
@@ -70,8 +69,7 @@ public class WikidataView implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------
 
-	public void setLabelsReverseDictionary(
-			Map<String, Set<String>> labelsReverseDictionary) {
+	public void setLabelsReverseDictionary(Map<String, Set<String>> labelsReverseDictionary) {
 		this.labelsReverseDictionary = labelsReverseDictionary;
 	}
 
@@ -89,56 +87,78 @@ public class WikidataView implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------
 
-	@Override
-	public String toString() {
-		return "WikidataView [URI=" + URI + ", labelsDictionary="
-				+ labelsDictionary.size() + ", labelsReverseDictionary="
-				+ labelsReverseDictionary.size() + ", relations="
-				+ relations.get(RelationHelper.HYPERNYM).size() + "]";
-	}
-
 	// ------------------------------------------------------------------------------------------------------
 
 	public void count() {
-		System.out.println("Initially we had "
-				+ this.relations.get(RelationHelper.HYPERNYM).size()
-				+ " hypernymy relations");
+		System.out.println(
+				"Initially we had " + this.relations.get(RelationHelper.HYPERNYM).size() + " hypernymy relations");
 		int relationsCount = 0;
-		for (String originURI : this.relations.get(RelationHelper.HYPERNYM)
-				.keySet()) {
-			for (String destinationURI : this.relations.get(
-					RelationHelper.HYPERNYM).get(originURI)) {
+		for (String originURI : this.relations.get(RelationHelper.HYPERNYM).keySet()) {
+			for (String destinationURI : this.relations.get(RelationHelper.HYPERNYM).get(originURI)) {
 				if (this.labelsReverseDictionary.containsKey(originURI)
-						&& this.labelsReverseDictionary
-								.containsKey(destinationURI)) {
-				
-					relationsCount++;				
+						&& this.labelsReverseDictionary.containsKey(destinationURI)) {
+
+					relationsCount++;
 				}
 			}
 		}
 		System.out.println("There were " + relationsCount);
 	}
-	
 	// ------------------------------------------------------------------------------------------------------
 
-	
-	
-	
-	
-	// ------------------------------------------------------------------------------------------------------
+	@Override
+	public String toString() {
+		return "WikidataView [URI=" + URI + ", labelsDictionary=" + labelsDictionary + ", labelsReverseDictionary="
+				+ labelsReverseDictionary + ", relations=" + relations + "]";
+	}
+
+	public Set<String> getRelated(String sourceLabel, String type) {
+
+		Set<String> targetLabels = new HashSet<String>();
+
+		Map<String, Set<String>> consideredRelations = this.relations.get(type);
+
+		// Firstly we retrieve the IRIs
+		Set<String> sourceIRIs = this.labelsDictionary.get(sourceLabel);
+		//System.out.println("Inital sourceIRIs obtained from the label" + sourceIRIs);
+		if (sourceIRIs != null) {
+
+			for (String sourceIRI : sourceIRIs) {
+				// System.out.println("sourceIRI " + sourceIRI);
+				Set<String> targetIRIs = consideredRelations.get(sourceIRI);
+				// System.out.println(" ("+sourceIRI+") targetIRIs " +
+				// targetIRIs);
+				if (targetIRIs != null) {
+					for (String targetIRI : targetIRIs) {
+					//	System.out.println(" trying > " + targetIRI);
+						// System.out.println("->
+						// "+this.getLabelsReverseDictionary().get(targetIRI).size());
+						if (targetIRI != null) {
+							if (this.labelsReverseDictionary.get(targetIRI) != null) {
+							//	System.out.println("reverseDict " + this.labelsReverseDictionary);
+								for (String destinationTarget : this.labelsReverseDictionary.get(targetIRI)) {
+								//	System.out.println("Destination target " + destinationTarget);
+									targetLabels.add(destinationTarget);
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+		return targetLabels;
+	}
 
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
-		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				WikidataHandlerParameters.DEFAULT_URI);
+		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI, WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
-		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE,
-				DumpProcessingMode.JSON);
+		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
 		parameters.setParameter(WikidataHandlerParameters.TIMEOUT, 100);
-		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
-				"/opt/epnoi/epnoideployment/wikidata");
+		parameters.setParameter(WikidataHandlerParameters.DUMP_PATH, "/opt/epnoi/epnoideployment/wikidata");
 
 		WikidataViewCreator wikidataViewCreator = new WikidataViewCreator();
 		try {
@@ -147,15 +167,14 @@ public class WikidataView implements Resource {
 
 			e.printStackTrace();
 		}
-		long currentTime=System.currentTimeMillis();
-	
-		WikidataView wikidataView = wikidataViewCreator
-				.retrieve(WikidataHandlerParameters.DEFAULT_URI);
-	
-		System.out.println("It took "+(System.currentTimeMillis()-currentTime)+" to retrieve the wikidata view");
-		
-		currentTime=System.currentTimeMillis();
+		long currentTime = System.currentTimeMillis();
+
+		WikidataView wikidataView = wikidataViewCreator.retrieve(WikidataHandlerParameters.DEFAULT_URI);
+
+		System.out.println("It took " + (System.currentTimeMillis() - currentTime) + " to retrieve the wikidata view");
+
+		currentTime = System.currentTimeMillis();
 		wikidataView.count();
-		System.out.println("It took "+(System.currentTimeMillis()-currentTime)+" to clean the wikidata view");
+		System.out.println("It took " + (System.currentTimeMillis() - currentTime) + " to clean the wikidata view");
 	}
 }

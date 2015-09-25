@@ -49,9 +49,6 @@ public class KnowledgeBaseParameters {
 
 	// ---------------------------------------------------------------------------------
 
-	
-	// ---------------------------------------------------------------------------------
-
 	public static void main(String[] args) {
 		System.out.println("testing!");
 		Core core = CoreUtility.getUIACore();
@@ -59,6 +56,8 @@ public class KnowledgeBaseParameters {
 		
 	}
 
+	// ---------------------------------------------------------------------------------
+	
 	@Override
 	public String toString() {
 		return "KnowledgeBaseParameters [wordnet=" + wordnet + ", wikidata=" + wikidata + ", lazy=" + lazy + "]";

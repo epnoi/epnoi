@@ -21,7 +21,7 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
-	public void init(Core core) throws EpnoiInitializationException{
+	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
 		this.knowledgeBaseParameters = new KnowledgeBaseParameters();
 		String wordnetDictionaryfilepath = this.core.getParameters().getKnowledgeBase().getWordnet()
@@ -38,10 +38,9 @@ public class KnowledgeBaseHandler {
 
 		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.LAZY,
 				this.core.getParameters().getKnowledgeBase().isLazy());
-	
 
 		String mode = core.getParameters().getKnowledgeBase().getWikidata().getMode();
-		
+
 		if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_CREATE.equals(mode)) {
 
 			wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, true);
@@ -58,6 +57,8 @@ public class KnowledgeBaseHandler {
 				this.core.getParameters().getKnowledgeBase().getWikidata().getDumpPath());
 		wikidataParameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
 				this.core.getParameters().getKnowledgeBase().getWikidata().getUri());
+		wikidataParameters.setParameter(WikidataHandlerParameters.IN_MEMORY,
+				this.core.getParameters().getKnowledgeBase().getWikidata().isInMemory());
 		wikidataParameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
 		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
@@ -76,7 +77,7 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
-	private void _initializeKnowledgeBase(Core core) throws EpnoiInitializationException  {
+	private void _initializeKnowledgeBase(Core core) throws EpnoiInitializationException {
 
 		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
@@ -88,8 +89,7 @@ public class KnowledgeBaseHandler {
 			throw new EpnoiInitializationException(e.getMessage());
 
 		}
-		
-		
+
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -97,10 +97,9 @@ public class KnowledgeBaseHandler {
 	public synchronized KnowledgeBase getKnowledgeBase() throws EpnoiInitializationException {
 
 		if (!initialized) {
-		
+
 			_initializeKnowledgeBase(this.core);
-		
-		
+
 		}
 		return this.knowledgeBase;
 	}

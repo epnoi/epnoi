@@ -32,7 +32,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
 		super.deleteRow(URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 	}
 
@@ -45,7 +45,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
 		super.createRow(relationalSentencesCorpus.getURI(),
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		pairsOfNameValues.put(
 				RelationalSentencesCorpusCassandraHelper.DESCRIPTION,
@@ -65,7 +65,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		super.updateColumns(relationalSentencesCorpus.getURI(),
 				pairsOfNameValues,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -153,7 +153,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI,
-						RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+						RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		if (columnsIterator.hasNext()) {
 			RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
@@ -359,7 +359,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		String content = super.readColumn(
 				selector.getProperty(SelectorHelper.URI), URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		return (content != null && content.length() > 5);
 	}
