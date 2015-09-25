@@ -39,7 +39,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		System.out.println("REMOVE > "+URI);
+		
 		_defineURIs(URI);
 		super.deleteRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
 		super.deleteRow(this.dictionaryURI,
@@ -54,7 +54,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-		System.out.println("Creating " + resource);
+	
 		WikidataView wikidataView = (WikidataView) resource;
 
 		_defineURIs(wikidataView.getURI());
@@ -105,7 +105,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 			}
 
-			super.updateManyColumns(this.relationsURI + relationType,
+			super.updateManyColumns(this.relationsURI +"/" +relationType,
 					pairsOfNameValues,
 					WikidataViewCassandraHelper.COLUMN_FAMILY);
 		}
@@ -144,10 +144,11 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 			String labelAsociatedIRIs = joiner.join(labelDictionaryEntry
 					.getValue());
+		/*
 			String labelIRI = wikidataView.getURI() + "/labels/"
 					+ labelDictionaryEntry.getKey();
-
-			pairsOfNameValues.put(labelIRI, labelAsociatedIRIs);
+*/
+			pairsOfNameValues.put(labelDictionaryEntry.getKey(), labelAsociatedIRIs);
 		}
 
 		super.updateManyColumns(this.dictionaryURI, pairsOfNameValues,
@@ -161,14 +162,14 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(Selector selector) {
-		System.out.println("Reading selector >> " + selector);
+		//System.out.println("Reading selector >> " + selector);
 		return null;
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		System.out.println("Reading URI >> " + URI);
+		//System.out.println("Reading URI >> " + URI);
 		WikidataView wikidataView = null;
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.URI, URI);
@@ -179,7 +180,8 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 			Map<String, Set<String>> labelsReverseDictionary = _retrieveMap(this.reverseDictionaryURI);
 
 			Map<String, Map<String, Set<String>>> relations = new HashMap<>();
-			Map<String, Set<String>> hypernymRelations = _retrieveMap(this.reverseDictionaryURI);
+			Map<String, Set<String>> hypernymRelations = _retrieveMap(this.relationsURI+"/"+RelationHelper.HYPERNYM);
+			
 			relations.put(RelationHelper.HYPERNYM, hypernymRelations);
 
 			wikidataView = new WikidataView(URI, labelsDictionary,
@@ -187,6 +189,8 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 			return wikidataView;
 		}
+			
+		
 		return wikidataView;
 	}
 
@@ -216,6 +220,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 			dictionary.put(IRI, splittedValues);
 
 		}
+	//	System.out.println("["+URI+"] Dictionary "+dictionary);
 		return dictionary;
 
 	}
@@ -225,7 +230,10 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	@Override
 	public boolean exists(Selector selector) {
 		String URI = selector.getProperties().get(SelectorHelper.URI);
-		return (super.readRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILY).hasNext());
+		_defineURIs(URI);
+		
+	//	System.out.println(URI+"----> "+super.readRow(URI+"", WikidataViewCassandraHelper.COLUMN_FAMILY).hasResults());
+		return (super.readRow(this.dictionaryURI, WikidataViewCassandraHelper.COLUMN_FAMILY).hasResults());
 	}
 
 	// --------------------------------------------------------------------------------
@@ -278,16 +286,21 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		core.getInformationHandler().put(wikidataView,
 				Context.getEmptyContext());
 
-		System.out.println("Wikidataview  "
-				+ core.getInformationHandler().get(
-						WikidataHandlerParameters.DEFAULT_URI,
-						RDFHelper.WIKIDATA_VIEW_CLASS));
+		WikidataView readedWikidataview = (WikidataView)core.getInformationHandler().get(
+				WikidataHandlerParameters.DEFAULT_URI,
+				RDFHelper.WIKIDATA_VIEW_CLASS);
+		System.out.println("The readed Wikidataview>  "
+				+readedWikidataview );
 
 		System.out.println("test label assoicated uris"
-				+ wikidataView
+				+ readedWikidataview
 						.getRelated("source label", RelationHelper.HYPERNYM));
+		
+		System.out.println("There are "+readedWikidataview
+						.getRelated("source label", RelationHelper.HYPERNYM).size() );
+		
 		System.out.println("test label 3 assoicated uris"
-				+ wikidataView.getRelated("test label 3",
+				+ readedWikidataview.getRelated("test label 3",
 						RelationHelper.HYPERNYM));
 
 		System.out.println("Let's delete it !");
@@ -320,7 +333,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		
 		Set<String> labelDictionary = new HashSet<String>();
 		labelDictionary.add("http://testTargetA");
-		labelDictionary.add("http://testTargetB");
+	
 		labelsDictionary.put("target label", labelDictionary);
 		labelsDictionary.put("source label", new HashSet<String>(Arrays.asList("http://testSource")));
 		
@@ -329,7 +342,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		
 		labelsReverseDictionary.put("http://testTargetA", new HashSet<String>(Arrays.asList("target label")));
 		
-		labelsReverseDictionary.put("http://testTargetB", new HashSet<String>());
+	
 
 		WikidataView wikidataView = new WikidataView(
 				WikidataHandlerParameters.DEFAULT_URI, labelsDictionary,

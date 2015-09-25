@@ -1,7 +1,5 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class WikidataHandlerInMemoryImpl implements WikidataHandler {
@@ -19,13 +17,12 @@ public class WikidataHandlerInMemoryImpl implements WikidataHandler {
 	}
 
 	// --------------------------------------------------------------------------------------------------
+	
 	@Override
 	public String toString() {
 		return "WikidataHandlerInMemoryImpl [wikidataView=" + wikidataView
 				+ "]";
 	}
-
-
 	// --------------------------------------------------------------------------------------------------
 	@Override
 	public String stem(String term) {
@@ -38,8 +35,6 @@ public class WikidataHandlerInMemoryImpl implements WikidataHandler {
 	public Set<String> getRelated(String source, String type) {
 		return this.wikidataView.getRelated(source, type);
 	}
-
-	
 
 	// --------------------------------------------------------------------------------------------------
 

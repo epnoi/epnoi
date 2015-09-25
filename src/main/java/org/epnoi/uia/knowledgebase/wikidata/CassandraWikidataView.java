@@ -27,8 +27,9 @@ public class CassandraWikidataView {
 	// ------------------------------------------------------------------------------------------------------
 
 	public CassandraWikidataView(Core core, String URI) {
-		
+		this.core=core;
 		this.URI = URI;
+		
 		this.cassandraInformationStore =(CassandraInformationStore) this.core
 				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 	this.dictionaryURI=this.URI+"/dictionary";
@@ -54,7 +55,7 @@ public class CassandraWikidataView {
 
 		// Firstly we retrieve the IRIs of the source label
 		Set<String> sourceIRIs = this.getIRIsOfLabel(sourceLabel);
-		System.out.println("Inital sourceIRIs obtained from the label" +sourceIRIs);
+	//	System.out.println("Inital sourceIRIs obtained from the label" +sourceIRIs);
 		if (sourceIRIs != null) {
 
 			for (String sourceIRI : sourceIRIs) {
@@ -83,32 +84,7 @@ public class CassandraWikidataView {
 		return targetLabels;
 	}
 
-/*
-	@Override
-	public String toString() {
-		return "WikidataView [URI=" + URI + ", labelsDictionary=" + labelsDictionary.size()
-				+ ", labelsReverseDictionary=" + labelsReverseDictionary.size() + ", relations="
-				+ relations.get(RelationHelper.HYPERNYM).size() + "]";
-	}
-*/
-	// ------------------------------------------------------------------------------------------------------
-/*
-	public void count() {
-		System.out.println(
-				"Initially we had " + this.relations.get(RelationHelper.HYPERNYM).size() + " hypernymy relations");
-		int relationsCount = 0;
-		for (String originURI : this.relations.get(RelationHelper.HYPERNYM).keySet()) {
-			for (String destinationURI : this.relations.get(RelationHelper.HYPERNYM).get(originURI)) {
-				if (this.labelsReverseDictionary.containsKey(originURI)
-						&& this.labelsReverseDictionary.containsKey(destinationURI)) {
 
-					relationsCount++;
-				}
-			}
-		}
-		System.out.println("There were " + relationsCount);
-	}
-*/
 	// ------------------------------------------------------------------------------------------------------
 
 	// ------------------------------------------------------------------------------------------------------
@@ -153,11 +129,9 @@ public class CassandraWikidataView {
 	 */
 	public Set<String> getIRIsOfLabel(String label) {
 		// TODO Auto-generated method stub
-
-		CassandraInformationStore cassandraInformationStore = (CassandraInformationStore) this.core
-				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-		String labelIRI = this.URI + "/labels#" + label;
-		return cassandraInformationStore.getQueryResolver().getValues(this.dictionaryURI,labelIRI,
+		
+		//String labelIRI = this.URI + "/labels#" + label;
+		return cassandraInformationStore.getQueryResolver().getValues(this.dictionaryURI,label,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 		// cassandraInformationStore.qu
@@ -173,7 +147,7 @@ public class CassandraWikidataView {
 	 */
 	public Set<String> getIRIRelatedIRIs(String type, String sourceIRI) {
 		
-		return cassandraInformationStore.getQueryResolver().getValues(this.relationsURI+type,sourceIRI,
+		return cassandraInformationStore.getQueryResolver().getValues(this.relationsURI+"/"+type,sourceIRI,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 	}
 

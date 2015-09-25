@@ -45,6 +45,9 @@ public class WikidataHandlerParameters extends Parameters<Object> {
 	public static final String CREATE_WIKIDATA_VIEW = "CREATE_WIKIDATA_VIEW";
 	
 	public static final String STORE_WIKIDATA_VIEW = "STORE_WIKIDATA_VIEW";
+	
+	public static final String IN_MEMORY = "IN_MEMORY";
+
 
 	// public static final int TIMEOUT_SEC = 10;
 
