@@ -3,6 +3,7 @@ package org.epnoi.uia.knowledgebase;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerBuilder;
@@ -23,56 +24,63 @@ public class KnowledgeBaseHandler {
 
 	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
-		this.knowledgeBaseParameters = new KnowledgeBaseParameters();
-		String wordnetDictionaryfilepath = this.core.getParameters().getKnowledgeBase().getWordnet()
-				.getDictionaryPath();
-		WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
+		if (core.getParameters().getKnowledgeBase() != null) {
 
-		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
-		wordnetParameters.setParameter(WordNetHandlerParameters.DICTIONARY_LOCATION, wordnetDictionaryfilepath);
+			
+			this.knowledgeBaseParameters = new KnowledgeBaseParameters();
+			String wordnetDictionaryfilepath = this.core.getParameters().getKnowledgeBase().getWordnet()
+					.getDictionaryPath();
+			WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
 
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WIKIDATA,
-				this.core.getParameters().getKnowledgeBase().getWikidata().isConsidered());
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WORDNET,
-				this.core.getParameters().getKnowledgeBase().getWordnet().isConsidered());
+			WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
+			wordnetParameters.setParameter(WordNetHandlerParameters.DICTIONARY_LOCATION, wordnetDictionaryfilepath);
 
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.LAZY,
-				this.core.getParameters().getKnowledgeBase().isLazy());
+			knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WIKIDATA,
+					this.core.getParameters().getKnowledgeBase().getWikidata().isConsidered());
+			knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.CONSIDER_WORDNET,
+					this.core.getParameters().getKnowledgeBase().getWordnet().isConsidered());
 
-		String mode = core.getParameters().getKnowledgeBase().getWikidata().getMode();
+			knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.LAZY,
+					this.core.getParameters().getKnowledgeBase().isLazy());
 
-		if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_CREATE.equals(mode)) {
+			String mode = core.getParameters().getKnowledgeBase().getWikidata().getMode();
 
-			wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, true);
-			wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
+			if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_CREATE.equals(mode)) {
 
+				wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, true);
+				wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
+
+			}
+			if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_LOAD.equals(mode)) {
+
+				wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, false);
+				wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
+
+			}
+			wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
+					this.core.getParameters().getKnowledgeBase().getWikidata().getDumpPath());
+			wikidataParameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
+					this.core.getParameters().getKnowledgeBase().getWikidata().getUri());
+			wikidataParameters.setParameter(WikidataHandlerParameters.IN_MEMORY,
+					this.core.getParameters().getKnowledgeBase().getWikidata().isInMemory());
+			wikidataParameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
+			wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
+			wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
+			wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 0);
+
+			knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
+
+			knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS, wikidataParameters);
+			// In case that the knowledge base is not initialized in a lazy
+			// fashion
+			// we initialize it
+			if (!this.core.getParameters().getKnowledgeBase().isLazy()) {
+				_initializeKnowledgeBase(core);
+			}
+		} else {
+			logger.severe(
+					"The Knowledge Base was not initialized since there is no knowledge base element defined in the uia configuration file");
 		}
-		if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_LOAD.equals(mode)) {
-
-			wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, false);
-			wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-
-		}
-		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
-				this.core.getParameters().getKnowledgeBase().getWikidata().getDumpPath());
-		wikidataParameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				this.core.getParameters().getKnowledgeBase().getWikidata().getUri());
-		wikidataParameters.setParameter(WikidataHandlerParameters.IN_MEMORY,
-				this.core.getParameters().getKnowledgeBase().getWikidata().isInMemory());
-		wikidataParameters.setParameter(WikidataHandlerParameters.STORE_WIKIDATA_VIEW, true);
-		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
-		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 0);
-
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
-
-		knowledgeBaseParameters.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS, wikidataParameters);
-		// In case that the knowledge base is not initialized in a lazy fashion
-		// we initialize it
-		if (!this.core.getParameters().getKnowledgeBase().isLazy()) {
-			_initializeKnowledgeBase(core);
-		}
-
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -94,8 +102,12 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
-	public synchronized KnowledgeBase getKnowledgeBase() throws EpnoiInitializationException {
-
+	public synchronized KnowledgeBase getKnowledgeBase()
+			throws EpnoiInitializationException, EpnoiResourceAccessException {
+		if (core.getParameters().getKnowledgeBase() == null) {
+			throw new EpnoiInitializationException(
+					"Error accessing the the Knowledge Base, since it was not initialized as there is no knowledge base element defined in the uia configuration file");
+		}
 		if (!initialized) {
 
 			_initializeKnowledgeBase(this.core);

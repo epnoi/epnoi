@@ -1,11 +1,5 @@
 package org.epnoi.uia.learner.relations;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-import gate.DocumentContent;
-import gate.util.InvalidOffsetException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +27,12 @@ import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern
 import org.epnoi.uia.learner.terms.TermCandidateBuilder;
 import org.epnoi.uia.learner.terms.TermsTable;
 import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
+
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
+import gate.DocumentContent;
+import gate.util.InvalidOffsetException;
 
 public class RelationsExtractor {
 	private static final Logger logger = Logger
@@ -74,8 +74,13 @@ public class RelationsExtractor {
 		// We retrieve the knowledge base just in case that it must be
 		// considered when searching for relations
 		if (considerKnowledgeBase) {
-			this.knowledgeBase = core.getKnowledgeBaseHandler()
-					.getKnowledgeBase();
+			try {
+				this.knowledgeBase = core.getKnowledgeBaseHandler()
+						.getKnowledgeBase();
+			} catch (EpnoiResourceAccessException e) {
+				// TODO Auto-generated catch block
+				throw new EpnoiInitializationException(e.getMessage());
+			}
 		}
 
 		try {

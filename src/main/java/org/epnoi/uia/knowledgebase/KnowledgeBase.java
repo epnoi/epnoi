@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
@@ -168,17 +169,22 @@ public class KnowledgeBase {
 	public static void main(String[] args) {
 
 		Core core = CoreUtility.getUIACore();
-		
-		  try { KnowledgeBase knowledgeBase =
-		  core.getKnowledgeBaseHandler().getKnowledgeBase();
-		  System.out.println("100> " + knowledgeBase.getWikidataHandler()
-		  .getRelated(knowledgeBase.getWikidataHandler().stem("madrid"),
-		  RelationHelper.HYPERNYM)); } catch (EpnoiInitializationException e) {
-			  
-		  
-e.printStackTrace(); 
-}
-		 /* 
+
+		try {
+			KnowledgeBase knowledgeBase=null;
+			try {
+				knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
+			} catch (EpnoiResourceAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("100> " + knowledgeBase.getWikidataHandler()
+					.getRelated(knowledgeBase.getWikidataHandler().stem("madrid"), RelationHelper.HYPERNYM));
+		} catch (EpnoiInitializationException e) {
+
+			e.printStackTrace();
+		}
+		/*
 		 * 
 		 * CassandraInformationStore cis = ((CassandraInformationStore) core
 		 * .getInformationStoresByType(InformationStoreHelper.
@@ -186,17 +192,20 @@ e.printStackTrace();
 		 * "http://www.epnoi.org/wikidataView/relations/"+RelationHelper.
 		 * HYPERNYM, "WikidataViewCorpus", "Q2807");
 		 */
-/*
-		CassandraInformationStore cis = ((CassandraInformationStore) core
-				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0));
-
-		System.out.println(cis.getQueryResolver().getValues(
-				"http://www.epnoi.org/wikidataView/relations/" + RelationHelper.HYPERNYM, "Q2807",
-				WikidataViewCassandraHelper.COLUMN_FAMILY));
-		System.out.println(cis.getQueryResolver().getValues("http://www.epnoi.org/wikidataView/reverseDictionary",
-				"Q2807", 	WikidataViewCassandraHelper.COLUMN_FAMILY));
-	
-	*/
+		/*
+		 * CassandraInformationStore cis = ((CassandraInformationStore) core
+		 * .getInformationStoresByType(InformationStoreHelper.
+		 * CASSANDRA_INFORMATION_STORE).get(0));
+		 * 
+		 * System.out.println(cis.getQueryResolver().getValues(
+		 * "http://www.epnoi.org/wikidataView/relations/" +
+		 * RelationHelper.HYPERNYM, "Q2807",
+		 * WikidataViewCassandraHelper.COLUMN_FAMILY));
+		 * System.out.println(cis.getQueryResolver().getValues(
+		 * "http://www.epnoi.org/wikidataView/reverseDictionary", "Q2807",
+		 * WikidataViewCassandraHelper.COLUMN_FAMILY));
+		 * 
+		 */
 	}
-	
+
 }

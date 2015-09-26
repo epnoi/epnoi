@@ -62,9 +62,9 @@ public class Core {
 	 *            epnoiCore.
 	 */
 
-	public synchronized void init(ParametersModel parametersModel)
-			throws EpnoiInitializationException {
-		logger.info("\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
+	public synchronized void init(ParametersModel parametersModel) throws EpnoiInitializationException {
+		logger.info(
+				"\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
 		logger.info("Initializing the epnoi uia core with the following parameters ");
 		logger.info(parametersModel.toString());
 		this.informationStores = new HashMap<String, InformationStore>();
@@ -79,23 +79,21 @@ public class Core {
 		this._initAnnotationsHandler();
 		this._initDomainsHandler();
 		/*
-		this._hoardersInitialization();
-		this._harvestersInitialization();
-		*/
+		 * this._hoardersInitialization(); this._harvestersInitialization();
+		 */
 		this._knowedlgeBaseHandlerInitialization();
 		logger.info("");
 		logger.info("");
-		logger.info("===================================================================================================");
+		logger.info(
+				"===================================================================================================");
 		logger.info("");
 		logger.info("");
 	}
-	
-	
 
 	public NLPHandler getNLPHandler() {
 		return nlpHandler;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------
 
 	public void setNLPHandler(NLPHandler nlpHandler) {
@@ -103,12 +101,12 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-	
+
 	private void _initNLPHandler() {
-	
-		this.nlpHandler= new NLPHandler();
+
+		this.nlpHandler = new NLPHandler();
 		this.nlpHandler.init(this, parametersModel);
-		
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -118,9 +116,8 @@ public class Core {
 		this.domainsHandler.init(this);
 
 	}
-	
-	// ----------------------------------------------------------------------------------------------------------
 
+	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initEventBus() {
 
@@ -148,17 +145,12 @@ public class Core {
 			logger.info(virtuosoInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
-					.buildInformationStore(virtuosoInformationStoreParameters,
-							parametersModel);
+					.buildInformationStore(virtuosoInformationStoreParameters, parametersModel);
 
-			this.informationStores.put(
-					virtuosoInformationStoreParameters.getURI(),
-					newInformationStore);
+			this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
 
-			_addInformationStoreByType(newInformationStore,
-					InformationStoreHelper.RDF_INFORMATION_STORE);
-			logger.info("The status of the information source is "
-					+ newInformationStore.test());
+			_addInformationStoreByType(newInformationStore, InformationStoreHelper.RDF_INFORMATION_STORE);
+			logger.info("The status of the information source is " + newInformationStore.test());
 
 		}
 		logger.info("Initializing SOLR information stores");
@@ -167,16 +159,12 @@ public class Core {
 			logger.info(solrInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
-					.buildInformationStore(solrInformationStoreParameters,
-							parametersModel);
+					.buildInformationStore(solrInformationStoreParameters, parametersModel);
 
-			this.informationStores.put(solrInformationStoreParameters.getURI(),
-					newInformationStore);
+			this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
 
-			_addInformationStoreByType(newInformationStore,
-					InformationStoreHelper.SOLR_INFORMATION_STORE);
-			logger.info("The status of the information source is "
-					+ newInformationStore.test());
+			_addInformationStoreByType(newInformationStore, InformationStoreHelper.SOLR_INFORMATION_STORE);
+			logger.info("The status of the information source is " + newInformationStore.test());
 
 		}
 		logger.info("Initializing Cassandra information stores");
@@ -185,35 +173,25 @@ public class Core {
 			logger.info(cassandraInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
-					.buildInformationStore(cassandraInformationStoreParameters,
-							parametersModel);
+					.buildInformationStore(cassandraInformationStoreParameters, parametersModel);
 
-			this.informationStores.put(
-					cassandraInformationStoreParameters.getURI(),
-					newInformationStore);
+			this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
 
-			_addInformationStoreByType(newInformationStore,
-					InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-			logger.info("The status of the information source is "
-					+ newInformationStore.test());
+			_addInformationStoreByType(newInformationStore, InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
+			logger.info("The status of the information source is " + newInformationStore.test());
 
 		}
 		logger.info("Initializing map information stores");
-		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel
-				.getMapInformationStore()) {
+		for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
 			logger.info(mapInformationStoreParameters.toString());
 
 			InformationStore newInformationStore = InformationStoreFactory
-					.buildInformationStore(mapInformationStoreParameters,
-							parametersModel);
+					.buildInformationStore(mapInformationStoreParameters, parametersModel);
 
-			this.informationStores.put(mapInformationStoreParameters.getURI(),
-					newInformationStore);
+			this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
 
-			_addInformationStoreByType(newInformationStore,
-					InformationStoreHelper.MAP_INFORMATION_STORE);
-			logger.info("The status of the information source is "
-					+ newInformationStore.test());
+			_addInformationStoreByType(newInformationStore, InformationStoreHelper.MAP_INFORMATION_STORE);
+			logger.info("The status of the information source is " + newInformationStore.test());
 
 		}
 
@@ -233,10 +211,8 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _addInformationStoreByType(InformationStore informationStore,
-			String type) {
-		List<InformationStore> informationsStoresOfType = this.informationStoresByType
-				.get(type);
+	private void _addInformationStoreByType(InformationStore informationStore, String type) {
+		List<InformationStore> informationsStoresOfType = this.informationStoresByType.get(type);
 		if (informationsStoresOfType == null) {
 			informationsStoresOfType = new ArrayList<InformationStore>();
 			this.informationStoresByType.put(type, informationsStoresOfType);
@@ -259,16 +235,14 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	private void _harvestersInitialization()
-			throws EpnoiInitializationException {
+	private void _harvestersInitialization() throws EpnoiInitializationException {
 		logger.info("Initializing the HarvestersHandler");
 
 		this.harvestersHandler = new HarvestersHandler();
 		this.harvestersHandler.init(this);
 
 		logger.info("Initializing the RSSHarvester");
-		RSSHarvesterParameters parameters = this.parametersModel
-				.getRssHarvester();
+		RSSHarvesterParameters parameters = this.parametersModel.getRssHarvester();
 
 		if (parameters != null) {
 			this.rssHarvester = new RSSHarvester(this, parameters);
@@ -310,8 +284,7 @@ public class Core {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public void setInformationSourcesHandler(
-			InformationSourcesHandler informationSourcesHandler) {
+	public void setInformationSourcesHandler(InformationSourcesHandler informationSourcesHandler) {
 		this.informationSourcesHandler = informationSourcesHandler;
 	}
 
@@ -330,8 +303,7 @@ public class Core {
 	// ----------------------------------------------------------------------------------------------------------
 
 	public boolean checkStatus(String informationStoreURI) {
-		InformationStore informationStore = this.informationStores
-				.get(informationStoreURI);
+		InformationStore informationStore = this.informationStores.get(informationStoreURI);
 		return informationStore.test();
 	}
 
@@ -368,14 +340,13 @@ public class Core {
 		this.eventBus = eventBus;
 	}
 
-	
-
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
-		this.knowledgeBaseHandler = new KnowledgeBaseHandler();
-		this.knowledgeBaseHandler.init(this);
-
+		
+			this.knowledgeBaseHandler = new KnowledgeBaseHandler();
+			this.knowledgeBaseHandler.init(this);
+		
 	}
 
 	// ----------------------------------------------------------------------------------------------------------

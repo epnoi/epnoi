@@ -15,6 +15,7 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
@@ -71,7 +72,12 @@ public class RelationsHandler {
 		this.consideredDomains = (List<Domain>) this.parameters
 				.getParameterValue(RelationsHandlerParameters.CONSIDERED_DOMAINS);
 
-		this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
+		try {
+			this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
+		} catch (EpnoiResourceAccessException e) {
+			
+			throw new EpnoiInitializationException(e.getMessage());
+		}
 
 		_initDomainsRelationsTables();
 
