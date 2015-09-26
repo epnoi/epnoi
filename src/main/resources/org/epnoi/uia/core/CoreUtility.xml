@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parametersModel>
 	<path>algo</path>
+	
 	<nlp>
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
 		<numberOfProcessors>1</numberOfProcessors>
 	</nlp>
+	
 	<knowledgeBase>
 		<lazy>true</lazy>
 		<wordnet>

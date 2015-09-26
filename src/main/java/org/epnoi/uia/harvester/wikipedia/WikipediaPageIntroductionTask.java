@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.uia.informationstore.Selector;
@@ -94,7 +95,13 @@ try{
 			String annotatedContentURI) {
 		// First we obtain the linguistic annotation of the content of the
 		// section
-		Document sectionAnnotatedContent = this.core.getNLPHandler().process(sectionContent);
+		Document sectionAnnotatedContent=null;
+		try {
+			sectionAnnotatedContent = this.core.getNLPHandler().process(sectionContent);
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Then we introduce it in the UIA
 		// We create the selector

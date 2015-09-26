@@ -78,8 +78,10 @@ public class Core {
 		this._initSearchHandler();
 		this._initAnnotationsHandler();
 		this._initDomainsHandler();
+		/*
 		this._hoardersInitialization();
 		this._harvestersInitialization();
+		*/
 		this._knowedlgeBaseHandlerInitialization();
 		logger.info("");
 		logger.info("");

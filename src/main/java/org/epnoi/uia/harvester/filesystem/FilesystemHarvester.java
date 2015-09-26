@@ -25,6 +25,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
@@ -153,8 +154,14 @@ public class FilesystemHarvester {
 		// UIA
 
 		startTme = System.currentTimeMillis();
-		Document annotatedContent = this.core.getNLPHandler()
-				.process(paper.getDescription());
+		Document annotatedContent=null;
+		try {
+			annotatedContent = this.core.getNLPHandler()
+					.process(paper.getDescription());
+		} catch (EpnoiResourceAccessException e) {
+			
+			e.printStackTrace();
+		}
 
 		Selector annotationSelector = new Selector();
 		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());

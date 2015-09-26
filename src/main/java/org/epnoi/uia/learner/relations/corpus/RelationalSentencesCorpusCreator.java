@@ -15,6 +15,7 @@ import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.Core;
@@ -367,8 +368,14 @@ public class RelationalSentencesCorpusCreator {
 							- sentenceStartOffset, destinationTermAnnotation
 							.getEndNode().getOffset() - sentenceStartOffset);
 
-			Document annotatedContent = core.getNLPHandler()
-					.process(sentenceContent.toString());
+			Document annotatedContent=null;
+			try {
+				annotatedContent = core.getNLPHandler()
+						.process(sentenceContent.toString());
+			} catch (EpnoiResourceAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 
 			RelationalSentence relationalSentence = new RelationalSentence(
@@ -541,14 +548,26 @@ public class RelationalSentencesCorpusCreator {
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContentA = this.core.getNLPHandler()
-				.process("A dog is a canine");
+		Document annotatedContentA=null;
+		try {
+			annotatedContentA = this.core.getNLPHandler()
+					.process("A dog is a canine");
+		} catch (EpnoiResourceAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		RelationalSentence relationalSentenceA = new RelationalSentence(
 				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(11L,
 						17L), "A dog is a canine", annotatedContentA.toXml());
 
-		Document annotatedContentB = this.core.getNLPHandler()
-				.process("A dog, is a canine (and other things!)");
+		Document annotatedContentB=null;
+		try {
+			annotatedContentB = this.core.getNLPHandler()
+					.process("A dog, is a canine (and other things!)");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		RelationalSentence relationalSentenceB = new RelationalSentence(
 				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(12L,

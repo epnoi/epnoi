@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 
@@ -33,14 +34,26 @@ public class MockUpRelationalSentencesCorpusCreator {
 		this.corpus.setURI(relationalSentenceURI);
 		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContentA = core.getNLPHandler()
-				.process("A dog is a canine");
+		Document annotatedContentA=null;
+		try {
+			annotatedContentA = core.getNLPHandler()
+					.process("A dog is a canine");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RelationalSentence relationalSentenceA = new RelationalSentence(
 				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(11L,
 						17L), "A dog is a canine", annotatedContentA.toXml());
 
-		Document annotatedContentB = core.getNLPHandler()
-				.process("A dog, is a canine (and other things!)");
+		Document annotatedContentB=null;
+		try {
+			annotatedContentB = core.getNLPHandler()
+					.process("A dog, is a canine (and other things!)");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		RelationalSentence relationalSentenceB = new RelationalSentence(
 				new OffsetRangeSelector(2L, 5L), new OffsetRangeSelector(12L,

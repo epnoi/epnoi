@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
@@ -79,8 +80,14 @@ public class TestMapDAO extends MapDAO {
 		}
 		System.out.println("-> " + content);
 
-		Document annotatedContentDocument = core.getNLPHandler()
-				.process(content);
+		Document annotatedContentDocument=null;
+		try {
+			annotatedContentDocument = core.getNLPHandler()
+					.process(content);
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Once it has been serialized, we must free the associated GATE
 		// resources

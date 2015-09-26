@@ -22,6 +22,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
@@ -132,8 +133,14 @@ public class URLHarvester {
 	}
 
 	private void _addDocumentAnnotatedContent(Paper paper) {
-		Document annotatedContent = this.core.getNLPHandler().process(
-				paper.getDescription());
+		Document annotatedContent=null;
+		try {
+			annotatedContent = this.core.getNLPHandler().process(
+					paper.getDescription());
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Selector annotationSelector = new Selector();
 		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,

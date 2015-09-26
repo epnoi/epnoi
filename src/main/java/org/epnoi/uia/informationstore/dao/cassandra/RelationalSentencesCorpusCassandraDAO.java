@@ -14,6 +14,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
@@ -224,7 +225,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		System.out.println("WikipediaPage Cassandra Test--------------");
 		System.out
 				.println("Initialization --------------------------------------------");
@@ -238,8 +239,14 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContent = core.getNLPHandler()
-				.process("A dog is a canine");
+		Document annotatedContent=null;
+		try {
+			annotatedContent = core.getNLPHandler()
+					.process("A dog is a canine");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
 						15L), "A dog is a canine", annotatedContent.toXml());
@@ -252,8 +259,13 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		 * System.out.println(relationalSentencesCorpusCassandraDAO
 		 * ._createRelationalSentenceRepresentation(relationalSentence));
 		 */
-		annotatedContent = core.getNLPHandler()
-				.process("A dog, is a canine (and other things!)");
+		try {
+			annotatedContent = core.getNLPHandler()
+					.process("A dog, is a canine (and other things!)");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
 				._readRelationalSentenceRepresentation("[2,5][12,18]A dog, is a canine (and other things!)"
 						+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
