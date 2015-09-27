@@ -63,8 +63,14 @@ public class NLPHandler {
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		System.out.println(core.getParameters().getNlp());
-
-		_testComplexConcurrentNLPRequests(core);
+		try {
+			System.out.println("-------> "+core.getNLPHandler().process("                                                                       "));
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//_testComplexConcurrentNLPRequests(core);
 
 		// _testConcurrentNLPAccess(core);
 
