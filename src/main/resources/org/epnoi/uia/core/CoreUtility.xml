@@ -4,7 +4,7 @@
 	
 	<nlp>
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
-		<numberOfProcessors>1</numberOfProcessors>
+		<numberOfProcessors>10</numberOfProcessors>
 	</nlp>
 	
 	<knowledgeBase>
