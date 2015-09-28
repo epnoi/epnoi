@@ -1,7 +1,6 @@
 package org.epnoi.uia.learner.relations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,16 +15,17 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.uia.knowledgebase.KnowledgeBase;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseFactory;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBase;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseFactory;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.terms.TermsRetriever;
 import org.epnoi.uia.learner.terms.TermsTable;
 
@@ -72,18 +72,13 @@ public class RelationsHandler {
 		this.consideredDomains = (List<Domain>) this.parameters
 				.getParameterValue(RelationsHandlerParameters.CONSIDERED_DOMAINS);
 
-		KnowledgeBaseParameters knowledgeBaseParameters = (KnowledgeBaseParameters) this.parameters
-				.getParameterValue(RelationsHandlerParameters.KNOWLEDGE_BASE_PARAMETERS);
-
-		KnowledgeBaseFactory knowledgeBaseCreator = new KnowledgeBaseFactory();
 		try {
-			knowledgeBaseCreator.init(core, knowledgeBaseParameters);
-		} catch (EpnoiInitializationException e) {
-			logger.severe("The KnowledgeBase couldn't be initialized");
-			e.printStackTrace();
-
+			this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
+		} catch (EpnoiResourceAccessException e) {
+			
+			throw new EpnoiInitializationException(e.getMessage());
 		}
-		this.knowledgeBase = knowledgeBaseCreator.build();
+
 		_initDomainsRelationsTables();
 
 	}
@@ -205,11 +200,12 @@ public class RelationsHandler {
 
 	public Double areRelated(String sourceTermSurfaceForm,
 			String targetTermSurfaceForm, String type, String domain) {
-		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm+" targetTermSurfaceForm " + targetTermSurfaceForm
-				+ ", type " + type + ", domain " + domain);
+		logger.info("sourceTermSurfaceForm " + sourceTermSurfaceForm
+				+ " targetTermSurfaceForm " + targetTermSurfaceForm + ", type "
+				+ type + ", domain " + domain);
 		Double existenceProbability = 0.;
 		if (this.knowledgeBase.areRelated(sourceTermSurfaceForm,
-				targetTermSurfaceForm)) {
+				targetTermSurfaceForm, type)) {
 			existenceProbability = 1.;
 		} else {
 			if (this.relationsTable.get(domain) != null) {
@@ -235,6 +231,8 @@ public class RelationsHandler {
 			}
 
 		}
+		System.out.println("-----------------------------> "
+				+ existenceProbability);
 		return existenceProbability;
 	}
 
@@ -258,59 +256,26 @@ public class RelationsHandler {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
 			domain.setURI(domainURI);
-			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 
-		List<Domain> consideredDomains = Arrays.asList(domain);
+		// List<Domain> consideredDomains = Arrays.asList(domain);
 
+		List<Domain> consideredDomains = new ArrayList<Domain>();
 		String targetDomain = domainURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
 		Double hypernymExtractionMinimumThresohold = 0.1;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
-		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
+		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		// First of all we initialize the KnowledgeBase
-		KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
-		WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
-
-		WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
-		wordnetParameters.setParameter(
-				WordNetHandlerParameters.DICTIONARY_LOCATION,
-				"/epnoi/epnoideployment/wordnet/dictWN3.1/");
-
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-				"http://wikidataView");
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-		wikidataParameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE,
-				true);
-		wikidataParameters.setParameter(
-				WikidataHandlerParameters.DUMP_FILE_MODE,
-				DumpProcessingMode.JSON);
-		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 10);
-		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
-				"/Users/rafita/Documents/workspace/wikidataParsingTest");
-
-		knowledgeBaseParameters.setParameter(
-				KnowledgeBaseParameters.WORDNET_PARAMETERS, wordnetParameters);
-
-		knowledgeBaseParameters
-				.setParameter(KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
-						wikidataParameters);
+	
 
 		RelationsHandlerParameters relationsHandlerParameters = new RelationsHandlerParameters();
 
-		relationsHandlerParameters.setParameter(
-				RelationsHandlerParameters.KNOWLEDGE_BASE_PARAMETERS,
-				knowledgeBaseParameters);
-
+		
 		relationsHandlerParameters.setParameter(
 				RelationsHandlerParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
@@ -361,6 +326,15 @@ public class RelationsHandler {
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("EEUU", "country",
 						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("The strange Spain case");
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("Spain", "country",
+						RelationHelper.HYPERNYM, "http://whatever"));
+		System.out.println("Finally the dog and cat problem");
+		System.out.println("Are related? "
+				+ relationsHandler.areRelated("dog", "animal",
+						RelationHelper.HYPERNYM, "http://whatever"));
+
 		System.out.println("Ending the RelationsHandler Process!");
 	}
 

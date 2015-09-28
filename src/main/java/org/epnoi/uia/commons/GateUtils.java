@@ -1,11 +1,22 @@
 package org.epnoi.uia.commons;
 
+import gate.Annotation;
 import gate.Document;
+import gate.DocumentContent;
 import gate.Factory;
 import gate.Utils;
 import gate.creole.ResourceInstantiationException;
+import gate.util.InvalidOffsetException;
 
 public class GateUtils {
+	
+	//----------------------------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param serializedGATEDocument
+	 * @return
+	 */
 	public static Document deserializeGATEDocument(String serializedGATEDocument) {
 		Document document = null;
 		try {
@@ -25,4 +36,28 @@ public class GateUtils {
 		}
 		return document;
 	}
+
+	//----------------------------------------------------------------------------------------------
+	
+	/**
+	 * Method that obtains the content covered by an annotation in a given document
+	 * @param annotation
+	 * @param document
+	 * @return Returns the content covered by the annotation, or null if the 
+	 */
+	public static DocumentContent extractAnnotationContent(Annotation annotation, Document document){
+		try {
+			Long sentenceStartOffset = annotation.getStartNode()
+					.getOffset();
+			Long sentenceEndOffset = annotation.getEndNode()
+					.getOffset();
+
+			return document.getContent().getContent(
+					sentenceStartOffset, sentenceEndOffset);
+		} catch (InvalidOffsetException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+	}
 }
+	

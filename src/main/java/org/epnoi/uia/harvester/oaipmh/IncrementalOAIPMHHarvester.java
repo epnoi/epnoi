@@ -29,7 +29,6 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -51,7 +50,6 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 	// Core core = null;
 
 	Core core = CoreUtility.getUIACore();
-	TermCandidatesFinder termCandidatesFinder;
 
 	/*
 	 * OAIPMHIndexer -in where-oaipmh-harvest-dir -repository name
@@ -60,9 +58,6 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 	 */
 
 	public IncrementalOAIPMHHarvester() {
-		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init(core);
-
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -154,9 +149,9 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				Content<String> content = core.getInformationHandler()
 						.getContent(selector);
-				//System.out.println("The content is >" + content);
-				Document annotatedContent = this.termCandidatesFinder
-						.findTermCandidates(content.getContent());
+				// System.out.println("The content is >" + content);
+				Document annotatedContent = this.core.getNLPHandler()
+						.process(content.getContent());
 				// System.out.println("------)> " + annotatedContent.toXml());
 
 				Selector annotationSelector = new Selector();

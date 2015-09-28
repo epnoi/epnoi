@@ -1,5 +1,5 @@
 #!/bin/sh
-EPNOI_HOME="/JUNK/epnoi"
+EPNOI_HOME="/opt/epnoi"
 
 #First we initialize the directories
 SCRIPT_DIR=$(pwd)
@@ -9,7 +9,9 @@ TMP_DIR=$EPNOI_HOME/tmp
 SOLR_DIR=$EPNOI_HOME/"epnoideployment/solr"
 CASSANDRA_DIR=$EPNOI_HOME/"epnoideployment/apache-cassandra-2.1.3"
 VIRTUOSO_DIR="/usr/local/virtuoso-opensource"
+FIRST_SCRIPT_PARAMETER=$1
 VERBOSE_PARAMETER=$1
+echo $VERBOSE_PARAMETER
 
 start_solr () {
 echo "Starting SOLR!--------------------------------------------------------------------------------"
@@ -22,7 +24,7 @@ cd $SCRIPT_DIR
 
 start_cassandra () {
 echo "Starting Cassandra!---------------------------------------------------------------------------"
-$CASSANDRA_DIR/bin/cassandra -f $ > $TMP_DIR/cassandra.output.log 2>&1 &
+$CASSANDRA_DIR/bin/cassandra -f > $TMP_DIR/cassandra.output.log 2>&1 &
 echo $! > $TMP_DIR/cassandra.pid
 echo $!
 }
@@ -38,12 +40,15 @@ echo $!
 start_epnoi () {
 echo "Starting epnoi!---------------------------------------------------------------------------"
 cd $EPNOI_HOME/epnoi
-if [ $VERBOSE_PARAMETER == "-v" ] 
-then
-	mvn jetty:run | tee $TMP_DIR/epnoi.output.log &
+
+if [ "$VERBOSE_PARAMETER" = "verbose" ]; then
+echo "Starting in verbose mode!"
+	mvn jetty:run | tee $TMP_DIR/epnoi.output.log 
+
 else
+echo "Starting in normal mode"
 	mvn jetty:run > $TMP_DIR/epnoi.output.log 2>&1 &
-fi
+fi 
 
 echo $! > $TMP_DIR/epnoi.pid 
 echo $!

@@ -22,55 +22,31 @@ public class PaperCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");
 
 	public void remove(String URI) {
-		super.deleteRow(URI, PaperCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, PaperCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
-		super.createRow(paper.getURI(), PaperCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(paper.getURI(), PaperCassandraHelper.COLUMN_FAMILY);
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
 		if (paper.getDescription() != null) {
 
 			pairsOfNameValues.put(PaperCassandraHelper.DESCRIPTION,
 					paper.getDescription());
-			/*
-			 * super.updateColumn(paper.getURI(),
-			 * PaperCassandraHelper.DESCRIPTION, paper.getDescription(),
-			 * PaperCassandraHelper.COLUMN_FAMILLY);
-			 */
+		
 		}
 		if (paper.getTitle() != null) {
 			pairsOfNameValues.put(PaperCassandraHelper.TITLE, paper.getTitle());
 
-			/*
-			 * super.updateColumn(paper.getURI(), PaperCassandraHelper.TITLE,
-			 * paper.getTitle(), PaperCassandraHelper.COLUMN_FAMILLY);
-			 */
 		}
 
 		for (String author : paper.getAuthors()) {
 			pairsOfNameValues.put(author, PaperCassandraHelper.AUTHORS);
-			/*
-			 * super.updateColumn(paper.getURI(), author,
-			 * PaperCassandraHelper.AUTHORS,
-			 * PaperCassandraHelper.COLUMN_FAMILLY)
-			 */
 		}
-		/*
-		 * if (context.getElements().get(Context.ANNOTATED_CONTENT) != null) {
-		 * 
-		 * // gate.corpora.DocumentStaxUtils.readGateXmlDocument(xsr, doc);
-		 * Document annotatedContent = (Document) context.getElements().get(
-		 * Context.ANNOTATED_CONTENT);
-		 * 
-		 * super.updateColumn(paper.getURI(),
-		 * AnnotatedContentCassandraHelper.CONTENT, annotatedContent.toXml(),
-		 * AnnotatedContentCassandraHelper.COLUMN_FAMILLY); }
-		 */
-
+		
 		for (Entry<String, Object> contextElement : context.getElements()
 				.entrySet()) {
 			String annotatedContent = (contextElement.getValue() == null) ? ""
@@ -79,13 +55,6 @@ public class PaperCassandraDAO extends CassandraDAO {
 			// System.out.println("------- > "+annotatedContent);
 			pairsOfNameValues.put(contextElement.getKey(), annotatedContent);
 
-			/*
-			 * super.updateColumn(wikipediaPage.getURI(),
-			 * contextElement.getKey(), "[" +
-			 * AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE + "]" +
-			 * ((Document) contextElement.getValue()).toXml() .toString(),
-			 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-			 */
 		}
 
 		String content = paper.getTitle() + "." + paper.getDescription();
@@ -95,11 +64,8 @@ public class PaperCassandraDAO extends CassandraDAO {
 				paper.getDescription());
 
 		super.updateColumns(paper.getURI(), pairsOfNameValues,
-				PaperCassandraHelper.COLUMN_FAMILLY);
-		/*
-		 * super.updateColumns(wikipediaPage.getURI(), pairsOfNameValues,
-		 * WikipediaPageCassandraHelper.COLUMN_FAMILLY);
-		 */
+				PaperCassandraHelper.COLUMN_FAMILY);
+		
 	}
 
 	// --------------------------------------------------------------------------------
@@ -114,7 +80,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 	public Resource read(String URI) {
 		System.out.println("----> > " + URI);
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, PaperCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, PaperCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Paper paper = new Paper();
 			paper.setURI(URI);
@@ -147,7 +113,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 		String annotatedContent = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				PaperCassandraHelper.CONTENT,
-				PaperCassandraHelper.COLUMN_FAMILLY);
+				PaperCassandraHelper.COLUMN_FAMILY);
 
 		if (annotatedContent == null) {// http://en.wikipedia.org/wiki/Glossary_of_American_football
 										// bug
@@ -175,7 +141,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 		String annotatedContent = super.readColumn(
 				selector.getProperty(SelectorHelper.URI),
 				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
-				PaperCassandraHelper.COLUMN_FAMILLY);
+				PaperCassandraHelper.COLUMN_FAMILY);
 		//System.out.println("annotatedContent > " + selector + "  --> "+ annotatedContent);
 		if (annotatedContent == null) {// http://en.wikipedia.org/wiki/Glossary_of_American_football
 										// bug
@@ -217,7 +183,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 				selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				"[" + annotatedContent.getType() + "]"
 						+ annotatedContent.getContent(),
-				PaperCassandraHelper.COLUMN_FAMILLY);
+				PaperCassandraHelper.COLUMN_FAMILY);
 
 	}
 

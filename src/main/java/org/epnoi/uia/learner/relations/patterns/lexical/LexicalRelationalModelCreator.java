@@ -22,11 +22,12 @@ public class LexicalRelationalModelCreator {
 	private Core core;
 	private RelationalPatternsCorpusCreator patternsCorpusCreator;
 	private RelationalPatternsCorpus patternsCorpus;
-	private BigramSoftPatternModelBuilder modelBuilder;
-	private BigramSoftPatternModel model;
+	private RelaxedBigramSoftPatternModelBuilder modelBuilder;
+	private RelaxedBigramSoftPatternModel model;
 	private boolean store;
 	private boolean verbose;
 	private boolean test;
+	private double interpolationConstant;
 	private String path;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -65,7 +66,7 @@ public class LexicalRelationalModelCreator {
 			logger.info("The RelationalPatternsCorpus has "
 					+ patternsCorpus.getPatterns().size() + " patterns");
 		}
-		modelBuilder = new BigramSoftPatternModelBuilder(parameters);
+		modelBuilder = new RelaxedBigramSoftPatternModelBuilder(parameters);
 
 		this.path = (String) parameters
 				.getParameterValue(RelationalPatternsModelCreationParameters.MODEL_PATH);
@@ -84,18 +85,23 @@ public class LexicalRelationalModelCreator {
 		} else {
 			this.test = false;
 		}
+
+		this.interpolationConstant = (double) parameters
+				.getParameterValue(RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT);
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public BigramSoftPatternModel buildModel() {
+	public RelaxedBigramSoftPatternModel buildModel() {
 		long startingTime = System.currentTimeMillis();
 		logger.info("Adding all the patterns to the model");
 		for (RelationalPattern pattern : patternsCorpus.getPatterns()) {
 			this.modelBuilder.addPattern(((LexicalRelationalPattern) pattern));
 		}
-		logger.info("Building the model");
-		BigramSoftPatternModel model = this.modelBuilder.build();
+
+		logger.info("Building the model " + this.modelBuilder);
+		RelaxedBigramSoftPatternModel model = this.modelBuilder.build();
 		long totalTime = startingTime - System.currentTimeMillis();
 		logger.info("It took " + Math.abs(totalTime) + " ms to build the model");
 		return model;
@@ -104,6 +110,8 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void create() {
+		logger.info("Starting the creation of a lexical BigramSoftPatternModel with the following parameters: "
+				+ this.parameters);
 		this.model = buildModel();
 
 		if (this.verbose) {
@@ -126,7 +134,7 @@ public class LexicalRelationalModelCreator {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		System.out.println("Starting the Lexical Relational Model creation");
+		logger.info("Starting the Lexical Relational Model creation");
 		RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
 		parameters
 				.setParameter(
@@ -139,16 +147,18 @@ public class LexicalRelationalModelCreator {
 
 		parameters.setParameter(
 				RelationalPatternsModelCreationParameters.MODEL_PATH,
-				"/JUNK/model.bin");
+				"/home/rgonza/Escritorio/model.bin");
+
+		parameters.setParameter(
+				RelationalSentencesCorpusCreationParameters.STORE, true);
+
+		parameters.setParameter(
+				RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 
 		parameters
 				.setParameter(
-						RelationalSentencesCorpusCreationParameters.STORE,
-						true);
-
-		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.VERBOSE,
-				false);
+						RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT,
+						0.0);
 
 		Core core = CoreUtility.getUIACore();
 
@@ -162,7 +172,7 @@ public class LexicalRelationalModelCreator {
 
 		modelCreator.create();
 
-		System.out.println("Ending the Lexical Relational Model creation");
+		logger.info("Ending the Lexical Relational Model creation");
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------

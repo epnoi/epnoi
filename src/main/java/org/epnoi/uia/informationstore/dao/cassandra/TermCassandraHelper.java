@@ -9,7 +9,7 @@ public class TermCassandraHelper {
 	 * 
 	 * private double termhood;
 	 */
-	public static final String COLUMN_FAMILLY = "Term";
+	public static final String COLUMN_FAMILY = "Term";
 
 	public static final String LENGTH = "LENGTH";
 	public static final String WORDS = "WORDS";

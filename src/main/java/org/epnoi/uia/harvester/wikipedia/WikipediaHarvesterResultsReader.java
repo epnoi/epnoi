@@ -1,7 +1,5 @@
 package org.epnoi.uia.harvester.wikipedia;
 
-import gate.Document;
-
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,7 +14,6 @@ import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class WikipediaHarvesterResultsReader {
@@ -24,15 +21,12 @@ public class WikipediaHarvesterResultsReader {
 			.getLogger(WikipediaHarvesterResultsReader.class.getName());
 
 	private Core core;
-	private TermCandidatesFinder termCandidatesFinder;
+
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
-
-		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init(core);
 
 	}
 
@@ -57,6 +51,7 @@ public class WikipediaHarvesterResultsReader {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 		int nullCounts = 1;
+		int notNullCounts = 1;
 		int count = 1;
 		List<String> wikipediaPages = getWikipediaArticles();
 		System.out.println(wikipediaPages.size()
@@ -72,10 +67,10 @@ public class WikipediaHarvesterResultsReader {
 						.getInformationHandler().get(uri,
 								RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
-				selector.setProperty(SelectorHelper.URI, uri);
+				//selector.setProperty(SelectorHelper.URI, uri);
 				for (String section : wikipediaPage.getSections()) {
 					String extractedURI = _extractURI(uri, section,
-							AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+							AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 					selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
 							extractedURI);
 					// System.out.println("selector >" + selector);
@@ -84,14 +79,20 @@ public class WikipediaHarvesterResultsReader {
 									selector);
 
 					if (annotatedContent != null) {
-						Document annotatedDocument = (Document) annotatedContent
-								.getContent();
-						System.out.println(extractedURI + " ------------> "
-								+ annotatedDocument.getAnnotations());
-
+						
+					//	 Document annotatedDocument = (Document)
+					//	  annotatedContent .getContent();
+						  
+					//	 System.out.println(extractedURI + " ------------> " +
+						// annotatedDocument.getAnnotations());
+						
+					//	System.out.println("este es not null---> "+annotatedDocument.toXml());
+						notNullCounts++;
 					} else {
-						System.out.println("The section " + section + " of "
-								+ uri + " was null");
+						/*
+						 * System.out.println("The section " + section + " of "
+						 * + uri + " was null");
+						 */
 						nullCounts++;
 					}
 				}
@@ -99,7 +100,8 @@ public class WikipediaHarvesterResultsReader {
 			}
 
 		}
-		logger.info("The number of nulls is " + nullCounts);
+		logger.info("The number of nulls is " + nullCounts
+				+ " the number of not nulls is " + notNullCounts);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -124,6 +126,7 @@ public class WikipediaHarvesterResultsReader {
 
 		logger.info("The number of retrived Wikipeda articles are "
 				+ queryResults.size());
+		System.exit(0);
 		return queryResults;
 	}
 

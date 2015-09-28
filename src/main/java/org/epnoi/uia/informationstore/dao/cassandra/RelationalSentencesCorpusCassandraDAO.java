@@ -14,11 +14,11 @@ import org.epnoi.model.Context;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
@@ -33,7 +33,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
 		super.deleteRow(URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 	}
 
@@ -46,7 +46,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
 		super.createRow(relationalSentencesCorpus.getURI(),
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		pairsOfNameValues.put(
 				RelationalSentencesCorpusCassandraHelper.DESCRIPTION,
@@ -66,7 +66,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		super.updateColumns(relationalSentencesCorpus.getURI(),
 				pairsOfNameValues,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -154,7 +154,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI,
-						RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+						RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		if (columnsIterator.hasNext()) {
 			RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
@@ -225,14 +225,13 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		System.out.println("WikipediaPage Cassandra Test--------------");
 		System.out
 				.println("Initialization --------------------------------------------");
 
 		Core core = CoreUtility.getUIACore();
-		TermCandidatesFinder termCandidatesFinder = new TermCandidatesFinder();
-		termCandidatesFinder.init(core);
+		
 
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
@@ -240,8 +239,14 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
 		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
-		Document annotatedContent = termCandidatesFinder
-				.findTermCandidates("A dog is a canine");
+		Document annotatedContent=null;
+		try {
+			annotatedContent = core.getNLPHandler()
+					.process("A dog is a canine");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
 						15L), "A dog is a canine", annotatedContent.toXml());
@@ -254,8 +259,13 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		 * System.out.println(relationalSentencesCorpusCassandraDAO
 		 * ._createRelationalSentenceRepresentation(relationalSentence));
 		 */
-		annotatedContent = termCandidatesFinder
-				.findTermCandidates("A dog, is a canine (and other things!)");
+		try {
+			annotatedContent = core.getNLPHandler()
+					.process("A dog, is a canine (and other things!)");
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RelationalSentence rs = relationalSentencesCorpusCassandraDAO
 				._readRelationalSentenceRepresentation("[2,5][12,18]A dog, is a canine (and other things!)"
 						+ RelationalSentencesCorpusCassandraDAO.annotatedSentenceSeparator
@@ -361,7 +371,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		String content = super.readColumn(
 				selector.getProperty(SelectorHelper.URI), URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
+				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		return (content != null && content.length() > 5);
 	}

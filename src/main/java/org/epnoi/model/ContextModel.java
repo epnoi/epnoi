@@ -42,7 +42,6 @@ public class ContextModel {
 		}
 		userActionsContext.addAction(action);
 		this.actionsContexts.put(userURI, userActionsContext);
-		System.out.println("----------->>>" + this.actionsContexts);
 
 	}
 

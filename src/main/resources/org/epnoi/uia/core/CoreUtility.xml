@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parametersModel>
 	<path>algo</path>
-	<gatePath>/epnoi/epnoideployment/gate</gatePath>
+	
+	<nlp>
+		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
+		<numberOfProcessors>10</numberOfProcessors>
+	</nlp>
+	
+	<knowledgeBase>
+		<lazy>true</lazy>
+		<wordnet>
+			<considered>false</considered>
+			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
+		</wordnet>
+		<wikidata>
+			<considered>true</considered>
+			<mode>load</mode>
+			<inMemory>false</inMemory>
+			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
+			<uri>http://www.epnoi.org/wikidataView</uri>
+		</wikidata>
+	</knowledgeBase>
+
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
@@ -26,7 +46,7 @@
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>
-		<path>/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
+		<path>/opt/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
 		<host>localhost</host>
 		<port>0</port>
 	</mapInformationStore>

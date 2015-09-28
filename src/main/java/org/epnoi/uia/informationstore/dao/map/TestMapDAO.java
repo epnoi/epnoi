@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 import com.rits.cloning.Cloner;
@@ -67,11 +67,8 @@ public class TestMapDAO extends MapDAO {
 
 		testMapDAO.init(parameters);
 
-		TermCandidatesFinder termCandidatesFinder;
 
-		termCandidatesFinder = new TermCandidatesFinder();
 
-		termCandidatesFinder.init(core);
 		String annotatedContentURI = "http://testAnnotated"
 				+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE;
 
@@ -83,8 +80,14 @@ public class TestMapDAO extends MapDAO {
 		}
 		System.out.println("-> " + content);
 
-		Document annotatedContentDocument = termCandidatesFinder
-				.findTermCandidates(content);
+		Document annotatedContentDocument=null;
+		try {
+			annotatedContentDocument = core.getNLPHandler()
+					.process(content);
+		} catch (EpnoiResourceAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Once it has been serialized, we must free the associated GATE
 		// resources

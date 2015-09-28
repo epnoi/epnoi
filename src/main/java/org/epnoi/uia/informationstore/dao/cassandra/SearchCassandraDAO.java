@@ -18,33 +18,33 @@ import org.epnoi.uia.informationstore.Selector;
 public class SearchCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
-		super.deleteRow(URI, SearchCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, SearchCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
 		Search search = (Search) resource;
-		super.createRow(search.getURI(), SearchCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(search.getURI(), SearchCassandraHelper.COLUMN_FAMILY);
 
 		if (search.getTitle() != null) {
 
 			super.updateColumn(search.getURI(), SearchCassandraHelper.TITLE,
-					search.getTitle(), SearchCassandraHelper.COLUMN_FAMILLY);
+					search.getTitle(), SearchCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		if (search.getDescription() != null) {
 			super.updateColumn(search.getURI(),
 					SearchCassandraHelper.DESCRIPTION, search.getDescription(),
-					SearchCassandraHelper.COLUMN_FAMILLY);
+					SearchCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		for (String expression : search.getExpressions()) {
 			super.updateColumn(search.getURI(), expression,
 					SearchCassandraHelper.EXPRESSIONS,
-					SearchCassandraHelper.COLUMN_FAMILLY);
+					SearchCassandraHelper.COLUMN_FAMILY);
 		}
 
 	}
@@ -58,17 +58,9 @@ public class SearchCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		/*
-		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
-		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
-		 * ExternalResourceCassandraHelper.COLUMN_FAMILLY);
-		 * 
-		 * while (columnsIteratorProof.hasNext()) { HColumn<String, String>
-		 * column = columnsIteratorProof.next(); System.out.println("Column   "
-		 * + column); }
-		 */
+	
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, SearchCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, SearchCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Search search = new Search();
 			search.setURI(URI);
@@ -103,7 +95,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 
 	public void update(Search search) {
 		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
-				search.getDescription(), UserCassandraHelper.COLUMN_FAMILLY);
+				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
@@ -126,7 +118,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 	public List<Search> getSearchs() {
 		List<Search> searchs = new ArrayList<Search>();
 		List<Row<String, String, String>> result = (CassandraQueryResolver
-				.query("select * from " + SearchCassandraHelper.COLUMN_FAMILLY));
+				.query("select * from " + SearchCassandraHelper.COLUMN_FAMILY));
 		if (result != null) {
 			for (Row<String, String, String> row : result) {
 

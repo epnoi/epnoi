@@ -47,7 +47,7 @@ public class SearchsResource extends UIAService {
 			@ApiResponse(code = 404, message = "A Research Object with such URI could not be found") })
 	@ApiOperation(value = "Returns the search result", notes = "", response = SearchResult.class)
 	public Response getSearch(
-			@ApiParam(value = "Search query expression", required = true, allowMultiple = false)@QueryParam("query") String query,
+			@ApiParam(value = "Search query expression", required = true, allowMultiple = false) @QueryParam("query") String query,
 			@ApiParam(value = "Considered facet", required = false, allowMultiple = true) @QueryParam("facet") List<String> facet,
 			@ApiParam(value = "Filters defined about the considered facets ", required = false, allowMultiple = true) @QueryParam("filter") List<String> filter) {
 		System.out.println("GET: query: " + query + " facets: " + facet
@@ -73,16 +73,18 @@ public class SearchsResource extends UIAService {
 		selectExpression.setSolrExpression(query);
 
 		SearchContext searchContext = new SearchContext();
-		for (String facetParameter : facet) {
-			searchContext.getFacets().add(facetParameter);
-
+		if (facet != null) {
+			for (String facetParameter : facet) {
+				searchContext.getFacets().add(facetParameter);
+			}
 		}
 
-		for (String filterParameter : filter) {
-			searchContext.getFilterQueries().add(filterParameter);
+		if (facet != null && filter != null) {
+			for (String filterParameter : filter) {
+				searchContext.getFilterQueries().add(filterParameter);
 
+			}
 		}
-
 		SearchResult searchResult = this.core.getSearchHandler().search(
 				selectExpression, searchContext);
 		System.out.println("Results:");

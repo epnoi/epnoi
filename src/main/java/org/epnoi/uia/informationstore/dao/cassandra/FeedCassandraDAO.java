@@ -15,19 +15,19 @@ import org.epnoi.uia.informationstore.Selector;
 public class FeedCassandraDAO extends CassandraDAO {
 
 	public void remove(String URI) {
-		super.deleteRow(URI, FeedCassandraHelper.COLUMN_FAMILLY);
+		super.deleteRow(URI, FeedCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
-		super.createRow(feed.getURI(), FeedCassandraHelper.COLUMN_FAMILLY);
+		super.createRow(feed.getURI(), FeedCassandraHelper.COLUMN_FAMILY);
 
 		if (feed.getDescription() != null) {
 
 			super.updateColumn(feed.getURI(), FeedCassandraHelper.DESCRIPTION,
-					feed.getDescription(), FeedCassandraHelper.COLUMN_FAMILLY);
+					feed.getDescription(), FeedCassandraHelper.COLUMN_FAMILY);
 
 		}
 
@@ -47,17 +47,9 @@ public class FeedCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		/*
-		 * System.out.println(" --> " + URI); ColumnSliceIterator<String,
-		 * String, String> columnsIteratorProof = super .getAllCollumns(URI,
-		 * ExternalResourceCassandraHelper.COLUMN_FAMILLY);
-		 * 
-		 * while (columnsIteratorProof.hasNext()) { HColumn<String, String>
-		 * column = columnsIteratorProof.next(); System.out.println("Column   "
-		 * + column); }
-		 */
+	
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, FeedCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, FeedCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Feed search = new Feed();
 			search.setURI(URI);
@@ -88,7 +80,7 @@ public class FeedCassandraDAO extends CassandraDAO {
 		item.setURI(URI);
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, ItemCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, ItemCassandraHelper.COLUMN_FAMILY);
 		System.out.println("item URI-------------------------------> " + URI);
 		while (columnsIterator.hasNext()) {
 
@@ -111,19 +103,19 @@ public class FeedCassandraDAO extends CassandraDAO {
 
 	public void update(Search search) {
 		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
-				search.getDescription(), UserCassandraHelper.COLUMN_FAMILLY);
+				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 
 	// --------------------------------------------------------------------------------
 
 	private void _createItem(String feedURI, Item item, Context context) {
 
-		//super.createRow(item.getURI(), ItemCassandraHelper.COLUMN_FAMILLY);
+		//super.createRow(item.getURI(), ItemCassandraHelper.COLUMN_FAMILY);
 
 		if (item.getDescription() != null) {
 
 			super.updateColumn(item.getURI(), ItemCassandraHelper.DESCRIPTION,
-					item.getDescription(), ItemCassandraHelper.COLUMN_FAMILLY);
+					item.getDescription(), ItemCassandraHelper.COLUMN_FAMILY);
 
 		}
 
@@ -131,11 +123,11 @@ public class FeedCassandraDAO extends CassandraDAO {
 			String content = (String) context.getElements().get(item.getURI());
 
 			super.updateColumn(item.getURI(), ItemCassandraHelper.CONTENT,
-					content, ItemCassandraHelper.COLUMN_FAMILLY);
+					content, ItemCassandraHelper.COLUMN_FAMILY);
 		}
 
 		super.updateColumn(feedURI, item.getURI(), FeedCassandraHelper.ITEMS,
-				FeedCassandraHelper.COLUMN_FAMILLY);
+				FeedCassandraHelper.COLUMN_FAMILY);
 		//_showFeed(feedURI);
 	}
 	
@@ -152,7 +144,7 @@ public class FeedCassandraDAO extends CassandraDAO {
 
 	private void _showFeed(String URI) {
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, FeedCassandraHelper.COLUMN_FAMILLY);
+				.getAllCollumns(URI, FeedCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 
 			while (columnsIterator.hasNext()) {

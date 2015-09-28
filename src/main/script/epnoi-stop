@@ -1,6 +1,6 @@
 #!/bin/sh
 #Global variables 
-EPNOI_HOME="/JUNK/epnoi"
+EPNOI_HOME="/opt/epnoi"
 SCRIPT_DIR=$(pwd)
 TMP_DIR=$EPNOI_HOME/tmp
 VIRTUOSO_DIR="/usr/local/virtuoso-opensource"

@@ -7,13 +7,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 //import javax.xml.bind.annotation.
 @XmlRootElement(name = "parametersModel")
 public class ParametersModel {
-
+	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_LOAD ="load";
+	
+	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_CREATE ="create";
+	
 	// Server related properties
 	private String hostname;
 	private String port;
 	private String path;
 	// private String scope;
-	private String gatePath;
+	//private String gatePath;
+	private NLPParameters nlp;
+	private KnowledgeBaseParameters knowledgeBase;
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
@@ -64,18 +69,32 @@ public class ParametersModel {
 		 */
 	}
 
-	// ---------------------------------------------------------------------------------
-
-	public String getGatePath() {
-		return this.gatePath;
-	}
+	
 
 	// ---------------------------------------------------------------------------------
 
-	public void setGatePath(String gatePath) {
-		this.gatePath=gatePath;
+	public KnowledgeBaseParameters getKnowledgeBase() {
+		return knowledgeBase;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setKnowledgeBase(KnowledgeBaseParameters knowledgeBase) {
+		this.knowledgeBase = knowledgeBase;
 	}
 
+	// ---------------------------------------------------------------------------------
+	
+	public NLPParameters getNlp() {
+		return nlp;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setNlp(NLPParameters nlp) {
+		this.nlp = nlp;
+	}
+	
 	// ---------------------------------------------------------------------------------
 
 	public RSSHoarderParameters getRssHoarder() {
@@ -138,21 +157,17 @@ public class ParametersModel {
 			ArrayList<MapInformationStoreParameters> mapInformationStores) {
 		this.mapInformationStores = mapInformationStores;
 	}
-
+	
 	// ---------------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "CoreParametersModel [hostname=" + hostname + ", port=" + port
-				+ ", path=" + path + ", gatePath=" + gatePath
-				+ ", virtuosoInformationStores=" + virtuosoInformationStores
-				+ ", solrInformationStores=" + solrInformationStores
-				+ ", cassandraInformationStores=" + cassandraInformationStores
-				+ ", mapInformationStores=" + mapInformationStores
-				+ ", rssHoarder=" + rssHoarder + ", rssHarvester="
-				+ rssHarvester + "]";
+		return "ParametersModel [hostname=" + hostname + ", port=" + port + ", path=" + path + ", nlp=" + nlp
+				+ ", knowledgeBase=" + knowledgeBase + ", virtuosoInformationStores=" + virtuosoInformationStores
+				+ ", solrInformationStores=" + solrInformationStores + ", cassandraInformationStores="
+				+ cassandraInformationStores + ", mapInformationStores=" + mapInformationStores + ", rssHoarder="
+				+ rssHoarder + ", rssHarvester=" + rssHarvester + "]";
 	}
 
 	// ---------------------------------------------------------------------------------
-
 }

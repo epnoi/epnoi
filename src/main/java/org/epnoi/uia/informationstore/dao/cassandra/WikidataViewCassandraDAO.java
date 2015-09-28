@@ -1,12 +1,11 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
@@ -20,31 +19,79 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataView;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 public class WikidataViewCassandraDAO extends CassandraDAO {
-	
+	final Joiner joiner;
+	private String dictionaryURI;
+	private String reverseDictionaryURI;
+	private String relationsURI;
+
+	public WikidataViewCassandraDAO() {
+		this.joiner = Joiner.on(";").skipNulls();
+
+	}
+
 	// --------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		super.deleteRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILLY);
+		
+		_defineURIs(URI);
+		super.deleteRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
+		super.deleteRow(this.dictionaryURI,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
+		super.deleteRow(this.reverseDictionaryURI,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
+		super.deleteRow(this.relationsURI + "/" + RelationHelper.HYPERNYM,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-
+	
 		WikidataView wikidataView = (WikidataView) resource;
 
-		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
+		_defineURIs(wikidataView.getURI());
 
-		super.createRow(wikidataView.getURI(),
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
+		_defineRows(wikidataView.getURI());
+
+		_createDictionary(wikidataView);
+		_createReverseDictionary(wikidataView);
+		_createRelations(wikidataView);
+
+	}
+
+	private void _defineRows(String URI) {
+		super.createRow(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
+
+		super.createRow(this.dictionaryURI,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
+
+		super.createRow(this.reverseDictionaryURI,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
+		super.createRow(this.relationsURI + "/" + RelationHelper.HYPERNYM,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
+	}
+
+	// --------------------------------------------------------------------------------
+
+	private void _defineURIs(String URI) {
+		this.dictionaryURI = URI + "/dictionary";
+		this.reverseDictionaryURI = URI + "/reverseDictionary";
+		this.relationsURI = URI + "/relations";
+	}
+
+	// --------------------------------------------------------------------------------
+
+	private void _createRelations(WikidataView wikidataView) {
 		// Relations mapping
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 		for (Entry<String, Map<String, Set<String>>> relationsEntry : wikidataView
 				.getRelations().entrySet()) {
 
@@ -53,36 +100,35 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 					.getValue().entrySet()) {
 
 				String sourceIRI = relationEntry.getKey();
-				for (String targetIRI : relationEntry.getValue()) {
-
-					pairsOfNameValues.put(
-
-					_serializeRelation(relationType, sourceIRI, targetIRI),
-							WikidataViewCassandraHelper.RELATIONS);
-
-				}
+				String targetIRIs = joiner.join(relationEntry.getValue());
+				pairsOfNameValues.put(sourceIRI, targetIRIs);
 
 			}
+
+			super.updateManyColumns(this.relationsURI +"/" +relationType,
+					pairsOfNameValues,
+					WikidataViewCassandraHelper.COLUMN_FAMILY);
+		}
+		pairsOfNameValues.clear();
+		pairsOfNameValues = null;
+	}
+
+	// --------------------------------------------------------------------------------
+
+	private void _createReverseDictionary(WikidataView wikidataView) {
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
+
+		for (Entry<String, Set<String>> reverseDictionaryEntry : wikidataView
+				.getLabelsReverseDictionary().entrySet()) {
+
+			String labels = joiner.join(reverseDictionaryEntry.getValue());
+
+			pairsOfNameValues.put(reverseDictionaryEntry.getKey(), labels);
 		}
 
-		Joiner joiner = Joiner.on(";").skipNulls();
+		super.updateManyColumns(this.reverseDictionaryURI, pairsOfNameValues,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
 
-		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView
-				.getLabelsDictionary().entrySet()) {
-			Set<String> labelIRIsSet = labelDictionaryEntry.getValue();
-			String labelIRIs = joiner.join(labelIRIsSet);
-			String serializedLabelDictionaryEntry = labelDictionaryEntry
-					.getKey() + ";" + labelIRIs;
-			pairsOfNameValues.put(serializedLabelDictionaryEntry,
-					WikidataViewCassandraHelper.DICTIONARY);
-		}
-
-		System.out.println("------------------------------> "
-			+ pairsOfNameValues.size());
-
-		super.updateManyColumns(wikidataView.getURI(), pairsOfNameValues,
-				WikidataViewCassandraHelper.COLUMN_FAMILLY);
-		System.out.println("Clear!!!");
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
 
@@ -90,158 +136,107 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 	// --------------------------------------------------------------------------------
 
-	private String _serializeRelation(String relationType, String sourceIRI,
-			String targetIRI) {
-		return sourceIRI + ">" + targetIRI + ">" + relationType;
-	}
+	private void _createDictionary(WikidataView wikidataView) {
+		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
-	// --------------------------------------------------------------------------------
+		for (Entry<String, Set<String>> labelDictionaryEntry : wikidataView
+				.getLabelsDictionary().entrySet()) {
 
-	private Relation _deserializeRelation(String relationExpression) {
-		// System.out.println("Expression >" + relationExpression);
-		int offset = relationExpression.indexOf(">");
-		String sourceIRI = relationExpression.substring(0, offset);
-		// System.out.println(">>>>" + sourceIRI);
-		int secondOffset = relationExpression.indexOf(">", offset + 1);
-		String targetIRI = relationExpression.substring(offset + 1,
-				secondOffset);
-		String relationType = relationExpression.substring(secondOffset + 1,
-				relationExpression.length());
-		return new Relation(relationType, sourceIRI, targetIRI);
-	}
-
-	// --------------------------------------------------------------------------------
-
-	private class Relation {
-		private String type;
-		private String source;
-		private String target;
-
-		public Relation(String relationType, String source, String target) {
-			super();
-			this.type = relationType;
-			this.source = source;
-			this.target = target;
+			String labelAsociatedIRIs = joiner.join(labelDictionaryEntry
+					.getValue());
+		/*
+			String labelIRI = wikidataView.getURI() + "/labels/"
+					+ labelDictionaryEntry.getKey();
+*/
+			pairsOfNameValues.put(labelDictionaryEntry.getKey(), labelAsociatedIRIs);
 		}
 
-		// ------------------------------------------------------------------------------
+		super.updateManyColumns(this.dictionaryURI, pairsOfNameValues,
+				WikidataViewCassandraHelper.COLUMN_FAMILY);
 
-		public String getType() {
-			return type;
-		}
-
-		// ------------------------------------------------------------------------------
-
-		public String getSource() {
-			return source;
-		}
-
-		// ------------------------------------------------------------------------------
-
-		public String getTarget() {
-			return target;
-		}
-
-		// ------------------------------------------------------------------------------
-
-		@Override
-		public String toString() {
-			return "Relation [relationType=" + type + ", source="
-					+ source + ", target=" + target + "]";
-		}
+		pairsOfNameValues.clear();
+		pairsOfNameValues = null;
 
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(Selector selector) {
-
+		//System.out.println("Reading selector >> " + selector);
 		return null;
 	}
 
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
+		//System.out.println("Reading URI >> " + URI);
+		WikidataView wikidataView = null;
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.URI, URI);
+		if (exists(selector)) {
+			_defineURIs(URI);
+			Map<String, Set<String>> labelsDictionary = _retrieveMap(this.dictionaryURI);
 
-		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(URI, WikidataViewCassandraHelper.COLUMN_FAMILLY);
-
-		if (columnsIterator.hasNext()) {
-
-			Map<String, Set<String>> labelsDictionary = new HashMap<>();
-
-			Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
+			Map<String, Set<String>> labelsReverseDictionary = _retrieveMap(this.reverseDictionaryURI);
 
 			Map<String, Map<String, Set<String>>> relations = new HashMap<>();
+			Map<String, Set<String>> hypernymRelations = _retrieveMap(this.relationsURI+"/"+RelationHelper.HYPERNYM);
+			
+			relations.put(RelationHelper.HYPERNYM, hypernymRelations);
 
-			while (columnsIterator.hasNext()) {
-				HColumn<String, String> column = columnsIterator.next();
-
-				String columnName = column.getName();
-				String columnValue = column.getValue();
-				if (WikidataViewCassandraHelper.RELATIONS.equals(columnValue)) {
-				//	System.out.println("The readed relation "
-					//		+ _deserializeRelation(columnName));
-					Relation relation = _deserializeRelation(columnName);
-					_addRelation(relations, relation);
-				}
-				if (WikidataViewCassandraHelper.DICTIONARY.equals(columnValue)) {
-					List<String> labelIRIS = Splitter.on(';').splitToList(
-							columnName);
-					//System.out.println("labelIRIS> " + labelIRIS);
-
-					String label = labelIRIS.get(0);
-					List<String> IRIs = labelIRIS.subList(1, labelIRIS.size());
-					for (String IRI : IRIs) {
-						//System.out.println("We should add " + IRI + " -> "
-						//		+ label);
-						_addToDictionary(IRI, label, labelsDictionary);
-						_addToDictionary(label, IRI, labelsReverseDictionary);
-					}
-
-				}
-
-			}
-			WikidataView wikidataView = new WikidataView(URI, labelsDictionary,
+			wikidataView = new WikidataView(URI, labelsDictionary,
 					labelsReverseDictionary, relations);
 
 			return wikidataView;
 		}
-
-		return null;
-	}
-
-	private void _addToDictionary(String value, String key,
-			Map<String, Set<String>> dictionary) {
-		Set<String> values = dictionary.get(key);
-		if (values == null) {
-			values = new HashSet<>();
-			dictionary.put(key, values);
-		}
-		values.add(value);
+			
+		
+		return wikidataView;
 	}
 
 	// --------------------------------------------------------------------------------
 
-	private void _addRelation(Map<String, Map<String, Set<String>>> relations,
-			Relation relation) {
-		Map<String, Set<String>> typeRelations = relations.get(relation
-				.getType());
+	/**
+	 * Function that retrieves a map from cassandra
+	 * 
+	 * @param URI
+	 *            THe URI of the dictionary to be retrieved ()
+	 * @return
+	 */
 
-		if (typeRelations == null) {
-			typeRelations = new HashMap<>();
-			relations.put(relation.getType(), typeRelations);
+	private Map<String, Set<String>> _retrieveMap(String URI) {
+
+		ColumnSliceIterator<String, String, String> columnsIterator = super
+				.getAllCollumns(URI, WikidataViewCassandraHelper.COLUMN_FAMILY);
+		Map<String, Set<String>> dictionary = new HashMap<>();
+
+		while (columnsIterator.hasNext()) {
+			HColumn<String, String> column = columnsIterator.next();
+
+			String IRI = column.getName();
+			String IRIasssociatedValues = column.getValue();
+			Set<String> splittedValues = new HashSet<String>(Splitter.on(';')
+					.splitToList(IRIasssociatedValues));
+			dictionary.put(IRI, splittedValues);
 
 		}
-
-		Set<String> targets = typeRelations.get(relation.getSource());
-		if (targets == null) {
-			targets = new HashSet<String>();
-			typeRelations.put(relation.getSource(), targets);
-		}
-		targets.add(relation.getTarget());
+	//	System.out.println("["+URI+"] Dictionary "+dictionary);
+		return dictionary;
 
 	}
+
+	// --------------------------------------------------------------------------------
+
+	@Override
+	public boolean exists(Selector selector) {
+		String URI = selector.getProperties().get(SelectorHelper.URI);
+		_defineURIs(URI);
+		
+	//	System.out.println(URI+"----> "+super.readRow(URI+"", WikidataViewCassandraHelper.COLUMN_FAMILY).hasResults());
+		return (super.readRow(this.dictionaryURI, WikidataViewCassandraHelper.COLUMN_FAMILY).hasResults());
+	}
+
+	// --------------------------------------------------------------------------------
 
 	@Override
 	public Content<String> getContent(Selector selector) {
@@ -291,8 +286,28 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		core.getInformationHandler().put(wikidataView,
 				Context.getEmptyContext());
 
+		WikidataView readedWikidataview = (WikidataView)core.getInformationHandler().get(
+				WikidataHandlerParameters.DEFAULT_URI,
+				RDFHelper.WIKIDATA_VIEW_CLASS);
+		System.out.println("The readed Wikidataview>  "
+				+readedWikidataview );
+
+		System.out.println("test label assoicated uris"
+				+ readedWikidataview
+						.getRelated("source label", RelationHelper.HYPERNYM));
+		
+		System.out.println("There are "+readedWikidataview
+						.getRelated("source label", RelationHelper.HYPERNYM).size() );
+		
+		System.out.println("test label 3 assoicated uris"
+				+ readedWikidataview.getRelated("test label 3",
+						RelationHelper.HYPERNYM));
+
+		System.out.println("Let's delete it !");
+		core.getInformationHandler().remove(wikidataView);
 		System.out.println("Wikidataview  "
-				+ core.getInformationHandler().get("http://wikidataView",
+				+ core.getInformationHandler().get(
+						WikidataHandlerParameters.DEFAULT_URI,
 						RDFHelper.WIKIDATA_VIEW_CLASS));
 
 		System.out.println("WikidataView Cassandra Test--------------");
@@ -304,8 +319,9 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 		Map<String, Set<String>> labelsDictionary = new HashMap<>();
 		Map<String, Set<String>> labelsReverseDictionary = new HashMap<>();
+		
+		
 		Map<String, Map<String, Set<String>>> relations = new HashMap<>();
-
 		Map<String, Set<String>> hypernymRelations = new HashMap<>();
 		Set<String> destionationSet = new HashSet<String>();
 		destionationSet.add("http://testTargetA");
@@ -313,26 +329,25 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		hypernymRelations.put("http://testSource", destionationSet);
 		relations.put(RelationHelper.HYPERNYM, hypernymRelations);
 
+		
+		
 		Set<String> labelDictionary = new HashSet<String>();
 		labelDictionary.add("http://testTargetA");
-		labelDictionary.add("http://testTargetB");
-		labelsDictionary.put("test label", labelDictionary);
+	
+		labelsDictionary.put("target label", labelDictionary);
+		labelsDictionary.put("source label", new HashSet<String>(Arrays.asList("http://testSource")));
+		
+		
+		labelsReverseDictionary.put("http://testSource", new HashSet<String>(Arrays.asList("source label")));
+		
+		labelsReverseDictionary.put("http://testTargetA", new HashSet<String>(Arrays.asList("target label")));
+		
+	
 
-		WikidataView wikidataView = new WikidataView("http://wikidataView",
-				labelsDictionary, labelsReverseDictionary, relations);
+		WikidataView wikidataView = new WikidataView(
+				WikidataHandlerParameters.DEFAULT_URI, labelsDictionary,
+				labelsReverseDictionary, relations);
 		return wikidataView;
 	}
 
-	// --------------------------------------------------------------------------------
-
-	@Override
-	public boolean exists(Selector selector) {
-		String URI = selector.getProperty(SelectorHelper.URI);
-
-		String content = super.readColumn(
-				selector.getProperty(SelectorHelper.URI), URI,
-				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILLY);
-
-		return (content != null && content.length() > 5);
-	}
 }

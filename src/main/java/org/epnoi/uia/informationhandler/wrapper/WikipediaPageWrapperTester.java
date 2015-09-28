@@ -10,25 +10,17 @@ import java.util.List;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.harvester.wikipedia.WikipediaHarvesterOld;
-import org.epnoi.uia.informationstore.CassandraInformationStore;
-import org.epnoi.uia.informationstore.InformationStore;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.learner.nlp.TermCandidatesFinder;
-import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 public class WikipediaPageWrapperTester {
 	Core core;
-	TermCandidatesFinder termCandidatesFinder;
+	
 	WikipediaPage wikipediaPage = _createWikipediaPage();
 
 	// -------------------------------------------------------------------------------------
@@ -74,9 +66,7 @@ public class WikipediaPageWrapperTester {
 
 	public WikipediaPageWrapperTester() {
 		this.core = CoreUtility.getUIACore();
-		this.termCandidatesFinder = new TermCandidatesFinder();
-		this.termCandidatesFinder.init(core);
-
+	
 	}
 
 	private static WikipediaPage _createWikipediaPage() {
@@ -126,8 +116,14 @@ public class WikipediaPageWrapperTester {
 			String annotatedContentURI = _extractURI(wikipediaPage.getURI(),
 					sections.get(i),
 					AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
-			Document annotatedContent = this.termCandidatesFinder
-					.findTermCandidates(sectionContent);
+			Document annotatedContent=null;
+			try {
+				annotatedContent = this.core.getNLPHandler()
+						.process(sectionContent);
+			} catch (EpnoiResourceAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			serializedAnnotatedContent = annotatedContent.toXml();
 
 			// Once it has been serialized, we must free the associated GATE

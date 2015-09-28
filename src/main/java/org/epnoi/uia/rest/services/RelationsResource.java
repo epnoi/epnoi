@@ -23,14 +23,13 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.learner.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.learner.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.learner.knowledgebase.wordnet.WordNetHandlerParameters;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.uia.learner.relations.RelationsHandler;
 import org.epnoi.uia.learner.relations.RelationsHandlerParameters;
 
-import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -49,7 +48,7 @@ public class RelationsResource extends UIAService {
 	private static Set<String> validRelationTypes = new HashSet<String>();
 	static {
 		resourceTypesTable.put("hypernymy", RelationHelper.HYPERNYM);
-		resourceTypesTable.put("mereology", UserRDFHelper.USER_CLASS);
+		resourceTypesTable.put("mereology", RelationHelper.MEREOLOGY);
 		validRelationTypes.add("hypernymy");
 		validRelationTypes.add("mereology");
 	}
@@ -82,21 +81,26 @@ public class RelationsResource extends UIAService {
 			@ApiParam(value = "Surface form of the source term of the relation", required = true, allowMultiple = false) @QueryParam("source") String source,
 			@ApiParam(value = "Surface form of the target term of the relation", required = true, allowMultiple = false) @QueryParam("target") String target,
 			@ApiParam(value = "Relation type", required = true, allowMultiple = false, allowableValues = "hypernymy,mereology") @PathParam("RELATION_TYPE") String type,
-			@ApiParam(value = "Considered domain for the relation", required = true, allowMultiple = false) @QueryParam("domain") String domain) {
+			@ApiParam(value = "Considered domain for the relation", required = false, allowMultiple = false) @QueryParam("domain") String domain) {
 
 		logger.info("GET:> source=" + source + " target=" + target + " type="
 				+ type + " domain" + domain);
 		if ((source != null) && (target != null)
 				&& validRelationTypes.contains(type)) {
 
+			
+			type = resourceTypesTable.get(type);
 			try {
 				logger.info("As the parameters seemed ok we calculate the termhoood");
 
 				Double relationhood = relationsHandler.areRelated(source,
 						target, type, domain);
 
+				System.out.println("------------------------> " + relationhood);
+
 				return Response.ok().entity(relationhood).build();
 			} catch (Exception exception) {
+				exception.printStackTrace();
 				logger.severe(exception.getMessage());
 				return Response.serverError().build();
 			}
@@ -114,47 +118,8 @@ public class RelationsResource extends UIAService {
 				.getAttribute(RELATIONS_HANDLER);
 		if (relationsHandler == null) {
 			relationsHandler = new RelationsHandler();
-			KnowledgeBaseParameters knowledgeBaseParameters = new KnowledgeBaseParameters();
-			WikidataHandlerParameters wikidataParameters = new WikidataHandlerParameters();
-
-			WordNetHandlerParameters wordnetParameters = new WordNetHandlerParameters();
-			wordnetParameters.setParameter(
-					WordNetHandlerParameters.DICTIONARY_LOCATION,
-					"/epnoi/epnoideployment/wordnet/dictWN3.1/");
-
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.WIKIDATA_VIEW_URI,
-					"http://wikidataView");
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.STORE_WIKIDATA_VIEW, false);
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.OFFLINE_MODE, true);
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.DUMP_FILE_MODE,
-					DumpProcessingMode.JSON);
-			wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT,
-					10);
-			wikidataParameters.setParameter(
-					WikidataHandlerParameters.DUMP_PATH,
-					"/Users/rafita/Documents/workspace/wikidataParsingTest");
-
-			knowledgeBaseParameters.setParameter(
-					KnowledgeBaseParameters.WORDNET_PARAMETERS,
-					wordnetParameters);
-
-			knowledgeBaseParameters.setParameter(
-					KnowledgeBaseParameters.WIKIDATA_PARAMETERS,
-					wikidataParameters);
 
 			RelationsHandlerParameters relationsHandlerParameters = new RelationsHandlerParameters();
-
-			relationsHandlerParameters.setParameter(
-					RelationsHandlerParameters.KNOWLEDGE_BASE_PARAMETERS,
-					knowledgeBaseParameters);
 
 			relationsHandlerParameters.setParameter(
 					RelationsHandlerParameters.CONSIDERED_DOMAINS,

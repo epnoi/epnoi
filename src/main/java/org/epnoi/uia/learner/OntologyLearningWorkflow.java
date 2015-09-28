@@ -40,6 +40,7 @@ public class OntologyLearningWorkflow {
 	private double hypernymRelationsThreshold;
 	private boolean extractTerms;
 	private boolean extractRelations;
+	
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
@@ -92,7 +93,7 @@ public class OntologyLearningWorkflow {
 			this.termsTable = this.termsRetriever.retrieve(targetDomain);
 		}
 
-		termsTable.show(30);
+		//termsTable.show(30);
 
 		System.out.println("Extracting relations table");
 
@@ -140,6 +141,8 @@ public class OntologyLearningWorkflow {
 		// In future versions the ontology graph should be cleaned here.
 
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		System.out.println("Starting the Ontology Learning Process!");
@@ -159,17 +162,17 @@ public class OntologyLearningWorkflow {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
 			domain.setURI(corpusURI);
-			domain.setConsideredResource(RDFHelper.PAPER_CLASS);
+			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 
 		List<Domain> consideredDomains = Arrays.asList(domain);
 		String targetDomain = corpusURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
-		Double hypernymExtractionMinimumThresohold = 0.1;
+		Double hypernymExtractionMinimumThresohold = 0.091;
 		boolean extractTerms = true;
 		Integer numberInitialTerms = 10;
-		String hypernymsModelPath = "/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
+		String hypernymsModelPath = "/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin";
 
 		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(
@@ -186,7 +189,7 @@ public class OntologyLearningWorkflow {
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
-						hyperymExpansionMinimumThreshold);
+						hypernymExtractionMinimumThresohold);
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
@@ -196,6 +199,7 @@ public class OntologyLearningWorkflow {
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
+		ontologyLearningParameters.setParameter(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE, false);
 
 		OntologyLearningWorkflow ontologyLearningProcess = new OntologyLearningWorkflow();
 

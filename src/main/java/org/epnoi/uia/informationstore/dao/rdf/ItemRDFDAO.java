@@ -10,6 +10,7 @@ import java.util.Locale;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
+import org.epnoi.uia.commons.StringUtils;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -49,12 +50,12 @@ public class ItemRDFDAO extends RDFDAO {
 				.replace("{URL_PROPERTY}", RDFHelper.URL_PROPERTY)
 				.replace("{ITEM_LINK}", item.getLink())
 				.replace("{TITLE_PROPERTY}", DublinCoreRDFHelper.TITLE_PROPERTY)
-				.replace("{ITEM_TITLE}", cleanOddCharacters(item.getTitle()))
+				.replace("{ITEM_TITLE}", StringUtils.cleanOddCharacters(item.getTitle()))
 				.replace("{PUB_DATE_PROPERTY}", FeedRDFHelper.PUB_DATE_PROPERTY)
 				.replace("{DESCRIPTION_PROPERTY}",
 						FeedRDFHelper.DESCRIPTION_PROPERTY)
 				.replace("{ITEM_DESCRIPTION}",
-						cleanOddCharacters(item.getDescription()))
+						StringUtils.cleanOddCharacters(item.getDescription()))
 				.replace("{ITEM_PUB_DATE}",
 						convertDateFormat(item.getPubDate()))
 				.replace("{AUTHOR_PROPERTY}", FeedRDFHelper.AUTHOR_PROPERTY)

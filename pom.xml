@@ -143,6 +143,15 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>gate-stanford</groupId>
+			<artifactId>gate-stanford</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${lib.dir}/gate-stanford/stanford-parser.jar</systemPath>
+		</dependency>
+
 		<!-- <dependency> <groupId>org.javatuples</groupId> <artifactId>javatuples</artifactId> 
 			<version>1.2</version> <scope>compile</scope> </dependency> -->
 		<dependency>
@@ -248,7 +257,11 @@
 			<artifactId>mahout-core</artifactId>
 			<version>0.9</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.4.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>epnoi</finalName>
@@ -267,7 +280,7 @@
 					</webApp>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>8081</port>
+							<port>8080</port>
 						</connector>
 					</connectors>
 					<!-- <jettyXml>src/main/resources/jetty.xml</jettyXml> <scanIntervalSeconds>10</scanIntervalSeconds> -->
@@ -275,6 +288,14 @@
 
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
 
 	</build>

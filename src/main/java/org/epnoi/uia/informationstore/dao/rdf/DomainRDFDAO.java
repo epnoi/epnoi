@@ -4,9 +4,12 @@ import java.util.Iterator;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
+import org.epnoi.model.DublinCoreMetadataElementsSet;
 import org.epnoi.model.InformationSource;
+import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
+import org.epnoi.uia.parameterization.InformationStoreParameters;
 
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -23,20 +26,26 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class DomainRDFDAO extends RDFDAO {
 
+
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
 		Domain domain = (Domain) resource;
 		String domainURI = domain.getURI();
 
+		// First of all we insert the domain (URI plus its properties)
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
-				+ "{ <{URI}> a <{DOMAIN_CLASS}> . }";
+
+		+ " { <{URI}> a <{DOMAIN_CLASS}> . "
+				+ " <{URI}> <{HAS_RESOURCES_PROPERTY}> <{RESOURCES_URI}> . }";
 
 		queryExpression = queryExpression
 				.replace("{GRAPH}", parameters.getGraph())
 				.replace("{URI}", domainURI)
-				.replace("{DOMAIN_CLASS}", RDFHelper.DOMAIN_CLASS);
-
+				.replace("{DOMAIN_CLASS}", RDFHelper.DOMAIN_CLASS)
+				.replace("{HAS_RESOURCES_PROPERTY}", RDFHelper.HAS_RESOURCES_PROPERTY)
+				.replace("{RESOURCES_URI}", domain.getResources());
+		System.out.println("DOMAIN EXPRESSION ...> "+queryExpression);
 		VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(
 				queryExpression, graph);
 
@@ -77,6 +86,7 @@ public class DomainRDFDAO extends RDFDAO {
 			Triple triple = i.next();
 
 			graph.remove(triple);
+			
 
 		}
 	}
@@ -84,7 +94,33 @@ public class DomainRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
-		return null;
+		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
+				+ parameters.getGraph() + ">");
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
+				sparql, graph);
+
+		Model model = vqe.execDescribe();
+		Graph g = model.getGraph();
+		// System.out.println("\nDESCRIBE results:");
+		if (!g.find(Node.ANY, Node.ANY, Node.ANY).hasNext()) {
+			return null;
+		}
+		Domain domain = new Domain();
+		domain.setURI(URI);
+		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
+				.hasNext();) {
+			Triple t = i.next();
+			String predicateURI = t.getPredicate().getURI();
+			
+			System.out.println(predicateURI);
+			if (RDFHelper.HAS_RESOURCES_PROPERTY.equals(predicateURI)) {
+				System.out.println("ENTRA");
+				domain.setResources(
+						t.getObject().getURI().toString());
+			}
+		
+		}
+		return domain;
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------

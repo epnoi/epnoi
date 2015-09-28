@@ -9,6 +9,8 @@ public class ResearchObject implements Resource {
 
 	private String URI;
 	private List<String> aggregatedResources;
+	
+	// --------------------------------------------------------------------------
 
 	public ResearchObject() {
 		this.aggregatedResources = new ArrayList<String>();
