@@ -1,4 +1,4 @@
-package org.epnoi.uia.rest.clients;
+package org.epnoi.rest.clients;
 
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;

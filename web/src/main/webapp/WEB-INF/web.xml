@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>Archetype Created Web Application</display-name>
-
+<!-- 
 	<servlet>
 		<servlet-name>simple</servlet-name>
 		<servlet-class>org.epnoi.uia.SimpleServlet</servlet-class>
@@ -13,7 +13,7 @@
 		<servlet-name>simple</servlet-name>
 		<url-pattern>/simple</url-pattern>
 	</servlet-mapping>
-
+ -->
 	<servlet>
 		<description>AtmosphereServlet</description>
 		<servlet-name>AtmosphereServlet</servlet-name>
@@ -21,7 +21,7 @@
 		<init-param>
 
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.epnoi.uia.rest.services; com.wordnik.swagger.jersey.listing</param-value>
+			<param-value>org.epnoi.rest.services; com.wordnik.swagger.jersey.listing</param-value>
 		</init-param>
 		<init-param>
 
@@ -53,8 +53,8 @@
 		<init-param>
 			<param-name>swagger.api.basepath</param-name>
 		 	
-		<!-- 	<param-value>http://localhost:8080/epnoi/rest</param-value> -->
-	 		 <param-value>http://zavijava.dia.fi.upm.es:8080/epnoi/rest</param-value>   
+		<param-value>http://localhost:8080/epnoi/rest</param-value> 
+	 	<!-- 	 <param-value>http://zavijava.dia.fi.upm.es:8080/epnoi/rest</param-value>    -->
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>

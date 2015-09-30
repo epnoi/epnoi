@@ -1,4 +1,4 @@
-package org.epnoi.uia.rest.clients;
+package org.epnoi.rest.clients;
 
 import java.io.File;
 import java.io.FilenameFilter;

@@ -1,4 +1,4 @@
-package org.epnoi.uia.client;
+package org.epnoi.rest.clients;
 
 import javax.ws.rs.core.MultivaluedMap;
 

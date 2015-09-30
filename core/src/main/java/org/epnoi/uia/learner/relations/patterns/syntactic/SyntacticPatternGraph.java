@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.jgrapht.graph.SimpleGraph;
 
-import scala.reflect.internal.Trees.ThisSubstituter;
+
 
 public class SyntacticPatternGraph extends
 		SimpleGraph<SyntacticPatternGraphVertex, SyntacticPatternGraphEdge> {

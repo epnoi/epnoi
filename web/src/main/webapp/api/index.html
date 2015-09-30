@@ -30,7 +30,9 @@
 <script type="text/javascript">
 	$(function() {
 		window.swaggerUi = new SwaggerUi({
-			url : "http://zavijava.dia.fi.upm.es:8080/epnoi/rest/api-docs",
+			//url : "http://zavijava.dia.fi.upm.es:8080/epnoi/rest/api-docs",
+			url : "http://localhost:8080/epnoi/rest/api-docs",
+			
 			dom_id : "swagger-ui-container",
 			supportedSubmitMethods : [ 'get', 'post', 'put', 'delete' ],
 			onComplete : function(swaggerApi, swaggerUi) {

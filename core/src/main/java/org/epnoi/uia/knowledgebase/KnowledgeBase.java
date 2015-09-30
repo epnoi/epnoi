@@ -8,16 +8,8 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.CassandraInformationStore;
-import org.epnoi.uia.informationstore.InformationStore;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.WikidataViewCassandraHelper;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
-
-import com.google.common.collect.Sets;
-
-import edu.stanford.nlp.ling.CoreAnnotations.StemAnnotation;
 
 public class KnowledgeBase {
 

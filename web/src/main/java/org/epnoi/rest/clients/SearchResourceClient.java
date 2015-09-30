@@ -1,4 +1,4 @@
-package org.epnoi.uia.rest.clients;
+package org.epnoi.rest.clients;
 
 import org.epnoi.uia.search.SearchResult;
 

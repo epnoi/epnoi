@@ -1,13 +1,10 @@
-package org.epnoi.uia.core;
-
-import java.util.logging.Logger;
+package org.epnoi.rest.services;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreUtility;
 
-public class CoreMain {
-	private static final Logger logger = Logger.getLogger(CoreMain.class
-			.getName());
-
+public class Test {
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		try {

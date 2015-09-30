@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.nlp.NLPHandler;
 import org.epnoi.uia.parameterization.ParametersModel;
 

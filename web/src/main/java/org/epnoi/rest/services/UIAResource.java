@@ -87,14 +87,15 @@ public class UIAResource extends UIAService {
 		org.epnoi.rest.services.response.KnowledgeBase knowledgeBase = new org.epnoi.rest.services.response.KnowledgeBase();
 		knowledgeBase.setStatus(this.core.getKnowledgeBaseHandler()
 				.isKnowledgeBaseInitialized());
-
-		for (Entry<String, Object> entry : this.core
-				.getKnowledgeBaseHandler().getKnowledgeBaseParameters()
+/*
+		for (Entry<String, Object> entry : this.core.g).getKnowledgeBaseParameters()
 				.getParameters().entrySet()) {
 			
 			knowledgeBase.getParameters().put(entry.getKey(),
 					entry.getValue().toString());
 		}
+	*/
+		System.out.println("-------------------___> "+knowledgeBase);
 		return knowledgeBase;
 	}
 

@@ -39,7 +39,7 @@ echo $!
 
 start_epnoi () {
 echo "Starting epnoi!---------------------------------------------------------------------------"
-cd $EPNOI_HOME/epnoi
+cd $EPNOI_HOME/epnoi/web
 
 if [ "$VERBOSE_PARAMETER" = "verbose" ]; then
 echo "Starting in verbose mode!"
