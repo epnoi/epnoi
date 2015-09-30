@@ -1,8 +1,5 @@
 package org.epnoi.uia.informationhandler.wrapper;
 
-import gate.Document;
-import gate.Factory;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +9,14 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+
+import gate.Document;
+import gate.Factory;
 
 public class WikipediaPageWrapperTester {
 	Core core;

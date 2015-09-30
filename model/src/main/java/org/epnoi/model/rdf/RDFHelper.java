@@ -1,4 +1,4 @@
-package org.epnoi.uia.informationstore.dao.rdf;
+package org.epnoi.model.rdf;
 
 public class RDFHelper {
 	public static final String PORT="PORT";

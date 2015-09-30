@@ -11,11 +11,11 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;

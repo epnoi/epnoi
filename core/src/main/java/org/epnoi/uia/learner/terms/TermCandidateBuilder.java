@@ -1,15 +1,18 @@
 package org.epnoi.uia.learner.terms;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import org.epnoi.model.AnnotatedWord;
+import org.epnoi.model.TermMetadata;
+
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
 
 public class TermCandidateBuilder {
 	private final String symbolPatter="[^\\w\\s]";

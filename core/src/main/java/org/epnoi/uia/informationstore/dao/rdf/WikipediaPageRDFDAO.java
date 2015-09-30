@@ -6,11 +6,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
-
-import virtuoso.jena.driver.VirtuosoQueryExecution;
-import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
-import virtuoso.jena.driver.VirtuosoUpdateFactory;
-import virtuoso.jena.driver.VirtuosoUpdateRequest;
+import org.epnoi.model.rdf.RDFHelper;
 
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.Node;
@@ -19,6 +15,11 @@ import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
+
+import virtuoso.jena.driver.VirtuosoQueryExecution;
+import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
+import virtuoso.jena.driver.VirtuosoUpdateFactory;
+import virtuoso.jena.driver.VirtuosoUpdateRequest;
 
 public class WikipediaPageRDFDAO extends RDFDAO {
 

@@ -9,8 +9,8 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.DateConverter;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class PaperSOLRDAO extends SOLRDAO {
 

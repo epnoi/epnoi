@@ -5,8 +5,6 @@ import java.util.List;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.uia.commons.Parameters;
-import org.epnoi.uia.learner.terms.AnnotatedWord;
-import org.epnoi.uia.learner.terms.TermMetadata;
 import org.epnoi.uia.learner.terms.TermVertice;
 import org.epnoi.uia.learner.terms.TermsTable;
 

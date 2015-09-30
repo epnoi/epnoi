@@ -6,10 +6,10 @@ import java.util.logging.Logger;
 import org.epnoi.model.Domain;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.harvester.filesystem.FilesystemHarvester;
 import org.epnoi.uia.harvester.filesystem.FilesystemHarvesterParameters;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class DemoDataLoader {
 	Core core;

@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.learner.OntologyLearningTask;
 
 import com.sun.jersey.api.Responses;

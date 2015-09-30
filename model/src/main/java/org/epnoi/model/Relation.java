@@ -4,8 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.solr.common.util.Hash;
-import org.epnoi.uia.commons.StringUtils;
+import org.epnoi.model.commons.StringUtils;
 
 public class Relation implements Resource {
 	private String URI;

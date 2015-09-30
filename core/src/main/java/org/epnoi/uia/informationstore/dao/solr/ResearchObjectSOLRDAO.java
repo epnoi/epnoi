@@ -9,9 +9,9 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.DublinCoreRDFHelper;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.DateConverter;
-import org.epnoi.uia.informationstore.dao.rdf.DublinCoreRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 
 public class ResearchObjectSOLRDAO extends SOLRDAO {

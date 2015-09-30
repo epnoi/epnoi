@@ -3,16 +3,16 @@ package org.epnoi.uia.informationstore.dao;
 import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
-
-import virtuoso.jena.driver.VirtuosoUpdateFactory;
-import virtuoso.jena.driver.VirtuosoUpdateRequest;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
+
+import virtuoso.jena.driver.VirtuosoUpdateFactory;
+import virtuoso.jena.driver.VirtuosoUpdateRequest;
 
 public class RelationalSentencesCorpusRDFDAO extends RDFDAO {
 

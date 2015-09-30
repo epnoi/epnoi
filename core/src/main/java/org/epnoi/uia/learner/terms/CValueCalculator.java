@@ -1,5 +1,7 @@
 package org.epnoi.uia.learner.terms;
 
+import org.epnoi.model.AnnotatedWord;
+import org.epnoi.model.TermMetadata;
 
 public class CValueCalculator {
 	private static final double LENGHT_ONE_WEIGTH = 0.5;

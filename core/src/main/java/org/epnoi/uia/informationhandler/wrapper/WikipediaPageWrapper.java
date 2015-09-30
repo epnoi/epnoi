@@ -5,13 +5,13 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class WikipediaPageWrapper implements Wrapper {
 	Core core;

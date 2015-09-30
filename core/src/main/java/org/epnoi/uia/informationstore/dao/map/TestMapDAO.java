@@ -1,21 +1,21 @@
 package org.epnoi.uia.informationstore.dao.map;
 
-import gate.Document;
-import gate.Factory;
-
 import java.util.regex.Pattern;
 
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.MapInformationStoreParameters;
 
 import com.rits.cloning.Cloner;
+
+import gate.Document;
+import gate.Factory;
 
 public class TestMapDAO extends MapDAO {
 

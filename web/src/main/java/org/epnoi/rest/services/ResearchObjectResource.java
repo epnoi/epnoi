@@ -23,9 +23,9 @@ import javax.ws.rs.core.Response;
 
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.rest.services.response.jsonld.JSONLDResearchObjectResponseBuilder;
 import org.epnoi.rest.services.response.jsonld.JSONLDResponse;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;

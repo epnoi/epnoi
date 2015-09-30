@@ -1,7 +1,5 @@
 package org.epnoi.uia.harvester.oaipmh;
 
-import gate.Document;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,15 +21,17 @@ import org.epnoi.model.Content;
 import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.CommandLineTool;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import gate.Document;
 
 public class IncrementalOAIPMHHarvester extends CommandLineTool {
 	public static final String PARAMETER_COMMAND = "-command";

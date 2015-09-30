@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.epnoi.model.InformationSourceSubscription;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.OAIORERDFHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;

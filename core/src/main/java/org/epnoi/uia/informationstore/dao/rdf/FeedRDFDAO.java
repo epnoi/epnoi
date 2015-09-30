@@ -9,15 +9,11 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.DublinCoreRDFHelper;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.DateConverter;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
-
-import virtuoso.jena.driver.VirtGraph;
-import virtuoso.jena.driver.VirtuosoQueryExecution;
-import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
-import virtuoso.jena.driver.VirtuosoUpdateFactory;
-import virtuoso.jena.driver.VirtuosoUpdateRequest;
 
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.Node;
@@ -26,6 +22,12 @@ import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
+
+import virtuoso.jena.driver.VirtGraph;
+import virtuoso.jena.driver.VirtuosoQueryExecution;
+import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
+import virtuoso.jena.driver.VirtuosoUpdateFactory;
+import virtuoso.jena.driver.VirtuosoUpdateRequest;
 
 public class FeedRDFDAO extends RDFDAO {
 

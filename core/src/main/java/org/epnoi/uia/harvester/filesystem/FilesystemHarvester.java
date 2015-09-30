@@ -1,7 +1,5 @@
 package org.epnoi.uia.harvester.filesystem;
 
-import gate.Document;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -26,12 +24,14 @@ import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.xml.sax.ContentHandler;
+
+import gate.Document;
 
 public class FilesystemHarvester {
 	private Core core;

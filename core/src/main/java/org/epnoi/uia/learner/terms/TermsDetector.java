@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.epnoi.model.AnnotatedWord;
+import org.epnoi.model.TermMetadata;
 import org.epnoi.uia.learner.automata.Automaton;
 import org.epnoi.uia.learner.automata.AutomatonImpl;
 import org.epnoi.uia.learner.automata.Input;

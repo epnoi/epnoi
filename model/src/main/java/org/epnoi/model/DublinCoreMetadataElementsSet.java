@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DublinCoreMetadataElementsSet {
 
-	@JsonProperty("dublinCoreProperties")
+	//@JsonProperty("dublinCoreProperties")
 	private Map<String, List<String>> dublinCoreProperties = new HashMap<>();
 
 	// --------------------------------------------------------------------------
@@ -42,21 +42,21 @@ public class DublinCoreMetadataElementsSet {
 
 	// --------------------------------------------------------------------------
 
-	@JsonIgnore
+	//@JsonIgnore
 	public List<String> getPropertyValues(String propertyURI) {
 		return this.dublinCoreProperties.get(propertyURI);
 	}
 
 	// --------------------------------------------------------------------------
 
-	@JsonIgnore
+	//@JsonIgnore
 	public String getPropertyFirstValue(String propertyURI) {
 
 		return this.dublinCoreProperties.get(propertyURI).get(0);
 	}
 
 	// --------------------------------------------------------------------------
-	@JsonIgnore
+	//@JsonIgnore
 	public Collection<String> getProperties() {
 		return this.dublinCoreProperties.keySet();
 	}

@@ -1,7 +1,5 @@
 package org.epnoi.uia.harvester.url;
 
-import gate.Document;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -23,12 +21,14 @@ import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.xml.sax.ContentHandler;
+
+import gate.Document;
 
 public class URLHarvester {
 	private Core core;

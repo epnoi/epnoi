@@ -3,14 +3,11 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.parameterization.InformationStoreParameters;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
-
-import virtuoso.jena.driver.VirtGraph;
-import virtuoso.jena.driver.VirtuosoQueryExecution;
-import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
@@ -19,6 +16,10 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import virtuoso.jena.driver.VirtGraph;
+import virtuoso.jena.driver.VirtuosoQueryExecution;
+import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
 public class RDFDAOQueryResolver {
 	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";

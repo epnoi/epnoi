@@ -22,8 +22,8 @@ import javax.ws.rs.core.Response;
 
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.rest.services.response.WikidataViewSummary;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataView;

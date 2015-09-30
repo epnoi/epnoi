@@ -2,10 +2,10 @@ package org.epnoi.uia.commons;
 
 import java.util.List;
 
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class WikipediaPagesRetriever {

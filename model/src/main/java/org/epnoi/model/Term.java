@@ -2,9 +2,7 @@ package org.epnoi.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import org.epnoi.uia.commons.StringUtils;
-import org.epnoi.uia.learner.terms.AnnotatedWord;
-import org.epnoi.uia.learner.terms.TermMetadata;
+import org.epnoi.model.commons.StringUtils;
 
 public class Term implements Resource {
 	private String URI;

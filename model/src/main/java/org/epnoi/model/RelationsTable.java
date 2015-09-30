@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.epnoi.uia.learner.terms.TermVertice;
+
 
 public class RelationsTable implements Resource {
 

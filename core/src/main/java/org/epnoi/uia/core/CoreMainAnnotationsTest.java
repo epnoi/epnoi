@@ -1,19 +1,14 @@
 package org.epnoi.uia.core;
 
-import gate.Annotation;
-import gate.Document;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
-import gate.util.InvalidOffsetException;
-
 import java.util.List;
 
-import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.User;
-import org.epnoi.uia.commons.XMLUtils;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.model.rdf.RDFHelper;
+
+import gate.Annotation;
+import gate.Document;
+import gate.util.InvalidOffsetException;
 
 public class CoreMainAnnotationsTest {
 

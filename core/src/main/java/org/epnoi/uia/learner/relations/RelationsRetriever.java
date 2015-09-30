@@ -4,8 +4,8 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.Domain;
 import org.epnoi.model.RelationsTable;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 public class RelationsRetriever {
 	private static final Logger logger = Logger

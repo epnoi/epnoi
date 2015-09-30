@@ -24,7 +24,12 @@
 	</properties>
 	<dependencies>
 
-	
+	<dependency>
+			<groupId>org.epnoi</groupId>
+			<artifactId>model</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
 	
 		<dependency>
 			<groupId>junit</groupId>

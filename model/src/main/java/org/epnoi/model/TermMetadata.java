@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.terms;
+package org.epnoi.model;
 
 import java.util.Arrays;
 import java.util.HashMap;

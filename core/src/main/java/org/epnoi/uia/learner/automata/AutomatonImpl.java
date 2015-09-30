@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.epnoi.uia.learner.terms.AnnotatedWord;
+import org.epnoi.model.AnnotatedWord;
 
 public class AutomatonImpl implements Automaton<AnnotatedWord<String>> {
 

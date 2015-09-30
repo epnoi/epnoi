@@ -1,7 +1,7 @@
 package org.epnoi.rest.clients;
 
 import org.epnoi.model.ResearchObject;
-import org.epnoi.uia.informationstore.dao.rdf.DublinCoreRDFHelper;
+import org.epnoi.model.rdf.DublinCoreRDFHelper;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;

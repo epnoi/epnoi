@@ -6,13 +6,13 @@ import java.util.List;
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class AnnotationHandlerImpl implements AnnotationHandler {

@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 

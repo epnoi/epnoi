@@ -27,7 +27,7 @@ import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Term;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.learner.OntologyLearningTask;
 import org.epnoi.uia.learner.terms.TermsTable;
 

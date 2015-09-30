@@ -4,12 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
 import org.epnoi.model.WikipediaPage;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.SearchResult;
-import org.epnoi.uia.search.select.SelectExpression;
+import org.epnoi.model.rdf.RDFHelper;
 
 public class CoreWikipediaPageTest {
 

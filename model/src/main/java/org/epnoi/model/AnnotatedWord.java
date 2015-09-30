@@ -1,4 +1,4 @@
-package org.epnoi.uia.learner.terms;
+package org.epnoi.model;
 
 public class AnnotatedWord<T extends Comparable<T>> implements Comparable<AnnotatedWord<T>> {
 	private String word;

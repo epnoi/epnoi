@@ -1,4 +1,4 @@
-package org.epnoi.uia.informationstore.dao.rdf;
+package org.epnoi.model.rdf;
 
 public interface DublinCoreRDFHelper {
 	public static final String DESCRIPTION_PROPERTY = "http://purl.org/dc/terms/description";

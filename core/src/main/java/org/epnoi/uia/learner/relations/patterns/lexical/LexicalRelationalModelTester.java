@@ -4,9 +4,9 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;

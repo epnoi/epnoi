@@ -10,10 +10,10 @@ import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
+import org.epnoi.model.TermMetadata;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
-import org.epnoi.uia.learner.terms.TermMetadata;
 
 import com.google.common.collect.Lists;
 

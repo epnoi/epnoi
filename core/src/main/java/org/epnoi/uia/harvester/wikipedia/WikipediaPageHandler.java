@@ -1,24 +1,15 @@
 package org.epnoi.uia.harvester.wikipedia;
 
-import gate.Document;
-import gate.Factory;
-
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Context;
-import org.epnoi.model.WikipediaPage;
 import org.epnoi.uia.commons.BoundedExecutor;
 import org.epnoi.uia.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
-import org.epnoi.uia.informationstore.Selector;
-import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.rdf.RDFHelper;
 
 //-------------------------------------------------------------------------------------------------------------------
 

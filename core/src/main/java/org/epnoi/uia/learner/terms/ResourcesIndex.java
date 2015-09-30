@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.epnoi.model.AnnotatedWord;
+import org.epnoi.model.TermMetadata;
+
 public class ResourcesIndex {
 
 	// Resources are stored per domain, ie: domain_uri
