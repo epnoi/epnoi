@@ -52,6 +52,7 @@ public class ParametersModelReader {
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 			Unmarshaller um = context.createUnmarshaller();
+			System.out.println("----> "+modelFilePath);
 			model = (ParametersModel) um
 					.unmarshal(new FileReader(modelFilePath));
 		} catch (PropertyException e) {

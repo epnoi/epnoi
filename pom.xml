@@ -16,6 +16,13 @@
 		<module>core</module>
 		<module>web</module>
 		<module>model</module>
+		<module>storage</module>
+		<module>nlp</module>
+		<module>harvester</module>
+		<module>hoarder</module>
+		<module>learner</module>
+		<module>topics</module>
+		<module>app</module>
 	</modules>
 	
 	<dependencies>

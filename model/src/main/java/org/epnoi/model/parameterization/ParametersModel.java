@@ -7,200 +7,167 @@ import javax.xml.bind.annotation.XmlRootElement;
 //import javax.xml.bind.annotation.
 @XmlRootElement(name = "parametersModel")
 public class ParametersModel {
-
-	private String modelPath;
-	// private String indexPath;
-	// private String graphPath;
-
+	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_LOAD ="load";
+	
+	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_CREATE ="create";
+	
 	// Server related properties
 	private String hostname;
 	private String port;
 	private String path;
 	// private String scope;
+	//private String gatePath;
+	private NLPParameters nlp;
+	private KnowledgeBaseParameters knowledgeBase;
 
-	private ArrayList<CollaborativeFilterRecommenderParameters> collaborativeFilteringRecommender;
-	private ArrayList<KeywordRecommenderParameters> keywordBasedRecommender;
-	private ArrayList<SocialNetworkRecommenderParameters> socialRecommender;
-	private ArrayList<GroupBasedRecommenderParameters> groupBasedRecommender;
-	private ArrayList<AggregationBasedRecommenderParameters> aggregationBasedRecommender;
-	private InferenceEngineParameters inferenceEngine;
+	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
+	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
+	private ArrayList<CassandraInformationStoreParameters> cassandraInformationStores;
+	private ArrayList<MapInformationStoreParameters> mapInformationStores;
+
+	private RSSHoarderParameters rssHoarder;
+	private RSSHarvesterParameters rssHarvester;
+
+	// ---------------------------------------------------------------------------------
 
 	public ParametersModel() {
-		this.collaborativeFilteringRecommender = new ArrayList<CollaborativeFilterRecommenderParameters>();
-		this.keywordBasedRecommender = new ArrayList<KeywordRecommenderParameters>();
-		this.socialRecommender = new ArrayList<SocialNetworkRecommenderParameters>();
-		this.groupBasedRecommender = new ArrayList<GroupBasedRecommenderParameters>();
-		this.aggregationBasedRecommender = new ArrayList<AggregationBasedRecommenderParameters>();
+		this.virtuosoInformationStores = new ArrayList<>();
+		this.solrInformationStores = new ArrayList<>();
+		this.cassandraInformationStores = new ArrayList<>();
+		this.mapInformationStores = new ArrayList<>();
 	}
 
-	public ArrayList<KeywordRecommenderParameters> getKeywordBasedRecommender() {
-		return keywordBasedRecommender;
+	// ---------------------------------------------------------------------------------
+
+	public ArrayList<VirtuosoInformationStoreParameters> getVirtuosoInformationStore() {
+		return virtuosoInformationStores;
 	}
 
-	public void setKeywordBasedRecommender(
-			ArrayList<KeywordRecommenderParameters> keywordBasedRecommender) {
-		this.keywordBasedRecommender = keywordBasedRecommender;
+	// ---------------------------------------------------------------------------------
+
+	public void setVirtuosoInformationStore(
+			ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStore) {
+		this.virtuosoInformationStores = virtuosoInformationStore;
 	}
 
-	public ArrayList<CollaborativeFilterRecommenderParameters> getCollaborativeFilteringRecommender() {
-		return collaborativeFilteringRecommender;
-	}
-
-	public void setCollaborativeFilteringRecommender(
-			ArrayList<CollaborativeFilterRecommenderParameters> collaborativeFilteringRecommender) {
-		this.collaborativeFilteringRecommender = collaborativeFilteringRecommender;
-	}
-
-	public ArrayList<SocialNetworkRecommenderParameters> getSocialRecommender() {
-		return socialRecommender;
-	}
-
-	public void setSocialRecommender(
-			ArrayList<SocialNetworkRecommenderParameters> socialRecommender) {
-		this.socialRecommender = socialRecommender;
-	}
-
-	public String getModelPath() {
-		return modelPath;
-	}
-
-	public void setModelPath(String modelPath) {
-		this.modelPath = modelPath;
-	}
-
-	/*
-	 * public String getIndexPath() { return indexPath; }
-	 * 
-	 * public void setIndexPath(String indexPath) { this.indexPath = indexPath;
-	 * }
-	 */
-	public String getHostname() {
-		return hostname;
-	}
-
-	public void setHostname(String hostname) {
-		this.hostname = hostname;
-	}
-
-	public String getPort() {
-		return port;
-	}
-
-	public void setPort(String port) {
-		this.port = port;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	/*
-	 * public String getGraphPath() { return graphPath; }
-	 * 
-	 * public void setGraphPath(String graphPath) { this.graphPath = graphPath;
-	 * }
-	 */
-	public InferenceEngineParameters getInferenceEngine() {
-		return inferenceEngine;
-	}
-
-	public void setInferenceEngine(InferenceEngineParameters inferenceEngine) {
-		this.inferenceEngine = inferenceEngine;
-	}
+	// ---------------------------------------------------------------------------------
 
 	public void resolveToAbsolutePaths(Class<? extends Object> referenceClass) {
-		String completeModelPath = this.modelPath;
-		
-		System.out.println("Model path "+this.modelPath);
-		if (this.modelPath.charAt(0) != '/') {
-			completeModelPath = referenceClass.getResource(this.modelPath)
-					.getPath();
-		}
-		this.setModelPath(completeModelPath);
-		
-		 System.out.println("The modelPath is made absolute: absolute value: " +
-		 this.getModelPath());
-		 /*
-		 * logger.info("The index Path is made absolute: intial value: " +
-		 * parametersModel.getIndexPath());
-		 */
 		/*
-		 * String indexPath = referenceClass.getResource(this.getIndexPath())
-		 * .getPath();
+		 * TRANSLATES LOCAL PATHS TO ABSOLUTE PATHS IF NECESSARY String
+		 * completeModelPath = this.modelPath; if (this.modelPath.charAt(0) !=
+		 * '/') { completeModelPath = referenceClass.getResource(this.modelPath)
+		 * .getPath(); } this.setModelPath(completeModelPath); for
+		 * (KeywordRecommenderParameters keywordRecommender :
+		 * this.keywordBasedRecommender) {
 		 * 
-		 * this.setIndexPath(indexPath);
-		 */
-		/*
-		 * logger.info("The indexPath is made absolute: absolute value: " +
-		 * parametersModel.getIndexPath());
-		 * logger.info("The graph Path is made absolute: intial value: " +
-		 * parametersModel.getGraphPath());
-		 */
-		/*
-		 * String graphPath = referenceClass.getResource(this.getGraphPath())
-		 * .getPath();
+		 * if (keywordRecommender.getIndexPath().charAt(0) != '/') {
+		 * keywordRecommender.setIndexPath(referenceClass.getResource(
+		 * keywordRecommender.getIndexPath()).getPath()); }
 		 * 
-		 * this.setGraphPath(graphPath);
+		 * }
 		 */
-		/*
-		 * logger.info("The graph path is made absolute: absolute value: " +
-		 * parametersModel.getGraphPath());
-		 */
-		for (KeywordRecommenderParameters keywordRecommender : this.keywordBasedRecommender) {
-
-			if (keywordRecommender.getIndexPath().charAt(0) != '/') {
-				keywordRecommender.setIndexPath(referenceClass.getResource(
-						keywordRecommender.getIndexPath()).getPath());
-			}
-
-		}
-
-		for (SocialNetworkRecommenderParameters socialNetworkRecommender : this.socialRecommender) {
-			if (socialNetworkRecommender.getGraphPath().charAt(0) != '/') {
-				socialNetworkRecommender.setGraphPath(referenceClass
-						.getResource(socialNetworkRecommender.getGraphPath())
-						.getPath());
-			}
-		}
-
-		for (GroupBasedRecommenderParameters groupBasedRecommender : this.groupBasedRecommender) {
-			if (groupBasedRecommender.getIndexPath().charAt(0) != '/') {
-				groupBasedRecommender.setIndexPath(referenceClass.getResource(
-						groupBasedRecommender.getIndexPath()).getPath());
-			}
-		}
-
-		for (AggregationBasedRecommenderParameters aggregationBasedRecommender : this.aggregationBasedRecommender) {
-			if (aggregationBasedRecommender.getIndexPath().charAt(0) != '/') {
-
-				aggregationBasedRecommender
-						.setIndexPath(referenceClass.getResource(
-								aggregationBasedRecommender.getIndexPath())
-								.getPath());
-
-			}
-		}
 	}
 
-	public ArrayList<AggregationBasedRecommenderParameters> getAggregationBasedRecommender() {
-		return aggregationBasedRecommender;
+	
+
+	// ---------------------------------------------------------------------------------
+
+	public KnowledgeBaseParameters getKnowledgeBase() {
+		return knowledgeBase;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setKnowledgeBase(KnowledgeBaseParameters knowledgeBase) {
+		this.knowledgeBase = knowledgeBase;
 	}
 
-	public void setAggregationBasedRecommender(
-			ArrayList<AggregationBasedRecommenderParameters> aggregationBasedRecommender) {
-		this.aggregationBasedRecommender = aggregationBasedRecommender;
+	// ---------------------------------------------------------------------------------
+	
+	public NLPParameters getNlp() {
+		return nlp;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public void setNlp(NLPParameters nlp) {
+		this.nlp = nlp;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	public RSSHoarderParameters getRssHoarder() {
+		return rssHoarder;
 	}
 
-	public ArrayList<GroupBasedRecommenderParameters> getGroupBasedRecommender() {
-		return groupBasedRecommender;
+	// ---------------------------------------------------------------------------------
+
+	public void setRssHoarder(RSSHoarderParameters rssHoarder) {
+		this.rssHoarder = rssHoarder;
 	}
 
-	public void setGroupBasedRecommender(
-			ArrayList<GroupBasedRecommenderParameters> groupBasedRecommender) {
-		this.groupBasedRecommender = groupBasedRecommender;
+	// ---------------------------------------------------------------------------------
+
+	public RSSHarvesterParameters getRssHarvester() {
+		return rssHarvester;
 	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setRssHarvester(RSSHarvesterParameters rssHarvester) {
+		this.rssHarvester = rssHarvester;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public ArrayList<SOLRInformationStoreParameters> getSolrInformationStore() {
+		return solrInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setSolrInformationStore(
+			ArrayList<SOLRInformationStoreParameters> solrInformationStores) {
+		this.solrInformationStores = solrInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public ArrayList<CassandraInformationStoreParameters> getCassandraInformationStore() {
+		return cassandraInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setCassandraInformationStore(
+			ArrayList<CassandraInformationStoreParameters> cassandraInformationStores) {
+		this.cassandraInformationStores = cassandraInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public ArrayList<MapInformationStoreParameters> getMapInformationStore() {
+		return this.mapInformationStores;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setMapInformationStore(
+			ArrayList<MapInformationStoreParameters> mapInformationStores) {
+		this.mapInformationStores = mapInformationStores;
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "ParametersModel [hostname=" + hostname + ", port=" + port + ", path=" + path + ", nlp=" + nlp
+				+ ", knowledgeBase=" + knowledgeBase + ", virtuosoInformationStores=" + virtuosoInformationStores
+				+ ", solrInformationStores=" + solrInformationStores + ", cassandraInformationStores="
+				+ cassandraInformationStores + ", mapInformationStores=" + mapInformationStores + ", rssHoarder="
+				+ rssHoarder + ", rssHarvester=" + rssHarvester + "]";
+	}
+
+	// ---------------------------------------------------------------------------------
 }

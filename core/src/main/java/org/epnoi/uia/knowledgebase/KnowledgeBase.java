@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase;
+package org.epnoi.knowledgebase;
 
 import java.util.HashSet;
 import java.util.Set;
