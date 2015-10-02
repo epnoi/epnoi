@@ -1,25 +1,25 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import gate.Annotation;
-import gate.Document;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.relations.RelationalSentence;
 import org.epnoi.uia.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternGenerator;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.DijkstraShortestPath;
+
+import gate.Annotation;
+import gate.Document;
 
 public class SyntacticRelationalPatternGenerator implements
 		RelationalPatternGenerator {

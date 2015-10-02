@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
+import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;

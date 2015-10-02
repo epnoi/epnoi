@@ -1,6 +1,6 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class WikidataHandlerParameters extends Parameters<Object> {
 	public static String WIKIDATA_VIEW_URI = "WIKIDATA_VIEW_URI";

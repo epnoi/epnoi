@@ -1,16 +1,16 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import gate.Annotation;
-import gate.Document;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.SimpleGraph;
+
+import gate.Annotation;
+import gate.Document;
 
 public class SyntacticPatternGraphBuilder {
 	// -----------------------------------------------------------------------------------------------------

@@ -1,20 +1,13 @@
 package org.epnoi.uia.knowledgebase.wikidata;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.Resource;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
-import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.WikidataViewCassandraHelper;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 
 public class CassandraWikidataView {
 	private String URI;

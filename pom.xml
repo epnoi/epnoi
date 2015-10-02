@@ -9,14 +9,15 @@
 	<packaging>pom</packaging>
 	<name>epnoi</name>
 
-<properties>
-<lib.dir>/opt/epnoi/epnoi/lib</lib.dir>
-</properties>
+	<properties>
+		<lib.dir>/opt/epnoi/epnoi/lib</lib.dir>
+	</properties>
 	<modules>
+		<module>storage</module>
 		<module>core</module>
 		<module>web</module>
 		<module>model</module>
-		<module>storage</module>
+
 		<module>nlp</module>
 		<module>harvester</module>
 		<module>hoarder</module>
@@ -24,7 +25,7 @@
 		<module>topics</module>
 		<module>app</module>
 	</modules>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>jena-virtuoso</groupId>
@@ -33,7 +34,7 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/virtuoso-jena/virt_jena2.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>virtuoso-jdbc3</groupId>
 			<artifactId>virtuoso-jdbc3</artifactId>
@@ -48,15 +49,15 @@
 			<scope>system</scope>
 			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
 		</dependency>
-	
-	<dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>

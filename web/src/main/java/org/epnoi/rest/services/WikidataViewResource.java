@@ -21,12 +21,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.model.RelationHelper;
+import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.rest.services.response.WikidataViewSummary;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataViewCreator;
 
 import com.sun.jersey.api.Responses;

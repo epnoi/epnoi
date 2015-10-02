@@ -13,6 +13,7 @@ import org.epnoi.uia.informationstore.MapInformationStore;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
+
 public class WikipediaPageWrapper implements Wrapper {
 	Core core;
 

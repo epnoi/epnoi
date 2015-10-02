@@ -1,7 +1,7 @@
 package org.epnoi.uia.informationsources;
 
 import org.epnoi.model.InformationSourceSubscription;
-import org.epnoi.uia.parameterization.InformationStoreParameters;
+import org.epnoi.model.parameterization.InformationStoreParameters;
 
 public interface InformationSourceQueryBuilder {
 	public String generateQuery(

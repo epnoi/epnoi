@@ -24,9 +24,9 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Item;
+import org.epnoi.model.parameterization.manifest.Manifest;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.parameterization.manifest.Manifest;
 import org.xml.sax.ContentHandler;
 
 class RSSHarvestDirectoryTask implements Runnable {

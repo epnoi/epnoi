@@ -8,12 +8,12 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
+import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 
 public class InformationSourcesHandlerImpl implements InformationSourcesHandler {

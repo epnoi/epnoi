@@ -2,13 +2,15 @@ package org.epnoi.uia.search;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchOrganizationResult;
+import org.epnoi.model.search.SearchResult;
+import org.epnoi.model.search.SearchSelectResult;
+import org.epnoi.model.search.SelectExpression;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.search.organize.SearchOrganizationResult;
 import org.epnoi.uia.search.organize.SearchOrganizer;
 import org.epnoi.uia.search.project.SearchProjector;
-import org.epnoi.uia.search.select.SearchSelectResult;
 import org.epnoi.uia.search.select.SearchSelector;
-import org.epnoi.uia.search.select.SelectExpression;
 
 public class SearchHandler {
 	private static final Logger logger = Logger.getLogger(SearchHandler.class

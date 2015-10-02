@@ -1,16 +1,10 @@
 package org.epnoi.uia.core;
 
-import java.net.URL;
 import java.util.logging.Logger;
 
-import org.epnoi.model.Resource;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.ParametersModelReader;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.SearchResult;
-import org.epnoi.uia.search.select.SelectExpression;
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchResult;
+import org.epnoi.model.search.SelectExpression;
 
 public class CoreMainSearch {
 	// ---------------------------------------------------------------------------------

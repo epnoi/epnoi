@@ -13,11 +13,11 @@ import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.User;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.ParametersModelReader;
 
 public class CoreMainUser {
 	// ---------------------------------------------------------------------------------

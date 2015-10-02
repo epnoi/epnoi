@@ -4,22 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.epnoi.model.Content;
-import org.epnoi.model.ContentSummary;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationhandler.events.InformationAccessListener;
 import org.epnoi.uia.informationhandler.wrapper.Wrapper;
 import org.epnoi.uia.informationhandler.wrapper.WrapperFactory;
-import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.VirtuosoInformationStore;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 
 public class InformationHandlerImp implements InformationHandler {
 

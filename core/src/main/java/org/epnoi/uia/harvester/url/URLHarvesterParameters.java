@@ -1,6 +1,6 @@
 package org.epnoi.uia.harvester.url;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class URLHarvesterParameters extends Parameters<Object> {
 

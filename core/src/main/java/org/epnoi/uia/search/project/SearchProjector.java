@@ -1,8 +1,8 @@
 package org.epnoi.uia.search.project;
 
+import org.epnoi.model.search.SearchOrganizationResult;
+import org.epnoi.model.search.SearchResult;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.search.SearchResult;
-import org.epnoi.uia.search.organize.SearchOrganizationResult;
 
 public class SearchProjector {
 	Core core;

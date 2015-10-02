@@ -13,7 +13,7 @@ import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 
 public class AnnotationHandlerImpl implements AnnotationHandler {
 	private Core core;

@@ -4,15 +4,12 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.ParametersModelReader;
-
-import com.sun.jersey.api.Responses;
 
 public abstract class UIAService {
 

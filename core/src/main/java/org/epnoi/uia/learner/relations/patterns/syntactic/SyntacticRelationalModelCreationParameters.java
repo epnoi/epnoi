@@ -1,6 +1,6 @@
 package org.epnoi.uia.learner.relations.patterns.syntactic;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class SyntacticRelationalModelCreationParameters extends Parameters<Object> {
 	public static final String RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER = "RELATIONAL_SENTENCES_CORPUS_URI";

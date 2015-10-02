@@ -2,7 +2,7 @@ package org.epnoi.uia.knowledgebase;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 @XmlRootElement(name="knowledgeBaseParameters")
 public class KnowledgeBaseParameters extends Parameters<Object> {
 	public static String RETRIEVE_WIKIDATA_VIEW = "RETRIEVE_WIKIDATA_VIEW";

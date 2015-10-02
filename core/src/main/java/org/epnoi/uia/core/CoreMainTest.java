@@ -1,10 +1,5 @@
 package org.epnoi.uia.core;
 
-import gate.Document;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,13 +11,17 @@ import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.User;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchResult;
+import org.epnoi.model.search.SelectExpression;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.SearchResult;
-import org.epnoi.uia.search.select.SelectExpression;
+
+import gate.Document;
+import gate.Factory;
+import gate.Utils;
+import gate.creole.ResourceInstantiationException;
 
 public class CoreMainTest {
 	public static String TEST_USER_URI = "http://www.epnoi.org/users/testUser";

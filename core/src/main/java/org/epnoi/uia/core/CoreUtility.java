@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.ParametersModelReader;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.model.parameterization.ParametersModelReader;
 
 public class CoreUtility {
 	// ---------------------------------------------------------------------------------

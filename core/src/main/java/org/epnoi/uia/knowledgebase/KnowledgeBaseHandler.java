@@ -45,13 +45,13 @@ public class KnowledgeBaseHandler {
 
 			String mode = core.getParameters().getKnowledgeBase().getWikidata().getMode();
 
-			if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_CREATE.equals(mode)) {
+			if (org.epnoi.model.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_CREATE.equals(mode)) {
 
 				wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, true);
 				wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, false);
 
 			}
-			if (org.epnoi.uia.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_LOAD.equals(mode)) {
+			if (org.epnoi.model.parameterization.ParametersModel.KNOWLEDGEBASE_WIKIDATA_MODE_LOAD.equals(mode)) {
 
 				wikidataParameters.setParameter(WikidataHandlerParameters.CREATE_WIKIDATA_VIEW, false);
 				wikidataParameters.setParameter(WikidataHandlerParameters.RETRIEVE_WIKIDATA_VIEW, true);

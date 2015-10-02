@@ -2,7 +2,7 @@ package org.epnoi.rest.services.response;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.epnoi.uia.parameterization.InformationStoreParameters;
+import org.epnoi.model.parameterization.InformationStoreParameters;
 
 @XmlRootElement
 public class InformationStore {

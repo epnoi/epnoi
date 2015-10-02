@@ -8,8 +8,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.epnoi.uia.parameterization.RSSFeedParameters;
-import org.epnoi.uia.parameterization.RSSHoarderParameters;
+import org.epnoi.model.parameterization.RSSFeedParameters;
+import org.epnoi.model.parameterization.RSSHoarderParameters;
 
 public class RSSHoarder {
 	private static final Logger logger = Logger.getLogger(RSSHoarder.class

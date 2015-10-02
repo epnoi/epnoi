@@ -1,6 +1,6 @@
 package org.epnoi.uia.learner;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 

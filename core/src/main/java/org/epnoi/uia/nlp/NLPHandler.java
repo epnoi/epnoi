@@ -1,14 +1,16 @@
 package org.epnoi.uia.nlp;
 
-import gate.Document;
-
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.nlp.NLPProcessor;
+import org.epnoi.nlp.NLPProcessorsPool;
+import org.epnoi.nlp.gate.GATEInitializer;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.nlp.gate.GATEInitializer;
-import org.epnoi.uia.parameterization.ParametersModel;
+
+import gate.Document;
 
 public class NLPHandler {
 	private Core core;
@@ -28,7 +30,7 @@ public class NLPHandler {
 			GATEInitializer gateInitializer = new GATEInitializer();
 			gateInitializer.init(parameters);
 			this.pool = new NLPProcessorsPool();
-			this.pool.init(this.core, this.parameters);
+			this.pool.init(this.parameters);
 		} else {
 			logger.severe(
 					"The NLPHandler was not initialized since no nlp element is defined in the uia configuration file");

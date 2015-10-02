@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
+import org.epnoi.model.parameterization.MapInformationStoreParameters;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.model.parameterization.RSSHarvesterParameters;
+import org.epnoi.model.parameterization.RSSHoarderParameters;
+import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
@@ -23,13 +30,6 @@ import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.knowledgebase.KnowledgeBaseHandler;
 import org.epnoi.uia.nlp.NLPHandler;
-import org.epnoi.uia.parameterization.CassandraInformationStoreParameters;
-import org.epnoi.uia.parameterization.MapInformationStoreParameters;
-import org.epnoi.uia.parameterization.ParametersModel;
-import org.epnoi.uia.parameterization.RSSHarvesterParameters;
-import org.epnoi.uia.parameterization.RSSHoarderParameters;
-import org.epnoi.uia.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.uia.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.search.SearchHandler;
 
 public class Core {

@@ -1,6 +1,6 @@
 package org.epnoi.uia.learner.relations;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class RelationsHandlerParameters extends Parameters<Object> {
 	public static final String CONSIDERED_DOMAINS = "CONSIDERED_DOMAINS";

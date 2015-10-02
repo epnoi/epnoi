@@ -10,10 +10,11 @@ import org.epnoi.model.Content;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
@@ -26,7 +27,6 @@ import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern
 import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.uia.learner.terms.TermCandidateBuilder;
 import org.epnoi.uia.learner.terms.TermsTable;
-import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 
 import gate.Annotation;
 import gate.AnnotationSet;

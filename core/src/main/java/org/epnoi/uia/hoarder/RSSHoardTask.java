@@ -26,10 +26,10 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
+import org.epnoi.model.parameterization.RSSFeedParameters;
+import org.epnoi.model.parameterization.manifest.ManifestHandler;
+import org.epnoi.model.parameterization.manifest.RSSManifest;
 import org.epnoi.uia.harvester.rss.parse.RSSFeedParser;
-import org.epnoi.uia.parameterization.RSSFeedParameters;
-import org.epnoi.uia.parameterization.manifest.ManifestHandler;
-import org.epnoi.uia.parameterization.manifest.RSSManifest;
 import org.w3c.dom.Document;
 
 class RSSHoardTask implements Runnable {

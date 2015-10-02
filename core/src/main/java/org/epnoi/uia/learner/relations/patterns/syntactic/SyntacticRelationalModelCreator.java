@@ -2,12 +2,12 @@ package org.epnoi.uia.learner.relations.patterns.syntactic;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
-import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.uia.learner.relations.patterns.RelationalPattern;
 import org.epnoi.uia.learner.relations.patterns.RelationalPatternsCorpus;

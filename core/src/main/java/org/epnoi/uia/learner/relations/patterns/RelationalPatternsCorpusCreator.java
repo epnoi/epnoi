@@ -3,12 +3,10 @@ package org.epnoi.uia.learner.relations.patterns;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.learner.relations.RelationalSentence;
-import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
-import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPattern;
-import org.epnoi.uia.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 
 public class RelationalPatternsCorpusCreator {
 	private static final Logger logger = Logger

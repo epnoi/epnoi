@@ -1,6 +1,6 @@
 package org.epnoi.rest.clients;
 
-import org.epnoi.uia.search.SearchResult;
+import org.epnoi.model.search.SearchResult;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;

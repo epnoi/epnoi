@@ -1,11 +1,11 @@
 package org.epnoi.uia.search.select;
 
-import java.util.List;
-
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchSelectResult;
+import org.epnoi.model.search.SelectExpression;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.search.SearchContext;
 
 public class SearchSelector {
 	

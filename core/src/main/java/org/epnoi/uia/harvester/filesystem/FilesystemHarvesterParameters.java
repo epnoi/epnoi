@@ -1,6 +1,6 @@
 package org.epnoi.uia.harvester.filesystem;
 
-import org.epnoi.uia.commons.Parameters;
+import org.epnoi.model.commons.Parameters;
 
 public class FilesystemHarvesterParameters extends Parameters<Object> {
 

@@ -5,9 +5,9 @@ import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.search.SearchContext;
-import org.epnoi.uia.search.SearchResult;
-import org.epnoi.uia.search.select.SelectExpression;
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchResult;
+import org.epnoi.model.search.SelectExpression;
 
 public class CoreMainROsTest {
 

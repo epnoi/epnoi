@@ -9,11 +9,13 @@ import org.epnoi.model.InformationSource;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
+import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Term;
 import org.epnoi.model.User;
+import org.epnoi.model.WikidataView;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
@@ -24,8 +26,6 @@ import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataView;
-import org.epnoi.uia.learner.relations.corpus.RelationalSentencesCorpus;
 
 public class WrapperFactory {
 	private HashMap<String, Wrapper> wrappersByClass;

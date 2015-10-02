@@ -2,10 +2,11 @@ package org.epnoi.uia.learner.relations.corpus;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.learner.relations.RelationalSentence;
 
 public class RelationalSentencesCorpusViewer {
 	private static final Logger logger = Logger

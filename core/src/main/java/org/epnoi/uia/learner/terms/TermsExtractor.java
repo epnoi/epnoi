@@ -14,6 +14,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Term;
 import org.epnoi.model.TermMetadata;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.Selector;
@@ -21,7 +22,6 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.learner.DomainsGatherer;
 import org.epnoi.uia.learner.DomainsTable;
 import org.epnoi.uia.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.uia.nlp.gate.NLPAnnotationsConstants;
 
 import gate.Annotation;
 import gate.Document;
