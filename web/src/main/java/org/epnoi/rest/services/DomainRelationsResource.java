@@ -15,11 +15,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.learner.automata.OntologyLearningTask;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.learner.OntologyLearningTask;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;

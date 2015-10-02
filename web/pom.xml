@@ -31,6 +31,12 @@
 			<version>0.1-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
+			<dependency>
+			<groupId>org.epnoi</groupId>
+			<artifactId>learner</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

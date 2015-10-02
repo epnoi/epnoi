@@ -18,17 +18,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.epnoi.learner.relations.RelationsHandler;
+import org.epnoi.learner.relations.RelationsHandlerParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
-import org.epnoi.uia.knowledgebase.KnowledgeBaseParameters;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
-import org.epnoi.uia.learner.relations.RelationsHandler;
-import org.epnoi.uia.learner.relations.RelationsHandlerParameters;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;

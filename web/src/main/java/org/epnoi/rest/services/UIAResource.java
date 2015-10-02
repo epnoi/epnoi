@@ -1,6 +1,5 @@
 package org.epnoi.rest.services;
 
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;

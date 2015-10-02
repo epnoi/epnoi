@@ -22,7 +22,15 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.epnoi</groupId>
+			<artifactId>core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
+
+
 
 	<build>
 		<plugins>
@@ -38,6 +46,6 @@
 		</plugins>
 
 	</build>
-	
+
 </project>
 

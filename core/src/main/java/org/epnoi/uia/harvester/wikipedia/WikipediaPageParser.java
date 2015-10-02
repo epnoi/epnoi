@@ -2,7 +2,7 @@ package org.epnoi.uia.harvester.wikipedia;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
-import org.epnoi.uia.commons.StringUtils;
+import org.epnoi.model.commons.StringUtils;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.Content;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import org.epnoi.uia.harvester.wikipedia.parse.de.tudarmstadt.ukp.wikipedia.parser.Section;

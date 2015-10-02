@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.commons.BoundedExecutor;
-import org.epnoi.uia.commons.StringUtils;
+import org.epnoi.model.commons.StringUtils;
 import org.epnoi.uia.core.Core;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import org.epnoi.uia.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
