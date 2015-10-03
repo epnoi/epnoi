@@ -10,8 +10,6 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;
 import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.model.parameterization.RSSHarvesterParameters;
-import org.epnoi.model.parameterization.RSSHoarderParameters;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.uia.annotation.AnnotationHandler;
@@ -19,8 +17,6 @@ import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.eventbus.EventBus;
 import org.epnoi.uia.domains.DomainsHandler;
 import org.epnoi.uia.harvester.HarvestersHandler;
-import org.epnoi.uia.harvester.rss.RSSHarvester;
-import org.epnoi.uia.hoarder.RSSHoarder;
 import org.epnoi.uia.informationhandler.InformationHandler;
 import org.epnoi.uia.informationhandler.InformationHandlerImp;
 import org.epnoi.uia.informationsources.InformationSourcesHandler;
@@ -39,8 +35,8 @@ public class Core {
 	private HashMap<String, InformationStore> informationStores;
 	private HashMap<String, List<InformationStore>> informationStoresByType;
 
-	private RSSHoarder rssHoarder;
-	private RSSHarvester rssHarvester;
+//	private RSSHoarder rssHoarder;
+//	private RSSHarvester rssHarvester;
 	private InformationHandler informationHandler;
 	private InformationSourcesHandler informationSourcesHandler = null;
 
@@ -221,7 +217,7 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-
+/*
 	private void _hoardersInitialization() {
 		logger.info("Initializing hoarders");
 		RSSHoarderParameters parameters = this.parametersModel.getRssHoarder();
@@ -232,9 +228,9 @@ public class Core {
 			logger.info("There was no RSSHoarder defined in the configuration file");
 		}
 	}
-
+*/
 	// ----------------------------------------------------------------------------------------------------------
-
+/*
 	private void _harvestersInitialization() throws EpnoiInitializationException {
 		logger.info("Initializing the HarvestersHandler");
 
@@ -251,7 +247,7 @@ public class Core {
 			logger.info("There was no RSSHarvester defined in the configuration file");
 		}
 	}
-
+*/
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initSearchHandler() {

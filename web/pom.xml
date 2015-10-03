@@ -31,9 +31,16 @@
 			<version>0.1-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>org.epnoi</groupId>
 			<artifactId>learner</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.epnoi</groupId>
+			<artifactId>harvester</artifactId>
 			<version>0.1-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
@@ -108,7 +115,7 @@
 			<artifactId>jetty-servlets</artifactId>
 			<version>8.1.9.v20130131</version>
 		</dependency>
-	
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -134,12 +141,12 @@
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>8080</port>
-							
+
 						</connector>
 					</connectors>
 					<!-- <jettyXml>src/main/resources/jetty.xml</jettyXml> <scanIntervalSeconds>10</scanIntervalSeconds> -->
 				</configuration>
-				
+
 
 			</plugin>
 		</plugins>

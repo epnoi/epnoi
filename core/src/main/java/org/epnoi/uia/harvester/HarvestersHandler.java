@@ -3,15 +3,13 @@ package org.epnoi.uia.harvester;
 import java.util.logging.Logger;
 
 import org.epnoi.model.Domain;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.uia.core.Core;
-import org.epnoi.uia.harvester.url.URLHarvester;
-import org.epnoi.uia.harvester.url.URLHarvesterParameters;
 
 public class HarvestersHandler {
 	private static final Logger logger = Logger
 			.getLogger(HarvestersHandler.class.getName());
 	private Core core;
+	/*
 	URLHarvester urlHarvester = new URLHarvester();
 
 	// -----------------------------------------------------------------------------------
@@ -34,9 +32,9 @@ public class HarvestersHandler {
 	}
 
 	// -----------------------------------------------------------------------------------
-
+*/
 	public void harvestURL(String url, Domain domain) {
-		this.urlHarvester.harvest(url, domain);
+		//this.urlHarvester.harvest(url, domain);
 	}
 
 	// -----------------------------------------------------------------------------------
