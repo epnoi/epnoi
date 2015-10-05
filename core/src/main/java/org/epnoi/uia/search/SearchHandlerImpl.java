@@ -2,18 +2,19 @@ package org.epnoi.uia.search;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.SearchHandler;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchOrganizationResult;
 import org.epnoi.model.search.SearchResult;
 import org.epnoi.model.search.SearchSelectResult;
 import org.epnoi.model.search.SelectExpression;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.search.organize.SearchOrganizer;
 import org.epnoi.uia.search.project.SearchProjector;
 import org.epnoi.uia.search.select.SearchSelector;
 
-public class SearchHandler {
-	private static final Logger logger = Logger.getLogger(SearchHandler.class
+public class SearchHandlerImpl implements SearchHandler {
+	private static final Logger logger = Logger.getLogger(SearchHandlerImpl.class
 			.getName());
 	private Core core;
 	private SearchSelector selector;
@@ -22,7 +23,7 @@ public class SearchHandler {
 
 	// --------------------------------------------------------------------------------------
 
-	public SearchHandler(Core core) {
+	public SearchHandlerImpl(Core core) {
 
 		logger.info("Initializing the search handler");
 		this.core = core;
@@ -31,6 +32,10 @@ public class SearchHandler {
 		this.projector = new SearchProjector(this.core);
 	}
 
+	public void init(Core core){
+		this.core=core;
+	}
+	
 	// --------------------------------------------------------------------------------------
 
 	public SearchResult search(SelectExpression selectExpression,

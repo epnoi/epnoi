@@ -19,12 +19,12 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
+import org.epnoi.model.Selector;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.xml.sax.ContentHandler;
 

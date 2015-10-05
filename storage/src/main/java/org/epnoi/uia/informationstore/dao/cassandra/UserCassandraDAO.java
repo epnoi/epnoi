@@ -11,8 +11,8 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
 import org.epnoi.model.User;
-import org.epnoi.uia.informationstore.Selector;
 
 public class UserCassandraDAO extends CassandraDAO {
 

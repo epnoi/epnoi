@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraDAO;
 

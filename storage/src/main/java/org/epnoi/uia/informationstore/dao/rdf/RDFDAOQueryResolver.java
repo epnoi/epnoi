@@ -3,10 +3,10 @@ package org.epnoi.uia.informationstore.dao.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import com.hp.hpl.jena.graph.Node;

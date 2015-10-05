@@ -10,6 +10,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.model.search.Facet;
@@ -18,7 +19,6 @@ import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchSelectResult;
 import org.epnoi.model.search.SelectExpression;
 import org.epnoi.model.search.SelectionResultTuple;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class SOLRDAOQueryResolver {

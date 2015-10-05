@@ -3,24 +3,29 @@ package org.epnoi.uia.nlp;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.NLPHandler;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.nlp.NLPProcessor;
 import org.epnoi.nlp.NLPProcessorsPool;
 import org.epnoi.nlp.gate.GATEInitializer;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 import gate.Document;
 
-public class NLPHandler {
+public class NLPHandlerImpl implements NLPHandler {
 	private Core core;
 	private ParametersModel parameters;
 	private NLPProcessorsPool pool;
 
-	private static final Logger logger = Logger.getLogger(NLPHandler.class.getName());
+	private static final Logger logger = Logger.getLogger(NLPHandlerImpl.class.getName());
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.nlp.NLPHandler#init(org.epnoi.uia.core.Core, org.epnoi.model.parameterization.ParametersModel)
+	 */
+	@Override
 	public void init(Core core, ParametersModel parameters) {
 
 		logger.info("Initializing the NLPHandler");
@@ -40,6 +45,10 @@ public class NLPHandler {
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.nlp.NLPHandler#process(java.lang.String)
+	 */
+	@Override
 	public Document process(String content) throws EpnoiResourceAccessException {
 		if (this.parameters.getNlp() != null) {
 			NLPProcessor processor = null;

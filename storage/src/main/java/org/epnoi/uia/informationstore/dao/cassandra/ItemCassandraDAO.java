@@ -10,7 +10,7 @@ import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Search;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 
 public class ItemCassandraDAO extends CassandraDAO {
 

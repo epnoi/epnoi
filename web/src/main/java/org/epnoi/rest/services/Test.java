@@ -1,7 +1,7 @@
 package org.epnoi.rest.services;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class Test {

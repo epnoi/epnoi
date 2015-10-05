@@ -4,12 +4,12 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class DomainWrapper implements Wrapper {

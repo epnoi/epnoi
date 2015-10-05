@@ -7,8 +7,8 @@ import org.epnoi.learner.relations.patterns.syntactic.SyntacticRelationalModelCr
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class RelationalPatternsModelCreator {

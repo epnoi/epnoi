@@ -14,8 +14,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.harvester.demo.DemoDataLoader;
+import org.epnoi.model.modules.InformationStore;
 import org.epnoi.rest.services.response.UIA;
-import org.epnoi.uia.informationstore.InformationStore;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;

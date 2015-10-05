@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.User;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 

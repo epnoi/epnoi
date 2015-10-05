@@ -9,10 +9,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.RSSHarvesterParameters;
 import org.epnoi.model.parameterization.manifest.Manifest;
 import org.epnoi.model.parameterization.manifest.ManifestHandler;
-import org.epnoi.uia.core.Core;
 
 public class RSSHarvester {
 

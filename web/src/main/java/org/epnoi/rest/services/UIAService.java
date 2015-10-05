@@ -7,9 +7,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
-import org.epnoi.uia.core.Core;
+import org.epnoi.uia.core.CoreImpl;
 
 public abstract class UIAService {
 
@@ -33,7 +34,7 @@ public abstract class UIAService {
 		if (this.core == null) {
 			System.out.println("Loading the model!");
 			long time = System.currentTimeMillis();
-			this.core = new Core();
+			this.core = new CoreImpl();
 			parametersModel = this._readParameters();
 			try {
 				core.init(parametersModel);

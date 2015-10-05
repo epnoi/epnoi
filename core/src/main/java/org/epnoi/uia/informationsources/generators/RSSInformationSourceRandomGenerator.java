@@ -9,7 +9,7 @@ import java.util.Locale;
 import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 
 
 

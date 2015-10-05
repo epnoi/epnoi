@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.User;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 @Path("/users/{USER_ID}/notifications/informationSources")

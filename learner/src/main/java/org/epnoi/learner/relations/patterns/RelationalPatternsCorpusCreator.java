@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 
 public class RelationalPatternsCorpusCreator {
 	private static final Logger logger = Logger

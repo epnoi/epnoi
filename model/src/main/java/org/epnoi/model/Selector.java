@@ -1,4 +1,4 @@
-package org.epnoi.uia.informationstore;
+package org.epnoi.model;
 
 import java.util.HashMap;
 import java.util.Map;

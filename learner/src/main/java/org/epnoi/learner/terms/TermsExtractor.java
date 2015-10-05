@@ -14,13 +14,13 @@ import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.AnnotatedWord;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
+import org.epnoi.model.Selector;
 import org.epnoi.model.Term;
 import org.epnoi.model.TermMetadata;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import gate.Annotation;

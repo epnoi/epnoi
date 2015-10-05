@@ -2,17 +2,18 @@ package org.epnoi.uia.knowledgebase;
 
 import java.util.logging.Logger;
 
+import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerBuilder;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.KnowldedgeBaseHandler;
+import org.epnoi.model.modules.KnowledgeBaseParameters;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 
-public class KnowledgeBaseHandler {
-	private static final Logger logger = Logger.getLogger(KnowledgeBaseHandler.class.getName());
+public class KnowledgeBaseHandlerImpl implements KnowldedgeBaseHandler {
+	private static final Logger logger = Logger.getLogger(KnowledgeBaseHandlerImpl.class.getName());
 
 	Core core = null;
 	private KnowledgeBase knowledgeBase;
@@ -22,6 +23,8 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
+	
+	@Override
 	public void init(Core core) throws EpnoiInitializationException {
 		this.core = core;
 		if (core.getParameters().getKnowledgeBase() != null) {
@@ -102,6 +105,8 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
+
+	@Override
 	public synchronized KnowledgeBase getKnowledgeBase()
 			throws EpnoiInitializationException, EpnoiResourceAccessException {
 		if (core.getParameters().getKnowledgeBase() == null) {
@@ -118,13 +123,23 @@ public class KnowledgeBaseHandler {
 
 	// ---------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowldedgeBaseHandlerInterface#isKnowledgeBaseInitialized()
+	 */
+	@Override
 	public synchronized boolean isKnowledgeBaseInitialized() {
 		return this.initialized;
 	}
 
 	// ---------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowldedgeBaseHandlerInterface#getKnowledgeBaseParameters()
+	 */
+	/*
+	@Override
 	public KnowledgeBaseParameters getKnowledgeBaseParameters() {
 		return this.knowledgeBaseParameters;
 	}
+	*/
 }

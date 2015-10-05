@@ -13,16 +13,16 @@ import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;
+import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.Relation;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.knowledgebase.KnowledgeBase;
 
 /**
  * 

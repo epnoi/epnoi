@@ -3,6 +3,7 @@ package org.epnoi.uia.core;
 import org.epnoi.model.Context;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.model.search.SearchContext;

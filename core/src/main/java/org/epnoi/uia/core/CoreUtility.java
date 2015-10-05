@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 
@@ -15,7 +16,7 @@ public class CoreUtility {
 	public static Core getUIACore() {
 
 		long time = System.currentTimeMillis();
-		Core core = new Core();
+		Core core = new CoreImpl();
 		ParametersModel parametersModel = _readParameters();
 		logger.info("Reading the following paramaters for the UIA: "+parametersModel);
 		try {

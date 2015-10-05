@@ -6,11 +6,11 @@ import java.util.logging.Logger;
 import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Context;
+import org.epnoi.model.Selector;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import gate.Document;

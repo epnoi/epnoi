@@ -20,8 +20,8 @@ import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class OntologyLearningWorkflow {

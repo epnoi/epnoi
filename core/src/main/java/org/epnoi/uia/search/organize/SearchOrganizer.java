@@ -3,11 +3,11 @@ package org.epnoi.uia.search.organize;
 import java.util.logging.Logger;
 
 import org.epnoi.model.Resource;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.search.OrganizationResultPair;
 import org.epnoi.model.search.SearchOrganizationResult;
 import org.epnoi.model.search.SearchSelectResult;
 import org.epnoi.model.search.SelectionResultTuple;
-import org.epnoi.uia.core.Core;
 
 public class SearchOrganizer {
 	private static final Logger logger = Logger.getLogger(SearchOrganizer.class

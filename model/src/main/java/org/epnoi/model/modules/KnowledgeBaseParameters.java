@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase;
+package org.epnoi.model.modules;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

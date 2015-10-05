@@ -12,7 +12,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Search;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 
 
 public class SearchCassandraDAO extends CassandraDAO {

@@ -11,6 +11,7 @@ import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.User;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchResult;
 import org.epnoi.model.search.SelectExpression;

@@ -5,6 +5,8 @@ import java.util.List;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
+import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;
 import org.epnoi.model.search.SearchContext;

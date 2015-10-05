@@ -3,7 +3,7 @@ package org.epnoi.uia.informationstore.dao.map;
 import java.util.regex.Pattern;
 
 import org.epnoi.model.Content;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class TestMapDAO extends MapDAO {

@@ -4,8 +4,8 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class RelationalSentencesCorpusViewer {

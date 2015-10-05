@@ -1,8 +1,10 @@
 package org.epnoi.uia.knowledgebase;
 
+import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.KnowledgeBaseParameters;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerBuilder;
@@ -61,7 +63,7 @@ public class KnowledgeBaseFactory {
 		if (this.considerWikidata){
 		this.wikidataHandler = wikidataHandlerBuilder.build();
 		}
-		KnowledgeBase knowledgeBase = new KnowledgeBase(this.wordnetHandler,
+		KnowledgeBase knowledgeBase = new KnolwedgeBaseImpl(this.wordnetHandler,
 				this.wikidataHandler);
 		knowledgeBase.init(this.parameters);
 

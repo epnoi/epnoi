@@ -1,9 +1,10 @@
-package org.epnoi.uia.informationstore;
+package org.epnoi.model.modules;
 
 import java.util.List;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchSelectResult;

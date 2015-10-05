@@ -13,6 +13,7 @@ import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Item;
 import org.epnoi.model.User;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
@@ -27,7 +28,7 @@ public class CoreMainUser {
 	public static Core getUIACore() {
 
 		long time = System.currentTimeMillis();
-		Core core = new Core();
+		Core core = new CoreImpl();
 		ParametersModel parametersModel = _readParameters();
 		try {
 			core.init(parametersModel);

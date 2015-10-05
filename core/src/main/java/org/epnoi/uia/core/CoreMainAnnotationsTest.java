@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.User;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 
 import gate.Annotation;

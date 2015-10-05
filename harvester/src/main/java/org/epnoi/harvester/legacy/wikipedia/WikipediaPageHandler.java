@@ -9,7 +9,7 @@ import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage
 import org.epnoi.model.Context;
 import org.epnoi.model.commons.BoundedExecutor;
 import org.epnoi.model.commons.StringUtils;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 
 //-------------------------------------------------------------------------------------------------------------------
 

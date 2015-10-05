@@ -3,7 +3,7 @@ package org.epnoi.uia.informationhandler.wrapper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 
 public interface Wrapper {
 

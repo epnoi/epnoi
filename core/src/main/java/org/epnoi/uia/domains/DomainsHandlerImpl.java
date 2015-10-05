@@ -6,16 +6,18 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.Domain;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.DomainsHandler;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 
-public class DomainsHandler {
-	private static final Logger logger = Logger.getLogger(DomainsHandler.class
+public class DomainsHandlerImpl implements DomainsHandler {
+	private static final Logger logger = Logger.getLogger(DomainsHandlerImpl.class
 			.getName());
 	private Core core;
 
 	// -----------------------------------------------------------------------------------
 
+	@Override
 	public void init(Core core) {
 		logger.info("Initializing the DomainsHandler");
 		this.core = core;
@@ -23,6 +25,7 @@ public class DomainsHandler {
 
 	// -----------------------------------------------------------------------------------
 
+	@Override
 	public List<String> gather(Domain domain) {
 		logger.info("Gathering the domain URIs");
 

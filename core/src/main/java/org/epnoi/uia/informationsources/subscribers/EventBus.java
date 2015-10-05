@@ -11,9 +11,9 @@ import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.InformationAccessListener;
 import org.epnoi.uia.informationhandler.events.EventsHelper;
-import org.epnoi.uia.informationhandler.events.InformationAccessListener;
 
 import flexjson.JSONSerializer;
 

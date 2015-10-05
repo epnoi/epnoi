@@ -3,15 +3,17 @@ package org.epnoi.uia.knowledgebase;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.KnowledgeBaseParameters;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
 
-public class KnowledgeBase {
+public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	WordNetHandler wordNetHandler;
 
@@ -22,7 +24,7 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	public KnowledgeBase(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
+	public KnolwedgeBaseImpl(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
 
 		this.wordNetHandler = wordNetHandler;
 		this.wikidataHandler = wikidataHandler;
@@ -30,6 +32,10 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#init(org.epnoi.uia.knowledgebase.KnowledgeBaseParameters)
+	 */
+	@Override
 	public void init(KnowledgeBaseParameters parameters) {
 		this.parameters = parameters;
 		this.considerWikidata = (boolean) this.parameters.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
@@ -38,6 +44,10 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelated(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean areRelated(String source, String target, String type) {
 		if (RelationHelper.HYPERNYM.equals(type) && (source.length() > 0) && (target.length() > 0)) {
 
@@ -54,6 +64,10 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWordNet(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean areRelatedInWordNet(String source, String target) {
 
 		String stemmedSource = this.wordNetHandler.stemNoun(source);
@@ -68,6 +82,10 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWikidata(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean areRelatedInWikidata(String source, String target) {
 		System.out.println("> " + source + " " + target);
 		source = source.toLowerCase();
@@ -91,14 +109,10 @@ public class KnowledgeBase {
 	}
 
 	// -----------------------------------------------------------------------------------------------
-	/**
-	 * Method that returns the hypermyms of a given term
-	 * 
-	 * @param source
-	 *            We assume that the source has been stemmed using the stemmer
-	 *            associated with the handler
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#getHypernyms(java.lang.String)
 	 */
+	@Override
 	public Set<String> getHypernyms(String source) {
 
 		Set<String> hypernyms = new HashSet<String>();
@@ -117,6 +131,10 @@ public class KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#stem(java.lang.String)
+	 */
+	@Override
 	public Set<String> stem(String term) {
 
 		Set<String> stemmedTerm = new HashSet<String>();
@@ -131,31 +149,37 @@ public class KnowledgeBase {
 		}
 		return stemmedTerm;
 	}
+	
+	/*
 
 	// -----------------------------------------------------------------------------------------------
 
+	@Override
 	public WordNetHandler getWordNetHandler() {
 		return wordNetHandler;
 	}
 
 	// -----------------------------------------------------------------------------------------------
 
+	@Override
 	public void setWordNetHandler(WordNetHandler wordNetHandler) {
 		this.wordNetHandler = wordNetHandler;
 	}
 
 	// -----------------------------------------------------------------------------------------------
 
+	@Override
 	public WikidataHandler getWikidataHandler() {
 		return wikidataHandler;
 	}
 
 	// -----------------------------------------------------------------------------------------------
-
+	
+	@Override
 	public void setWikidataHandler(WikidataHandler wikidataHandler) {
 		this.wikidataHandler = wikidataHandler;
 	}
-
+ */
 	// -----------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
@@ -170,8 +194,10 @@ public class KnowledgeBase {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			/*
 			System.out.println("100> " + knowledgeBase.getWikidataHandler()
 					.getRelated(knowledgeBase.getWikidataHandler().stem("madrid"), RelationHelper.HYPERNYM));
+		*/
 		} catch (EpnoiInitializationException e) {
 
 			e.printStackTrace();

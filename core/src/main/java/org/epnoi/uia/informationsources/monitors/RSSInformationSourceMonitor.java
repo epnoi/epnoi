@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.atmosphere.cpr.Broadcaster;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.RSSHarvesterParameters;
-import org.epnoi.uia.core.Core;
 
 public class RSSInformationSourceMonitor {
 

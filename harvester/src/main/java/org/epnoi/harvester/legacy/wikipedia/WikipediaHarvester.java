@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParser;
 import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class WikipediaHarvester {

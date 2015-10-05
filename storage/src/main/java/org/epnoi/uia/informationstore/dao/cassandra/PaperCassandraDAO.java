@@ -15,7 +15,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.ExternalResource;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class PaperCassandraDAO extends CassandraDAO {

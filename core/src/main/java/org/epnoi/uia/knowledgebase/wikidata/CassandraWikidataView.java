@@ -3,7 +3,7 @@ package org.epnoi.uia.knowledgebase.wikidata;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;

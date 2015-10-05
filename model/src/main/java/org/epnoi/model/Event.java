@@ -1,4 +1,4 @@
-package org.epnoi.uia.core.eventbus;
+package org.epnoi.model;
 
 public class Event {
 	private String message = null;

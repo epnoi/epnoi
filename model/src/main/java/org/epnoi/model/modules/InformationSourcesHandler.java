@@ -1,4 +1,4 @@
-package org.epnoi.uia.informationsources;
+package org.epnoi.model.modules;
 
 import java.util.List;
 

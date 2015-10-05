@@ -8,8 +8,8 @@ import org.epnoi.harvester.legacy.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 
 public class DemoDataLoader {
 	Core core;

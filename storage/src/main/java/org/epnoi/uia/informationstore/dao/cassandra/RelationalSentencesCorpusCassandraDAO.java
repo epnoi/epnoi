@@ -12,7 +12,7 @@ import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Resource;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;

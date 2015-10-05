@@ -2,11 +2,11 @@ package org.epnoi.uia.informationstore.dao.map;
 
 import org.epnoi.model.Paper;
 import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 

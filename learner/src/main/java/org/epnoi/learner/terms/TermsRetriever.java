@@ -10,8 +10,8 @@ import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Term;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.Core;
 import org.epnoi.uia.core.CoreUtility;
 
 public class TermsRetriever {

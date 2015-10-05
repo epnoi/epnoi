@@ -11,7 +11,7 @@ import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Search;
-import org.epnoi.uia.informationstore.Selector;
+import org.epnoi.model.Selector;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
 import org.epnoi.model.Domain;
-import org.epnoi.uia.core.Core;
+import org.epnoi.model.modules.Core;
 
 public class DomainsGatherer {
 	private static final Logger logger = Logger.getLogger(DomainsGatherer.class

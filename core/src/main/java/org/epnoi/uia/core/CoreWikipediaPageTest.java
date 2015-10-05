@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 
 public class CoreWikipediaPageTest {

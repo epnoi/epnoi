@@ -7,30 +7,36 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.AnnotationHandler;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.DomainsHandler;
+import org.epnoi.model.modules.EventBus;
+import org.epnoi.model.modules.HarvestersHandler;
+import org.epnoi.model.modules.InformationHandler;
+import org.epnoi.model.modules.InformationSourcesHandler;
+import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.modules.KnowldedgeBaseHandler;
+import org.epnoi.model.modules.NLPHandler;
+import org.epnoi.model.modules.SearchHandler;
 import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
-import org.epnoi.uia.annotation.AnnotationHandler;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
-import org.epnoi.uia.core.eventbus.EventBus;
-import org.epnoi.uia.domains.DomainsHandler;
-import org.epnoi.uia.harvester.HarvestersHandler;
-import org.epnoi.uia.informationhandler.InformationHandler;
+import org.epnoi.uia.core.eventbus.EventBusImpl;
+import org.epnoi.uia.domains.DomainsHandlerImpl;
 import org.epnoi.uia.informationhandler.InformationHandlerImp;
-import org.epnoi.uia.informationsources.InformationSourcesHandler;
 import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
-import org.epnoi.uia.informationstore.InformationStore;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.knowledgebase.KnowledgeBaseHandler;
-import org.epnoi.uia.nlp.NLPHandler;
-import org.epnoi.uia.search.SearchHandler;
+import org.epnoi.uia.knowledgebase.KnowledgeBaseHandlerImpl;
+import org.epnoi.uia.nlp.NLPHandlerImpl;
+import org.epnoi.uia.search.SearchHandlerImpl;
 
-public class Core {
+public class CoreImpl implements Core {
 
-	private static final Logger logger = Logger.getLogger(Core.class.getName());
+	private static final Logger logger = Logger.getLogger(CoreImpl.class.getName());
 
 	private HashMap<String, InformationStore> informationStores;
 	private HashMap<String, List<InformationStore>> informationStoresByType;
@@ -47,17 +53,17 @@ public class Core {
 	private DomainsHandler domainsHandler = null;
 	private HarvestersHandler harvestersHandler = null;
 	private EventBus eventBus = null;
-	private KnowledgeBaseHandler knowledgeBaseHandler = null;
+	private KnowldedgeBaseHandler knowledgeBaseHandler = null;
 	private NLPHandler nlpHandler = null;
 
-	/**
-	 * The initialization method for the epnoiCore
-	 * 
-	 * @param initializationProperties
-	 *            The properties that define the characteristics of the
-	 *            epnoiCore.
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.core.CoreInterface#init(org.epnoi.model.parameterization.ParametersModel)
 	 */
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.core.Core#init(org.epnoi.model.parameterization.ParametersModel)
+	 */
+	@Override
 	public synchronized void init(ParametersModel parametersModel) throws EpnoiInitializationException {
 		logger.info(
 				"\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
@@ -86,21 +92,31 @@ public class Core {
 		logger.info("");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.core.CoreInterface#getNLPHandler()
+	 */
+	/* (non-Javadoc)
+	 * @see org.epnoi.uia.core.Core#getNLPHandler()
+	 */
+
+	@Override
 	public NLPHandler getNLPHandler() {
 		return nlpHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Deprecated
+	@Override
 	public void setNLPHandler(NLPHandler nlpHandler) {
-		this.nlpHandler = nlpHandler;
+		this.nlpHandler = (NLPHandler) nlpHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initNLPHandler() {
 
-		this.nlpHandler = new NLPHandler();
+		this.nlpHandler = new NLPHandlerImpl();
 		this.nlpHandler.init(this, parametersModel);
 
 	}
@@ -108,7 +124,7 @@ public class Core {
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initDomainsHandler() {
-		this.domainsHandler = new DomainsHandler();
+		this.domainsHandler = new DomainsHandlerImpl();
 		this.domainsHandler.init(this);
 
 	}
@@ -118,7 +134,7 @@ public class Core {
 	private void _initEventBus() {
 
 		logger.info("Initializing the Event Bus");
-		this.eventBus = new EventBus();
+		this.eventBus = new EventBusImpl();
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
@@ -251,60 +267,69 @@ public class Core {
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initSearchHandler() {
-		this.searchHandler = new SearchHandler(this);
+		this.searchHandler = new SearchHandlerImpl(this);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public Collection<InformationStore> getInformationStores() {
 		return this.informationStores.values();
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public List<InformationStore> getInformationStoresByType(String type) {
 		return this.informationStoresByType.get(type);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public InformationHandler getInformationHandler() {
 		return this.informationHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public InformationSourcesHandler getInformationSourcesHandler() {
 		return informationSourcesHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public void setInformationSourcesHandler(InformationSourcesHandler informationSourcesHandler) {
 		this.informationSourcesHandler = informationSourcesHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public SearchHandler getSearchHandler() {
 		return searchHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-
+	
+	@Override
 	public void setSearchHandler(SearchHandler searchHandler) {
 		this.searchHandler = searchHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public boolean checkStatus(String informationStoreURI) {
 		InformationStore informationStore = this.informationStores.get(informationStoreURI);
 		return informationStore.test();
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-
+	
+	@Override
 	public void close() {
 		for (InformationStore dataSource : this.informationStores.values()) {
 			dataSource.close();
@@ -313,25 +338,32 @@ public class Core {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
+	
 
+	@Override
 	public AnnotationHandler getAnnotationHandler() {
 		return annotationHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public void setAnnotationHandler(AnnotationHandler annotationHandler) {
 		this.annotationHandler = annotationHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	
+	@Override
 	public EventBus getEventBus() {
 		return eventBus;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	
+	@Override
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
@@ -340,44 +372,54 @@ public class Core {
 
 	private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
 		
-			this.knowledgeBaseHandler = new KnowledgeBaseHandler();
+			this.knowledgeBaseHandler = new KnowledgeBaseHandlerImpl();
 			this.knowledgeBaseHandler.init(this);
 		
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	
+
+	@Override
 	public DomainsHandler getDomainsHandler() {
 		return domainsHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+
+	@Override
 	public void setDomainsHandler(DomainsHandler domainsHandler) {
 		this.domainsHandler = domainsHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	
+	@Override
 	public ParametersModel getParameters() {
 		return this.parametersModel;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
+	@Override
 	public HarvestersHandler getHarvestersHandler() {
 		return harvestersHandler;
 	}
 
-	// ----------------------------------------------------------------------------------------------------------
-
+	
+	@Override
 	public void setHarvestersHandler(HarvestersHandler harvestersHandler) {
 		this.harvestersHandler = harvestersHandler;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	public KnowledgeBaseHandler getKnowledgeBaseHandler() {
+
+	@Override
+	public KnowldedgeBaseHandler getKnowledgeBaseHandler() {
 		return knowledgeBaseHandler;
 	}
 

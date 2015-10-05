@@ -1,4 +1,4 @@
-package org.epnoi.uia.informationhandler.events;
+package org.epnoi.model.modules;
 
 import org.epnoi.model.Resource;
 
