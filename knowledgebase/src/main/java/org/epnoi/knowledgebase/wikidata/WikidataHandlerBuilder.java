@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 
 /**

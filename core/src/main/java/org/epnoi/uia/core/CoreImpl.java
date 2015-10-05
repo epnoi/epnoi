@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.epnoi.knowledgebase.KnowledgeBaseHandlerImpl;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.AnnotationHandler;
 import org.epnoi.model.modules.Core;
@@ -30,7 +31,6 @@ import org.epnoi.uia.informationhandler.InformationHandlerImp;
 import org.epnoi.uia.informationsources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.knowledgebase.KnowledgeBaseHandlerImpl;
 import org.epnoi.uia.nlp.NLPHandlerImpl;
 import org.epnoi.uia.search.SearchHandlerImpl;
 

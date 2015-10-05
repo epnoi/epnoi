@@ -1,16 +1,16 @@
-package org.epnoi.uia.knowledgebase;
+package org.epnoi.knowledgebase;
 
 import java.util.logging.Logger;
 
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.KnowldedgeBaseHandler;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 
 public class KnowledgeBaseHandlerImpl implements KnowldedgeBaseHandler {
 	private static final Logger logger = Logger.getLogger(KnowledgeBaseHandlerImpl.class.getName());

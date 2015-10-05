@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wordnet;
+package org.epnoi.knowledgebase.wordnet;
 
 import org.epnoi.model.commons.Parameters;
 

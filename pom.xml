@@ -17,13 +17,14 @@
 		<module>core</module>
 		<module>web</module>
 		<module>model</module>
-
 		<module>nlp</module>
 		<module>harvester</module>
 		<module>hoarder</module>
 		<module>learner</module>
 		<module>topics</module>
+		<module>knowledgebase</module>
 		<module>app</module>
+		
 	</modules>
 
 	<dependencies>

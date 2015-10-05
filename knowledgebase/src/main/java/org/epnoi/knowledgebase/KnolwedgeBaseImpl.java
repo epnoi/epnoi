@@ -1,17 +1,16 @@
-package org.epnoi.uia.knowledgebase;
+package org.epnoi.knowledgebase;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import org.epnoi.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
 
 public class KnolwedgeBaseImpl implements KnowledgeBase {
 
@@ -181,7 +180,8 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 	}
  */
 	// -----------------------------------------------------------------------------------------------
-
+/*
+ FOR_TEST
 	public static void main(String[] args) {
 
 		Core core = CoreUtility.getUIACore();
@@ -194,14 +194,15 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			/*
+			
 			System.out.println("100> " + knowledgeBase.getWikidataHandler()
 					.getRelated(knowledgeBase.getWikidataHandler().stem("madrid"), RelationHelper.HYPERNYM));
-		*/
+		
 		} catch (EpnoiInitializationException e) {
 
 			e.printStackTrace();
 		}
+*/		
 		/*
 		 * 
 		 * CassandraInformationStore cis = ((CassandraInformationStore) core
@@ -224,6 +225,6 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		 * WikidataViewCassandraHelper.COLUMN_FAMILY));
 		 * 
 		 */
-	}
+	//}
 
 }

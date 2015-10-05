@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wordnet;
+package org.epnoi.knowledgebase.wordnet;
 
 import java.io.File;
 import java.io.IOException;

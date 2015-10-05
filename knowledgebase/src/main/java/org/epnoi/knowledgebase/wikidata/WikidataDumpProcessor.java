@@ -1,8 +1,8 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import java.io.IOException;
 
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.dumpfiles.DumpContentType;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;

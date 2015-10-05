@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,14 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.datamodel.interfaces.ItemIdValue;
@@ -113,7 +112,9 @@ public class WikidataViewCreator {
 	}
 
 	// --------------------------------------------------------------------------------------------------
-
+/*
+ FOR_TEST
+ 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Starting the WikidataViewCreator");
 
@@ -146,7 +147,7 @@ public class WikidataViewCreator {
 
 		System.out.println("Ending the WikidataViewCreator");
 	}
-
+*/
 	// -------------------------------------------------------------------------------------------------------------------------------------
 
 	class HypernymRelationsEntityProcessor implements EntityDocumentProcessor {

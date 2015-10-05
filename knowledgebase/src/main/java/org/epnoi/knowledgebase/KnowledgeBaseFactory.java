@@ -1,17 +1,16 @@
-package org.epnoi.uia.knowledgebase;
+package org.epnoi.knowledgebase;
 
+import org.epnoi.knowledgebase.wikidata.WikidataHandler;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerBuilder;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters;
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
+import org.epnoi.knowledgebase.wordnet.WordNetHandler;
+import org.epnoi.knowledgebase.wordnet.WordNetHandlerParameters;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandler;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerBuilder;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters;
-import org.epnoi.uia.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandler;
-import org.epnoi.uia.knowledgebase.wordnet.WordNetHandlerParameters;
 
 
 public class KnowledgeBaseFactory {
@@ -71,7 +70,7 @@ public class KnowledgeBaseFactory {
 	}
 
 	// ------------------------------------------------------------------------------------
-
+/*FOR_TEST
 	public static void main(String[] args) throws EpnoiInitializationException{
 		System.out.println("Starting the Knowledge Base test!!");
 
@@ -137,4 +136,5 @@ public class KnowledgeBaseFactory {
 
 		System.out.println("Starting the CuratedRelationsTableCreator test!!");
 	}
+	*/
 }

@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import org.epnoi.model.commons.Parameters;
 

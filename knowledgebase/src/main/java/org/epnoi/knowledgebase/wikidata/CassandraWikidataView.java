@@ -1,10 +1,9 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.epnoi.model.modules.Core;
-import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.WikidataViewCassandraHelper;
@@ -81,12 +80,12 @@ public class CassandraWikidataView {
 	// ------------------------------------------------------------------------------------------------------
 
 	// ------------------------------------------------------------------------------------------------------
-
+	/* FOR_TEST
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		WikidataHandlerParameters parameters = new WikidataHandlerParameters();
 
-		/*
+		
 		parameters.setParameter(WikidataHandlerParameters.WIKIDATA_VIEW_URI, WikidataHandlerParameters.DEFAULT_URI);
 		parameters.setParameter(WikidataHandlerParameters.OFFLINE_MODE, true);
 		parameters.setParameter(WikidataHandlerParameters.DUMP_FILE_MODE, DumpProcessingMode.JSON);
@@ -109,9 +108,9 @@ public class CassandraWikidataView {
 		currentTime = System.currentTimeMillis();
 		wikidataView.count();
 		System.out.println("It took " + (System.currentTimeMillis() - currentTime) + " to clean the wikidata view");
-	*/
-	}
 
+	}
+	*/
 	// ------------------------------------------------------------------------------------------------------
 
 	/**

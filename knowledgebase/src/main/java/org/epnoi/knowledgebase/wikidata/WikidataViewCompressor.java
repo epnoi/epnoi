@@ -1,4 +1,4 @@
-package org.epnoi.uia.knowledgebase.wikidata;
+package org.epnoi.knowledgebase.wikidata;
 
 import java.util.HashMap;
 import java.util.HashSet;
