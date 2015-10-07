@@ -6,6 +6,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.Resource;
 import org.epnoi.model.commons.StringUtils;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 
 import com.hp.hpl.jena.graph.Graph;

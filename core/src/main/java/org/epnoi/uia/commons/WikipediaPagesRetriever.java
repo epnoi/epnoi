@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
 
 public class WikipediaPagesRetriever {
 	

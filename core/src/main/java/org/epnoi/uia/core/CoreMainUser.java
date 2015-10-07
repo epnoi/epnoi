@@ -16,9 +16,9 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
+import org.epnoi.model.rdf.FeedRDFHelper;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 
 public class CoreMainUser {
 	// ---------------------------------------------------------------------------------

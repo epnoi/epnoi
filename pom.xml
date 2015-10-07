@@ -14,6 +14,8 @@
 	</properties>
 	<modules>
 		<module>storage</module>
+<module>sources</module>
+<module>wrappers</module>
 		<module>core</module>
 		<module>web</module>
 		<module>model</module>

@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Resource;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
+import org.epnoi.model.rdf.AnnotationRDFHelper;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;

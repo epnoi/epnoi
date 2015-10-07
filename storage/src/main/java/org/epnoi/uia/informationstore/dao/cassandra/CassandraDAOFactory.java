@@ -13,12 +13,12 @@ import org.epnoi.model.WikidataView;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.model.parameterization.InformationStoreParameters;
+import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.model.rdf.SearchRDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.SearchRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 public class CassandraDAOFactory {
 

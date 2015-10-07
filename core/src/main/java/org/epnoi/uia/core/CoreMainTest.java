@@ -12,12 +12,12 @@ import org.epnoi.model.Item;
 import org.epnoi.model.Paper;
 import org.epnoi.model.User;
 import org.epnoi.model.modules.Core;
+import org.epnoi.model.rdf.FeedRDFHelper;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchResult;
 import org.epnoi.model.search.SelectExpression;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 import gate.Document;
 import gate.Factory;

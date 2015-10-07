@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.epnoi</groupId>
+	<artifactId>epnoi</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>epnoi</name>
+
+	<properties>
+		<lib.dir>/opt/epnoi/epnoi/lib</lib.dir>
+	</properties>
+	<modules>
+		<module>storage</module>
+<module>sources</module>
+		<module>core</module>
+		<module>web</module>
+		<module>model</module>
+		<module>nlp</module>
+		<module>harvester</module>
+		<module>hoarder</module>
+		<module>learner</module>
+		<module>topics</module>
+		<module>knowledgebase</module>
+		<module>app</module>
+		
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>jena-virtuoso</groupId>
+			<artifactId>jena-virtuoso</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${lib.dir}/virtuoso-jena/virt_jena2.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>virtuoso-jdbc3</groupId>
+			<artifactId>virtuoso-jdbc3</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>virtuoso-jdbc4</groupId>
+			<artifactId>virtuoso-jdbc4</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.3</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

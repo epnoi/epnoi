@@ -7,10 +7,10 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 
 public class SOLRDAOFactory {
 	SOLRInformationStoreParameters parameters;

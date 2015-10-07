@@ -21,11 +21,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.AnnotationRDFHelper;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
+import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 
 import com.sun.jersey.api.Responses;
 import com.wordnik.swagger.annotations.Api;

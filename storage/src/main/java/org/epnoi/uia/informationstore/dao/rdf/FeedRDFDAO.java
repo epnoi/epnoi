@@ -13,6 +13,8 @@ import org.epnoi.model.commons.DateConverter;
 import org.epnoi.model.commons.StringUtils;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
+import org.epnoi.model.rdf.FeedRDFHelper;
+import org.epnoi.model.rdf.OAIORERDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 
 import com.hp.hpl.jena.graph.Graph;

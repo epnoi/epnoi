@@ -40,7 +40,7 @@ Thumbs.db
 # eclipse generated files #
 ###########################
 .classpath
-
+.project
 # Directories #
 ###############
 target/*

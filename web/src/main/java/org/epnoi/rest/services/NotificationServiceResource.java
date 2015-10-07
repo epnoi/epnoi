@@ -13,8 +13,10 @@ import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.cpr.DefaultBroadcaster;
 import org.atmosphere.jersey.SuspendResponse;
-import org.epnoi.uia.informationsources.monitors.RSSInformationSourceMonitor;
-import org.epnoi.uia.informationsources.subscribers.EventBus;
+import org.epnoi.sources.monitors.RSSInformationSourceMonitor;
+import org.epnoi.sources.subscribers.EventBus;
+
+
 
 @Path("/notificationsService")
 public class NotificationServiceResource extends UIAService {

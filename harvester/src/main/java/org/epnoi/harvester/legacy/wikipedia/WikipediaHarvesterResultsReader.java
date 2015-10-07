@@ -10,10 +10,10 @@ import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class WikipediaHarvesterResultsReader {

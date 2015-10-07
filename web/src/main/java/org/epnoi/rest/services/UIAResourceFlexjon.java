@@ -24,12 +24,12 @@ import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.rdf.AnnotationRDFHelper;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
+import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 import org.epnoi.rest.services.response.UIA;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.UserRDFHelper;
 
 import flexjson.JSONDeserializer;
 

@@ -9,6 +9,7 @@ import org.epnoi.model.DublinCoreMetadataElementsSet;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.OAIORERDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 
 import com.hp.hpl.jena.graph.Graph;

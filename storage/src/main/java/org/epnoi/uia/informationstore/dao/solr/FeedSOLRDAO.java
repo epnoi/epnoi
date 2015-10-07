@@ -11,9 +11,9 @@ import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
+import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SelectExpression;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 
 
 

@@ -10,11 +10,11 @@ import org.epnoi.model.commons.StringUtils;
 import org.epnoi.model.modules.AnnotationHandler;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.model.rdf.AnnotationOntologyRDFHelper;
+import org.epnoi.model.rdf.AnnotationRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationOntologyRDFHelper;
-import org.epnoi.uia.informationstore.dao.rdf.AnnotationRDFHelper;
 
 public class AnnotationHandlerImpl implements AnnotationHandler {
 	private Core core;

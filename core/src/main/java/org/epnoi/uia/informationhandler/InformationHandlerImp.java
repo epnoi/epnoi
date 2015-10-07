@@ -3,6 +3,8 @@ package org.epnoi.uia.informationhandler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.epnoi.informationhandler.wrappers.Wrapper;
+import org.epnoi.informationhandler.wrappers.WrapperFactory;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -11,11 +13,9 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationAccessListener;
 import org.epnoi.model.modules.InformationHandler;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
-import org.epnoi.uia.informationhandler.wrapper.Wrapper;
-import org.epnoi.uia.informationhandler.wrapper.WrapperFactory;
-import org.epnoi.uia.informationstore.InformationStoreHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.VirtuosoInformationStore;
 

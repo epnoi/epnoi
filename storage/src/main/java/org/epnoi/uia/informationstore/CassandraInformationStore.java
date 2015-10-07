@@ -10,6 +10,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.parameterization.InformationStoreParameters;
+import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchSelectResult;
@@ -23,7 +24,6 @@ import org.epnoi.uia.informationstore.dao.cassandra.ItemCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraHelper;
-import org.epnoi.uia.informationstore.dao.rdf.FeedRDFHelper;
 
 public class CassandraInformationStore implements InformationStore {
 	private InformationStoreParameters parameters;

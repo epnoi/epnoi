@@ -12,6 +12,8 @@ import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
 import org.epnoi.model.commons.StringUtils;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
+import org.epnoi.model.rdf.FeedRDFHelper;
+import org.epnoi.model.rdf.OAIORERDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 
 import com.hp.hpl.jena.graph.Graph;

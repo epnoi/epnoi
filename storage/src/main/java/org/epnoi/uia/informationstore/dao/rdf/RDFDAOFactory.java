@@ -17,9 +17,13 @@ import org.epnoi.model.WikidataView;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.model.rdf.AnnotationRDFHelper;
+import org.epnoi.model.rdf.FeedRDFHelper;
+import org.epnoi.model.rdf.InformationSourceRDFHelper;
+import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.model.rdf.UserRDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.RelationalSentencesCorpusRDFDAO;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 
 
