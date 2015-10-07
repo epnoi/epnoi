@@ -37,6 +37,10 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+# eclipse generated files #
+###########################
+.classpath
+
 # Directories #
 ###############
 target/*
