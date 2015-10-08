@@ -1,4 +1,4 @@
-package org.epnoi.learner.relations.corpus;
+package org.epnoi.learner.relations.corpus.parallel;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
