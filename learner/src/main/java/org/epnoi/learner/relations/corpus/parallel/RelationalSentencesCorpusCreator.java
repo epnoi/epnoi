@@ -1,4 +1,4 @@
-package org.epnoi.learner.relations.corpus;
+package org.epnoi.learner.relations.corpus.parallel;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
@@ -77,7 +78,7 @@ public class RelationalSentencesCorpusCreator {
 		logger.info(this.parameters.toString());
 		// This should be done in parallel!!
 		_searchWikipediaCorpus();
-		_searchReutersCorpus();
+		
 
 		corpus.setURI((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
@@ -87,7 +88,7 @@ public class RelationalSentencesCorpusCreator {
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER));
 
 		if (this.verbose) {
-			_showRelationalSentenceCorpusInfo();
+			RelationalSentencesCorpusViewer.showRelationalSentenceCorpusInfo(corpus);
 		}
 
 		if (this.storeResult) {
@@ -102,37 +103,7 @@ public class RelationalSentencesCorpusCreator {
 		core.getInformationHandler().put(this.corpus, Context.getEmptyContext());
 	}
 
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	private void _showRelationalSentenceCorpusInfo() {
-		System.out
-				.println("------------------------------------------------------------------------------------------");
-		System.out.println("Information about the corpus " + this.corpus.getURI());
-		System.out.println("Relations type: " + this.corpus.getType());
-		System.out.println("Corpus description: " + this.corpus.getDescription());
-		System.out.println("It has " + this.corpus.getSentences().size() + " relational sentences");
-		/*
-		 * for (RelationalSentence relationalSencente :
-		 * this.corpus.getSentences()) {
-		 * _showRelationalSentenceInfo(relationalSencente); }
-		 */
-		double average = 0.;
-		for (RelationalSentence relationalSencente : this.corpus.getSentences()) {
-			average += relationalSencente.getSentence().length();
-		}
-		System.out.println("The average length is " + average / this.corpus.getSentences().size());
-		System.out.println("There were " + nonRelationalSentencesCounter + " that were left out as no relational");
-		System.out
-				.println("------------------------------------------------------------------------------------------");
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	private void _searchReutersCorpus() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -150,6 +121,11 @@ public class RelationalSentencesCorpusCreator {
 		// logger.info("The number of retrived Wikipeda articles are "+
 		// queryResults.size());
 		logger.info(wikipediaPages.size() + " wikipedia pages were retrieved");
+		
+		
+		
+		
+		/*
 		for (String uri : wikipediaPages) {
 
 			if (this.core.getInformationHandler().contains(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
@@ -182,10 +158,7 @@ public class RelationalSentencesCorpusCreator {
 						// this.termCandidatesFinder.release(annotatedContentDocument);
 
 					} else {
-						/*
-						 * System.out.println("The section " + section + " of "
-						 * + uri + " was null");
-						 */
+			
 						nullCounts++;
 					}
 				}
@@ -193,6 +166,7 @@ public class RelationalSentencesCorpusCreator {
 			}
 
 		}
+		*/
 		logger.info("The number of not nulls is " + sectionsCount + " of nulls is " + nullCounts);
 	}
 
@@ -418,7 +392,7 @@ public class RelationalSentencesCorpusCreator {
 
 		RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
-		String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
+		String relationalCorpusURI = "http://epnoi.org/relationalSentencesCorpus";
 
 		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
 				relationalCorpusURI);
@@ -471,40 +445,6 @@ public class RelationalSentencesCorpusCreator {
 		logger.info("Stopping the Relation Sentences Corpus Creator");
 	}
 
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	public RelationalSentencesCorpus createTestCorpus() {
-		String relationalSentenceURI = "http://thetestcorpus/drinventor";
-		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
-		relationalSentencesCorpus.setDescription("The test corpus");
-		relationalSentencesCorpus.setURI(relationalSentenceURI);
-		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
-
-		Document annotatedContentA = null;
-		try {
-			annotatedContentA = this.core.getNLPHandler().process("A dog is a canine");
-		} catch (EpnoiResourceAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		RelationalSentence relationalSentenceA = new RelationalSentence(new OffsetRangeSelector(2L, 5L),
-				new OffsetRangeSelector(11L, 17L), "A dog is a canine", annotatedContentA.toXml());
-
-		Document annotatedContentB = null;
-		try {
-			annotatedContentB = this.core.getNLPHandler().process("A dog, is a canine (and other things!)");
-		} catch (EpnoiResourceAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		RelationalSentence relationalSentenceB = new RelationalSentence(new OffsetRangeSelector(2L, 5L),
-				new OffsetRangeSelector(12L, 18L), "A dog, is a canine (and other things!)", annotatedContentB.toXml());
-
-		relationalSentencesCorpus.getSentences().add(relationalSentenceA);
-
-		relationalSentencesCorpus.getSentences().add(relationalSentenceB);
-		return relationalSentencesCorpus;
-	}
+	
 
 }

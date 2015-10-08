@@ -47,3 +47,10 @@ target/*
 target
 .settings
 /bin/
+
+###########################
+# eclipse & related
+.classpath
+.project
+.settings
+target
