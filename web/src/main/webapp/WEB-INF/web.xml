@@ -14,6 +14,20 @@
 		<url-pattern>/simple</url-pattern>
 	</servlet-mapping>
  -->
+     <servlet>
+        <servlet-name>jersey</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value> io.swagger.jaxrs.json;io.swagger.jaxrs.listing;org.epnoi.rest.services</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jersey</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+ <!--  
 	<servlet>
 		<description>AtmosphereServlet</description>
 		<servlet-name>AtmosphereServlet</servlet-name>
@@ -21,7 +35,11 @@
 		<init-param>
 
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.epnoi.rest.services; com.wordnik.swagger.jersey.listing</param-value>
+			  <param-value>
+                io.swagger.jaxrs.json,
+                io.swagger.jaxrs.listing,
+                org.epnoi.rest.services
+               </param-value>
 		</init-param>
 		<init-param>
 
@@ -35,7 +53,7 @@
 		<servlet-name>AtmosphereServlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
+-->
 	<!-- <servlet> <servlet-name>jersey</servlet-name> <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class> 
 		<init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
 		<param-value>org.epnoi.uia.rest.services;com.wordnik.swagger.jersey.listing</param-value> 
@@ -44,8 +62,8 @@
 		</servlet> <servlet-mapping> <servlet-name>jersey</servlet-name> <url-pattern>/*</url-pattern> 
 		</servlet-mapping> -->
 	<servlet>
-		<servlet-name>JerseyJaxrsConfig</servlet-name>
-		<servlet-class>com.wordnik.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+		<servlet-name>Jersey2Config</servlet-name>
+		<servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
 		<init-param>
 			<param-name>api.version</param-name>
 			<param-value>1.0.0</param-value>

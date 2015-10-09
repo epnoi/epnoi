@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>epnoi API</title>
+  <title>Swagger UI</title>
   <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
   <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
   <link href='css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -33,7 +33,7 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = "http://localhost:8080/epnoi/rest/swagger.json";
+        url = "http://petstore.swagger.io/v2/swagger.json";
       }
 
       // Pre load translate...
@@ -41,7 +41,7 @@
         window.SwaggerTranslator.translate();
       }
       window.swaggerUi = new SwaggerUi({
-        url: "http://localhost:8080/epnoi/rest/swagger.json",
+        url: url,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
         onComplete: function(swaggerApi, swaggerUi){
@@ -104,11 +104,11 @@
 <body class="swagger-section">
 <div id='header'>
   <div class="swagger-ui-wrap">
-    <a>epnoi</a>
+    <a id="logo" href="http://swagger.io">swagger</a>
     <form id='api_selector'>
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-     <!-- <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>-->
-   <!--   <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>-->
+      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>
     </form>
   </div>
 </div>

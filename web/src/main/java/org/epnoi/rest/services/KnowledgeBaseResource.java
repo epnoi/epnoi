@@ -1,6 +1,5 @@
 package org.epnoi.rest.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,17 +18,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.epnoi.learner.relations.RelationsHandler;
-import org.epnoi.learner.relations.RelationsHandlerParameters;
-import org.epnoi.model.Domain;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+
 
 @Path("/uia/knowledgebase")
 @Api(value = "/uia/knowledgebase", description = "Knowledge base related operations")
