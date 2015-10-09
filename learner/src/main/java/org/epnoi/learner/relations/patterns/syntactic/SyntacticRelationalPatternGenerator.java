@@ -61,12 +61,16 @@ public class SyntacticRelationalPatternGenerator implements
 				patternGraph.getTarget());
 		// System.out.println("SP---> " + shortestPathGenerator.getPath());
 
-		for (List<SyntacticPatternGraphElement> list : createPatternNodelists(
-				shortestPathGenerator.getPath(), patternGraph)) {
-			SyntacticRelationalPattern pattern = new SyntacticRelationalPattern(
-					list);
-			generatedPatterns.add(pattern);
-		}
+		//TODO Fix compilation error:
+		//ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.3:compile (default-compile) on project learner: Compilation failure
+		//[ERROR] /Users/cbadenes/Projects/epnoi/learner/src/main/java/org/epnoi/learner/relations/patterns/syntactic/SyntacticRelationalPatternGenerator.java:[64,86] incompatible types: java.lang.Object cannot be converted to java.util.List<org.epnoi.learner.relations.patterns.syntactic.SyntacticPatternGraphElement>
+		//[ERROR] -> [Help 1]
+//		for (List<SyntacticPatternGraphElement> list : createPatternNodelists(
+//				shortestPathGenerator.getPath(), patternGraph)) {
+//			SyntacticRelationalPattern pattern = new SyntacticRelationalPattern(
+//					list);
+//			generatedPatterns.add(pattern);
+//		}
 				
 		return generatedPatterns;
 	}
