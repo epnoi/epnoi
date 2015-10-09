@@ -17,13 +17,13 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 import gate.Document;
 
 public class PartitionMapFunction implements FlatMapFunction<Iterator<String>, Document> {
-
 	Core core;
 
 	@Override
 	public Iterable<Document> call(Iterator<String> URIs) throws Exception {
 		_initialization();
 		List<Document> sectionsAnnotatedContent = new ArrayList<>();
+		_initialization();
 		while (URIs.hasNext()) {
 			String uri = URIs.next();
 			WikipediaPage page = (WikipediaPage) core.getInformationHandler().get(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
@@ -57,10 +57,12 @@ public class PartitionMapFunction implements FlatMapFunction<Iterator<String>, D
 
 	// --------------------------------------------------------------------------------------------------------------------
 
+
 	private void _initialization() {
 		this.core = CoreUtility.getUIACore();
 
 	}
+
 
 	// --------------------------------------------------------------------------------------------------------------------
 
