@@ -7,17 +7,21 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sources</artifactId>
+	<artifactId>epnoi-sources</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi information sources</name>
-	<description>Epnoi Information Sources</description>
+	<description>epnoi information sources</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>epnoi-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-runtime</artifactId>

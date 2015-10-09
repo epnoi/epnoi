@@ -7,10 +7,10 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>topics</artifactId>
+	<artifactId>epnoi-topics</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi topics</name>
-	<description>Epnoi Topics</description>
+	<description>epnoi topics</description>
 
 </project>
 

@@ -9,33 +9,36 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>web</artifactId>
+	<artifactId>epnoi-web</artifactId>
 	<packaging>war</packaging>
 	<name>epnoi web</name>
-	<description>Epnoi Web</description>
+	<description>epnoi web</description>
 
 	<dependencies>
 
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>epnoi-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>learner</artifactId>
+			<artifactId>epnoi-learner</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>harvester</artifactId>
+			<artifactId>epnoi-harvester</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>knowledgebase</artifactId>
+			<artifactId>epnoi-knowledgebase</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>

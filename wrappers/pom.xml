@@ -7,15 +7,17 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>wrappers</artifactId>
+	<artifactId>epnoi-wrappers</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi wrappers</name>
-	<description>Epnoi Wrappers</description>
+	<description>epnoi wrappers</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>storage</artifactId>
+			<artifactId>epnoi-storage</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

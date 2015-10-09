@@ -7,12 +7,14 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>model</artifactId>
+	<artifactId>epnoi-model</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi model</name>
-	<description>Epnoi Model</description>
+	<description>epnoi model</description>
 
 	<dependencies>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

@@ -7,17 +7,22 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>nlp</artifactId>
+	<artifactId>epnoi-nlp</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi nlp</name>
-	<description>Epnoi NLP</description>
+	<description>epnoi nlp</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>epnoi-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>uk.ac.gate</groupId>
 			<artifactId>gate-core</artifactId>

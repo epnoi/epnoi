@@ -7,10 +7,10 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>app</artifactId>
+	<artifactId>epnoi-app</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi app</name>
-	<description>Epnoi App</description>
+	<description>epnoi app</description>
 
 </project>
 

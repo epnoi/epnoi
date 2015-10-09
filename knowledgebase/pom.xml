@@ -7,22 +7,26 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>knowledgebase</artifactId>
+	<artifactId>epnoi-knowledgebase</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi knowledge base</name>
-	<description>Epnoi Knowledge Base</description>
+	<description>epnoi knowledge base</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>epnoi-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>storage</artifactId>
+			<artifactId>epnoi-storage</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.wikidata.wdtk</groupId>
 			<artifactId>wdtk-dumpfiles</artifactId>

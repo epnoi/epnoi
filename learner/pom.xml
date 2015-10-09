@@ -7,15 +7,17 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>learner</artifactId>
+	<artifactId>epnoi-learner</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi learner</name>
-	<description>Epnoi Learner</description>
+	<description>epnoi learner</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>epnoi-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

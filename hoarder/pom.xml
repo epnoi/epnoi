@@ -7,15 +7,17 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>hoarder</artifactId>
+	<artifactId>epnoi-hoarder</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi hoarder</name>
-	<description>Epnoi Hoarder</description>
+	<description>epnoi hoarder</description>
 
 	<dependencies>
+
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>epnoi-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

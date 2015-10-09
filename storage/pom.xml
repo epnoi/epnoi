@@ -7,18 +7,21 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>storage</artifactId>
+	<artifactId>epnoi-storage</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi storage</name>
-	<description>Epnoi Storage</description>
+	<description>epnoi storage</description>
 
 	<dependencies>
 
+		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.epnoi</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>epnoi-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
