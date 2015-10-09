@@ -34,23 +34,17 @@
 			<groupId>jena-virtuoso</groupId>
 			<artifactId>jena-virtuoso</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${lib.dir}/virtuoso-jena/virt_jena2.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>virtuoso-jdbc3</groupId>
 			<artifactId>virtuoso-jdbc3</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc3.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>virtuoso-jdbc4</groupId>
 			<artifactId>virtuoso-jdbc4</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${lib.dir}/virtuoso-jena/virtjdbc4.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -77,5 +71,13 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>aldebaran-libs</id>
+			<name>aldebaran-drinventor-external-libs</name>
+			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
+		</repository>
+	</repositories>
 
 </project>
