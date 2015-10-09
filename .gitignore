@@ -47,3 +47,8 @@ target/*
 target
 .settings
 /bin/
+
+# IntelliJ generated files #
+############################
+.idea
+*.iml
