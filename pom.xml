@@ -8,14 +8,101 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>epnoi</name>
-
+	<description>Explore multiple heterogeneous non-structured information sources</description>
+	<url>http://epnoi.org</url>
+	<organization>
+		<name>Ontology Engineering Group</name>
+		<url>http://www.oeg-upm.net</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+	<inceptionYear>2015</inceptionYear>
+	<scm>
+		<url>https://github.com/fitash/epnoi/wiki</url>
+	</scm>
+	<developers>
+		<developer>
+			<id>rgonza</id>
+			<name>Rafael Gonzalez Cabero</name>
+			<email>rgonza at fi.upm.es</email>
+		</developer>
+		<developer>
+			<id>cbadenes</id>
+			<name>Carlos Badenes Olmedo</name>
+			<email>cbadenes at fi.upm.es</email>
+		</developer>
+	</developers>
+	<prerequisites>
+		<maven>3.0.0</maven>
+	</prerequisites>
 	<properties>
-		<lib.dir>/opt/epnoi/epnoi/lib</lib.dir>
+
+		<!-- Project Details -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.java.version>1.8</project.java.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Maven Plugins -->
+		<maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+		<maven.site.plugin.version>0.10</maven.site.plugin.version>
+		<maven.war.plugin.version>2.6</maven.war.plugin.version>
+		<maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+
+		<!-- Project Dependencies -->
+		<atmosphere.version>2.0.1</atmosphere.version>
+		<camel.version>2.15.2</camel.version>
+		<cloning.version>1.9.1</cloning.version>
+		<commons.lang.version>2.6</commons.lang.version>
+		<commons.pool.version>2.4.1</commons.pool.version>
+		<flexjson.version>2.0</flexjson.version>
+		<gate.version>7.1</gate.version>
+		<gate.standford.version>1.0</gate.standford.version>
+		<guava.version>18.0</guava.version>
+		<hector.version>1.1-3</hector.version>
+		<hibernate.version>4.3.0.Beta5</hibernate.version>
+		<jackson.version>1.9.11</jackson.version>
+		<javassist.version>3.12.1.GA</javassist.version>
+		<javatuples.version>1.2</javatuples.version>
+		<javax.version>1.0</javax.version>
+		<jaxb.version>2.2.7</jaxb.version>
+		<jersey.version>1.17.1</jersey.version>
+		<jetty.version>8.1.9.v20130131</jetty.version>
+		<jena.version>2.10.1</jena.version>
+		<jgrapht.version>0.9.0</jgrapht.version>
+		<junit.version>4.12</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<logback.version>1.1.3</logback.version>
+		<lombok.version>1.16.4</lombok.version>
+		<jsoup.version>1.8.2</jsoup.version>
+		<jwi.version>2.2.3</jwi.version>
+		<lucene.version>4.10.4</lucene.version>
+		<mahout.version>0.9</mahout.version>
+		<mapdb.version>1.0.7</mapdb.version>
+		<mockito.version>1.9.5</mockito.version>
+		<opennlp.version>1.5.3</opennlp.version>
+		<nvi18n.version>1.15</nvi18n.version>
+		<servlet.api.version>2.4</servlet.api.version>
+		<slf4j.version>1.7.12</slf4j.version>
+		<solr.version>4.6.0</solr.version>
+		<spring.version>4.1.7.RELEASE</spring.version>
+		<standford.parser.version>1.0</standford.parser.version>
+		<swagger.jersey.version>1.3.0</swagger.jersey.version>
+		<sweble.version>1.1.0</sweble.version>
+		<tika.version>0.10</tika.version>
+		<tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
+		<virtuoso.jena.version>1.0</virtuoso.jena.version>
+		<virtuoso.jdbc.version>1.0</virtuoso.jdbc.version>
+		<wdtk.version>0.4.0</wdtk.version>
+		<xml.api.version>1.3.04</xml.api.version>
 	</properties>
 	<modules>
 		<module>storage</module>
-<module>sources</module>
-<module>wrappers</module>
+		<module>sources</module>
+		<module>wrappers</module>
 		<module>core</module>
 		<module>web</module>
 		<module>model</module>
@@ -26,58 +113,470 @@
 		<module>topics</module>
 		<module>knowledgebase</module>
 		<module>app</module>
-		
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Camel REST Libraries -->
+
+			<!-- Camel Workflow Libraries-->
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-core</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-spring</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-metrics</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+
+			<!-- Cassandra Libraries -->
+			<dependency>
+				<groupId>org.hectorclient</groupId>
+				<artifactId>hector-core</artifactId>
+				<version>${hector.version}</version>
+			</dependency>
+
+			<!-- Graph Libraries -->
+			<dependency>
+				<groupId>org.jgrapht</groupId>
+				<artifactId>jgrapht-core</artifactId>
+				<version>${jgrapht.version}</version>
+			</dependency>
+
+			<!-- In-Memory DB Libraries-->
+			<dependency>
+				<groupId>org.mapdb</groupId>
+				<artifactId>mapdb</artifactId>
+				<version>${mapdb.version}</version>
+			</dependency>
+
+			<!-- Json Serializers -->
+			<dependency>
+				<groupId>net.sf.flexjson</groupId>
+				<artifactId>flexjson</artifactId>
+				<version>${flexjson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-xc</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-jackson</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+
+			<!-- Log Libraries -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<!-- Lucene Libraries-->
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers-common</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+
+			<!-- Machine Learning Libraries -->
+			<dependency>
+				<groupId>org.apache.mahout</groupId>
+				<artifactId>mahout-core</artifactId>
+				<version>${mahout.version}</version>
+			</dependency>
+
+			<!-- Meta Programming Libraries -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.neovisionaries</groupId>
+				<artifactId>nv-i18n</artifactId>
+				<version>${nvi18n.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>uk.com.robust-it</groupId>
+				<artifactId>cloning</artifactId>
+				<version>${cloning.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-pool2</artifactId>
+				<version>${commons.pool.version}</version>
+			</dependency>
+
+			<!-- Networking Libraries -->
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>${javax.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>${jaxb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.atmosphere</groupId>
+				<artifactId>atmosphere-runtime</artifactId>
+				<version>${atmosphere.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.atmosphere</groupId>
+				<artifactId>atmosphere-jersey</artifactId>
+				<version>${atmosphere.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.atmosphere</groupId>
+				<artifactId>atmosphere-jquery</artifactId>
+				<version>${atmosphere.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet.api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-jaxb</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+
+			<!-- NLP Libraries -->
+			<dependency>
+				<groupId>gate-stanford</groupId>
+				<artifactId>gate-stanford</artifactId>
+				<version>${gate.standford.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>standford-parser</groupId>
+				<artifactId>standford-parser</artifactId>
+				<version>${standford.parser.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>uk.ac.gate</groupId>
+				<artifactId>gate-core</artifactId>
+				<version>${gate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.javatuples</groupId>
+				<artifactId>javatuples</artifactId>
+				<version>${javatuples.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.opennlp</groupId>
+				<artifactId>opennlp-tools</artifactId>
+				<version>${opennlp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-core</artifactId>
+				<version>${tika.version}</version>
+				<classifier>jdk14</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-parsers</artifactId>
+				<version>${tika.version}</version>
+				<classifier>jdk14</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>apache-jena-libs</artifactId>
+				<type>pom</type>
+				<version>${jena.version}</version>
+			</dependency>
+
+			<!-- PDF Libraries -->
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${jsoup.version}</version>
+			</dependency>
+
+			<!-- Relational DB Libraries-->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+
+			<!-- Solr Libraries -->
+			<dependency>
+				<groupId>org.apache.solr</groupId>
+				<artifactId>solr-solrj</artifactId>
+				<version>${solr.version}</version>
+			</dependency>
+
+			<!-- Spring Libraries -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<!-- Unit tests Libraries -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito.version}</version>
+			</dependency>
+
+			<!-- Virtuoso Libraries-->
+			<dependency>
+				<groupId>jena-virtuoso</groupId>
+				<artifactId>jena-virtuoso</artifactId>
+				<version>${virtuoso.jena.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>virtuoso-jdbc3</groupId>
+				<artifactId>virtuoso-jdbc3</artifactId>
+				<version>${virtuoso.jdbc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>virtuoso-jdbc4</groupId>
+				<artifactId>virtuoso-jdbc4</artifactId>
+				<version>${virtuoso.jdbc.version}</version>
+			</dependency>
+
+			<!-- Wikipedia Libraries -->
+			<dependency>
+				<groupId>org.sweble.wikitext</groupId>
+				<artifactId>swc-parser-lazy</artifactId>
+				<version>${sweble.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.sweble.wikitext</groupId>
+				<artifactId>swc-engine</artifactId>
+				<version>${sweble.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+				<artifactId>de.tudarmstadt.ukp.wikipedia.api</artifactId>
+				<version>${tudarmstadt.wikipedia.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+				<artifactId>de.tudarmstadt.ukp.wikipedia.parser</artifactId>
+				<version>${tudarmstadt.wikipedia.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.wikidata.wdtk</groupId>
+				<artifactId>wdtk-dumpfiles</artifactId>
+				<version>${wdtk.version}</version>
+			</dependency>
+
+			<!-- WordNet Libraries -->
+			<dependency>
+				<groupId>edu.mit</groupId>
+				<artifactId>jwi</artifactId>
+				<version>${jwi.version}</version>
+			</dependency>
+
+			<!-- WS-REST Libraries -->
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-bundle</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-server</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-json</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.wordnik</groupId>
+				<artifactId>swagger-jersey-jaxrs_2.10</artifactId>
+				<version>${swagger.jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-server</artifactId>
+				<version>${jetty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlets</artifactId>
+				<version>${jetty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-swagger</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-servlet</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-restlet</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+
+			<!-- XML Serializer -->
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>${xml.api.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+
 	<dependencies>
-		<dependency>
-			<groupId>jena-virtuoso</groupId>
-			<artifactId>jena-virtuoso</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>virtuoso-jdbc3</groupId>
-			<artifactId>virtuoso-jdbc3</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>virtuoso-jdbc4</groupId>
-			<artifactId>virtuoso-jdbc4</artifactId>
-			<version>1.0</version>
-		</dependency>
-
+		<!-- Unit tests -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
-					<configuration>
-						<encoding>UTF-8</encoding>
-						<source>1.7</source>
-						<target>1.7</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<plugins>
+
+			<!-- Maven Compiler Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>${project.java.version}</source>
+					<target>${project.java.version}</target>
+					<compilerVersion>${project.java.version}</compilerVersion>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
+
+
 	<repositories>
+
+		<!-- OEG Aldebaran Repository -->
 		<repository>
 			<id>aldebaran-libs</id>
 			<name>aldebaran-drinventor-external-libs</name>
 			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
 		</repository>
+
+		<!-- Spring Milestone Repository -->
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
+
+
+	<distributionManagement>
+
+		<!-- OEG Aldebaran Releases Repository -->
+		<repository>
+			<id>aldebaran-releases</id>
+			<name>aldebaran-drinventor-releases</name>
+			<url>http://development.seals-project.eu/artifactory/drinventor-releases-local</url>
+		</repository>
+
+		<!-- OEG Aldebaran Snapshot Repository -->
+		<snapshotRepository>
+			<id>aldebaran-snapshot</id>
+			<name>aldebaran-drinventor-snapshots</name>
+			<url>http://development.seals-project.eu/artifactory/drinventor-snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

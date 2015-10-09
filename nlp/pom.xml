@@ -6,70 +6,34 @@
 		<artifactId>epnoi</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
+
 	<artifactId>nlp</artifactId>
 	<packaging>jar</packaging>
 	<name>epnoi nlp</name>
-	<url>http://epnoi.org</url>
+	<description>Epnoi NLP</description>
 
-	<properties>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<maven.compiler.source>1.7</maven.compiler.source>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.epnoi</groupId>
 			<artifactId>model</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<type>jar</type>
+			<version>${project.version}</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>uk.ac.gate</groupId>
 			<artifactId>gate-core</artifactId>
-			<version>7.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>uk.com.robust-it</groupId>
 			<artifactId>cloning</artifactId>
-			<version>1.9.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>
-			<version>2.4.1</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.jgrapht</groupId>
 			<artifactId>jgrapht-core</artifactId>
-			<version>0.9.0</version>
 		</dependency>
 	</dependencies>
-
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-
-				<configuration>
-					<encoding>UTF-8</encoding>
-
-				</configuration>
-			</plugin>
-		</plugins>
-
-	</build>
 </project>
 
