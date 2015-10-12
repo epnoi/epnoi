@@ -16,7 +16,7 @@ import org.epnoi.uia.informationstore.SelectorHelper;
 
 import gate.Document;
 
-public class PartitionMapFunction implements FlatMapFunction<Iterator<String>, Document> {
+public class DocumentRetrievalPartitionMapFunction implements FlatMapFunction<Iterator<String>, Document> {
 	Core core;
 
 	@Override
