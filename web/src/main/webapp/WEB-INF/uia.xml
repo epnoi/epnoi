@@ -6,7 +6,7 @@
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
 		<numberOfProcessors>1</numberOfProcessors>
 	</nlp>
-	<!--  
+	 
 	<knowledgeBase>
 		<lazy>true</lazy>
 		<wordnet>
@@ -21,7 +21,7 @@
 			<uri>http://www.epnoi.org/wikidataView</uri>
 		</wikidata>
 	</knowledgeBase>
--->
+
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
