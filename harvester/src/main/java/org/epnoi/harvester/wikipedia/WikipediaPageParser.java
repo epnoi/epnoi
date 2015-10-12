@@ -1,6 +1,6 @@
-package org.epnoi.harvester.legacy.wikipedia;
+package org.epnoi.harvester.wikipedia;
 
-import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.commons.StringUtils;

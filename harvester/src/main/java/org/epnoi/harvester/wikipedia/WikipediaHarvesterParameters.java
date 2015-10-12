@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia;
+package org.epnoi.harvester.wikipedia;
 
 import org.epnoi.model.commons.Parameters;
 

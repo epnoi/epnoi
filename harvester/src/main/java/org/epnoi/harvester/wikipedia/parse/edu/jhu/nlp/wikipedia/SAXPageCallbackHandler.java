@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia;
+package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;

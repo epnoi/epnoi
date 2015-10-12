@@ -130,6 +130,7 @@ public class WikidataViewResource extends UIAService {
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
 			@ApiResponse(code = 404, message = "The UIA has not been initialized") })
 	@ApiOperation(value = "Returns the wikidata view", notes = "", response = WikidataViewSummary.class)
+	
 	public Response getWikidataView() {
 		logger.info("GET: ");
 

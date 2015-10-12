@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.util;
+package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

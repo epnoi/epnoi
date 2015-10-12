@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.language;
+package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.language;
 /**
  * A utility class for language specific features
  * @author Delip Rao

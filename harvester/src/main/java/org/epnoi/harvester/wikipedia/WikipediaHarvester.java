@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia;
+package org.epnoi.harvester.wikipedia;
 
 import java.io.File;
 import java.util.HashSet;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParser;
-import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParser;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;

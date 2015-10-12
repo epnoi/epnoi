@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia;
+package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
 import java.io.InputStream;
 import java.util.Vector;

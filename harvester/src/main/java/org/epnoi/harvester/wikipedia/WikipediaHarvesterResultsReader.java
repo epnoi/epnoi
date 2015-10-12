@@ -1,4 +1,4 @@
-package org.epnoi.harvester.legacy.wikipedia;
+package org.epnoi.harvester.wikipedia;
 
 import java.util.List;
 import java.util.logging.Logger;

@@ -1,11 +1,11 @@
-package org.epnoi.harvester.legacy.wikipedia;
+package org.epnoi.harvester.wikipedia;
 
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbackHandler;
-import org.epnoi.harvester.legacy.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.PageCallbackHandler;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.model.Context;
 import org.epnoi.model.commons.BoundedExecutor;
 import org.epnoi.model.commons.StringUtils;
