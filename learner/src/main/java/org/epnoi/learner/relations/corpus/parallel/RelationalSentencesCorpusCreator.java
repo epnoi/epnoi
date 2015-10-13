@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
@@ -93,15 +94,25 @@ public class RelationalSentencesCorpusCreator {
 
 	private List<RelationalSentence> _createCorpus(List<String> URIs) {
 		List<RelationalSentence> relationalSentence = new ArrayList<>();
-		JavaSparkContext sparkContext = new JavaSparkContext("local[4]", JOB_NAME, System.getenv("SPARK_HOME"),
-				System.getenv("JARS"));
+		
+		SparkConf sparkConf= new SparkConf().setMaster("local[4]").setAppName(JOB_NAME);
+	
+		JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+		
+		
+	
+		
 		// First we must create the RDD with the URIs of the resources to be
 		// included in the creation of the corpus
 		JavaRDD<String> corpusURIs = sparkContext.parallelize(URIs);
 
+		
+		System.out.println("init!!!!!");
 		// THen we obtain the URIs of the annotated content documents that are
 		// stored at the UIA
+		/*
 		JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new SectionsAnnotatedContentURIsFlatMapFunction());
+		System.out.println("..> "+annotatedContentURIs.collect());
 
 		JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
@@ -116,6 +127,7 @@ public class RelationalSentencesCorpusCreator {
 
 		System.out.println("relational sentences --> "
 				+relationalSentences.collect());
+*/
 		return relationalSentence;
 	}
 
