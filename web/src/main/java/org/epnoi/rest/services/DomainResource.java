@@ -88,7 +88,7 @@ public class DomainResource extends UIAService {
 		// We create the new empty domain, just with its URI and a reference to
 		// the research object
 		Domain domain = new Domain();
-		domain.setURI(newDomainURI);
+		domain.setUri(newDomainURI);
 		domain.setType(typesURIsResolutionTable.get(newDomainType));
 		domain.setResources(newDomainURI + resourcesPathSubfix);
 
@@ -96,7 +96,7 @@ public class DomainResource extends UIAService {
 
 		// We create an empty research object
 		ResearchObject resources = new ResearchObject();
-		resources.setURI(newDomainURI + resourcesPathSubfix);
+		resources.setUri(newDomainURI + resourcesPathSubfix);
 
 		this.core.getInformationHandler().put(resources,
 				org.epnoi.model.Context.getEmptyContext());

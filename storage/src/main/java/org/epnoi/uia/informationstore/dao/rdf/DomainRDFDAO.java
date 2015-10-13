@@ -28,7 +28,7 @@ public class DomainRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		Domain domain = (Domain) resource;
-		String domainURI = domain.getURI();
+		String domainURI = domain.getUri();
 
 		// First of all we insert the domain (URI plus its properties)
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
@@ -103,7 +103,7 @@ public class DomainRDFDAO extends RDFDAO {
 			return null;
 		}
 		Domain domain = new Domain();
-		domain.setURI(URI);
+		domain.setUri(URI);
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
 				.hasNext();) {
 			Triple t = i.next();

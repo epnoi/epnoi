@@ -51,8 +51,8 @@ public class TermsTable {
 	// --------------------------------------------------------------------
 
 	public void addTerm(Term term) {
-		this.orderedTerms.put(term, term.getURI());
-		this.terms.put(term.getURI(), term);
+		this.orderedTerms.put(term, term.getUri());
+		this.terms.put(term.getUri(), term);
 		this.terms.put(term.getAnnotatedTerm().getWord(), term);
 	}
 

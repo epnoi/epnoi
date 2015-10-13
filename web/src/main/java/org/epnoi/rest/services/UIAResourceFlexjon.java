@@ -127,7 +127,7 @@ public class UIAResourceFlexjon extends UIAService {
 		Resource storedResource = this
 				.getUIACore()
 				.getInformationHandler()
-				.get(resource.getURI(),
+				.get(resource.getUri(),
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
 		System.out.println("lo que habia en el UIA " + storedResource);
@@ -137,7 +137,7 @@ public class UIAResourceFlexjon extends UIAService {
 		storedResource = this
 				.getUIACore()
 				.getInformationHandler()
-				.get(resource.getURI(),
+				.get(resource.getUri(),
 						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
 
 		System.out.println("lo que ha quedaddo despues en el UIA "
@@ -202,7 +202,7 @@ public class UIAResourceFlexjon extends UIAService {
 		InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
 
 		notificationsSet.setNotifications(notifications);
-		notificationsSet.setURI(URI);
+		notificationsSet.setUri(URI);
 
 		return Response.ok(notificationsSet, MediaType.APPLICATION_JSON)
 				.build();

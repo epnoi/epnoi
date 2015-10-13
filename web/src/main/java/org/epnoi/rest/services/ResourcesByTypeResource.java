@@ -58,6 +58,7 @@ public class ResourcesByTypeResource extends UIAService {
 		resourceTypesTable.put("annotations",
 				AnnotationRDFHelper.ANNOTATION_CLASS);
 		resourceTypesTable.put("domains", RDFHelper.DOMAIN_CLASS);
+		resourceTypesTable.put("wikipediapages", RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
 	}
 
@@ -83,7 +84,7 @@ public class ResourcesByTypeResource extends UIAService {
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
 	public Response updateResource(
 			Resource resource,
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("POST: UIA " + resource);
 
 		this.getUIACore().getInformationHandler().update(resource);
@@ -101,7 +102,7 @@ public class ResourcesByTypeResource extends UIAService {
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
 	public Response createResource(
 			Resource resource,
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("PUT: UIA " + resource);
 
 		this.getUIACore().getInformationHandler()
@@ -122,7 +123,7 @@ public class ResourcesByTypeResource extends UIAService {
 	@ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
 	public Response getResource(
 			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI,
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("GET: UIA uri> " + URI + " reourceType > " + resourceType);
 
 		String resourceClass = ResourcesByTypeResource.resourceTypesTable
@@ -162,7 +163,7 @@ public class ResourcesByTypeResource extends UIAService {
 	@ApiOperation(value = "Returns the resource with the provided URI", notes = "List", response = String.class)
 	public Response getAllResources(
 
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 
 		String resourceClass = ResourcesByTypeResource.resourceTypesTable
 				.get(resourceType);
@@ -193,7 +194,7 @@ public class ResourcesByTypeResource extends UIAService {
 			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
 	public Response deleteResource(
 			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI,
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations") @PathParam("RESOURCE_TYPE") String resourceType) {
+			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("DELETE: UIA uri> " + URI + " reourceType > "
 				+ resourceType);
 		String resourceClass = ResourcesByTypeResource.resourceTypesTable

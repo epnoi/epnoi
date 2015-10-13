@@ -17,14 +17,14 @@ import gate.Annotation;
 import gate.Document;
 import gate.DocumentContent;
 
-public class RelationalSentenceFlatMapFunction implements FlatMapFunction<RelationalSentenceCandidate, RelationalSentence> {
+public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
 
 	private final int MIN_TERM_LENGTH = 2;
 
 	@Override
-	public Iterable<RelationalSentence> call(RelationalSentenceCandidate currentRelationalSentenceCandidate) throws Exception {
-		List<RelationalSentence> relationalSentences = new ArrayList<>();
-		return relationalSentences;
+	public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
+		List<RelationalSentenceCandidate> relationalSentencesCandidate = new ArrayList<>();
+		return relationalSentencesCandidate;
 	}
 
 

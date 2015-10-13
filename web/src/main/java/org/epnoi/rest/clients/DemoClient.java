@@ -30,7 +30,7 @@ public class DemoClient {
 
 		Domain domain = new Domain();
 
-		domain.setURI(domainURI);
+		domain.setUri(domainURI);
 
 		ClientConfig config = new DefaultClientConfig();
 		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,

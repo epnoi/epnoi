@@ -34,7 +34,7 @@ public class ResearchObjectRDFDAO extends RDFDAO {
 	public void create(Resource resource, Context context) {
 		ResearchObject researchObject = (ResearchObject) resource;
 
-		String researchObjectURI = researchObject.getURI();
+		String researchObjectURI = researchObject.getUri();
 
 		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
 				+ "{"
@@ -159,7 +159,7 @@ System.out.println("............URI................> "+URI);
 			return null;
 		}
 		ResearchObject researchObject = new ResearchObject();
-		researchObject.setURI(URI);
+		researchObject.setUri(URI);
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
 				.hasNext();) {
 			Triple t = i.next();

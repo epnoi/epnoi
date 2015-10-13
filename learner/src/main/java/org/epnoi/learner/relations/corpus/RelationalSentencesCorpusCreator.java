@@ -79,7 +79,7 @@ public class RelationalSentencesCorpusCreator {
 		_searchWikipediaCorpus();
 		_searchReutersCorpus();
 
-		corpus.setURI((String) this.parameters.getParameterValue(
+		corpus.setUri((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
 		corpus.setDescription((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
@@ -98,7 +98,7 @@ public class RelationalSentencesCorpusCreator {
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	private void _storeCorpus() {
-		core.getInformationHandler().remove(this.corpus.getURI(), RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		core.getInformationHandler().remove(this.corpus.getUri(), RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		core.getInformationHandler().put(this.corpus, Context.getEmptyContext());
 	}
 
@@ -107,7 +107,7 @@ public class RelationalSentencesCorpusCreator {
 	private void _showRelationalSentenceCorpusInfo() {
 		System.out
 				.println("------------------------------------------------------------------------------------------");
-		System.out.println("Information about the corpus " + this.corpus.getURI());
+		System.out.println("Information about the corpus " + this.corpus.getUri());
 		System.out.println("Relations type: " + this.corpus.getType());
 		System.out.println("Corpus description: " + this.corpus.getDescription());
 		System.out.println("It has " + this.corpus.getSentences().size() + " relational sentences");
@@ -477,7 +477,7 @@ public class RelationalSentencesCorpusCreator {
 		String relationalSentenceURI = "http://thetestcorpus/drinventor";
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
-		relationalSentencesCorpus.setURI(relationalSentenceURI);
+		relationalSentencesCorpus.setUri(relationalSentenceURI);
 		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
 		Document annotatedContentA = null;

@@ -25,7 +25,7 @@ public class WikidataViewCompressor {
 
 	public WikidataView compress(WikidataView wikidataView) {
 		//logger.info("Compressing: " + wikidataView);
-		this.URI = wikidataView.getURI();
+		this.URI = wikidataView.getUri();
 		this.labelsDictionary = wikidataView.getLabelsDictionary();
 		this.labelsReverseDictionary = wikidataView
 				.getLabelsReverseDictionary();

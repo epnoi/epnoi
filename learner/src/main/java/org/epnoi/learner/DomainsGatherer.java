@@ -45,7 +45,7 @@ public class DomainsGatherer {
 			logger.info("Found initially " + foundURIs.size()
 					+ " elements in the domain");
 
-			this.domainsTable.addDomainResources(domain.getURI(), foundURIs);
+			this.domainsTable.addDomainResources(domain.getUri(), foundURIs);
 
 		}
 		this.domainsTable.setTargetDomain(targetDomain);
@@ -63,7 +63,7 @@ public class DomainsGatherer {
 		logger.info("Found initially " + foundURIs.size()
 				+ " elements in the domain");
 
-		this.domainsTable.addDomainResources(domain.getURI(), foundURIs);
+		this.domainsTable.addDomainResources(domain.getUri(), foundURIs);
 
 		this.domainsTable.setTargetDomain(targetDomain);
 		return this.domainsTable;

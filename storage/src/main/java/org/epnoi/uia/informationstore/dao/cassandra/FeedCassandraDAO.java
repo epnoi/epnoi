@@ -22,18 +22,18 @@ public class FeedCassandraDAO extends CassandraDAO {
 
 	public void create(Resource resource, Context context) {
 		Feed feed = (Feed) resource;
-		super.createRow(feed.getURI(), FeedCassandraHelper.COLUMN_FAMILY);
+		super.createRow(feed.getUri(), FeedCassandraHelper.COLUMN_FAMILY);
 
 		if (feed.getDescription() != null) {
 
-			super.updateColumn(feed.getURI(), FeedCassandraHelper.DESCRIPTION,
+			super.updateColumn(feed.getUri(), FeedCassandraHelper.DESCRIPTION,
 					feed.getDescription(), FeedCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		for (Item item : feed.getItems()) {
 
-			_createItem(feed.getURI(), item, context);
+			_createItem(feed.getUri(), item, context);
 		}
 
 	}
@@ -52,7 +52,7 @@ public class FeedCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, FeedCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Feed search = new Feed();
-			search.setURI(URI);
+			search.setUri(URI);
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
@@ -77,7 +77,7 @@ public class FeedCassandraDAO extends CassandraDAO {
 
 	private Item _readItem(String URI) {
 		Item item = new Item();
-		item.setURI(URI);
+		item.setUri(URI);
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, ItemCassandraHelper.COLUMN_FAMILY);
@@ -102,7 +102,7 @@ public class FeedCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void update(Search search) {
-		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
+		super.updateColumn(search.getUri(), SearchCassandraHelper.DESCRIPTION,
 				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 
@@ -114,19 +114,19 @@ public class FeedCassandraDAO extends CassandraDAO {
 
 		if (item.getDescription() != null) {
 
-			super.updateColumn(item.getURI(), ItemCassandraHelper.DESCRIPTION,
+			super.updateColumn(item.getUri(), ItemCassandraHelper.DESCRIPTION,
 					item.getDescription(), ItemCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		if (context != null) {
-			String content = (String) context.getElements().get(item.getURI());
+			String content = (String) context.getElements().get(item.getUri());
 
-			super.updateColumn(item.getURI(), ItemCassandraHelper.CONTENT,
+			super.updateColumn(item.getUri(), ItemCassandraHelper.CONTENT,
 					content, ItemCassandraHelper.COLUMN_FAMILY);
 		}
 
-		super.updateColumn(feedURI, item.getURI(), FeedCassandraHelper.ITEMS,
+		super.updateColumn(feedURI, item.getUri(), FeedCassandraHelper.ITEMS,
 				FeedCassandraHelper.COLUMN_FAMILY);
 		//_showFeed(feedURI);
 	}

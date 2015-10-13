@@ -27,7 +27,7 @@ public class TermRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		Term term = (Term) resource;
-		String termURI = term.getURI();
+		String termURI = term.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{TERM_CLASS}> . }";
@@ -85,7 +85,7 @@ public class TermRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		Term user = new Term();
-		user.setURI(URI);
+		user.setUri(URI);
 
 		return user;
 	}

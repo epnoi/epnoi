@@ -29,7 +29,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 
 	public void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
-		super.createRow(paper.getURI(), PaperCassandraHelper.COLUMN_FAMILY);
+		super.createRow(paper.getUri(), PaperCassandraHelper.COLUMN_FAMILY);
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
 		if (paper.getDescription() != null) {
@@ -63,7 +63,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 		pairsOfNameValues.put(PaperCassandraHelper.CONTENT,
 				paper.getDescription());
 
-		super.updateColumns(paper.getURI(), pairsOfNameValues,
+		super.updateColumns(paper.getUri(), pairsOfNameValues,
 				PaperCassandraHelper.COLUMN_FAMILY);
 		
 	}
@@ -83,7 +83,7 @@ public class PaperCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, PaperCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Paper paper = new Paper();
-			paper.setURI(URI);
+			paper.setUri(URI);
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
 				if (PaperCassandraHelper.DESCRIPTION.equals(column.getName())) {

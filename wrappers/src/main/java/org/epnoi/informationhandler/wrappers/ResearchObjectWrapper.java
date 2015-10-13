@@ -77,7 +77,7 @@ public class ResearchObjectWrapper implements Wrapper {
 
 	@Override
 	public void update(Resource resource) {
-		this.remove(resource.getURI());
+		this.remove(resource.getUri());
 		this.put(resource, Context.getEmptyContext());
 
 	}

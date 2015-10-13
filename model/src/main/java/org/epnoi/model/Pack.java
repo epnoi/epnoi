@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Pack implements Resource{
-	Long ID;
-	String URI;
+	Long id;
+	String uri;
 	String resource;
 	String title;
 	String description;
@@ -51,20 +51,22 @@ public class Pack implements Resource{
 		this.description = description;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long id) {
-		this.ID = id;
-	}
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getResource() {

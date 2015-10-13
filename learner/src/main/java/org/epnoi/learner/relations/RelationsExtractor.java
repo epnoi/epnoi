@@ -102,7 +102,7 @@ public class RelationsExtractor {
 		// these are the resources that we should consider
 
 		for (String domainResourceURI : domainsTable.getDomainResources().get(
-				domainsTable.getTargetDomain().getURI())) {
+				domainsTable.getTargetDomain().getUri())) {
 			logger.info("Indexing the resource " + domainResourceURI);
 			_findRelationsInResource(domainResourceURI);
 		}

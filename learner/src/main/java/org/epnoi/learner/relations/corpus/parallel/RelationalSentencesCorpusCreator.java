@@ -1,38 +1,27 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.KnowledgeBase;
-import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Selector;
-import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Annotation;
-import gate.AnnotationSet;
 import gate.Document;
-import gate.DocumentContent;
 
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger.getLogger(RelationalSentencesCorpusCreator.class.getName());
@@ -43,8 +32,11 @@ public class RelationalSentencesCorpusCreator {
 	private RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
-	private int MAX_SENTENCE_LENGTH = 100;
+
 	private long nonRelationalSentencesCounter = 0;
+
+	private int MAX_SENTENCE_LENGTH;
+	private static final String JOB_NAME = "";
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -77,15 +69,16 @@ public class RelationalSentencesCorpusCreator {
 		logger.info("Creating a relational sencences corpus with the following parameters:");
 		logger.info(this.parameters.toString());
 		// This should be done in parallel!!
-		_searchWikipediaCorpus();
-		
+		List<String> URIs = _collectURIs();
 
-		corpus.setURI((String) this.parameters.getParameterValue(
+		corpus.setUri((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
 		corpus.setDescription((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
 		corpus.setType((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER));
+
+		corpus.setSentences(_createCorpus(URIs));
 
 		if (this.verbose) {
 			RelationalSentencesCorpusViewer.showRelationalSentenceCorpusInfo(corpus);
@@ -98,73 +91,52 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
+	private List<RelationalSentence> _createCorpus(List<String> URIs) {
+		List<RelationalSentence> relationalSentence = new ArrayList<>();
+		JavaSparkContext sparkContext = new JavaSparkContext("local[4]", JOB_NAME, System.getenv("SPARK_HOME"),
+				System.getenv("JARS"));
+		// First we must create the RDD with the URIs of the resources to be
+		// included in the creation of the corpus
+		JavaRDD<String> corpusURIs = sparkContext.parallelize(URIs);
+
+		// THen we obtain the URIs of the annotated content documents that are
+		// stored at the UIA
+		JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new SectionsAnnotatedContentURIsFlatMapFunction());
+
+		JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
+
+		JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
+				.flatMap(new DocumentToSentencesFlatMapFunction());
+
+		JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates = annotatedDocumentsSentences
+				.flatMap(new RelationalSentenceCandidateFlatMapFunction());
+
+		JavaRDD<RelationalSentence> relationalSentences = relationalSentencesCandidates
+				.flatMap(new RelationalSentenceFlatMapFunction());
+
+		System.out.println("relational sentences --> "
+				+relationalSentences.collect());
+		return relationalSentence;
+	}
+
 	private void _storeCorpus() {
-		core.getInformationHandler().remove(this.corpus.getURI(), RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
+		core.getInformationHandler().remove(this.corpus.getUri(), RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		core.getInformationHandler().put(this.corpus, Context.getEmptyContext());
 	}
 
-	
-
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private void _searchWikipediaCorpus() {
+	private List<String> _collectURIs() {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
-		int nullCounts = 1;
-		int sectionsCount = 1;
-		int count = 1;
 
 		// logger.info("Retrieving the URIs of the Wikipedia articles ");
 
 		List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
-	
 
-	}
+		return wikipediaPages;
 
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	private Map<String, Annotation> _createTermsAnnotationsTable(DocumentContent sentenceContent,
-			AnnotationSet sentenceAnnotationsSet, Long sentenceStartOffset, Set<String> sentenceTerms) {
-		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<String, Annotation>();
-		for (Annotation termAnnotation : sentenceAnnotationsSet.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
-			Long startOffset = termAnnotation.getStartNode().getOffset() - sentenceStartOffset;
-			Long endOffset = termAnnotation.getEndNode().getOffset() - sentenceStartOffset;
-
-			String term = "";
-			try {
-				// First of all we retrieve the surface form of the term
-
-				term = sentenceContent.getContent(startOffset, endOffset).toString();
-
-			} catch (Exception e) {
-				term = "";
-
-			}
-
-			// We stem the surface form (we left open the possibility of
-			// different stemming results so we consider a set of stemmed
-			// forms)
-			_addTermToTermsTable(sentenceTerms, termsAnnotationsTable, termAnnotation, term);
-		}
-		return termsAnnotationsTable;
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	private void _addTermToTermsTable(Set<String> sentenceTerms, HashMap<String, Annotation> termsAnnotationsTable,
-			Annotation termAnnotation, String term) {
-		if (term.length() > 2) {
-			for (String stemmedTerm : this.knowledgeBase.stem(term)) {
-
-				termsAnnotationsTable.put(stemmedTerm, termAnnotation);
-				sentenceTerms.add(stemmedTerm);
-
-			}
-
-			termsAnnotationsTable.put(term, termAnnotation);
-			sentenceTerms.add(term);
-		}
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -241,7 +213,5 @@ public class RelationalSentencesCorpusCreator {
 		System.out.println("The readed relational sentences corpus " + relationalSentenceCorpus);
 		logger.info("Stopping the Relation Sentences Corpus Creator");
 	}
-
-	
 
 }

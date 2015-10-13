@@ -119,7 +119,7 @@ public class LabelsResource extends UIAService {
 
 		URI annotationURI = null;
 		try {
-			annotationURI = new URI(annotation.getURI());
+			annotationURI = new URI(annotation.getUri());
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

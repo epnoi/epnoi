@@ -3,7 +3,7 @@ package org.epnoi.model;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Annotation implements Resource {
-	private String URI;
+	private String uri;
 	private PAVProperties pavProperties;
 	private String hasTopic;
 	private String annotatesResource;
@@ -14,15 +14,15 @@ public class Annotation implements Resource {
 
 	// ---------------------------------------------------------------------------------
 
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return URI;
+	
+	public String getUri() {
+		return uri;
 	}
 
 	// ---------------------------------------------------------------------------------
 
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String URI) {
+		this.uri = URI;
 	}
 
 	// ---------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public class Annotation implements Resource {
 
 	@Override
 	public String toString() {
-		return "Annotation [URI=" + URI + ", pavProperties=" + pavProperties
+		return "Annotation [URI=" + uri + ", pavProperties=" + pavProperties
 				+ ", hasTopic=" + hasTopic + ", annotatesResource="
 				+ annotatesResource + ", onSourceResource=" + onSourceResource
 				+ ", predicate=" + predicate + ", label=" + label + "]";

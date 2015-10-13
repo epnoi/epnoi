@@ -289,7 +289,7 @@ public class TermsExtractor {
 
 				Term newTerm = new Term();
 				// The term URI is obtained using an auxiliary function
-				newTerm.setURI(Term.buildURI(term.getWord(), aDomain.getWord()));
+				newTerm.setUri(Term.buildURI(term.getWord(), aDomain.getWord()));
 				newTerm.setAnnotatedTerm(term);
 
 				core.getInformationHandler().put(newTerm,
@@ -307,7 +307,7 @@ public class TermsExtractor {
 				 * .getParameterValue(OntologyLearningParameters.
 				 * TARGET_DOMAIN));
 				 */
-				core.getAnnotationHandler().label(newTerm.getURI(),
+				core.getAnnotationHandler().label(newTerm.getUri(),
 						aDomain.getWord());
 			}
 			System.out
@@ -324,7 +324,7 @@ public class TermsExtractor {
 			System.out.println("Storing " + term);
 			core.getInformationHandler().put(term, Context.getEmptyContext());
 
-			core.getAnnotationHandler().label(term.getURI(), this.targetDomain);
+			core.getAnnotationHandler().label(term.getUri(), this.targetDomain);
 		}
 		System.out
 				.println("=========================================================================================================================");
@@ -487,7 +487,7 @@ public class TermsExtractor {
 
 			Term newTerm = new Term();
 			// The term URI is obtained using an auxiliary function
-			newTerm.setURI(Term.buildURI(term.getWord(), this.targetDomain));
+			newTerm.setUri(Term.buildURI(term.getWord(), this.targetDomain));
 			newTerm.setAnnotatedTerm(term);
 			termsTable.addTerm(newTerm);
 		}

@@ -47,7 +47,7 @@ public class RSSInformationSourceRandomGenerator {
 		Feed feed = new Feed();
 		Context context = new Context();
 
-		feed.setURI(feedURI);
+		feed.setUri(feedURI);
 		feed.setTitle(feedTitle);
 		feed.setLink(feedLink);
 
@@ -60,7 +60,7 @@ public class RSSInformationSourceRandomGenerator {
 			String itemPubDate = outputDateFormat.format(itemCurrentDate);
 
 			item.setPubDate(itemPubDate);
-			item.setURI(feedURI + "/item" + i + "/"
+			item.setUri(feedURI + "/item" + i + "/"
 					+ uriDateFormat.format(currentDate));
 			item.setTitle("Feed" + i + " Title at " + itemPubDate);
 			item.setLink(feedURI + "/item" + i);
@@ -70,7 +70,7 @@ public class RSSInformationSourceRandomGenerator {
 
 			List<String> kewords = Arrays.asList("mi" + i, "mama" + i,
 					"me" + i, "mima" + i);
-			context.getElements().put(item.getURI(), kewords);
+			context.getElements().put(item.getUri(), kewords);
 			feed.addItem(item);
 		}
 		return feed;

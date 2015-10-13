@@ -115,7 +115,7 @@ public class FilesystemHarvester {
 				Paper paper = _harvestFile(directoryToHarvest + "/"
 						+ fileToHarvest, fileToHarvest);
 
-				if (core.getInformationHandler().contains(paper.getURI(),
+				if (core.getInformationHandler().contains(paper.getUri(),
 						RDFHelper.PAPER_CLASS)) {
 					if (overwrite) {
 						_removePaper(paper);
@@ -144,8 +144,8 @@ public class FilesystemHarvester {
 		// corpus
 		long startTme = System.currentTimeMillis();
 
-		core.getAnnotationHandler().label(paper.getURI(), this.corpusURI);
-		core.getAnnotationHandler().label(paper.getURI(), this.corpusLabel);
+		core.getAnnotationHandler().label(paper.getUri(), this.corpusURI);
+		core.getAnnotationHandler().label(paper.getUri(), this.corpusLabel);
 
 		long totalTime = Math.abs(startTme - System.currentTimeMillis());
 		logger.info("It took " + totalTime
@@ -164,9 +164,9 @@ public class FilesystemHarvester {
 		}
 
 		Selector annotationSelector = new Selector();
-		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+		annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
-				paper.getURI() + "/"
+				paper.getUri() + "/"
 						+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 		annotationSelector.setProperty(SelectorHelper.TYPE,
 				RDFHelper.PAPER_CLASS);
@@ -185,9 +185,9 @@ public class FilesystemHarvester {
 
 	private void _removePaper(Paper paper) {
 		logger.info("The paper was already in the UIA, lets delete it (and its associated annotation)");
-		core.getAnnotationHandler().removeLabel(paper.getURI(), this.corpusURI);
-		core.getAnnotationHandler().removeLabel(paper.getURI(), this.corpusLabel);
-		core.getInformationHandler().remove(paper.getURI(),
+		core.getAnnotationHandler().removeLabel(paper.getUri(), this.corpusURI);
+		core.getAnnotationHandler().removeLabel(paper.getUri(), this.corpusLabel);
+		core.getInformationHandler().remove(paper.getUri(),
 				RDFHelper.PAPER_CLASS);
 	}
 
@@ -229,7 +229,7 @@ public class FilesystemHarvester {
 		Paper paper = new Paper();
 
 		String fileContent = _scanContent("file://" + filePath);
-		paper.setURI("file://" + filePath);
+		paper.setUri("file://" + filePath);
 		paper.setTitle(fileName);
 		paper.setDescription(fileContent);
 		paper.setPubDate("2015-07-07");

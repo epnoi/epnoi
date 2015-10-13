@@ -56,7 +56,7 @@ public class SOLRInformationStore implements InformationStore {
 
 		SOLRDAO solrDAO = this.datoFactory.build(resource);
 
-		if (!solrDAO.exists(resource.getURI())) {
+		if (!solrDAO.exists(resource.getUri())) {
 			System.out.println("The information source doesn't exist");
 
 			solrDAO.create(resource);
@@ -72,7 +72,7 @@ public class SOLRInformationStore implements InformationStore {
 	public void put(Resource resource, Context context) {
 		SOLRDAO solrDAO = this.datoFactory.build(resource);
 
-		if (!solrDAO.exists(resource.getURI())) {
+		if (!solrDAO.exists(resource.getUri())) {
 			// System.out.println("The information source doesn't exist");
 
 			solrDAO.create(resource, context);

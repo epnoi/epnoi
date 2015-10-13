@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /*The missing bits
  * categories 
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 
 public class WikipediaPage implements Resource {
-	private String URI;
+	private String uri;
 	private String term;
 	private String termDefinition;
 	private List<String> sections;
@@ -32,15 +33,15 @@ public class WikipediaPage implements Resource {
 
 	// --------------------------------------------------------------------------------
 
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return URI;
+	//@XmlElement(name = "URI")
+	public String getUri() {
+		return uri;
 	}
 
 	// --------------------------------------------------------------------------------
 
-	public void setURI(String uri) {
-		this.URI = uri;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	// --------------------------------------------------------------------------------
@@ -107,7 +108,7 @@ public class WikipediaPage implements Resource {
 
 	@Override
 	public String toString() {
-		return "WikipediaPage [URI=" + URI + ", term=" + term
+		return "WikipediaPage [uri=" + uri + ", term=" + term
 				+ ", termDefinition=" + termDefinition + ", sections="
 				+ sections + ", sectionsContent=" + sectionsContent + "]";
 	}

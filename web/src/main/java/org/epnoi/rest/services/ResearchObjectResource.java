@@ -65,7 +65,7 @@ public class ResearchObjectResource extends UIAService {
 
 		URI researchObjectURI = null;
 		try {
-			researchObjectURI = new URI(researchObject.getURI());
+			researchObjectURI = new URI(researchObject.getUri());
 		} catch (URISyntaxException e) {
 			throw new WebApplicationException();
 		}
@@ -142,7 +142,7 @@ public class ResearchObjectResource extends UIAService {
 		logger.info("POST RO> " + researchObject);
 
 		ResearchObject researchObjectToBeUpdated = (ResearchObject) core
-				.getInformationHandler().get(researchObject.getURI(),
+				.getInformationHandler().get(researchObject.getUri(),
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		if (researchObjectToBeUpdated != null) {

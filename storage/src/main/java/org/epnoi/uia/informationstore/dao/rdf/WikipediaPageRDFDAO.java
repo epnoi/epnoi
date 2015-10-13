@@ -27,7 +27,7 @@ public class WikipediaPageRDFDAO extends RDFDAO {
 
 	public synchronized void create(Resource resource, Context context) {
 		WikipediaPage wikipediaPage = (WikipediaPage) resource;
-		String paperURI = wikipediaPage.getURI();
+		String paperURI = wikipediaPage.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{WIKIPEDIA_PAGE_CLASS}> . }";
@@ -71,7 +71,7 @@ public class WikipediaPageRDFDAO extends RDFDAO {
 
 		Paper item = new Paper();
 
-		item.setURI(URI);
+		item.setUri(URI);
 		/*
 		 * Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <" +
 		 * this.parameters.getGraph() + ">"); VirtuosoQueryExecution vqe =

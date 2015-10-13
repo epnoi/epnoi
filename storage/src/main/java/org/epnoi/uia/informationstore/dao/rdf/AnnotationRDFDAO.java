@@ -31,7 +31,7 @@ public class AnnotationRDFDAO extends RDFDAO {
 	public void create(Resource resource, Context context) {
 		Annotation annotation = (Annotation) resource;
 		//System.out.println("The last annotation> " + annotation);
-		String userURI = annotation.getURI();
+		String userURI = annotation.getUri();
 
 		String queryExpression = null;
 
@@ -134,7 +134,7 @@ public class AnnotationRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		Annotation annotation = new Annotation();
-		annotation.setURI(URI);
+		annotation.setUri(URI);
 		String queryExpression = "DESCRIBE <" + URI + "> FROM <"
 				+ parameters.getGraph() + ">";
 		/*

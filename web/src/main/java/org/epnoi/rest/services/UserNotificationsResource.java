@@ -64,7 +64,7 @@ public class UserNotificationsResource extends UIAService {
 		InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
 		
 		notificationsSet.setNotifications(notifications);
-		notificationsSet.setURI(informationSourceSubscriptionURI);
+		notificationsSet.setUri(informationSourceSubscriptionURI);
 		
 		
 		return Response.ok(notificationsSet, MediaType.APPLICATION_JSON).build();
@@ -111,7 +111,7 @@ public class UserNotificationsResource extends UIAService {
 
 			InformationSourceNotificationsSet notificationsSet = new InformationSourceNotificationsSet();
 			notificationsSet.setNotifications(notifications);
-			notificationsSet.setURI(informationSourceSubscriptionURI);
+			notificationsSet.setUri(informationSourceSubscriptionURI);
 			
 			
 			return Response.ok(notificationsSet, MediaType.APPLICATION_JSON)

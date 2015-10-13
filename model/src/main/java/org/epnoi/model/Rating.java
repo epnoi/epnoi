@@ -6,22 +6,22 @@ public class Rating implements Resource {
 	public static final String WORKFLOW_RATING ="WORKFLOW";
 	public static final String FILE_RATING ="FILE";
 	
-	String URI;
-	Long ID;
+	String uri;
+	Long id;
 	String ownerResource;
-	String ownerURI;
+	String ownerUri;
 	String ratedElement;
 	Long ratedElementID;
 	Integer ratingValue;
 	String resource;
 	String type;
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		id = id;
 	}
 
 	public String getOwnerResource() {
@@ -33,11 +33,11 @@ public class Rating implements Resource {
 	}
 
 	public String getOwnerURI() {
-		return ownerURI;
+		return ownerUri;
 	}
 
 	public void setOwnerURI(String ownerURI) {
-		this.ownerURI = ownerURI;
+		this.ownerUri = ownerURI;
 	}
 
 	public String getRatedElement() {
@@ -80,18 +80,26 @@ public class Rating implements Resource {
 		this.type = type;
 	}
 
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public String getOwnerUri() {
+		return ownerUri;
+	}
+
+	public void setOwnerUri(String ownerUri) {
+		this.ownerUri = ownerUri;
 	}
 
 	@Override
 	public String toString() {
-		return "Rating[ "+this.getURI()+" ]";
+		return "Rating[ "+this.getUri()+" ]";
 	}
 	
 }

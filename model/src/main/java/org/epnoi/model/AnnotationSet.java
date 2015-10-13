@@ -3,21 +3,13 @@ package org.epnoi.model;
 import java.util.List;
 
 public class AnnotationSet implements Resource {
-	private String URI;
+	private String uri;
 	private PAVProperties pavProperties;
 	private List<String> items;
 
 	// ---------------------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
-	}
 
-	// ---------------------------------------------------------------------------------
-
-	public void setURI(String URI) {
-		URI = URI;
-	}
 
 	// ---------------------------------------------------------------------------------
 
@@ -26,6 +18,14 @@ public class AnnotationSet implements Resource {
 	}
 
 	// ---------------------------------------------------------------------------------
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
 
 	public void setPavProperties(PAVProperties pavProperties) {
 		this.pavProperties = pavProperties;

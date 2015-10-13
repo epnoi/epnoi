@@ -311,7 +311,7 @@ class RSSHarvestDirectoryTask implements Runnable {
 			feed.setPubDate(date);
 		}
 
-		feed.setURI(manifest.getURI());
+		feed.setUri(manifest.getURI());
 
 		return feed;
 

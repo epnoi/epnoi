@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class User implements Resource {
 
-	private Long ID;
-	private String URI;
+	private Long id;
+	private String uri;
 	private String resource;
 	private String description;
 	private String name;
@@ -128,15 +128,15 @@ public class User implements Resource {
 	}
 	
 	//---------------------------------------------------------------------------------
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 	
 	//---------------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 	
 	//---------------------------------------------------------------------------------
@@ -177,14 +177,14 @@ public class User implements Resource {
 	
 	//---------------------------------------------------------------------------------
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 	
 	//---------------------------------------------------------------------------------
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long iD) {
+		id = id;
 	}
 	
 	//---------------------------------------------------------------------------------
@@ -307,7 +307,7 @@ public class User implements Resource {
 
 	@Override
 	public String toString() {
-		return "User [ID=" + ID + ", URI=" + URI + ", resource=" + resource
+		return "User [ID=" + id + ", URI=" + uri + ", resource=" + resource
 				+ ", description=" + description + ", name=" + name
 				+ ", password=" + password + ", tagApplied=" + tagApplied
 				+ ", friends=" + friends + ", favouritedWorkflows="

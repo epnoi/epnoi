@@ -129,7 +129,7 @@ public class URLHarvester {
 		// Later it is annotated as belonging to the harvested
 		// corpus
 
-		core.getAnnotationHandler().label(paper.getURI(), domain.getURI());
+		core.getAnnotationHandler().label(paper.getUri(), domain.getUri());
 	}
 
 	private void _addDocumentAnnotatedContent(Paper paper) {
@@ -142,9 +142,9 @@ public class URLHarvester {
 			e.printStackTrace();
 		}
 		Selector annotationSelector = new Selector();
-		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+		annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
-				paper.getURI() + "/"
+				paper.getUri() + "/"
 						+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 		annotationSelector.setProperty(SelectorHelper.TYPE,
 				RDFHelper.PAPER_CLASS);
@@ -179,7 +179,7 @@ public class URLHarvester {
 		Paper paper = new Paper();
 
 		String fileContent = _scanContent(filePath);
-		paper.setURI(filePath);
+		paper.setUri(filePath);
 		paper.setTitle(filePath);
 		paper.setDescription(fileContent);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -200,7 +200,7 @@ public class URLHarvester {
 		String domainLabel = "testDomain";
 
 		Domain domain = new Domain();
-		domain.setURI(domainURI);
+		domain.setUri(domainURI);
 
 		Core core = CoreUtility.getUIACore();
 
@@ -218,9 +218,9 @@ public class URLHarvester {
 		// ---
 
 		Selector annotationSelector = new Selector();
-		annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
+		annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
 		annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
-				paper.getURI() + "/"
+				paper.getUri() + "/"
 						+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 		annotationSelector.setProperty(SelectorHelper.TYPE,
 				RDFHelper.PAPER_CLASS);

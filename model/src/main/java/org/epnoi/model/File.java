@@ -3,26 +3,26 @@ package org.epnoi.model;
 import javax.xml.bind.annotation.XmlElement;
 
 public class File implements Resource{
-	Long ID;
-	String URI;
+	Long id;
+	String uri;
 	String resource;
 	String title;
 	String uploaderURI;
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long id) {
-		this.ID = id;
-	}
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setURI(String uri) {
-		this.URI = uri;
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getResource() {

@@ -17,7 +17,7 @@ public class SimpleLatencyTest {
 		PaperCassandraDAO dao = new PaperCassandraDAO();
 		dao.init();
 		Paper paper = new Paper();
-		paper.setURI("http://papertest");
+		paper.setUri("http://papertest");
 		paper.setAuthors(Arrays.asList("A", "B", "D", "E"));
 		paper.setDescription("BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA");
 		paper.setPubDate("10-10-2014");

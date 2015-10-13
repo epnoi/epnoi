@@ -2,7 +2,7 @@ package org.epnoi.model;
 
 public class Domain implements Resource {
 
-	private String URI;
+	private String uri;
 	private String label="";
 	//Extensional definition
 	private String type; // Type of the considered resources in
@@ -17,8 +17,8 @@ public class Domain implements Resource {
 	// -------------------------------------------------------------------------------------------
 	
 	@Override
-	public String getURI() {
-		return this.URI;
+	public String getUri() {
+		return this.uri;
 	}
 
 	// -------------------------------------------------------------------------------------------
@@ -36,8 +36,8 @@ public class Domain implements Resource {
 	// -------------------------------------------------------------------------------------------
 	
 	@Override
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	// -------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class Domain implements Resource {
 
 	@Override
 	public String toString() {
-		return "Domain [URI=" + URI + ", label=" + label + ", type=" + type
+		return "Domain [URI=" + uri + ", label=" + label + ", type=" + type
 				+ ", expression=" + expression + ", resources=" + resources
 				+ "]";
 	}

@@ -7,7 +7,7 @@ public class ResearchObject implements Resource {
 
 	private DublinCoreMetadataElementsSet dcProperties;
 
-	private String URI;
+	private String uri;
 	private List<String> aggregatedResources;
 	
 	// --------------------------------------------------------------------------
@@ -19,14 +19,14 @@ public class ResearchObject implements Resource {
 
 	// --------------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
+	public String getUri() {
+		return uri;
 	}
 
 	// --------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// --------------------------------------------------------------------------
@@ -57,8 +57,10 @@ public class ResearchObject implements Resource {
 
 	@Override
 	public String toString() {
-		return "ResearchObject [dcProperties=" + dcProperties + ", URI=" + URI
+		return "ResearchObject [dcProperties=" + dcProperties + ", uri=" + uri
 				+ ", resources=" + aggregatedResources + "]";
 	}
 	// --------------------------------------------------------------------------
+
+	
 }

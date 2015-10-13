@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class InformationSourceNotification implements Resource {
 	
-	private String URI;
+	private String uri;
 	private Resource resource;
 	private String timestamp;
 	private String informationSource;
@@ -15,18 +15,18 @@ public class InformationSourceNotification implements Resource {
 
 	@Override
 	public String toString() {
-		return "InformationSourceNotification [URI=" + URI + ", resource="
+		return "InformationSourceNotification [URI=" + uri + ", resource="
 				+ resource + ", timestamp=" + timestamp + "]";
 	}
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 
 	// ----------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// ----------------------------------------------------------------------

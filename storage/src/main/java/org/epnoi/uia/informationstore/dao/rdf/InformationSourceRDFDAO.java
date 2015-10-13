@@ -29,7 +29,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		InformationSource informationSource = (InformationSource) resource;
-		String informationSourceURI = informationSource.getURI();
+		String informationSourceURI = informationSource.getUri();
 		
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
@@ -75,7 +75,7 @@ public class InformationSourceRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		InformationSource informationSource = new InformationSource();
-		informationSource.setURI(URI);
+		informationSource.setUri(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

@@ -69,7 +69,7 @@ public class DocumentRetrievalPartitionMapFunction implements FlatMapFunction<It
 	private List<String> _obtainSectionsAnnotatedContentURIs(WikipediaPage page) {
 		List<String> URIs = new ArrayList<String>();
 		for (String section : page.getSections()) {
-			URIs.add(_extractURI(page.getURI(), section, AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
+			URIs.add(_extractURI(page.getUri(), section, AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
 		}
 		return URIs;
 	}

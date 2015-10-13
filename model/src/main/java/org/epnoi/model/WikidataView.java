@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class WikidataView implements Resource {
-	private String URI;
+	private String uri;
 	private Map<String, Set<String>> labelsDictionary;
 	private Map<String, Set<String>> labelsReverseDictionary;
 	private Map<String, Map<String, Set<String>>> relations;
@@ -16,7 +16,7 @@ public class WikidataView implements Resource {
 	public WikidataView(String URI, Map<String, Set<String>> labelsDictionary,
 			Map<String, Set<String>> labelsReverseDictionary, Map<String, Map<String, Set<String>>> relations) {
 		super();
-		this.URI = URI;
+		this.uri = URI;
 		this.labelsDictionary = labelsDictionary;
 		this.labelsReverseDictionary = labelsReverseDictionary;
 		this.relations = relations;
@@ -32,14 +32,14 @@ public class WikidataView implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
+	public String getUri() {
+		return uri;
 	}
 
 	// ------------------------------------------------------------------------------------------------------
 
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String URI) {
+		this.uri = URI;
 	}
 
 	// ------------------------------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public class WikidataView implements Resource {
 
 	@Override
 	public String toString() {
-		return "WikidataView [URI=" + URI + ", labelsDictionary=" + labelsDictionary + ", labelsReverseDictionary="
+		return "WikidataView [URI=" + uri + ", labelsDictionary=" + labelsDictionary + ", labelsReverseDictionary="
 				+ labelsReverseDictionary + ", relations=" + relations + "]";
 	}
 

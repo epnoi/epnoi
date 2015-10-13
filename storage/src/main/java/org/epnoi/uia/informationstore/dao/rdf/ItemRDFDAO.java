@@ -37,7 +37,7 @@ public class ItemRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		Item item = (Item) resource;
-		String itemURI = item.getURI();
+		String itemURI = item.getUri();
 		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{ITEM_CLASS}> ; "
 				+ "<{URL_PROPERTY}> \"{ITEM_LINK}\" ; "
@@ -99,7 +99,7 @@ public class ItemRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		Item item = new Item();
-		item.setURI(URI);
+		item.setUri(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

@@ -118,7 +118,7 @@ public class AnnotationsResource extends UIAService {
 
 		URI annoURI = null;
 		try {
-			annoURI = new URI(annotation.getURI());
+			annoURI = new URI(annotation.getUri());
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

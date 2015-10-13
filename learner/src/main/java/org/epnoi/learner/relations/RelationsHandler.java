@@ -96,17 +96,17 @@ public class RelationsHandler {
 						+ domain.getLabel());
 				try {
 					TermsTable termsTable = termsRetriever.retrieve(domain);
-					this.termsTable.put(domain.getURI(), termsTable);
+					this.termsTable.put(domain.getUri(), termsTable);
 					RelationsTable relationsTable = relationsRetriever
 							.retrieve(domain);
-					this.relationsTable.put(domain.getURI(), relationsTable);
-					this.retrievedDomains.add(domain.getURI());
+					this.relationsTable.put(domain.getUri(), relationsTable);
+					this.retrievedDomains.add(domain.getUri());
 				} catch (Exception e) {
 					logger.info("There was a problem retrieving the domain "
-							+ domain.getURI() + " Terms/RelationsTable");
+							+ domain.getUri() + " Terms/RelationsTable");
 					e.printStackTrace();
-					this.termsTable.put(domain.getURI(), null);
-					this.relationsTable.put(domain.getURI(), null);
+					this.termsTable.put(domain.getUri(), null);
+					this.relationsTable.put(domain.getUri(), null);
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class RelationsHandler {
 			// Afterthat we add those relations for such source term in the
 			// relations table
 			relations.addAll(relationsTable.get(domain).getRelations(
-					term.getURI(), expansionProbabilityThreshold));
+					term.getUri(), expansionProbabilityThreshold));
 		}
 		return relations;
 	}
@@ -212,13 +212,13 @@ public class RelationsHandler {
 				boolean found = false;
 
 				Iterator<Relation> relationsIt = this.relationsTable
-						.get(domain).getRelations(sourceTerm.getURI(), 0)
+						.get(domain).getRelations(sourceTerm.getUri(), 0)
 						.iterator();
 				while (!found && relationsIt.hasNext()) {
 
 					Relation relation = relationsIt.next();
 
-					if (relation.getTarget().equals(targetTerm.getURI())) {
+					if (relation.getTarget().equals(targetTerm.getUri())) {
 						existenceProbability = relation.getRelationhood();
 					}
 
@@ -250,7 +250,7 @@ public class RelationsHandler {
 		} else {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
-			domain.setURI(domainURI);
+			domain.setUri(domainURI);
 			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 

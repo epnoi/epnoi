@@ -27,7 +27,7 @@ public class UserRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		User user = (User) resource;
-		String userURI = user.getURI();
+		String userURI = user.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{USER_CLASS}> . }";
@@ -113,7 +113,7 @@ public class UserRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		User user = new User();
-		user.setURI(URI);
+		user.setUri(URI);
 		String queryExpression = "DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">";
 		/*

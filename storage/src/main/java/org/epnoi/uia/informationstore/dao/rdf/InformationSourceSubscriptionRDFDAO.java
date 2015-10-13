@@ -26,7 +26,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		InformationSourceSubscription informationSourceSubscription = (InformationSourceSubscription) resource;
-		String informationSourceURI = informationSourceSubscription.getURI();
+		String informationSourceURI = informationSourceSubscription.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{INFORMATION_SOURCE_SUBSCRIPTION_CLASS}> ; "
@@ -77,7 +77,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 		
 		
 		//System.out.println("q--> "+sparql.toString());
-		Query sparql = QueryFactory.create("DESCRIBE <" + informationSource.getURI()
+		Query sparql = QueryFactory.create("DESCRIBE <" + informationSource.getUri()
 				+ "> FROM <" + this.parameters.getGraph() + ">");
 		
 		
@@ -86,7 +86,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 
 		Model model = vqe.execDescribe();
 		Graph g = model.getGraph();
-		System.out.println("\nDESCRIBE results: " + informationSource.getURI());
+		System.out.println("\nDESCRIBE results: " + informationSource.getUri());
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
 
@@ -152,7 +152,7 @@ public class InformationSourceSubscriptionRDFDAO extends RDFDAO {
 		System.out
 				.println("INFO SOURCE SUBS ----------> g: " + this.parameters);
 		InformationSourceSubscription informationSource = new InformationSourceSubscription();
-		informationSource.setURI(URI);
+		informationSource.setUri(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ this.parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

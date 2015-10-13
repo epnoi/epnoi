@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RelationalSentencesCorpus implements Resource {
 
-	private String URI;
+	private String uri;
 	private String description;
 	private String type;
 	private List<RelationalSentence> sentences = new ArrayList<RelationalSentence>();
@@ -24,14 +24,14 @@ public class RelationalSentencesCorpus implements Resource {
 
 	// --------------------------------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
+	public String getUri() {
+		return uri;
 	}
 
 	// --------------------------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// --------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ public class RelationalSentencesCorpus implements Resource {
 
 	@Override
 	public String toString() {
-		return "RelationalSentencesCorpus [URI=" + URI + ", description="
+		return "RelationalSentencesCorpus [URI=" + uri + ", description="
 				+ description + ", type=" + type + ", #sentences=" + sentences.size()
 				+ "]";
 	}

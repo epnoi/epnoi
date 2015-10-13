@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Workflow implements Resource{
 
-	Long ID;
-	String URI;
+	Long id;
+	String uri;
 	String resource;
 	String description;
 	String title;
@@ -59,13 +59,13 @@ public class Workflow implements Resource{
 	public void setTags(ArrayList<String> tags) {
 		this.tags = tags;
 	}
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+	
+	public String getUri() {
+		return uri;
 	}
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	public String getResource() {
@@ -85,11 +85,11 @@ public class Workflow implements Resource{
 	}
 
 	public Long getID() {
-		return this.ID;
+		return this.id;
 	}
 
 	public void setID(Long id) {
-		this.ID = id;
+		this.id = id;
 	}
 
 }

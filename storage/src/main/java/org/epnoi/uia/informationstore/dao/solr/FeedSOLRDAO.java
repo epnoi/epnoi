@@ -93,8 +93,8 @@ public class FeedSOLRDAO extends SOLRDAO {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
-		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getURI());
-		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, item.getURI());
+		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, item.getUri());
+		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, item.getUri());
 
 		/*
 		 * 1995-12-31T23:59:59Z
@@ -113,7 +113,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 		
 		if (context != null) {
 			String content= (String) context.getElements().get(
-					item.getURI());
+					item.getUri());
 			newDocument.addField(SOLRDAOHelper.CONTENT_PROPERTY,
 					content);
 			/*
@@ -155,7 +155,7 @@ public class FeedSOLRDAO extends SOLRDAO {
 	public Feed read(String URI) {
 
 		Feed feed = new Feed();
-		feed.setURI(URI);
+		feed.setUri(URI);
 
 		return feed;
 	}

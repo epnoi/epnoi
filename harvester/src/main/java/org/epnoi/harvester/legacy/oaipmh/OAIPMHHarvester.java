@@ -194,7 +194,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 				core.getInformationHandler().put(paper, Context.getEmptyContext());
 				 
 				Selector selector = new Selector();
-				selector.setProperty(SelectorHelper.URI, paper.getURI());
+				selector.setProperty(SelectorHelper.URI, paper.getUri());
 				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 								 
 				Content<String> content=core.getInformationHandler().getContent(selector);
@@ -204,8 +204,8 @@ public class OAIPMHHarvester extends CommandLineTool {
 											
 
 				Selector annotationSelector = new Selector();
-				annotationSelector.setProperty(SelectorHelper.URI, paper.getURI());
-				annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, paper.getURI()+"/"+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
+				annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
+				annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, paper.getUri()+"/"+AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 				annotationSelector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				
 			
@@ -277,7 +277,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 			String identifier = ((org.w3c.dom.Node)identifierNodeList.item(0)).getTextContent();
 
 			// newDocument.setField("id", identifier);
-			paper.setURI(identifier);
+			paper.setUri(identifier);
 		}
 		// setSpec
 		NodeList setSpecNodeList = recordElement
@@ -285,7 +285,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 		
 		for (int j = 0; j < setSpecNodeList.getLength(); j++) {
 			String setSpec = setSpecNodeList.item(j).getTextContent();
-			core.getAnnotationHandler().label(paper.getURI(), setSpec);
+			core.getAnnotationHandler().label(paper.getUri(), setSpec);
 		}
 		/*
 		if ((setSpecNodeList != null) && (setSpecNodeList.item(0) != null)) {
@@ -329,7 +329,7 @@ public class OAIPMHHarvester extends CommandLineTool {
 			// newnodes.item(j).getTextContent());
 
 			String subject = newnodes.item(j).getTextContent();
-			core.getAnnotationHandler().label(paper.getURI(), subject);
+			core.getAnnotationHandler().label(paper.getUri(), subject);
 		}
 
 		newnodes = recordElement.getElementsByTagName("dc:date");

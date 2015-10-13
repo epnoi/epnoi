@@ -29,7 +29,7 @@ public class CoreMainROsTest {
 		 * userURIs.size());
 		 */
 		ResearchObject researchObject = new ResearchObject();
-		researchObject.setURI("http://testResearchObject");
+		researchObject.setUri("http://testResearchObject");
 		researchObject.getAggregatedResources().add("http://resourceA");
 		researchObject.getAggregatedResources().add("http://resourceB");
 		researchObject.getDcProperties().addPropertyValue(

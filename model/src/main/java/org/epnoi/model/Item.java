@@ -9,7 +9,7 @@ public class Item implements Resource {
 	private String link;
 	private String author = "";
 	private String guid = "";
-	private String URI;
+	private String uri;
 	private String pubDate = "";
 	private String content = "";
 
@@ -67,19 +67,17 @@ public class Item implements Resource {
 		this.guid = guid;
 	}
 
+
+
 	// --------------------------------------------------------------------------
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return this.URI;
+
+	public String getUri() {
+		return uri;
 	}
 
-	// --------------------------------------------------------------------------
-
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
-
-	// --------------------------------------------------------------------------
 
 	public String getPubDate() {
 		return pubDate;
@@ -113,8 +111,13 @@ public class Item implements Resource {
 	public String toString() {
 		return "Item [title=" + title + ", description=" + description
 				+ ", link=" + link + ", author=" + author + ", guid=" + guid
-				+ ", URI=" + URI + ", pubDate=" + pubDate + ", content="
+				+ ", URI=" + uri + ", pubDate=" + pubDate + ", content="
 				+ content + "]";
+	}
+
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// --------------------------------------------------------------------------

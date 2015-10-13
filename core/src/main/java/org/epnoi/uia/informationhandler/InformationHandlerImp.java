@@ -88,7 +88,7 @@ public class InformationHandlerImp implements InformationHandler {
 
 	public void remove(Resource resource) {
 		Wrapper wrapper = this.wrapperFactory.build(resource);
-		wrapper.remove(resource.getURI());
+		wrapper.remove(resource.getUri());
 
 	}
 

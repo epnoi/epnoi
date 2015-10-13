@@ -56,7 +56,7 @@ try{
 
 				String sectionContent = wikipediaPage.getSectionsContent().get(sections.get(i));
 
-				String annotatedContentURI = _extractURI(wikipediaPage.getURI(), sections.get(i),
+				String annotatedContentURI = _extractURI(wikipediaPage.getUri(), sections.get(i),
 
 				AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 				_putWikipediaPageSectionAnnnotatedContent(wikipediaPage, sectionContent, annotatedContentURI);
@@ -104,7 +104,7 @@ try{
 		// Then we introduce it in the UIA
 		// We create the selector
 		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.URI, wikipediaPage.getURI());
+		selector.setProperty(SelectorHelper.URI, wikipediaPage.getUri());
 		selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, annotatedContentURI);
 
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
@@ -126,7 +126,7 @@ try{
 		// If the wikipedia page is already stored, we delete it
 
 		if (this.stored) {
-			this.core.getInformationHandler().remove(wikipediaPage.getURI(), RDFHelper.WIKIPEDIA_PAGE_CLASS);
+			this.core.getInformationHandler().remove(wikipediaPage.getUri(), RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
 		}
 

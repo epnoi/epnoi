@@ -25,23 +25,23 @@ public class UserCassandraDAO extends CassandraDAO {
 	public void create(Resource resource, Context context) {
 		
 		User user = (User) resource;
-		super.createRow(user.getURI(), UserCassandraHelper.COLUMN_FAMILY);
+		super.createRow(user.getUri(), UserCassandraHelper.COLUMN_FAMILY);
 
 		if (user.getName() != null) {
 
-			super.updateColumn(user.getURI(), UserCassandraHelper.NAME,
+			super.updateColumn(user.getUri(), UserCassandraHelper.NAME,
 					user.getName(), UserCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		if (user.getPassword() != null) {
-			super.updateColumn(user.getURI(), UserCassandraHelper.PASSWORD,
+			super.updateColumn(user.getUri(), UserCassandraHelper.PASSWORD,
 					user.getPassword(), UserCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		for (String searchURI : user.getSearchs()) {
-			super.updateColumn(user.getURI(), searchURI,
+			super.updateColumn(user.getUri(), searchURI,
 					UserCassandraHelper.SEARCHS,
 					UserCassandraHelper.COLUMN_FAMILY);
 		}
@@ -65,7 +65,7 @@ public class UserCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, UserCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			User user = new User();
-			user.setURI(URI);
+			user.setUri(URI);
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
@@ -95,7 +95,7 @@ public class UserCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void update(User externalResource) {
-		super.updateColumn(externalResource.getURI(), UserCassandraHelper.NAME,
+		super.updateColumn(externalResource.getUri(), UserCassandraHelper.NAME,
 				externalResource.getDescription(),
 				UserCassandraHelper.COLUMN_FAMILY);
 	}
@@ -151,12 +151,12 @@ public class UserCassandraDAO extends CassandraDAO {
 		System.out.println(" --------------------------------------------");
 
 		ExternalResource externalResource = new ExternalResource();
-		externalResource.setURI("http://externalresourceuri");
+		externalResource.setUri("http://externalresourceuri");
 		externalResource.setDescription("description of external resource");
 		if (userCassandraDAO.existsUserWithName("Rafita")) {
 			System.out.println("Rafita existe!");
 			User userToDelete = userCassandraDAO.getUserWithName("Rafita");
-			userCassandraDAO.remove(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getUri());
 
 		}
 
@@ -164,7 +164,7 @@ public class UserCassandraDAO extends CassandraDAO {
 			System.out.println("RafitaElOtro existe!");
 			User userToDelete = userCassandraDAO
 					.getUserWithName("RafitaELOtro");
-			userCassandraDAO.remove(userToDelete.getURI());
+			userCassandraDAO.remove(userToDelete.getUri());
 		}
 
 		User readUser = (User) userCassandraDAO.read("http://userSara");

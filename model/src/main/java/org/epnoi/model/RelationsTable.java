@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 public class RelationsTable implements Resource {
 
-	private String URI;
+	private String uri;
 	private Map<String, Relation> relations;
 	private Map<Relation, String> orderedRelations;
 	private Map<String, List<Relation>> relationsBySource;
@@ -136,17 +136,17 @@ public class RelationsTable implements Resource {
 		} else {
 			// If the relation is not already stored, we simply add it
 			Relation relation = new Relation();
-			relation.setURI(relationURI);
-			relation.setSource(sourceTerm.getURI());
-			relation.setTarget(targetTerm.getURI());
+			relation.setUri(relationURI);
+			relation.setSource(sourceTerm.getUri());
+			relation.setTarget(targetTerm.getUri());
 			relation.setType(type);
 			relation.addProvenanceSentence(provenanceSentence, relationhood);
 
 		
 			
 			
-			this.orderedRelations.put(relation, relation.getURI());
-			this.relations.put(relation.getURI(), relation);
+			this.orderedRelations.put(relation, relation.getUri());
+			this.relations.put(relation.getUri(), relation);
 			List<Relation> relations = this.relationsBySource.get(relation
 					.getSource());
 			if (relations == null) {
@@ -164,8 +164,8 @@ public class RelationsTable implements Resource {
 
 	public void addRelation(Relation relation) {
 
-		this.orderedRelations.put(relation, relation.getURI());
-		this.relations.put(relation.getURI(), relation);
+		this.orderedRelations.put(relation, relation.getUri());
+		this.relations.put(relation.getUri(), relation);
 
 		List<Relation> relations = this.relationsBySource.get(relation
 				.getSource());
@@ -215,21 +215,21 @@ public class RelationsTable implements Resource {
 
 	// --------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
+	public String getUri() {
+		return uri;
 	}
 
 	// --------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// --------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "RelationsTable [uri= " + URI + ", relations=" + relations + "]";
+		return "RelationsTable [uri= " + uri + ", relations=" + relations + "]";
 	}
 
 	// --------------------------------------------------------------------

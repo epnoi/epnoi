@@ -56,7 +56,7 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
 				.query(queryExpression)) {
 
 			InformationSourceNotification informationSourceNotification = new InformationSourceNotification();
-			informationSourceNotification.setURI(informationUnitURI);
+			informationSourceNotification.setUri(informationUnitURI);
 			Resource resource = this.core.getInformationHandler().get(
 					informationUnitURI,
 					informationSource.getInformationUnitType());

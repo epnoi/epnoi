@@ -46,7 +46,7 @@ public class WikipediaPageParser {
 
 		localPartOfTermURI = localPartOfTermURI.replaceAll("\\n", "").replaceAll("\\s+$", "").replaceAll("\\s+", "_");
 
-		wikipediaPage.setURI(WikipediaHarvester.wikipediaPath + localPartOfTermURI);
+		wikipediaPage.setUri(WikipediaHarvester.wikipediaPath + localPartOfTermURI);
 		wikipediaPage.setTerm(cleanedPageTitle);
 	}
 

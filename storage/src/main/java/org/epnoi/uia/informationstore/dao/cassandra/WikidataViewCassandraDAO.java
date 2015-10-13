@@ -54,9 +54,9 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 	
 		WikidataView wikidataView = (WikidataView) resource;
 
-		_defineURIs(wikidataView.getURI());
+		_defineURIs(wikidataView.getUri());
 
-		_defineRows(wikidataView.getURI());
+		_defineRows(wikidataView.getUri());
 
 		_createDictionary(wikidataView);
 		_createReverseDictionary(wikidataView);

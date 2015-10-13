@@ -21,15 +21,15 @@ public class DomainResourceClient {
 		String domainsPath = "/uia/domains/domain";
 		String researchObjectsPath = "/uia/researchobjects/researchobject";
 		Domain domain = new Domain();
-		domain.setURI("http://testResearchObject");
+		domain.setUri("http://testResearchObject");
 
 		ClientConfig config = new DefaultClientConfig();
-		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
-				Boolean.TRUE);
+		//config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
+		//		Boolean.TRUE);
 		Client client = Client.create(config);
 
 		WebResource service = client
-				.resource("http://localhost:8081/epnoi/rest");
+				.resource("http://localhost:8080/epnoi/rest");
 
 		System.out.println("We create a domain");
 		service.path(domainsPath).queryParam("uri", domainURI)

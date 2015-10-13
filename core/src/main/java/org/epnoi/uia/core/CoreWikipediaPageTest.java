@@ -19,7 +19,7 @@ public class CoreWikipediaPageTest {
 		Core core = CoreUtility.getUIACore();
 
 		WikipediaPage wikipediaPage = new WikipediaPage();
-		wikipediaPage.setURI("http://externalresourceuri");
+		wikipediaPage.setUri("http://externalresourceuri");
 		wikipediaPage.setTerm("Proof Term");
 		wikipediaPage.setTermDefinition("Proof Term is whatever bla bla bla");
 		wikipediaPage.setSections(Arrays.asList("first", "middle section",
