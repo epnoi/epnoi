@@ -20,9 +20,9 @@ public class CoreMainAnnotationsTest {
 		Core core = CoreUtility.getUIACore();
 
 		User annotatedUser = new User();
-		annotatedUser.setURI("http://annotatedUser");
+		annotatedUser.setUri("http://annotatedUser");
 		core.getInformationHandler().put(annotatedUser, new Context());
-		core.getAnnotationHandler().label(annotatedUser.getURI(), "math");
+		core.getAnnotationHandler().label(annotatedUser.getUri(), "math");
 
 		/*
 		 * List<String> userURIs = core.getAnnotationHandler().getLabeledAs(

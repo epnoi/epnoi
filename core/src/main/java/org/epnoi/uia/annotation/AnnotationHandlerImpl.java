@@ -1,5 +1,6 @@
 package org.epnoi.uia.annotation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		Annotation annotation = new Annotation();
 		annotation.setAnnotatesResource(URI);
 		annotation.setHasTopic(topicURI);
-		annotation.setURI(URI + "annotation" + topicURI.hashCode());
+		annotation.setUri(URI + "annotation" + topicURI.hashCode());
 
 		System.out.println(".............................................>>> ");
 		core.getInformationHandler().put(annotation, new Context());
@@ -117,7 +118,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setAnnotatesResource(URI);
 		annotation.setHasTopic(topicURI);
 		annotation.setPredicate(predicate);
-		annotation.setURI(URI + "annotation" + topicURI.hashCode());
+		annotation.setUri(URI + "annotation" + topicURI.hashCode());
 
 		core.getInformationHandler().put(annotation, new Context());
 		return annotation;
@@ -130,7 +131,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		Annotation annotation = new Annotation();
 		annotation.setAnnotatesResource(URI);
 		annotation.setLabel(label);
-		annotation.setURI(URI + "label" + label.hashCode());
+		annotation.setUri(URI + "label" + label.hashCode());
 		core.getInformationHandler().put(annotation, new Context());
 		System.out.println("annotation " + annotation);
 		return annotation;

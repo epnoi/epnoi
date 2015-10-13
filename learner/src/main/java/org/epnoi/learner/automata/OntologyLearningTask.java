@@ -116,7 +116,7 @@ public class OntologyLearningTask {
 
 		ontologyLearningParameters.setParameter(
 				OntologyLearningWorkflowParameters.TARGET_DOMAIN,
-				domain.getURI());
+				domain.getUri());
 		ontologyLearningParameters
 				.setParameter(
 						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
@@ -173,8 +173,8 @@ public class OntologyLearningTask {
 
 		Domain domain = new Domain();
 
-		domain.setURI(domainURI);
-		domain.setResources(domain.getURI() + "/resources");
+		domain.setUri(domainURI);
+		domain.setResources(domain.getUri() + "/resources");
 		domain.setExpression("");
 		domain.setType(RDFHelper.PAPER_CLASS);
 

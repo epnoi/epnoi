@@ -27,17 +27,17 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	public void create(Resource resource, Context context) {
 		
 		RelationsTable relationsTable = (RelationsTable) resource;
-		super.createRow(relationsTable.getURI(),
+		super.createRow(relationsTable.getUri(),
 				RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 		for (Relation relation : relationsTable.getRelations()) {
 
-			_createRelation(relationsTable.getURI(), relation);
+			_createRelation(relationsTable.getUri(), relation);
 		}
 
 		
 		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(relationsTable.getURI(),
+				.getAllCollumns(relationsTable.getUri(),
 						RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 
@@ -61,7 +61,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		if (columnsIterator.hasNext()) {
 
 			RelationsTable relationsTable = new RelationsTable();
-			relationsTable.setURI(URI);
+			relationsTable.setUri(URI);
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
@@ -83,7 +83,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 	private Relation _readRelation(String URI) {
 		Relation relation = new Relation();
-		relation.setURI(URI);
+		relation.setUri(URI);
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI, RelationCassandraHelper.COLUMN_FAMILY);
@@ -126,7 +126,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void update(Search search) {
-		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
+		super.updateColumn(search.getUri(), SearchCassandraHelper.DESCRIPTION,
 				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 
@@ -134,7 +134,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 	private void _createRelation(String relationsTableURI, Relation relation) {
 
-		super.createRow(relation.getURI(),
+		super.createRow(relation.getUri(),
 				RelationCassandraHelper.COLUMN_FAMILY);
 
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
@@ -154,11 +154,11 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 		}
 		
-		super.updateColumns(relation.getURI(), pairsOfNameValues,
+		super.updateColumns(relation.getUri(), pairsOfNameValues,
 				RelationCassandraHelper.COLUMN_FAMILY);
 		pairsOfNameValues.clear();
 		pairsOfNameValues = null;
-		super.updateColumn(relationsTableURI, relation.getURI(),
+		super.updateColumn(relationsTableURI, relation.getUri(),
 				RelationsTableCassandraHelper.RELATIONS,
 				RelationsTableCassandraHelper.COLUMN_FAMILY);
 

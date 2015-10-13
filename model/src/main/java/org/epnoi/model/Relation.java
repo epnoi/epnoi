@@ -7,7 +7,7 @@ import java.util.Map;
 import org.epnoi.model.commons.StringUtils;
 
 public class Relation implements Resource {
-	private String URI;
+	private String uri;
 	private String source;
 	private String target;
 	private String type;
@@ -28,7 +28,7 @@ public class Relation implements Resource {
 		relation.setSource(source);
 		relation.setTarget(target);
 		relation.setType(type);
-		relation.setURI(Relation.buildURI(source, target, type,
+		relation.setUri(Relation.buildURI(source, target, type,
 				"http://www.epnoi.org/knowldegeBase/"));
 		Map<String, Double> provenance = new HashMap<>();
 		provenance.put("knowledge base", 1D);
@@ -62,14 +62,14 @@ public class Relation implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public String getURI() {
-		return URI;
+	public String getUri() {
+		return uri;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ public class Relation implements Resource {
 
 	@Override
 	public String toString() {
-		return "Relation [URI=" + URI + ", source=" + source + ", target="
+		return "Relation [URI=" + uri + ", source=" + source + ", target="
 				+ target + ", type=" + type + ", provenanceRelationhoodTable="
 				+ provenanceRelationhoodTable + "]";
 	}

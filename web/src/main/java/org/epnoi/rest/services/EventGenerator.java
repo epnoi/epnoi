@@ -72,16 +72,16 @@ public class EventGenerator {
 			InformationSourceNotificationsSet informationSourceNotificationsSet = new InformationSourceNotificationsSet();
 			informationSourceNotificationsSet.setTimestamp((new Date(System
 					.currentTimeMillis())).toString());
-			informationSourceNotificationsSet.setURI("La uri "
+			informationSourceNotificationsSet.setUri("La uri "
 					+ random.nextInt());
 
 			ArrayList<InformationSourceNotification> notifications = new ArrayList<InformationSourceNotification>();
 			InformationSourceNotification notA = new InformationSourceNotification();
 			InformationSourceNotification notB = new InformationSourceNotification();
-			notA.setURI("notA");
-			notB.setURI("notB");
+			notA.setUri("notA");
+			notB.setUri("notB");
 			Item item = new Item();
-			item.setURI("itemUri");
+			item.setUri("itemUri");
 			notA.setResource(item);
 			notifications.add(notA);
 			notifications.add(notB);

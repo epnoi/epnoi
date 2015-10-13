@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.epnoi.model.commons.StringUtils;
 
 public class Term implements Resource {
-	private String URI;
+	private String uri;
 	private AnnotatedWord<TermMetadata> annotatedTerm;
 
 	// -----------------------------------------------------------------------------
@@ -16,15 +16,15 @@ public class Term implements Resource {
 
 	// -----------------------------------------------------------------------------
 
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 
 	// -----------------------------------------------------------------------------
 
-	public void setURI(String uri) {
-		this.URI = uri;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	// -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class Term implements Resource {
 
 	@Override
 	public String toString() {
-		return "Term [URI=" + URI + ", annotatedTerm=" + annotatedTerm + "]";
+		return "Term [URI=" + uri + ", annotatedTerm=" + annotatedTerm + "]";
 	}
 
 	// -----------------------------------------------------------------------------

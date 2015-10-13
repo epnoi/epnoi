@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Paper implements Resource {
-	String URI;
+	String uri;
 	List<String> authors;
 	String description;
 	String title;
@@ -19,16 +19,16 @@ public class Paper implements Resource {
 	// -------------------------------------------------------------------------------------------------------------
 
 	@Override
-	public String getURI() {
+	public String getUri() {
 
-		return this.URI;
+		return this.uri;
 	}
 
 	// -------------------------------------------------------------------------------------------------------------
 
 	@Override
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	// -------------------------------------------------------------------------------------------------------------
@@ -81,11 +81,9 @@ public class Paper implements Resource {
 
 	@Override
 	public String toString() {
-		return "Paper [URI=" + URI + ", authors=" + authors + ", description="
+		return "Paper [URI=" + uri + ", authors=" + authors + ", description="
 				+ description + ", title=" + title + ", pubDate=" + pubDate
 				+ "]";
 	}
-
-	// -------------------------------------------------------------------------------------------------------------
 
 }

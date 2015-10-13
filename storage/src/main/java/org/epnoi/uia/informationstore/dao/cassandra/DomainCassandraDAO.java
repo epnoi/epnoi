@@ -26,18 +26,18 @@ public class DomainCassandraDAO extends CassandraDAO {
 System.out.println("DOMAIN "+resource);
 		Domain domain = (Domain) resource;
 
-		super.createRow(domain.getURI(), DomainCassandraHelper.COLUMN_FAMILY);
+		super.createRow(domain.getUri(), DomainCassandraHelper.COLUMN_FAMILY);
 
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.LABEL,
+		super.updateColumn(domain.getUri(), DomainCassandraHelper.LABEL,
 				domain.getLabel(), DomainCassandraHelper.COLUMN_FAMILY);
 
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.EXPRESSION,
+		super.updateColumn(domain.getUri(), DomainCassandraHelper.EXPRESSION,
 				domain.getExpression(), DomainCassandraHelper.COLUMN_FAMILY);
 
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.TYPE,
+		super.updateColumn(domain.getUri(), DomainCassandraHelper.TYPE,
 				domain.getType(), DomainCassandraHelper.COLUMN_FAMILY);
 		
-		super.updateColumn(domain.getURI(), DomainCassandraHelper.RESOURCES,
+		super.updateColumn(domain.getUri(), DomainCassandraHelper.RESOURCES,
 				domain.getResources(), DomainCassandraHelper.COLUMN_FAMILY);
 	}
 
@@ -58,7 +58,7 @@ System.out.println("DOMAIN "+resource);
 		if (columnsIterator.hasNext()) {
 			Domain domain = new Domain();
 
-			domain.setURI(URI);
+			domain.setUri(URI);
 
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();

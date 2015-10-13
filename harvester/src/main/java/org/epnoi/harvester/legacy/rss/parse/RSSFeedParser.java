@@ -108,7 +108,7 @@ public class RSSFeedParser {
 						message.setDescription(description);
 						message.setGuid(guid);
 						message.setLink(link);
-						message.setURI(link);
+						message.setUri(link);
 						message.setTitle(title);
 						
 						message.setPubDate(pubdate);

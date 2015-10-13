@@ -61,8 +61,8 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 		SolrInputDocument newDocument = new SolrInputDocument();
 
-		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, paper.getURI());
-		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, paper.getURI());
+		newDocument.setField(SOLRDAOHelper.URI_PROPERTY, paper.getUri());
+		newDocument.setField(SOLRDAOHelper.ID_PROPERTY, paper.getUri());
 
 		/*
 		 * 1995-12-31T23:59:59Z
@@ -117,7 +117,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 	public Feed read(String URI) {
 
 		Feed feed = new Feed();
-		feed.setURI(URI);
+		feed.setUri(URI);
 
 		return feed;
 	}

@@ -48,7 +48,16 @@ target
 .settings
 /bin/
 
+
 # IntelliJ generated files #
 ############################
 .idea
 *.iml
+
+###########################
+# eclipse & related
+.classpath
+.project
+.settings
+target
+

@@ -40,7 +40,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
-		super.createRow(relationalSentencesCorpus.getURI(),
+		super.createRow(relationalSentencesCorpus.getUri(),
 				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 
 		pairsOfNameValues.put(
@@ -59,7 +59,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 							_createRelationalSentenceRepresentation(relationalSentence));
 		}
 
-		super.updateColumns(relationalSentencesCorpus.getURI(),
+		super.updateColumns(relationalSentencesCorpus.getUri(),
 				pairsOfNameValues,
 				RelationalSentencesCorpusCassandraHelper.COLUMN_FAMILY);
 		pairsOfNameValues.clear();
@@ -153,7 +153,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 
 		if (columnsIterator.hasNext()) {
 			RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
-			relationalSentencesCorpus.setURI(URI);
+			relationalSentencesCorpus.setUri(URI);
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
 

@@ -1,6 +1,9 @@
 package org.epnoi.uia.commons;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
@@ -9,9 +12,10 @@ import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
 
 public class WikipediaPagesRetriever {
-	
+	private static final Logger logger = Logger
+			.getLogger(WikipediaPagesRetriever.class.getName());
 	public static List<String> getWikipediaArticles(Core core) {
-		//logger.info("Retrieving the URIs of the Wikipedia articles ");
+		logger.info("Retrieving the URIs of the Wikipedia articles ");
 
 		InformationStore informationStore = core
 				.getInformationStoresByType(
@@ -28,8 +32,9 @@ public class WikipediaPagesRetriever {
 
 		List<String> queryResults = informationStore.query(queryExpression);
 
-		//logger.info("The number of retrived Wikipeda articles are "+ queryResults.size());
-		return queryResults;
+		
+		//return queryResults;
+		return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
 	}
 
 }

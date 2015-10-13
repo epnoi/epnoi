@@ -39,7 +39,7 @@ public class FeedRDFDAO extends RDFDAO {
 		Feed feed = (Feed) resource;
 
 		// System.out.println("--------------------------------------------------------->"+feed);
-		String feedURI = feed.getURI();
+		String feedURI = feed.getUri();
 
 		String queryExpression = "PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#> INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{FEED_CLASS}> ; "
@@ -79,8 +79,8 @@ public class FeedRDFDAO extends RDFDAO {
 				.createURI(OAIORERDFHelper.AGGREGATES_PROPERTY);
 		for (Item item : feed.getItems()) {
 			// System.out.println(item.getURI());
-			if (item.getURI() != null) {
-				Node objectItem = Node.createURI(item.getURI());
+			if (item.getUri() != null) {
+				Node objectItem = Node.createURI(item.getUri());
 
 				this.graph.add(new Triple(uriNode, aggregatesProperty,
 						objectItem));
@@ -136,7 +136,7 @@ public class FeedRDFDAO extends RDFDAO {
 			return null;
 		}
 		Feed feed = new Feed();
-		feed.setURI(URI);
+		feed.setUri(URI);
 		for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) {
 			Triple t = (Triple) i.next();
 			// System.out.println(" { " + t.getSubject() + " SSS "
@@ -224,7 +224,7 @@ public class FeedRDFDAO extends RDFDAO {
 		Feed feedA = new Feed();
 		Context context = new Context();
 
-		feedA.setURI(feedURI);
+		feedA.setUri(feedURI);
 		feedA.setTitle("arXiv");
 		feedA.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 		feedA.setPubDate("Mon, 12 Dec 2013 22:22:16 GMT");
@@ -232,7 +232,7 @@ public class FeedRDFDAO extends RDFDAO {
 		for (int i = 0; i < 10; i++) {
 			Item itemA = new Item();
 
-			itemA.setURI("http://uriA" + i);
+			itemA.setUri("http://uriA" + i);
 			itemA.setTitle("titleA" + i);
 			itemA.setLink("http://www.cadenaser.com");
 			itemA.setDescription("Description \" for item" + i);
@@ -240,13 +240,13 @@ public class FeedRDFDAO extends RDFDAO {
 
 			List<String> kewords = Arrays.asList("mi" + i, "mama" + i,
 					"me" + i, "mima" + i);
-			context.getElements().put(itemA.getURI(), kewords);
+			context.getElements().put(itemA.getUri(), kewords);
 			feedA.addItem(itemA);
 		}
 
 		Item itemB = new Item();
 
-		itemB.setURI("http://uriB");
+		itemB.setUri("http://uriB");
 		itemB.setTitle("titleB");
 		itemB.setLink("http://www.elpais.es");
 		itemB.setDescription("bla bla bla gato blab lba lba");
@@ -259,7 +259,7 @@ public class FeedRDFDAO extends RDFDAO {
 		Feed feedB = new Feed();
 		Context contextB = new Context();
 
-		feedB.setURI(feedURIB);
+		feedB.setUri(feedURIB);
 		feedB.setTitle("slashdot");
 		feedB.setLink("http://localhost:8983/solr/select?facet=true&facet.field=subject&facet.field=setSpec&facet.field=creator&facet.field=date");
 		feedB.setPubDate("Fri, 13 Dec 2013 16:57:49 +0000");
@@ -267,17 +267,17 @@ public class FeedRDFDAO extends RDFDAO {
 		for (int i = 0; i < 10; i++) {
 			Item itemA = new Item();
 
-			itemA.setURI("http://uriB" + i);
+			itemA.setUri("http://uriB" + i);
 			itemA.setTitle("titleB" + i);
 			itemA.setLink("http://www.whatever.com");
 			itemA.setDescription("Description for item" + i);
 			itemA.setPubDate("Fri, 13 Dec 2013 16:57:49 +0000");
 			List<String> kewordsA = Arrays.asList("mi" + i, "mama" + i, "me"
 					+ i, "mima" + i);
-			context.getElements().put(itemA.getURI(), kewordsA);
+			context.getElements().put(itemA.getUri(), kewordsA);
 			feedB.addItem(itemA);
 		}
-		contextB.getElements().put(itemB.getURI(), kewords);
+		contextB.getElements().put(itemB.getUri(), kewords);
 
 		feedA.addItem(itemB);
 		feeds.add(feedA);

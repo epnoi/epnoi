@@ -34,7 +34,7 @@ public class PaperRDFDAO extends RDFDAO {
 
 	public synchronized void create(Resource resource, Context context) {
 		Paper paper = (Paper) resource;
-		String paperURI = paper.getURI();
+		String paperURI = paper.getUri();
 		String queryExpression=null;
 		if(paper.getPubDate()!=null){
 		queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
@@ -89,7 +89,7 @@ public class PaperRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		Paper item = new Paper();
-		item.setURI(URI);
+		item.setUri(URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

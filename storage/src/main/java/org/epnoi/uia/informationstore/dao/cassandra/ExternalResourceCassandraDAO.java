@@ -21,10 +21,10 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 
 	public void create(Resource resource, Context context) {
 		ExternalResource externalResource = (ExternalResource)resource;
-		super.createRow(externalResource.getURI(),
+		super.createRow(externalResource.getUri(),
 				ExternalResourceCassandraHelper.COLUMN_FAMILY);
 		if (externalResource.getDescription() != null) {
-			super.updateColumn(externalResource.getURI(),
+			super.updateColumn(externalResource.getUri(),
 					ExternalResourceCassandraHelper.DESCRIPTION,
 					externalResource.getDescription(),
 					ExternalResourceCassandraHelper.COLUMN_FAMILY);
@@ -48,7 +48,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 						ExternalResourceCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			ExternalResource externalResource = new ExternalResource();
-			externalResource.setURI(URI);
+			externalResource.setUri(URI);
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
 				System.out.println("-- "+column);
@@ -68,7 +68,7 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void update(ExternalResource externalResource) {
-		super.updateColumn(externalResource.getURI(),
+		super.updateColumn(externalResource.getUri(),
 				ExternalResourceCassandraHelper.DESCRIPTION,
 				externalResource.getDescription(),
 				ExternalResourceCassandraHelper.COLUMN_FAMILY);
@@ -82,11 +82,11 @@ public class ExternalResourceCassandraDAO extends CassandraDAO {
 		System.out.println("Starting test");
 
 		ExternalResource externalResource = new ExternalResource();
-		externalResource.setURI("http://uriproof");
+		externalResource.setUri("http://uriproof");
 		externalResource.setDescription("description proof");
 
 		ExternalResource externalResource2 = new ExternalResource();
-		externalResource2.setURI("http://uriproof2");
+		externalResource2.setUri("http://uriproof2");
 		externalResource2.setDescription("description proof2");
 
 		Context context = new Context();

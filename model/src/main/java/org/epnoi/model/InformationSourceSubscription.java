@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class InformationSourceSubscription implements Resource {
 
-	String URI;
+	String uri;
 	String informationSource;
 	List<String> keywords = new ArrayList<String>();
 	Integer numberOfItems;
@@ -41,22 +41,22 @@ public class InformationSourceSubscription implements Resource {
 	}
 
 	// -----------------------------------------------------------------------------
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return URI;
+	
+	public String getUri() {
+		return uri;
 	}
 
 	// -----------------------------------------------------------------------------
 
-	public void setURI(String uri) {
-		this.URI = uri;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	// -----------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
-		return "InformationSourceSubscription [URI=" + URI
+		return "InformationSourceSubscription [URI=" + uri
 				+ ", informationSource=" + informationSource + ", keywords="
 				+ keywords + ", numberOfResults=" + numberOfItems + "]";
 	}

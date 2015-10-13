@@ -32,11 +32,12 @@ import org.epnoi.model.Term;
 import org.epnoi.model.rdf.RDFHelper;
 
 import com.sun.jersey.api.Responses;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/uia/domains/domain")
 @Api(value = "/uia/domains/domain", description = "Operations for handling a domain")
@@ -87,7 +88,7 @@ public class DomainResource extends UIAService {
 		// We create the new empty domain, just with its URI and a reference to
 		// the research object
 		Domain domain = new Domain();
-		domain.setURI(newDomainURI);
+		domain.setUri(newDomainURI);
 		domain.setType(typesURIsResolutionTable.get(newDomainType));
 		domain.setResources(newDomainURI + resourcesPathSubfix);
 
@@ -95,7 +96,7 @@ public class DomainResource extends UIAService {
 
 		// We create an empty research object
 		ResearchObject resources = new ResearchObject();
-		resources.setURI(newDomainURI + resourcesPathSubfix);
+		resources.setUri(newDomainURI + resourcesPathSubfix);
 
 		this.core.getInformationHandler().put(resources,
 				org.epnoi.model.Context.getEmptyContext());

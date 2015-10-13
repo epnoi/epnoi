@@ -3,7 +3,7 @@ package org.epnoi.model;
 import javax.xml.bind.annotation.XmlElement;
 
 public class InformationSource implements Resource {
-	String URI;
+	String uri;
 	String URL;
 	String name;
 	String type;
@@ -17,21 +17,6 @@ public class InformationSource implements Resource {
 
 	// -----------------------------------------------------------------------------
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	// -----------------------------------------------------------------------------
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
-	}
-
-	// -----------------------------------------------------------------------------
-
-	public void setURI(String uri) {
-		this.URI = uri;
-	}
 
 	// -----------------------------------------------------------------------------
 
@@ -45,19 +30,29 @@ public class InformationSource implements Resource {
 		this.name = name;
 	}
 
+
+
 	// -----------------------------------------------------------------------------
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
 
 	public String getURL() {
 		return URL;
 	}
 
-	// -----------------------------------------------------------------------------
-
-	public void setURL(String URL) {
-		this.URL = URL;
+	public void setURL(String uRL) {
+		URL = uRL;
 	}
 
-	// -----------------------------------------------------------------------------
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getInformationUnitType() {
 		return informationUnitType;
@@ -69,7 +64,7 @@ public class InformationSource implements Resource {
 
 	@Override
 	public String toString() {
-		return "InformationSource [URI=" + URI + ", URL=" + URL + ", name="
+		return "InformationSource [URI=" + uri + ", URL=" + URL + ", name="
 				+ name + ", type=" + type + ", informationUnitType="
 				+ informationUnitType + "]";
 	}

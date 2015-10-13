@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
+import org.epnoi.uia.commons.GateUtils;
 
 public class CoreMain {
 	private static final Logger logger = Logger.getLogger(CoreMain.class
@@ -11,6 +12,7 @@ public class CoreMain {
 
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
+		
 		try {
 			System.out.println("---->"
 					+core.getNLPHandler().process("My taylor is rich"));
@@ -18,5 +20,9 @@ public class CoreMain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	
+		
+		
 	}
 }

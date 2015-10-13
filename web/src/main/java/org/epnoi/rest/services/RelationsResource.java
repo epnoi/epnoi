@@ -25,11 +25,9 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+
+
+import io.swagger.annotations.*;
 
 @Path("/uia/resources/relations")
 @Api(value = "/uia/resources/relations", description = "Operations for handling relations")

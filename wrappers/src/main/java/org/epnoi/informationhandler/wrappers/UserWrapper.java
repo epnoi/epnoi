@@ -87,7 +87,7 @@ public class UserWrapper implements Wrapper {
 			return null;
 		}
 		User combinedUser = new User();
-		combinedUser.setURI(URI);
+		combinedUser.setUri(URI);
 		combinedUser.setName(cassandraUser.getName());
 		combinedUser.setKnowledgeObjects(rdfUser.getKnowledgeObjects());
 		combinedUser.setInformationSourceSubscriptions(rdfUser

@@ -21,14 +21,14 @@ public class SimpleTestSetUp {
 		System.out.println("-- " + searchCassandraDAO.getSearchs());
 		for (User user : userCassandraDAO.getUsers()) {
 			System.out.println(user.getName() + " existe!");
-			userCassandraDAO.remove(user.getURI());
+			userCassandraDAO.remove(user.getUri());
 		}
 		Context context = new Context();
 		
 
 		// Let's create the users
 		User user = new User();
-		user.setURI("http://userRafa");
+		user.setUri("http://userRafa");
 		user.setName("Rafa");
 		user.setPassword("PasswordDeRafa");
 		user.addSearch("http://searchA");
@@ -36,7 +36,7 @@ public class SimpleTestSetUp {
 		userCassandraDAO.create(user, context);
 
 		User userElOtro = new User();
-		userElOtro.setURI("http://userSara");
+		userElOtro.setUri("http://userSara");
 		userElOtro.setName("Sara");
 		userElOtro.setPassword("PasswordDeSara");
 		userElOtro.addSearch("http://searchC");
@@ -44,7 +44,7 @@ public class SimpleTestSetUp {
 		userCassandraDAO.create(userElOtro, context);
 
 		User pique = new User();
-		pique.setURI("http://userPique");
+		pique.setUri("http://userPique");
 		pique.setName("Pique");
 		pique.setPassword("PasswordDePique");
 		pique.addSearch("http://searchE");
@@ -61,13 +61,13 @@ public class SimpleTestSetUp {
 
 		for (Search search : searchCassandraDAO.getSearchs()) {
 			System.out.println(search.getTitle() + "existe!");
-			searchCassandraDAO.remove(search.getURI());
+			searchCassandraDAO.remove(search.getUri());
 		}
 
 		for (String label : Arrays.asList("A", "B", "C", "D", "E", "F")) {
 			String searchURI = "http://search" + label;
 			Search search = new Search();
-			search.setURI(searchURI);
+			search.setUri(searchURI);
 			search.setDescription("Search" + label + " Description");
 			search.setTitle("Search" + label);
 			/*
@@ -76,7 +76,7 @@ public class SimpleTestSetUp {
 			 * expressionLabel); }
 			 */
 
-			if (search.getURI().equals("http://searchE")) {
+			if (search.getUri().equals("http://searchE")) {
 				search.addExpression("galaxy");
 			} else {
 

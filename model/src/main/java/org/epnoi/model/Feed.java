@@ -3,8 +3,6 @@ package org.epnoi.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Feed implements Resource{
 
 	private String title;
@@ -13,7 +11,7 @@ public class Feed implements Resource{
 	private String language;
 	private String copyright;
 	private String pubDate;
-	private String URI;
+	private String uri;
 
 	
 	private List<Item> items = new ArrayList<Item>();
@@ -81,16 +79,7 @@ public class Feed implements Resource{
 	}
 	
 	// --------------------------------------------------------------------------
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
-	}
-	
-	// --------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
-	}
 	
 	// --------------------------------------------------------------------------
 
@@ -100,6 +89,14 @@ public class Feed implements Resource{
 
 	// --------------------------------------------------------------------------
 	
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
 	public void setLink(String link) {
 		this.link = link;
 	}
@@ -146,7 +143,7 @@ public class Feed implements Resource{
 	
 	@Override
 	public String toString() {
-		return "Feed [URI="+this.URI+", copyright=" + copyright + ", description=" + description
+		return "Feed [URI="+this.uri+", copyright=" + copyright + ", description=" + description
 				+ ", language=" + language + ", link=" + link + ", pubDate="
 				+ pubDate + ", title=" + title + "]";
 	}

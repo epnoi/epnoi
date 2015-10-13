@@ -15,7 +15,7 @@ public class ResearchObjectsResourceClient {
 		try {
 
 			ResearchObject researchObject = new ResearchObject();
-			researchObject.setURI("http://testResearchObject");
+			researchObject.setUri("http://testResearchObject");
 			researchObject.getAggregatedResources().add("http://resourceA");
 			researchObject.getAggregatedResources().add("http://resourceB");
 			researchObject.getDcProperties().addPropertyValue(
@@ -45,29 +45,29 @@ public class ResearchObjectsResourceClient {
 			System.out.println("Then we get it ");
 			Object response = service
 					.path("/uia/researchobjects/researchobject")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 					.get(ResearchObject.class);
 			System.out.println("The response was: " + response);
 
 			System.out.println("Lets modify the RO aggregation");
 			service.path("/uia/researchobjects/researchobject/aggregation")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.queryParam("resourceuri", "http://newResource")
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post();
 
 			service.path("/uia/researchobjects/researchobject/aggregation")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.queryParam("resourceuri", "http://newResourceThatNeverWas")
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post();
 			service.path("/uia/researchobjects/researchobject/aggregation")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.queryParam("resourceuri", "http://newResourceThatNeverWas")
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
 
 			
 			service.path("/uia/researchobjects/researchobject/dc/date")
-			.queryParam("uri", researchObject.getURI())
+			.queryParam("uri", researchObject.getUri())
 			.queryParam("value", "2015-12-28T00:00:00Z")
 			.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post();
 			
@@ -75,7 +75,7 @@ public class ResearchObjectsResourceClient {
 			System.out.println("Then we get it ");
 			ResearchObject retrievedRO = service
 					.path("/uia/researchobjects/researchobject")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 					.get(ResearchObject.class);
 			System.out.println("The modified response was: " + retrievedRO);
@@ -92,7 +92,7 @@ public class ResearchObjectsResourceClient {
 
 			System.out.println("Then we get it, again ");
 			retrievedRO = service.path("/uia/researchobjects/researchobject")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 					.get(ResearchObject.class);
 			System.out.println("The modified with the POST RO response was: "

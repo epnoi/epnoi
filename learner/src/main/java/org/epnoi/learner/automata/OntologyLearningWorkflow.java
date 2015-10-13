@@ -118,7 +118,7 @@ public class OntologyLearningWorkflow {
 
 			for (TermVertice termVerticeToExpand : termsVerticesToExpand) {
 				for (Relation relation : relationsTable.getRelations(
-						termVerticeToExpand.getTerm().getURI(),
+						termVerticeToExpand.getTerm().getUri(),
 						hypernymRelationsThreshold)) {
 					Term destinationTerm = this.termsTable.getTerm(relation
 							.getTarget());
@@ -163,7 +163,7 @@ public class OntologyLearningWorkflow {
 		} else {
 			domain = new Domain();
 			domain.setLabel("CGTestCorpus");
-			domain.setURI(corpusURI);
+			domain.setUri(corpusURI);
 			domain.setType(RDFHelper.PAPER_CLASS);
 		}
 

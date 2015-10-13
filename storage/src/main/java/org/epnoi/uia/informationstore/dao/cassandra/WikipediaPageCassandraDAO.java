@@ -33,7 +33,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 		Map<String, String> pairsOfNameValues = new HashMap<String, String>();
 
-		super.createRow(wikipediaPage.getURI(), WikipediaPageCassandraHelper.COLUMN_FAMILY);
+		super.createRow(wikipediaPage.getUri(), WikipediaPageCassandraHelper.COLUMN_FAMILY);
 
 		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM, wikipediaPage.getTerm());
 
@@ -41,7 +41,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 
 		pairsOfNameValues.put(WikipediaPageCassandraHelper.TERM_DEFINITION, termDefinition);
 
-		super.updateColumns(wikipediaPage.getURI(), pairsOfNameValues, WikipediaPageCassandraHelper.COLUMN_FAMILY);
+		super.updateColumns(wikipediaPage.getUri(), pairsOfNameValues, WikipediaPageCassandraHelper.COLUMN_FAMILY);
 
 		pairsOfNameValues = null;
 
@@ -61,7 +61,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 			pairsOfNameValues.put(section, sectionContent);
 
 		}
-		super.updateColumns(wikipediaPage.getURI() + "/" + WikipediaPageCassandraHelper.CONTENT, pairsOfNameValues,
+		super.updateColumns(wikipediaPage.getUri() + "/" + WikipediaPageCassandraHelper.CONTENT, pairsOfNameValues,
 				WikipediaPageCassandraHelper.COLUMN_FAMILY);
 	}
 
@@ -81,7 +81,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 		List<String> sectionsContent = new ArrayList<String>();
 		if (columnsIterator.hasNext()) {
 			WikipediaPage paper = new WikipediaPage();
-			paper.setURI(URI);
+			paper.setUri(URI);
 			while (columnsIterator.hasNext()) {
 				HColumn<String, String> column = columnsIterator.next();
 				if (WikipediaPageCassandraHelper.TERM.equals(column.getName())) {
@@ -104,7 +104,7 @@ public class WikipediaPageCassandraDAO extends CassandraDAO {
 	private void _readSections(WikipediaPage page) {
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super.getAllCollumns(
-				page.getURI() + "/" + WikipediaPageCassandraHelper.CONTENT, WikipediaPageCassandraHelper.COLUMN_FAMILY);
+				page.getUri() + "/" + WikipediaPageCassandraHelper.CONTENT, WikipediaPageCassandraHelper.COLUMN_FAMILY);
 
 		if (columnsIterator.hasNext()) {
 

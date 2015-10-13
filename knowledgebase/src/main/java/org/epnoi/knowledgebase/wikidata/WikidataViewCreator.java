@@ -97,7 +97,7 @@ public class WikidataViewCreator {
 	// --------------------------------------------------------------------------------------------------
 
 	public void store(WikidataView wikidataView) {
-		this.core.getInformationHandler().remove(wikidataView.getURI(),
+		this.core.getInformationHandler().remove(wikidataView.getUri(),
 				RDFHelper.WIKIDATA_VIEW_CLASS);
 
 		this.core.getInformationHandler().put(wikidataView,

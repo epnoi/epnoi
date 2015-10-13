@@ -4,22 +4,20 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ExternalResource implements Resource {
 
-	private String URI;
+	private String uri;
 	private String description;
 
+
+
 	// ------------------------------------------------------------------------------------------
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 
-	// ------------------------------------------------------------------------------------------
-
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
-
-	// ------------------------------------------------------------------------------------------
 
 	public String getDescription() {
 		return description;
@@ -34,7 +32,7 @@ public class ExternalResource implements Resource {
 	// ------------------------------------------------------------------------------------------
 
 	public String toString() {
-		return "ER[URI: " + this.URI + " , description: " + this.description
+		return "ER[URI: " + this.uri + " , description: " + this.description
 				+ "]";
 	}
 

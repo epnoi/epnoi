@@ -28,7 +28,7 @@ public class WikidataViewRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		WikidataView wikidataView = (WikidataView) resource;
-		String termURI = wikidataView.getURI();
+		String termURI = wikidataView.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}>"
 				+ "{ <{URI}> a <{WIKIDATA_VIEW_CLASS}> . }";
@@ -86,7 +86,7 @@ public class WikidataViewRDFDAO extends RDFDAO {
 
 	public Resource read(String URI) {
 		Term user = new Term();
-		user.setURI(URI);
+		user.setUri(URI);
 
 		return user;
 	}

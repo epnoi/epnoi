@@ -56,16 +56,16 @@ public class EventBus implements InformationAccessListener {
 		
 		if (resource instanceof InformationSourceSubscription
 				&& eventType.equals(EventsHelper.UPDATE)) {
-			Broadcaster broadcaster = this.subscribers.get(resource.getURI());
-			System.out.println("                " + resource.getURI()
+			Broadcaster broadcaster = this.subscribers.get(resource.getUri());
+			System.out.println("                " + resource.getUri()
 					+ "         >" + broadcaster + " the subscribers are "
 					+ this.subscribers);
 			List<InformationSourceNotification> notifications;
 			notifications = this.core.getInformationSourcesHandler()
-					.retrieveNotifications(resource.getURI());
+					.retrieveNotifications(resource.getUri());
 
 			InformationSourceNotificationsSet informationSourceNotificationSet = new InformationSourceNotificationsSet();
-			informationSourceNotificationSet.setURI(resource.getURI());
+			informationSourceNotificationSet.setUri(resource.getUri());
 			informationSourceNotificationSet.setNotifications(notifications);
 
 			Date date = new Date(System.currentTimeMillis());

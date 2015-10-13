@@ -42,7 +42,7 @@ public class InformationSourceTestClient {
 								.queryParam("URI", "whatever")
 								.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE)
 								.get(ClientResponse.class)
-								.getEntity(Search.class).getURI());
+								.getEntity(Search.class).getUri());
 
 		/*
 		 * String ID = "whatever";

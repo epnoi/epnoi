@@ -25,24 +25,24 @@ public class SearchCassandraDAO extends CassandraDAO {
 
 	public void create(Resource resource, Context context) {
 		Search search = (Search) resource;
-		super.createRow(search.getURI(), SearchCassandraHelper.COLUMN_FAMILY);
+		super.createRow(search.getUri(), SearchCassandraHelper.COLUMN_FAMILY);
 
 		if (search.getTitle() != null) {
 
-			super.updateColumn(search.getURI(), SearchCassandraHelper.TITLE,
+			super.updateColumn(search.getUri(), SearchCassandraHelper.TITLE,
 					search.getTitle(), SearchCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		if (search.getDescription() != null) {
-			super.updateColumn(search.getURI(),
+			super.updateColumn(search.getUri(),
 					SearchCassandraHelper.DESCRIPTION, search.getDescription(),
 					SearchCassandraHelper.COLUMN_FAMILY);
 
 		}
 
 		for (String expression : search.getExpressions()) {
-			super.updateColumn(search.getURI(), expression,
+			super.updateColumn(search.getUri(), expression,
 					SearchCassandraHelper.EXPRESSIONS,
 					SearchCassandraHelper.COLUMN_FAMILY);
 		}
@@ -63,7 +63,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 				.getAllCollumns(URI, SearchCassandraHelper.COLUMN_FAMILY);
 		if (columnsIterator.hasNext()) {
 			Search search = new Search();
-			search.setURI(URI);
+			search.setUri(URI);
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
@@ -94,7 +94,7 @@ public class SearchCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void update(Search search) {
-		super.updateColumn(search.getURI(), SearchCassandraHelper.DESCRIPTION,
+		super.updateColumn(search.getUri(), SearchCassandraHelper.DESCRIPTION,
 				search.getDescription(), UserCassandraHelper.COLUMN_FAMILY);
 	}
 

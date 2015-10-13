@@ -28,11 +28,12 @@ import org.epnoi.rest.services.response.jsonld.JSONLDResearchObjectResponseBuild
 import org.epnoi.rest.services.response.jsonld.JSONLDResponse;
 
 import com.sun.jersey.api.Responses;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/uia/researchobjects/researchobject")
 @Api(value = "/uia/researchobjects/researchobject", description = "Operations for handling Research Objects")
@@ -64,7 +65,7 @@ public class ResearchObjectResource extends UIAService {
 
 		URI researchObjectURI = null;
 		try {
-			researchObjectURI = new URI(researchObject.getURI());
+			researchObjectURI = new URI(researchObject.getUri());
 		} catch (URISyntaxException e) {
 			throw new WebApplicationException();
 		}
@@ -141,7 +142,7 @@ public class ResearchObjectResource extends UIAService {
 		logger.info("POST RO> " + researchObject);
 
 		ResearchObject researchObjectToBeUpdated = (ResearchObject) core
-				.getInformationHandler().get(researchObject.getURI(),
+				.getInformationHandler().get(researchObject.getUri(),
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 
 		if (researchObjectToBeUpdated != null) {

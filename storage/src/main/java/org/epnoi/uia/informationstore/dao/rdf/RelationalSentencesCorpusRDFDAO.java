@@ -19,7 +19,7 @@ public class RelationalSentencesCorpusRDFDAO extends RDFDAO {
 
 	public void create(Resource resource, Context context) {
 		RelationalSentencesCorpus relationalSentencesCorpus = (RelationalSentencesCorpus) resource;
-		String informationSourceURI = relationalSentencesCorpus.getURI();
+		String informationSourceURI = relationalSentencesCorpus.getUri();
 
 		String queryExpression = "INSERT INTO GRAPH <{GRAPH}> { <{URI}> a <{RELATIONAL_SENTENCES_CORPUS_CLASS}> . }";
 

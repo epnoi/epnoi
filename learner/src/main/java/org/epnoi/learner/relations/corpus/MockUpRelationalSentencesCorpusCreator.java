@@ -32,7 +32,7 @@ public class MockUpRelationalSentencesCorpusCreator {
 		String relationalSentenceURI = "http://tinytestcorpus/drinventor";
 		this.corpus
 				.setDescription("The tiny test corpus created by the mockup");
-		this.corpus.setURI(relationalSentenceURI);
+		this.corpus.setUri(relationalSentenceURI);
 		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
 
 		Document annotatedContentA=null;

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Search implements Resource {
 
-	private String URI;
+	private String uri;
 	private String title;
 	private String description;
 	ArrayList<String> expressions;
@@ -51,15 +51,15 @@ public class Search implements Resource {
 
 	// --------------------------------------------------------------------------------
 
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return this.URI;
+
+	public String getUri() {
+		return this.uri;
 	}
 
 	// --------------------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uRI) {
+		uri = uRI;
 	}
 
 	// --------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ public class Search implements Resource {
 
 	@Override
 	public String toString() {
-		return "Search [URI=" + URI + ", title=" + title + ", description="
+		return "Search [uri=" + uri + ", title=" + title + ", description="
 				+ description + ", expressions=" + expressions + "]";
 	}
 

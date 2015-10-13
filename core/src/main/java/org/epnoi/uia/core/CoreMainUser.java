@@ -109,7 +109,7 @@ public class CoreMainUser {
 
 		User testUser = new User();
 
-		testUser.setURI("http://www.epnoi.org/users/testUser");
+		testUser.setUri("http://www.epnoi.org/users/testUser");
 		testUser.setName("testUser");
 
 		for (int i = 0; i < 10; i++)
@@ -132,7 +132,7 @@ public class CoreMainUser {
 		core.getInformationHandler().put(testUser, context);
 		InformationSource slashdotInformationSource = new InformationSource();
 		slashdotInformationSource
-				.setURI("http://www.epnoi.org/informationSources/slashdot");
+				.setUri("http://www.epnoi.org/informationSources/slashdot");
 		slashdotInformationSource.setName("slashdot");
 		slashdotInformationSource
 				.setURL("http://rss.slashdot.org/Slashdot/slashdot");
@@ -143,7 +143,7 @@ public class CoreMainUser {
 
 		InformationSource highScalabilityInformationSource = new InformationSource();
 		highScalabilityInformationSource
-				.setURI("http://www.epnoi.org/informationSources/highScalability");
+				.setUri("http://www.epnoi.org/informationSources/highScalability");
 		highScalabilityInformationSource.setName("highScalability");
 		highScalabilityInformationSource
 				.setURL("http://feeds.feedburner.com/HighScalability");
@@ -154,7 +154,7 @@ public class CoreMainUser {
 
 		InformationSource randomInformationSource = new InformationSource();
 		randomInformationSource
-				.setURI("http://www.epnoi.org/informationSources/randomInformationSource");
+				.setUri("http://www.epnoi.org/informationSources/randomInformationSource");
 		randomInformationSource.setName("randomInformationSource");
 		randomInformationSource
 				.setURL("http://www.epnoi.org/informationSources/randomInformationSource");
@@ -166,7 +166,7 @@ public class CoreMainUser {
 		InformationSourceSubscription informationSourceSubscription = new InformationSourceSubscription();
 
 		informationSourceSubscription
-				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
+				.setUri("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
 		informationSourceSubscription
 				.setInformationSource("http://www.epnoi.org/informationSources/slashdot");
 		informationSourceSubscription.setNumberOfItems(6);
@@ -174,7 +174,7 @@ public class CoreMainUser {
 		InformationSourceSubscription informationSourceSubscriptionHigh = new InformationSourceSubscription();
 
 		informationSourceSubscriptionHigh
-				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
+				.setUri("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
 		informationSourceSubscriptionHigh
 				.setInformationSource("http://www.epnoi.org/informationSources/highScalability");
 		informationSourceSubscriptionHigh.setNumberOfItems(4);
@@ -182,7 +182,7 @@ public class CoreMainUser {
 		InformationSourceSubscription informationSourceSubscriptionRandom = new InformationSourceSubscription();
 
 		informationSourceSubscriptionRandom
-				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
+				.setUri("http://www.epnoi.org/users/testUser/subscriptions/informationSources/randomInformationSource");
 		informationSourceSubscriptionRandom
 				.setInformationSource("http://www.epnoi.org/informationSources/randomInformationSource");
 		informationSourceSubscriptionRandom.setNumberOfItems(2);
@@ -227,7 +227,7 @@ public class CoreMainUser {
 		Feed feedA = new Feed();
 		Context context = new Context();
 
-		feedA.setURI(feedURI);
+		feedA.setUri(feedURI);
 		feedA.setTitle("high");
 		feedA.setLink("http://feeds.feedburner.com/HighScalability");
 		feedA.setPubDate("Mon, 12 Dec 2013 22:22:16 GMT");
@@ -235,7 +235,7 @@ public class CoreMainUser {
 		for (int i = 0; i < 10; i++) {
 			Item itemA = new Item();
 
-			itemA.setURI("http://uriA" + i);
+			itemA.setUri("http://uriA" + i);
 			itemA.setTitle("titleA" + i);
 			itemA.setLink("http://www.cadenaser.com");
 			itemA.setDescription("Description \" for item" + i);
@@ -250,7 +250,7 @@ public class CoreMainUser {
 
 		Item itemB = new Item();
 
-		itemB.setURI("http://uriB");
+		itemB.setUri("http://uriB");
 		itemB.setTitle("titleB");
 		itemB.setLink("http://www.elpais.es");
 		itemB.setDescription("bla bla bla gato blab lba lba");
@@ -264,7 +264,7 @@ public class CoreMainUser {
 		Feed feedB = new Feed();
 		Context contextB = new Context();
 
-		feedB.setURI(feedURIB);
+		feedB.setUri(feedURIB);
 		feedB.setTitle("slashdot");
 		feedB.setLink("http://rss.slashdot.org/Slashdot/slashdot");
 		feedB.setPubDate("Fri, 13 Dec 2013 16:57:49 +0000");
@@ -272,7 +272,7 @@ public class CoreMainUser {
 		for (int i = 0; i < 10; i++) {
 			Item itemA = new Item();
 
-			itemA.setURI("http://uriB" + i);
+			itemA.setUri("http://uriB" + i);
 			itemA.setTitle("titleB" + i);
 			itemA.setLink("http://www.whatever.com");
 			itemA.setDescription("Description for item" + i);

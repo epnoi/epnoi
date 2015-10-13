@@ -36,7 +36,7 @@ public class CoreMainTest {
 
 		User testUser = new User();
 
-		testUser.setURI(TEST_USER_URI);
+		testUser.setUri(TEST_USER_URI);
 		testUser.setName("testUser");
 		testUser.setDescription("User create for testing purposes");
 		testUser.setPassword("1234");
@@ -128,7 +128,7 @@ public class CoreMainTest {
 
 		InformationSource slashdotInformationSource = new InformationSource();
 		slashdotInformationSource
-				.setURI("http://www.epnoi.org/informationSources/slashdot");
+				.setUri("http://www.epnoi.org/informationSources/slashdot");
 		slashdotInformationSource.setName("slashdot");
 		slashdotInformationSource
 				.setURL("http://rss.slashdot.org/Slashdot/slashdot");
@@ -139,7 +139,7 @@ public class CoreMainTest {
 
 		InformationSource highScalabilityInformationSource = new InformationSource();
 		highScalabilityInformationSource
-				.setURI("http://www.epnoi.org/informationSources/highScalability");
+				.setUri("http://www.epnoi.org/informationSources/highScalability");
 		highScalabilityInformationSource.setName("highScalability");
 		highScalabilityInformationSource
 				.setURL("http://feeds.feedburner.com/HighScalability");
@@ -150,7 +150,7 @@ public class CoreMainTest {
 
 		InformationSource testInformationSource = new InformationSource();
 		testInformationSource
-				.setURI("http://www.epnoi.org/informationSources/testInformationSource");
+				.setUri("http://www.epnoi.org/informationSources/testInformationSource");
 		testInformationSource.setName("randomInformationSource");
 		testInformationSource
 				.setURL("http://www.epnoi.org/informationSources/randomInformationSource");
@@ -161,7 +161,7 @@ public class CoreMainTest {
 		InformationSourceSubscription informationSourceSubscription = new InformationSourceSubscription();
 
 		informationSourceSubscription
-				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
+				.setUri("http://www.epnoi.org/users/testUser/subscriptions/informationSources/slashdot");
 		informationSourceSubscription
 				.setInformationSource("http://www.epnoi.org/informationSources/slashdot");
 		informationSourceSubscription.setNumberOfItems(6);
@@ -169,7 +169,7 @@ public class CoreMainTest {
 		InformationSourceSubscription informationSourceSubscriptionHigh = new InformationSourceSubscription();
 
 		informationSourceSubscriptionHigh
-				.setURI("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
+				.setUri("http://www.epnoi.org/users/testUser/subscriptions/informationSources/highScalability");
 		informationSourceSubscriptionHigh
 				.setInformationSource("http://www.epnoi.org/informationSources/highScalability");
 		informationSourceSubscriptionHigh.setNumberOfItems(4);
@@ -207,7 +207,7 @@ public class CoreMainTest {
 		// RDFHelper.PAPER_CLASS));
 
 		Paper paper = new Paper();
-		paper.setURI("http://testPaper");
+		paper.setUri("http://testPaper");
 
 		String[] authors = { "A", "B" };
 		paper.setAuthors(new ArrayList<String>(Arrays.	asList(authors)));
@@ -250,7 +250,7 @@ public class CoreMainTest {
 		Feed feedA = new Feed();
 		Context context = new Context();
 
-		feedA.setURI(feedURI);
+		feedA.setUri(feedURI);
 		feedA.setTitle("Feed A title");
 		feedA.setLink("http://feedA");
 		feedA.setPubDate("Mon, 12 Dec 2013 22:22:16 GMT");
@@ -259,7 +259,7 @@ public class CoreMainTest {
 		for (int i = 0; i < 9; i++) {
 			Item itemA = new Item();
 
-			itemA.setURI("http://uriA" + i);
+			itemA.setUri("http://uriA" + i);
 			itemA.setTitle("Iten titleA" + i);
 			itemA.setLink("http://feedA" + i);
 			itemA.setDescription("Description \" for item A " + i);
@@ -271,7 +271,7 @@ public class CoreMainTest {
 			 */
 			String additionalContent = "My taylor is rich and my mother is in the kitchen, word"
 					+ i;
-			context.getElements().put(itemA.getURI(), additionalContent);
+			context.getElements().put(itemA.getUri(), additionalContent);
 			feedA.addItem(itemA);
 		}
 		context.getParameters()

@@ -145,7 +145,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 						Context.getEmptyContext());
 
 				Selector selector = new Selector();
-				selector.setProperty(SelectorHelper.URI, paper.getURI());
+				selector.setProperty(SelectorHelper.URI, paper.getUri());
 				selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
 				Content<String> content = core.getInformationHandler()
 						.getContent(selector);
@@ -156,11 +156,11 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 				Selector annotationSelector = new Selector();
 				annotationSelector.setProperty(SelectorHelper.URI,
-						paper.getURI());
+						paper.getUri());
 				annotationSelector
 						.setProperty(
 								SelectorHelper.ANNOTATED_CONTENT_URI,
-								paper.getURI()
+								paper.getUri()
 										+ "/"
 										+ AnnotatedContentHelper.CONTENT_TYPE_TEXT_XML_GATE);
 				annotationSelector.setProperty(SelectorHelper.TYPE,
@@ -232,7 +232,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 					.getTextContent();
 
 			// newDocument.setField("id", identifier);
-			paper.setURI(identifier);
+			paper.setUri(identifier);
 		}
 		// setSpec
 		NodeList setSpecNodeList = recordElement
@@ -240,7 +240,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 
 		for (int j = 0; j < setSpecNodeList.getLength(); j++) {
 			String setSpec = setSpecNodeList.item(j).getTextContent();
-			core.getAnnotationHandler().label(paper.getURI(), setSpec);
+			core.getAnnotationHandler().label(paper.getUri(), setSpec);
 		}
 		/*
 		 * if ((setSpecNodeList != null) && (setSpecNodeList.item(0) != null)) {
@@ -283,7 +283,7 @@ public class IncrementalOAIPMHHarvester extends CommandLineTool {
 			// newnodes.item(j).getTextContent());
 
 			String subject = newnodes.item(j).getTextContent();
-			core.getAnnotationHandler().label(paper.getURI(), subject);
+			core.getAnnotationHandler().label(paper.getUri(), subject);
 		}
 
 		newnodes = recordElement.getElementsByTagName("dc:date");

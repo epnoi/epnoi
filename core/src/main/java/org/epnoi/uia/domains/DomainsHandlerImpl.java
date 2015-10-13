@@ -49,10 +49,10 @@ public class DomainsHandlerImpl implements DomainsHandler {
 
 	private List<String> _extractIntensionallySpecifiedResources(Domain domain) {
 		List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
-				domain.getURI(), domain.getType());
+				domain.getUri(), domain.getType());
 
 		logger.info("Found initially " + foundURIs.size()
-				+ " elements in the domain " + domain.getURI());
+				+ " elements in the domain " + domain.getUri());
 		return foundURIs;
 	}
 
@@ -69,7 +69,7 @@ public class DomainsHandlerImpl implements DomainsHandler {
 			List<String> foundURIs = resources.getAggregatedResources();
 			if (foundURIs != null) {
 				logger.info("Initially " + foundURIs.size()
-						+ " are defined as belonging to the domain " + domain.getURI());
+						+ " are defined as belonging to the domain " + domain.getUri());
 				return foundURIs;
 			}
 		}

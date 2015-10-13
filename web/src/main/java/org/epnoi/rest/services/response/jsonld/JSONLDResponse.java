@@ -26,7 +26,7 @@ public class JSONLDResponse {
 
 	public JSONLDResponse(ResearchObject researchObject) {
 		this.researchObject = researchObject;
-		this.URI = researchObject.getURI() + "/Manifest";
+		this.URI = researchObject.getUri() + "/Manifest";
 
 		this.aggregation = new JSONLDAggregation(researchObject);
 

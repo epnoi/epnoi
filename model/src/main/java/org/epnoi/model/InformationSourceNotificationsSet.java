@@ -9,20 +9,20 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class InformationSourceNotificationsSet implements Resource {
 
-	private String URI;
+	private String uri;
 	private String timestamp;
 	private List<InformationSourceNotification> notifications = new ArrayList<InformationSourceNotification>();
 
 	// ----------------------------------------------------------------------
-	@XmlElement(name="URI")
-	public String getURI() {
-		return URI;
+
+	public String getUri() {
+		return uri;
 	}
 
 	// ----------------------------------------------------------------------
 
-	public void setURI(String uRI) {
-		URI = uRI;
+	public void setUri(String uri) {
+		uri = uri;
 	}
 
 	// ----------------------------------------------------------------------
@@ -52,8 +52,9 @@ public class InformationSourceNotificationsSet implements Resource {
 
 	@Override
 	public String toString() {
-		return "InformationSourceNotificationsSet [URI=" + URI + ", timestamp="
+		return "InformationSourceNotificationsSet [URI=" + uri + ", timestamp="
 				+ timestamp + ", notifications=" + notifications + "]";
 	}
+
 
 }

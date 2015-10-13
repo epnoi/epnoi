@@ -32,13 +32,13 @@ public class TermsRetriever {
 	// -----------------------------------------------------------------------------------
 
 	public void store(Domain domain, TermsTable termsTable) {
-		logger.info("Storing the Terms Table for domain " + domain.getURI());
+		logger.info("Storing the Terms Table for domain " + domain.getUri());
 
 		for (Term term : termsTable.getTerms()) {
 			System.out.println("Storing " + term);
 			core.getInformationHandler().put(term, Context.getEmptyContext());
 
-			core.getAnnotationHandler().label(term.getURI(), this.targetDomain);
+			core.getAnnotationHandler().label(term.getUri(), this.targetDomain);
 		}
 		System.out
 				.println("=========================================================================================================================");

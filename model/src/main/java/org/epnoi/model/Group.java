@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlElement;
 public class Group implements Resource {
 	boolean autoAccept;
 	String description;
-	Long ID;
+	Long id;
 	String owner;
 	String resource;
 	String title;
-	String URI;
+	String uri;
 	ArrayList<String> tags;
 
 	Group() {
@@ -34,12 +34,12 @@ public class Group implements Resource {
 		this.description = description;
 	}
 
-	public Long getID() {
-		return this.ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setID(Long id) {
-		this.ID = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getOwner() {
@@ -66,13 +66,14 @@ public class Group implements Resource {
 		this.title = title;
 	}
 
-	@XmlElement(name = "URI")
-	public String getURI() {
-		return this.URI;
+	public String getUri() {
+		return uri;
 	}
 
-	public void setURI(String URI) {
-		this.URI = URI;
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
+
+	
 
 }

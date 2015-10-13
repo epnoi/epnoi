@@ -59,14 +59,14 @@ public class DemoDataLoader {
 
 	private void _createTheSimpleDomain() {
 		Domain domain = new Domain();
-		domain.setURI("http://simpledomain");
+		domain.setUri("http://simpledomain");
 		domain.setExpression("sparqlexpression");
 		domain.setLabel("simple domain");
 		domain.setType(RDFHelper.PAPER_CLASS);
 		domain.setResources("http://simpledomain");
 
 		ResearchObject resources = new ResearchObject();
-		resources.setURI("http://simpledomain/resources");
+		resources.setUri("http://simpledomain/resources");
 
 		this.core.getInformationHandler().put(resources,
 				org.epnoi.model.Context.getEmptyContext());

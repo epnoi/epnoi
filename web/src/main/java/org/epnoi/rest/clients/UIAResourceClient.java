@@ -16,7 +16,7 @@ public class UIAResourceClient {
 		try {
 
 			ResearchObject researchObject = new ResearchObject();
-			researchObject.setURI("http://testResearchObject");
+			researchObject.setUri("http://testResearchObject");
 			researchObject.getAggregatedResources().add("http://resourceA");
 			researchObject.getAggregatedResources().add("http://resourceB");
 			researchObject.getDcProperties().addPropertyValue(
@@ -134,7 +134,7 @@ public class UIAResourceClient {
 			 */
 
 			service.path("/uia/researchobjects/researchobject")
-					.queryParam("uri", researchObject.getURI())
+					.queryParam("uri", researchObject.getUri())
 					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
 			/*
 			 * System.out.println("Now if we get it, something should fail ");
