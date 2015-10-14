@@ -27,7 +27,8 @@ import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.sources.InformationSourcesHandlerImpl;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
-import org.epnoi.uia.core.eventbus.EventBusImpl;
+import org.epnoi.uia.core.eventbus.EventBusFactory;
+import org.epnoi.uia.core.eventbus.InternalEventBusImpl;
 import org.epnoi.uia.domains.DomainsHandlerImpl;
 import org.epnoi.uia.informationhandler.InformationHandlerImp;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
@@ -134,7 +135,8 @@ public class CoreImpl implements Core {
 	private void _initEventBus() {
 
 		logger.info("Initializing the Event Bus");
-		this.eventBus = new EventBusImpl();
+		this.eventBus = EventBusFactory.newInstance(parametersModel);
+		this.eventBus.init();
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
