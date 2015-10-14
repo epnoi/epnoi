@@ -116,7 +116,7 @@ public class RabbitMQClient {
     }
 
 
-    public void consume(String exchange, String queue, String bindingKey, EventBusSubscriber subscriber) throws IOException {
+    public void consume(String exchange, String queue, String bindingKey, final EventBusSubscriber subscriber) throws IOException {
 
         Channel channel = newChannel(exchange);
 
