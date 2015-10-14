@@ -13,22 +13,28 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class InternalEventBusImpl implements EventBus {
+
 	private static final Logger logger = Logger.getLogger(InternalEventBusImpl.class.getName());
 	private AsyncEventBus bus = null;
 	private DeadEventsSubscriber deadEventsSubscriber = new DeadEventsSubscriber();
 
 	// ---------------------------------------------------------------------------------------------------------
 	public InternalEventBusImpl() {
+	}
+
+	// ---------------------------------------------------------------------------------------------------------
+
+	@Override
+	public void init() {
 		this.bus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
 		this.bus.register(this.deadEventsSubscriber);
-
 	}
 
 	// ---------------------------------------------------------------------------------------------------------
 
 	/* (non-Javadoc)
-	 * @see org.epnoi.uia.core.eventbus.EventBusImpl#subscribe(org.epnoi.uia.core.eventbus.EventBusSubscriber)
-	 */
+             * @see org.epnoi.uia.core.eventbus.EventBusImpl#subscribe(org.epnoi.uia.core.eventbus.EventBusSubscriber)
+             */
 	@Override
 	public void subscribe(EventBusSubscriber subscriber) {
 		logger.info("Subscribing" + subscriber);
@@ -49,7 +55,7 @@ public class InternalEventBusImpl implements EventBus {
 	// ---------------------------------------------------------------------------------------------------------
 
 	@Override
-	public void destroy() throws IOException {
+	public void destroy() {
 
 	}
 
