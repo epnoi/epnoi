@@ -89,6 +89,7 @@
 		<servlet.api.version>2.4</servlet.api.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<solr.version>4.6.0</solr.version>
+		<spark.version>1.5.0</spark.version>
 		<spring.version>4.1.7.RELEASE</spring.version>
 		<standford.parser.version>1.0</standford.parser.version>
 		<swagger.jersey.version>1.5.0</swagger.jersey.version>
@@ -384,7 +385,7 @@
 			<dependency>
 				<groupId>org.apache.spark</groupId>
 				<artifactId>spark-core_2.10</artifactId>
-				<version>1.4.1</version>
+				<version>${spark.version}</version>
 			</dependency>
 
 			<!-- Spring Libraries -->

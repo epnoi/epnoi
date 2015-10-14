@@ -1,1 +1,0 @@
-We collect a list of known four-dimensional Fano manifolds and compute their quantum periods. This quantum list includes all four-dimensional Fano manifolds of index greater than one, all four-dimensional toric Fano manifolds, all four-dimensional products of lower-dimensional Fano manifolds, and certain complete intersections in projective bundles
