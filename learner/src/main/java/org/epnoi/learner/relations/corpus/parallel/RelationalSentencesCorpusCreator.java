@@ -112,10 +112,14 @@ public class RelationalSentencesCorpusCreator {
 		// stored at the UIA
 		
 		JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new SectionsAnnotatedContentURIsFlatMapFunction());
+
 		System.out.println("..> "+annotatedContentURIs.collect());
-/*
+		
 		JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
+		
+		System.out.println("..> "+annotatedDocuments.collect());
+/*
 		JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
 				.flatMap(new DocumentToSentencesFlatMapFunction());
 

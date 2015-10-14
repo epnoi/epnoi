@@ -36,14 +36,14 @@ public class DocumentRetrievalFlatMapFunction implements FlatMapFunction<String,
 
 	private Document _obtainAnnotatedContent(String URI) {
 
-		//Selector selector = new Selector();
-		//selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+		Selector selector = new Selector();
+		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
-		//selector.setProperty(SelectorHelper.URI, uri);
-
-		// Content<Object> content =
-		// core.getInformationHandler().getAnnotatedContent(selector);
-
+		selector.setProperty(SelectorHelper.URI, URI);
+/*
+	Content<Object> content =
+		core.getInformationHandler().getAnnotatedContent(selector);
+*/
 		// Document sectionAnnotatedContent = (Document) content.getContent();
 		Document annotatedDocument = new DocumentImpl();
 

@@ -8,6 +8,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.epnoi.model.modules.Core;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.core.CoreUtility;
 
@@ -23,39 +24,39 @@ import gate.corpora.DocumentStaxUtils;
 public class AnnotatedContentClient {
 
 	public static void main(String[] args) {
-		//Core core = CoreUtility.getUIACore();
+		// Core core = CoreUtility.getUIACore();
 
 		ClientConfig config = new DefaultClientConfig();
-	
+
 		Client client = Client.create(config);
 		String knowledgeBasePath = "/uia/annotatedcontent";
 
-		WebResource service = client
-				.resource("http://localhost:8080/epnoi/rest");
+		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
 		/*
-		service.path(knowledgeBasePath).queryParam("source", "dog")
-				.queryParam("target","animal")
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-				.get(Boolean.class);
+		 * service.path(knowledgeBasePath).queryParam("source", "dog")
+		 * .queryParam("target","animal")
+		 * .type(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.
+		 * core.MediaType.APPLICATION_JSON) .get(Boolean.class);
+		 * 
+		 */
+			//		  http://en.wikipedia.org/wiki/Autism/first/object/gate
+		String uri = "http://en.wikipedia.org/wiki/Autism/first/object/gate";
+		String content = service.path(knowledgeBasePath).queryParam("uri", uri)
+				.queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
+				.get(String.class);
 
-		*/
-		Document document = new DocumentImpl();
-		String content=service.path(knowledgeBasePath).type(javax.ws.rs.core.MediaType.APPLICATION_XML).get(String.class);
-	
-		
-		Reader reader = new StringReader(content);
-		XMLInputFactory factory = XMLInputFactory.newInstance(); // Or newFactory()
-		try {
-			XMLStreamReader xmlReader = factory.createXMLStreamReader(reader);
-			xmlReader.next();
-			DocumentStaxUtils.readGateXmlDocument(xmlReader, document);
-		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("STRING CONTENT > "+ content);
-		System.out.println("CONTENT > "+content);
+		/*
+		 * Reader reader = new StringReader(content); XMLInputFactory factory =
+		 * XMLInputFactory.newInstance(); // Or newFactory() try {
+		 * XMLStreamReader xmlReader = factory.createXMLStreamReader(reader);
+		 * xmlReader.next(); DocumentStaxUtils.readGateXmlDocument(xmlReader,
+		 * document); } catch (XMLStreamException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); } System.out.println(
+		 * "STRING CONTENT > "+ content); System.out.println("CONTENT > "
+		 * +content);
+		 */
+		Document document = GateUtils.deserializeGATEDocument(content);
 	}
 
 }

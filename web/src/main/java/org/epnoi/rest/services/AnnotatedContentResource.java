@@ -37,7 +37,7 @@ public class AnnotatedContentResource extends UIAService {
 	@PostConstruct
 	public void init() {
 		logger = Logger.getLogger(AnnotatedContentResource.class.getName());
-		logger.info("Initializing WikidataViewResource");
+		logger.info("Initializing the AnnotatedContentResource!!");
 		this.core = this.getUIACore();
 
 	}
@@ -49,10 +49,10 @@ public class AnnotatedContentResource extends UIAService {
 	@GET
 	@Produces({ MediaType.APPLICATION_XML })
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "The wikidata view has been retrieved"),
+			@ApiResponse(code = 200, message = "The annotated content has been retrieved"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
 			@ApiResponse(code = 404, message = "The UIA has not been initialized") })
-	@ApiOperation(value = "Returns the annotated content", notes = "", response = Document.class)
+	@ApiOperation(value = "Returns the annotated content associated with the URI", notes = "", response = Document.class)
 	
 	public Response getAnnotatedContent(
 			@ApiParam(value = "Annotated content uri", required = true, allowMultiple = false) @QueryParam("uri") String URI,

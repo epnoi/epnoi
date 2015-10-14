@@ -14,6 +14,7 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.omg.stub.java.rmi._Remote_Stub;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -73,7 +74,11 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 
 		WikipediaPage retrievedDomain = service.path(domainsPath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
+		System.out.println("-----> "+retrievedDomain);
 		return retrievedDomain;
 	}
-
+public static void main(String[] args) {
+	SectionsAnnotatedContentURIsFlatMapFunction eso = new SectionsAnnotatedContentURIsFlatMapFunction();
+	eso._retrieveWikipediaPage("http://en.wikipedia.org/wiki/Autism");
+}
 }

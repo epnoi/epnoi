@@ -45,18 +45,15 @@ public class ResourcesByTypeResource extends UIAService {
 	Map<String, Class<? extends Resource>> knownDeserializableClasses = new HashMap<>();
 
 	private static Map<String, String> resourceTypesTable = new HashMap<String, String>();
+
 	static {
 		resourceTypesTable.put("papers", RDFHelper.PAPER_CLASS);
 		resourceTypesTable.put("users", UserRDFHelper.USER_CLASS);
-		resourceTypesTable.put("informationsources",
-				InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
-		resourceTypesTable
-				.put("informationsourcesubscriptions",
-						InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
-		resourceTypesTable.put("researchobjects",
-				RDFHelper.RESEARCH_OBJECT_CLASS);
-		resourceTypesTable.put("annotations",
-				AnnotationRDFHelper.ANNOTATION_CLASS);
+		resourceTypesTable.put("informationsources", InformationSourceRDFHelper.INFORMATION_SOURCE_CLASS);
+		resourceTypesTable.put("informationsourcesubscriptions",
+				InformationSourceSubscriptionRDFHelper.INFORMATION_SOURCE_SUBSCRIPTION_CLASS);
+		resourceTypesTable.put("researchobjects", RDFHelper.RESEARCH_OBJECT_CLASS);
+		resourceTypesTable.put("annotations", AnnotationRDFHelper.ANNOTATION_CLASS);
 		resourceTypesTable.put("domains", RDFHelper.DOMAIN_CLASS);
 		resourceTypesTable.put("wikipediapages", RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
@@ -79,11 +76,9 @@ public class ResourcesByTypeResource extends UIAService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Path("/{RESOURCE_TYPE}/resource")
 	@ApiOperation(value = "Update a resource of a given type", notes = "")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "The resource has been updated"),
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "The resource has been updated"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
-	public Response updateResource(
-			Resource resource,
+	public Response updateResource(Resource resource,
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("POST: UIA " + resource);
 
@@ -97,16 +92,13 @@ public class ResourcesByTypeResource extends UIAService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Path("/{RESOURCE_TYPE}/resource")
 	@ApiOperation(value = "Creates a resource of a given type", notes = "")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "The resource has been created"),
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "The resource has been created"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA") })
-	public Response createResource(
-			Resource resource,
+	public Response createResource(Resource resource,
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("PUT: UIA " + resource);
 
-		this.getUIACore().getInformationHandler()
-				.put(resource, org.epnoi.model.Context.getEmptyContext());
+		this.getUIACore().getInformationHandler().put(resource, org.epnoi.model.Context.getEmptyContext());
 		return Response.ok().build();
 	}
 
@@ -116,8 +108,7 @@ public class ResourcesByTypeResource extends UIAService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{RESOURCE_TYPE}/resource")
 	// @Consumes(MediaType.APPLICATION_JSON)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "The resource has been retrieved"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource has been retrieved"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
 			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
 	@ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
@@ -126,25 +117,21 @@ public class ResourcesByTypeResource extends UIAService {
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 		logger.info("GET: UIA uri> " + URI + " reourceType > " + resourceType);
 
-		String resourceClass = ResourcesByTypeResource.resourceTypesTable
-				.get(resourceType);
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable.get(resourceType);
+
 		if ((URI != null) && (resourceClass != null)) {
 
 			this.core = this.getUIACore();
-			System.out.println("Getting the resource "
-					+ ResourcesByTypeResource.resourceTypesTable
-							.get(resourceType));
+			System.out.println("Getting the resource " + ResourcesByTypeResource.resourceTypesTable.get(resourceType));
 			Resource resource = null;
 			try {
-				resource = this.core.getInformationHandler().get(URI,
-						resourceClass);
+				resource = this.core.getInformationHandler().get(URI, resourceClass);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 
 			if (resource != null) {
-				return Response.ok(resource, MediaType.APPLICATION_JSON)
-						.build();
+				return Response.ok(resource, MediaType.APPLICATION_JSON).build();
 			}
 		}
 		return Response.status(Responses.NOT_FOUND).build();
@@ -156,27 +143,23 @@ public class ResourcesByTypeResource extends UIAService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{RESOURCE_TYPE}")
 	// @Consumes(MediaType.APPLICATION_JSON)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "The resource has been retrieved"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource has been retrieved"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
 			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
 	@ApiOperation(value = "Returns the resource with the provided URI", notes = "List", response = String.class)
 	public Response getAllResources(
 
-			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
+	@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
 
-		String resourceClass = ResourcesByTypeResource.resourceTypesTable
-				.get(resourceType);
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable.get(resourceType);
 		if ((resourceClass != null)) {
 
 			this.core = this.getUIACore();
 
-			List<String> resource = this.core.getInformationHandler().getAll(
-					resourceClass);
+			List<String> resource = this.core.getInformationHandler().getAll(resourceClass);
 
 			if (resource != null) {
-				return Response.ok(resource, MediaType.APPLICATION_JSON)
-						.build();
+				return Response.ok(resource, MediaType.APPLICATION_JSON).build();
 			}
 		}
 		return Response.status(Responses.NOT_FOUND).build();
@@ -188,17 +171,14 @@ public class ResourcesByTypeResource extends UIAService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Path("/{RESOURCE_TYPE}/resource")
 	@ApiOperation(value = "Removes a resource", notes = "")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "The resource with such URI has been deleted"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource with such URI has been deleted"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
 			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
 	public Response deleteResource(
 			@ApiParam(value = "Resource URI", required = true, allowMultiple = false) @QueryParam("uri") String URI,
 			@ApiParam(value = "Resource type", required = true, allowMultiple = false, allowableValues = "papers,domains,users,informationsources,informationsourcesubscriptions,researchobjects,annotations,wikipediapages") @PathParam("RESOURCE_TYPE") String resourceType) {
-		logger.info("DELETE: UIA uri> " + URI + " reourceType > "
-				+ resourceType);
-		String resourceClass = ResourcesByTypeResource.resourceTypesTable
-				.get(resourceType);
+		logger.info("DELETE: UIA uri> " + URI + " reourceType > " + resourceType);
+		String resourceClass = ResourcesByTypeResource.resourceTypesTable.get(resourceType);
 		if ((URI != null) && (resourceClass != null)) {
 			this.core.getInformationHandler().remove(URI, resourceClass);
 			return Response.ok().build();
