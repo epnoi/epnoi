@@ -6,6 +6,10 @@
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
 		<numberOfProcessors>10</numberOfProcessors>
 	</nlp>
+
+	<eventBus>
+		<uri>amqp://guest:guest@eventBus:5672/drinventor</uri>
+	</eventBus>
 	
 	<knowledgeBase>
 		<lazy>true</lazy>

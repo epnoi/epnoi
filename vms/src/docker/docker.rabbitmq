@@ -1,3 +1,3 @@
 # Management Plugin: http://eventbus.server:15672
 # default user and password: guest / guest
-docker run -it --rm --hostname eventbus --name rabbit1 -p 15672:15672 -e RABBITMQ_DEFAULT_VHOST=drinventor rabbitmq:3-management
+docker run -it --rm --hostname eventbus --name rabbit1 -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_VHOST=drinventor rabbitmq:3-management

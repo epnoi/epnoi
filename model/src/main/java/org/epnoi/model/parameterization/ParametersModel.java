@@ -10,7 +10,7 @@ public class ParametersModel {
 	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_LOAD ="load";
 	
 	public static final String KNOWLEDGEBASE_WIKIDATA_MODE_CREATE ="create";
-	
+
 	// Server related properties
 	private String hostname;
 	private String port;
@@ -19,6 +19,7 @@ public class ParametersModel {
 	//private String gatePath;
 	private NLPParameters nlp;
 	private KnowledgeBaseParameters knowledgeBase;
+	private EventBusParameters eventBus;
 
 	private ArrayList<VirtuosoInformationStoreParameters> virtuosoInformationStores;
 	private ArrayList<SOLRInformationStoreParameters> solrInformationStores;
@@ -69,7 +70,17 @@ public class ParametersModel {
 		 */
 	}
 
-	
+	// ---------------------------------------------------------------------------------
+
+	public EventBusParameters getEventBus() {
+		return eventBus;
+	}
+
+	// ---------------------------------------------------------------------------------
+
+	public void setEventBus(EventBusParameters eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	// ---------------------------------------------------------------------------------
 
