@@ -37,7 +37,7 @@ public class ExternalEventBusTest {
     @Test
     public void OneToOneCommunication() throws InterruptedException, IOException {
 
-        AtomicInteger received = new AtomicInteger(0);
+        final AtomicInteger received = new AtomicInteger(0);
 
         this.eventBus.subscribe(new EventBusSubscriber() {
             @Override
@@ -73,7 +73,7 @@ public class ExternalEventBusTest {
     @Test
     public void OneToMoreExclusiveCommunication() throws InterruptedException, IOException {
 
-        AtomicInteger received = new AtomicInteger(0);
+        final AtomicInteger received = new AtomicInteger(0);
 
         this.eventBus.subscribe(new EventBusSubscriber() {
             @Override
@@ -126,7 +126,7 @@ public class ExternalEventBusTest {
     @Test
     public void OneToMoreBroadcastCommunication() throws InterruptedException, IOException {
 
-        AtomicInteger received = new AtomicInteger(0);
+        final AtomicInteger received = new AtomicInteger(0);
 
         this.eventBus.subscribe(new EventBusSubscriber() {
             @Override
@@ -180,7 +180,7 @@ public class ExternalEventBusTest {
     @Test
     public void OneToOneNonPersistentCommunication() throws InterruptedException, IOException {
 
-        AtomicInteger received = new AtomicInteger(0);
+        final AtomicInteger received = new AtomicInteger(0);
 
         this.eventBus.publish(new EventBusPublisher() {
             @Override

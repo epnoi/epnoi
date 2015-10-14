@@ -39,7 +39,7 @@ public class InternalEventBusTest {
 
         System.out.println("Starting the bus test");
 
-        AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger counter = new AtomicInteger(0);
 
         EventBusPublisher publisher = new EventBusPublisher() {
             @Override
