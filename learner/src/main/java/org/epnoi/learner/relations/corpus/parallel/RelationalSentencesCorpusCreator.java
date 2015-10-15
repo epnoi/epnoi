@@ -94,44 +94,43 @@ public class RelationalSentencesCorpusCreator {
 
 	private List<RelationalSentence> _createCorpus(List<String> URIs) {
 		List<RelationalSentence> relationalSentence = new ArrayList<>();
-		
-		SparkConf sparkConf= new SparkConf().setMaster("local[4]").setAppName(JOB_NAME);
-	
+
+		SparkConf sparkConf = new SparkConf().setMaster("local[4]").setAppName(JOB_NAME);
+
 		JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
-		
-		
-	
-		
+
 		// First we must create the RDD with the URIs of the resources to be
 		// included in the creation of the corpus
 		JavaRDD<String> corpusURIs = sparkContext.parallelize(URIs);
 
-		
 		System.out.println("init!!!!!");
 		// THen we obtain the URIs of the annotated content documents that are
 		// stored at the UIA
-		
+
 		JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new SectionsAnnotatedContentURIsFlatMapFunction());
 
-		System.out.println("..> "+annotatedContentURIs.collect());
-		
+		System.out.println("..> " + annotatedContentURIs.collect());
+
 		JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
-		
-		System.out.println("..> "+annotatedDocuments.collect());
-/*
-		JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
-				.flatMap(new DocumentToSentencesFlatMapFunction());
-
-		JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates = annotatedDocumentsSentences
-				.flatMap(new RelationalSentenceCandidateFlatMapFunction());
-
-		JavaRDD<RelationalSentence> relationalSentences = relationalSentencesCandidates
-				.flatMap(new RelationalSentenceFlatMapFunction());
-
-		System.out.println("relational sentences --> "
-				+relationalSentences.collect());
-*/
+		for (Document document : annotatedDocuments.collect()) {
+			System.out.println("-------> "+document.getContent());
+		}
+		/*
+		 * JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
+		 * .flatMap(new DocumentToSentencesFlatMapFunction());
+		 * 
+		 * JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
+		 * annotatedDocumentsSentences .flatMap(new
+		 * RelationalSentenceCandidateFlatMapFunction());
+		 * 
+		 * JavaRDD<RelationalSentence> relationalSentences =
+		 * relationalSentencesCandidates .flatMap(new
+		 * RelationalSentenceFlatMapFunction());
+		 * 
+		 * System.out.println("relational sentences --> "
+		 * +relationalSentences.collect());
+		 */
 		return relationalSentence;
 	}
 

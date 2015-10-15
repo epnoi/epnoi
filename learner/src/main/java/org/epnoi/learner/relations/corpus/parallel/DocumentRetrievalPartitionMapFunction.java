@@ -43,7 +43,9 @@ public class DocumentRetrievalPartitionMapFunction implements FlatMapFunction<It
 
 		List<Document> sectionsAnnotatedContent = new ArrayList<Document>();
 		for (String uri : sectionsAnnotatedContentURIs) {
+			
 			selector.setProperty(SelectorHelper.URI, uri);
+			
 			Content<Object> content = core.getInformationHandler().getAnnotatedContent(selector);
 			Document sectionAnnotatedContent = (Document) content.getContent();
 

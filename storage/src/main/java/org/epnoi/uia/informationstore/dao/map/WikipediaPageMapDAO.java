@@ -24,7 +24,7 @@ public class WikipediaPageMapDAO extends MapDAO {
 			Content<Object> annotatedContent) {
 
 		
-	//System.out.println(">> "+clonedAnnotatedContent);
+	//System.out.println(selector+" >> "+annotatedContent);
 		map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
 				annotatedContent);
 		// System.out.println(">> "+map.keySet());

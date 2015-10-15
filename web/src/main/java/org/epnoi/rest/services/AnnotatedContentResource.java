@@ -57,17 +57,16 @@ public class AnnotatedContentResource extends UIAService {
 	public Response getAnnotatedContent(
 			@ApiParam(value = "Annotated content uri", required = true, allowMultiple = false) @QueryParam("uri") String URI,
 			@ApiParam(value = "Annotated content type", required = true, allowMultiple = false) @QueryParam("type") String type) {
-		logger.info("GET: ");
+		logger.info("GET: "+URI);
 
 
 		Document annotatedDocument=null;
 		try {
 			Selector selector = new Selector();
-			selector.setProperty(SelectorHelper.URI, URI);
+			selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI);
 			selector.setProperty(SelectorHelper.TYPE, type);
 			Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
 			annotatedDocument = (Document) content.getContent();
-			annotatedDocument = (Document)content.getContent();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

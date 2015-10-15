@@ -28,11 +28,6 @@ public abstract class MapDAO implements DAO {
 
 	public synchronized void init(MapInformationStoreParameters parameters) {
 		if (!initialized) {
-			/*
-			 * System.out .println(
-			 * "Initializing-------------------------------------------------------------"
-			 * );
-			 */
 			databaseFile = new File(parameters.getPath());
 			database = DBMaker.newFileDB(databaseFile).cacheDisable().compressionEnable().transactionDisable().closeOnJvmShutdown().make();
 

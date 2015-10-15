@@ -7,9 +7,11 @@ import java.util.List;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
+import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Selector;
 import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
@@ -64,7 +66,7 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 	// --------------------------------------------------------------------------------------------------------------------
 
 	private WikipediaPage _retrieveWikipediaPage(String wikipediaPageURI) {
-		String domainsPath = "/uia/resources/bytype/wikipediapages/resource";
+		String wikipediaPagePath = "/uia/resources/bytype/wikipediapages/resource";
 
 		ClientConfig config = new DefaultClientConfig();
 
@@ -72,13 +74,11 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		WikipediaPage retrievedDomain = service.path(domainsPath).queryParam("uri", wikipediaPageURI)
+		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
-		System.out.println("-----> "+retrievedDomain);
-		return retrievedDomain;
+		
+		return retrievedWikipediaPage;
 	}
-public static void main(String[] args) {
-	SectionsAnnotatedContentURIsFlatMapFunction eso = new SectionsAnnotatedContentURIsFlatMapFunction();
-	eso._retrieveWikipediaPage("http://en.wikipedia.org/wiki/Autism");
-}
+
+
 }

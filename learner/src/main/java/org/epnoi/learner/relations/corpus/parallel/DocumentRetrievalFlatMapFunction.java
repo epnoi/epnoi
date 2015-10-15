@@ -1,30 +1,26 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Selector;
-import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.SelectorHelper;
+import org.epnoi.uia.commons.GateUtils;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import gate.Document;
-import gate.corpora.DocumentImpl;
-import scala.util.parsing.ast.Binders.ReturnAndDo;
 
 public class DocumentRetrievalFlatMapFunction implements FlatMapFunction<String, Document> {
 
 	@Override
-	public Iterable<Document> call(String URI) throws Exception {
+	public Iterable<Document> call(String uri) throws Exception {
 		List<Document> sectionsAnnotatedContent = new ArrayList<>();
 
-		Document annotatedContent = _obtainAnnotatedContent(URI);
+		Document annotatedContent = _obtainAnnotatedContent(uri);
 
 		if (annotatedContent != null) {
 			sectionsAnnotatedContent.add(annotatedContent);
@@ -34,20 +30,25 @@ public class DocumentRetrievalFlatMapFunction implements FlatMapFunction<String,
 
 	// --------------------------------------------------------------------------------------------------------------------
 
-	private Document _obtainAnnotatedContent(String URI) {
+	private Document _obtainAnnotatedContent(String uri) {
 
-		Selector selector = new Selector();
-		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+		ClientConfig config = new DefaultClientConfig();
 
-		selector.setProperty(SelectorHelper.URI, URI);
-/*
-	Content<Object> content =
-		core.getInformationHandler().getAnnotatedContent(selector);
-*/
-		// Document sectionAnnotatedContent = (Document) content.getContent();
-		Document annotatedDocument = new DocumentImpl();
+		Client client = Client.create(config);
+		String knowledgeBasePath = "/uia/annotatedcontent";
+		Document document = null;
+		try {
+			WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		return annotatedDocument;
+			String content = service.path(knowledgeBasePath).queryParam("uri", uri)
+					.queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
+					.get(String.class);
+
+			document = GateUtils.deserializeGATEDocument(content);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return document;
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------
