@@ -64,7 +64,7 @@ public class KnowledgeBaseResource extends UIAService {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("/{RELATION_TYPE}")
+	@Path("relations/{RELATION_TYPE}")
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource has been retrieved"),
 			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
@@ -96,6 +96,74 @@ public class KnowledgeBaseResource extends UIAService {
 	}
 
 	// --------------------------------------------------------------------------------
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("relations/{RELATION_TYPE}/targets")
+	// @Consumes(MediaType.APPLICATION_JSON)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
+	@ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
+	public Response getResource(
+			@ApiParam(value = "Surface form of the source term of the relation", required = true, allowMultiple = false) @QueryParam("source") String source,
+			@ApiParam(value = "Relation type", required = true, allowMultiple = false, allowableValues = "hypernymy,mereology") @PathParam("RELATION_TYPE") String type) {
 
+		logger.info("GET:> source=" + source);
+		if ((source != null) && validRelationTypes.contains(type)) {
+
+			type = resourceTypesTable.get(type);
+			try {
+				logger.info("As the parameters seemed ok");
+				Set<String> targets = core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source);
+
+				return Response.ok().entity(targets).build();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				logger.severe(exception.getMessage());
+				return Response.serverError().build();
+			}
+
+		} else {
+			return Response.status(400).build();
+		}
+	}
+
+	// --------------------------------------------------------------------------------
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("stem")
+	
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "The resource has been retrieved"),
+			@ApiResponse(code = 500, message = "Something went wrong in the UIA"),
+			@ApiResponse(code = 404, message = "A resource with such URI could not be found") })
+	@ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
+	public Response getResource(
+			@ApiParam(value = "Surface form of the term to be stemmed", required = true, allowMultiple = false) @QueryParam("term") String term) {
+
+		logger.info("GET:> source=" + term);
+		if (term != null) {
+
+			
+			try {
+				logger.info("As the parameters seemed ok");
+				Set<String> stemmedTerms = core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term);
+
+				return Response.ok().entity(stemmedTerms).build();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				logger.severe(exception.getMessage());
+				return Response.serverError().build();
+			}
+
+		} else {
+			return Response.status(400).build();
+		}
+	}
+
+	// --------------------------------------------------------------------------------
+	
+	
 	
 }

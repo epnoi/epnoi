@@ -1,12 +1,15 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+import java.io.Serializable;
+
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.DocumentContent;
 
-public class Sentence {
+public class Sentence implements Serializable{
 
 
+//	private static final long serialVersionUID = -6111034337396255936L;
 	private DocumentContent content;
 	private Annotation annotation;
 	private AnnotationSet containedAnnotations;

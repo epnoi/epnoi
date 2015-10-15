@@ -95,7 +95,7 @@ public class RelationalSentencesCorpusCreator {
 	private List<RelationalSentence> _createCorpus(List<String> URIs) {
 		List<RelationalSentence> relationalSentence = new ArrayList<>();
 
-		SparkConf sparkConf = new SparkConf().setMaster("local[4]").setAppName(JOB_NAME);
+		SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
 
 		JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
@@ -113,17 +113,20 @@ public class RelationalSentencesCorpusCreator {
 
 		JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
-		for (Document document : annotatedDocuments.collect()) {
-			System.out.println("-------> "+document.getContent());
-		}
+		
+
+		JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
+				.flatMap(new DocumentToSentencesFlatMapFunction());
 		/*
-		 * JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
-		 * .flatMap(new DocumentToSentencesFlatMapFunction());
-		 * 
-		 * JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
-		 * annotatedDocumentsSentences .flatMap(new
-		 * RelationalSentenceCandidateFlatMapFunction());
-		 * 
+		for (Sentence sentence : annotatedDocumentsSentences.collect()) {
+			System.out.println("-------> " + sentence);
+		}
+*/
+		
+		 JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
+		  annotatedDocumentsSentences .flatMap(new
+		 RelationalSentenceCandidateFlatMapFunction());
+		/* 
 		 * JavaRDD<RelationalSentence> relationalSentences =
 		 * relationalSentencesCandidates .flatMap(new
 		 * RelationalSentenceFlatMapFunction());

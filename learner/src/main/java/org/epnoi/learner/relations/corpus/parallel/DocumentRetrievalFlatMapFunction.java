@@ -47,7 +47,11 @@ public class DocumentRetrievalFlatMapFunction implements FlatMapFunction<String,
 			document = GateUtils.deserializeGATEDocument(content);
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			
 		}
+		
+		//System.out.println("___> "+document);
 		return document;
 	}
 

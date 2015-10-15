@@ -1,15 +1,14 @@
 package org.epnoi.knowledgebase;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.epnoi.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
 
 public class KnolwedgeBaseImpl implements KnowledgeBase {
@@ -31,8 +30,12 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#init(org.epnoi.uia.knowledgebase.KnowledgeBaseParameters)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#init(org.epnoi.uia.
+	 * knowledgebase.KnowledgeBaseParameters)
 	 */
 	@Override
 	public void init(KnowledgeBaseParameters parameters) {
@@ -43,28 +46,38 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelated(java.lang.String, java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelated(java.lang.
+	 * String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean areRelated(String source, String target, String type) {
+		System.out.println("Wordnet "+this.considerWordNet +" Wikidata "+this.considerWikidata);
 		if (RelationHelper.HYPERNYM.equals(type) && (source.length() > 0) && (target.length() > 0)) {
-
+			boolean areRelatedInWikidata = false;
 			if (this.considerWikidata) {
-				return (areRelatedInWikidata(source, target));
+				areRelatedInWikidata = (areRelatedInWikidata(source, target));
 			}
-
+			boolean areRelatedInWordNet = false;
 			if (this.considerWordNet) {
-				return (areRelatedInWordNet(source, target));
+				areRelatedInWordNet = (areRelatedInWordNet(source, target));
 			}
+			return (areRelatedInWikidata || areRelatedInWordNet);
 		}
 		return false;
 	}
 
 	// -----------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWordNet(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWordNet(
+	 * java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean areRelatedInWordNet(String source, String target) {
@@ -73,16 +86,22 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		stemmedSource = (stemmedSource == null) ? stemmedSource = source : stemmedSource;
 		String stemmedTarget = this.wordNetHandler.stemNoun(target);
 		stemmedTarget = (stemmedTarget == null) ? stemmedTarget = source : stemmedTarget;
-
+		System.out.println(">> stemmedSource " + stemmedSource);
 		Set<String> sourceHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
+		System.out.println(">> stemmedSourceHypernyms " + sourceHypernyms);
+
 		return (sourceHypernyms != null && sourceHypernyms.contains(stemmedTarget));
 
 	}
 
 	// -----------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWikidata(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWikidata(
+	 * java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean areRelatedInWikidata(String source, String target) {
@@ -108,8 +127,12 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 	}
 
 	// -----------------------------------------------------------------------------------------------
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#getHypernyms(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#getHypernyms(java.lang
+	 * .String)
 	 */
 	@Override
 	public Set<String> getHypernyms(String source) {
@@ -118,11 +141,12 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		if (this.considerWikidata) {
 
 			Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYM);
-
+			
 			hypernyms.addAll(wikidataHypernyms);
 		}
 		if (this.considerWordNet) {
-			Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(source);
+			String stemmedSource = this.wordNetHandler.stemNoun(source);
+			Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
 			hypernyms.addAll(wordNetHypernyms);
 		}
 		return hypernyms;
@@ -130,8 +154,11 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#stem(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#stem(java.lang.String)
 	 */
 	@Override
 	public Set<String> stem(String term) {
@@ -148,83 +175,90 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		}
 		return stemmedTerm;
 	}
-	
+
 	/*
-
+	 * 
+	 * //
+	 * -------------------------------------------------------------------------
+	 * ----------------------
+	 * 
+	 * @Override public WordNetHandler getWordNetHandler() { return
+	 * wordNetHandler; }
+	 * 
+	 * //
+	 * -------------------------------------------------------------------------
+	 * ----------------------
+	 * 
+	 * @Override public void setWordNetHandler(WordNetHandler wordNetHandler) {
+	 * this.wordNetHandler = wordNetHandler; }
+	 * 
+	 * //
+	 * -------------------------------------------------------------------------
+	 * ----------------------
+	 * 
+	 * @Override public WikidataHandler getWikidataHandler() { return
+	 * wikidataHandler; }
+	 * 
+	 * //
+	 * -------------------------------------------------------------------------
+	 * ----------------------
+	 * 
+	 * @Override public void setWikidataHandler(WikidataHandler wikidataHandler)
+	 * { this.wikidataHandler = wikidataHandler; }
+	 */
 	// -----------------------------------------------------------------------------------------------
-
-	@Override
-	public WordNetHandler getWordNetHandler() {
-		return wordNetHandler;
-	}
-
-	// -----------------------------------------------------------------------------------------------
-
-	@Override
-	public void setWordNetHandler(WordNetHandler wordNetHandler) {
-		this.wordNetHandler = wordNetHandler;
-	}
-
-	// -----------------------------------------------------------------------------------------------
-
-	@Override
-	public WikidataHandler getWikidataHandler() {
-		return wikidataHandler;
-	}
-
-	// -----------------------------------------------------------------------------------------------
+	/*
+	 * FOR_TEST public static void main(String[] args) {
+	 * 
+	 * Core core = CoreUtility.getUIACore();
+	 * 
+	 * try { KnowledgeBase knowledgeBase=null; try { knowledgeBase =
+	 * core.getKnowledgeBaseHandler().getKnowledgeBase(); } catch
+	 * (EpnoiResourceAccessException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * System.out.println("100> " + knowledgeBase.getWikidataHandler()
+	 * .getRelated(knowledgeBase.getWikidataHandler().stem("madrid"),
+	 * RelationHelper.HYPERNYM));
+	 * 
+	 * } catch (EpnoiInitializationException e) {
+	 * 
+	 * e.printStackTrace(); }
+	 */
+	/*
+	 * 
+	 * CassandraInformationStore cis = ((CassandraInformationStore) core
+	 * .getInformationStoresByType(InformationStoreHelper.
+	 * CASSANDRA_INFORMATION_STORE).get(0)); cis.getQueryResolver().getWith(
+	 * "http://www.epnoi.org/wikidataView/relations/"+RelationHelper. HYPERNYM,
+	 * "WikidataViewCorpus", "Q2807");
+	 */
+	/*
+	 * CassandraInformationStore cis = ((CassandraInformationStore) core
+	 * .getInformationStoresByType(InformationStoreHelper.
+	 * CASSANDRA_INFORMATION_STORE).get(0));
+	 * 
+	 * System.out.println(cis.getQueryResolver().getValues(
+	 * "http://www.epnoi.org/wikidataView/relations/" + RelationHelper.HYPERNYM,
+	 * "Q2807", WikidataViewCassandraHelper.COLUMN_FAMILY));
+	 * System.out.println(cis.getQueryResolver().getValues(
+	 * "http://www.epnoi.org/wikidataView/reverseDictionary", "Q2807",
+	 * WikidataViewCassandraHelper.COLUMN_FAMILY));
+	 * 
+	 */
+	// }
 	
-	@Override
-	public void setWikidataHandler(WikidataHandler wikidataHandler) {
-		this.wikidataHandler = wikidataHandler;
-	}
- */
-	// -----------------------------------------------------------------------------------------------
-/*
- FOR_TEST
 	public static void main(String[] args) {
-
-		Core core = CoreUtility.getUIACore();
-
-		try {
-			KnowledgeBase knowledgeBase=null;
-			try {
-				knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
-			} catch (EpnoiResourceAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			System.out.println("100> " + knowledgeBase.getWikidataHandler()
-					.getRelated(knowledgeBase.getWikidataHandler().stem("madrid"), RelationHelper.HYPERNYM));
+		Set<String> aset = new HashSet<String>();
+		aset.add("algo");
+		System.out.println(aset);
+		aset.add("algo");
+		System.out.println(aset);
+		List<String> alist = Arrays.asList("algo","otro");
+		aset.addAll(alist);
 		
-		} catch (EpnoiInitializationException e) {
-
-			e.printStackTrace();
-		}
-*/		
-		/*
-		 * 
-		 * CassandraInformationStore cis = ((CassandraInformationStore) core
-		 * .getInformationStoresByType(InformationStoreHelper.
-		 * CASSANDRA_INFORMATION_STORE).get(0)); cis.getQueryResolver().getWith(
-		 * "http://www.epnoi.org/wikidataView/relations/"+RelationHelper.
-		 * HYPERNYM, "WikidataViewCorpus", "Q2807");
-		 */
-		/*
-		 * CassandraInformationStore cis = ((CassandraInformationStore) core
-		 * .getInformationStoresByType(InformationStoreHelper.
-		 * CASSANDRA_INFORMATION_STORE).get(0));
-		 * 
-		 * System.out.println(cis.getQueryResolver().getValues(
-		 * "http://www.epnoi.org/wikidataView/relations/" +
-		 * RelationHelper.HYPERNYM, "Q2807",
-		 * WikidataViewCassandraHelper.COLUMN_FAMILY));
-		 * System.out.println(cis.getQueryResolver().getValues(
-		 * "http://www.epnoi.org/wikidataView/reverseDictionary", "Q2807",
-		 * WikidataViewCassandraHelper.COLUMN_FAMILY));
-		 * 
-		 */
-	//}
+		System.out.println(aset);
+		
+	}
 
 }
