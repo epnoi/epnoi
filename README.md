@@ -9,7 +9,7 @@ This work is funded by the EC-funded project DrInventor ([www.drinventor.eu](www
 ## Quick Navigation  
 
 ![question](https://dl.dropboxusercontent.com/u/299257/epnoi/images/question.png)    | about epnoi  
----- | ----
+---- | :----:
 ![tools](https://dl.dropboxusercontent.com/u/299257/epnoi/images/tools.png)          | setup guide  
 ![server](https://dl.dropboxusercontent.com/u/299257/epnoi/images/servers.png)       | technical documentation    
 ![server](https://dl.dropboxusercontent.com/u/299257/epnoi/images/productivity.png)  | learning algorithms  
