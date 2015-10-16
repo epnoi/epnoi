@@ -20,12 +20,16 @@ public class KnowledgeBaseClient {
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
 		Boolean areRelated = service.path(knowledgeBasePath+"/relations/hypernymy").queryParam("source", "cat").queryParam("target", "feline")
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
 				.get(Boolean.class);
 		System.out.println("Are related? " + areRelated);
 
 		System.out.println("Checking the stemmer");
 		System.out.println(service.path(knowledgeBasePath + "/stem").queryParam("term", "catty").get(Set.class));
+		System.out.println("Testing the hypernyms!");
+		System.out.println(service.path(knowledgeBasePath+"/relations/hypernymy/targets").queryParam("source", "cat")
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+				.get(Set.class));
 	}
 
 }

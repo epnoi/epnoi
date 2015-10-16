@@ -117,7 +117,7 @@ public class RelationalSentencesCorpusCreator {
 
 		JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
 				.flatMap(new DocumentToSentencesFlatMapFunction());
-		/*
+	/*	
 		for (Sentence sentence : annotatedDocumentsSentences.collect()) {
 			System.out.println("-------> " + sentence);
 		}
@@ -126,6 +126,8 @@ public class RelationalSentencesCorpusCreator {
 		 JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
 		  annotatedDocumentsSentences .flatMap(new
 		 RelationalSentenceCandidateFlatMapFunction());
+		 
+		 relationalSentencesCandidates.collect();
 		/* 
 		 * JavaRDD<RelationalSentence> relationalSentences =
 		 * relationalSentencesCandidates .flatMap(new
