@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import com.sun.jersey.api.client.Client;
@@ -31,12 +32,13 @@ public class RelationalSentenceCandidateFlatMapFunction
 	@Override
 	public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
 		List<RelationalSentenceCandidate> relationalSentencesCandidate = new ArrayList<>();
-		//System.out.println(currentSentence);
+		// System.out.println(currentSentence);
 		_testSentence(currentSentence);
 		return relationalSentencesCandidate;
 	}
 
-	private void _testSentence(Sentence sentence) {
+	private List<RelationalSentenceCandidate> _testSentence(Sentence sentence) {
+		List<RelationalSentenceCandidate> relationalSentencesCandidates = new ArrayList<>();
 		Long sentenceStartOffset = sentence.getAnnotation().getStartNode().getOffset();
 		Long sentenceEndOffset = sentence.getAnnotation().getEndNode().getOffset();
 
@@ -44,15 +46,21 @@ public class RelationalSentenceCandidateFlatMapFunction
 		// This table stores the string representation of each sentence terms
 		// and their corresponding annotation
 		Map<String, Annotation> termsAnnotationsTable = _initTermsAnnotationsTable(sentence, sentenceTerms);
-
+		// System.out.println("ternsAbb"+termsAnnotationsTable);
 		Iterator<String> termsIt = sentenceTerms.iterator();
 		boolean found = false;
-		while (termsIt.hasNext() && !found) {
+		while (termsIt.hasNext()) {
 			String term = termsIt.next();
-			if (term != null && term.length() > 0) {
+			if (term != null && term.length() > MIN_TERM_LENGTH) {
 				// For each term we retrieve its well-known hypernyms
 
 				Set<String> termHypernyms = _retrieveHypernyms(term);
+				/*
+				 * System.out.println("term> "+ term); System.out.println(
+				 * "term hypernyms> "+termHypernyms); System.out.println(
+				 * "sentence terms> "+sentenceTerms); System.out.println(
+				 * "Sentence content "+sentence.getContent());
+				 */
 				termHypernyms.retainAll(sentenceTerms);
 				// termHypernyms.removeAll(this.knowledgeBase.stem(term));
 
@@ -62,19 +70,18 @@ public class RelationalSentenceCandidateFlatMapFunction
 
 					System.out.println("FOUND SENTENCE BETWEEN " + sentenceStartOffset + "," + sentenceEndOffset
 							+ " when testing for the term " + sentenceTerms);
-					/*
-					 * ESTAS AQUI CREANDO
-					 * _createRelationalSentence(sentenceContent,
-					 * sentenceStartOffset, termsAnnotationsTable, term,
-					 * termHypernyms);
-					 */
-					found = true;
+					System.out.println(">> " + sentence.getContent());
+
+					List<RelationalSentenceCandidate> candidates = _createRelationalSentence(sentence,
+							termsAnnotationsTable, term, termHypernyms);
+
+					relationalSentencesCandidates.addAll(candidates);
 
 				}
 			}
 
 		}
-
+		return relationalSentencesCandidates;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -91,7 +98,7 @@ public class RelationalSentenceCandidateFlatMapFunction
 				.queryParam("source", term).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
 		return hypernyms;
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------------------------
 
 	private Set<String> _stem(String term) {
@@ -102,9 +109,9 @@ public class RelationalSentenceCandidateFlatMapFunction
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		Set<String> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
-				.queryParam("source", term).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
-		return hypernyms;
+		Set<String> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParam("term", term)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
+		return stemmedForms;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -156,7 +163,23 @@ public class RelationalSentenceCandidateFlatMapFunction
 		}
 
 	}
+	// ----------------------------------------------------------------------------------------------------------------------
 
+	private List<RelationalSentenceCandidate> _createRelationalSentence(Sentence sentence,
+			Map<String, Annotation> termsAnnotationsTable, String term, Set<String> termHypernyms) {
+		List<RelationalSentenceCandidate> relationalSentenceCandidates = new ArrayList<>();
+		Annotation sourceTermAnnotation = termsAnnotationsTable.get(term);
+
+		for (String destinationTerm : termHypernyms) {
+
+			Annotation targetTermAnnotation = termsAnnotationsTable.get(destinationTerm);
+
+			RelationalSentenceCandidate relationalSentenceCandidate = new RelationalSentenceCandidate(sentence,
+					sourceTermAnnotation, targetTermAnnotation);
+			relationalSentenceCandidates.add(relationalSentenceCandidate);
+		}
+		return relationalSentenceCandidates;
+	}
 	// ----------------------------------------------------------------------------------------------------------------------
 
 }

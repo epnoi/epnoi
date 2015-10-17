@@ -1,30 +1,17 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Selector;
 import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.SelectorHelper;
-import org.omg.stub.java.rmi._Remote_Stub;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-
-import gate.Document;
 
 public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunction<String, String> {
 
@@ -41,7 +28,8 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 			e.printStackTrace();
 		}
 
-		return sectionsAnnotatedContentURIs;
+		
+		return Arrays.asList(sectionsAnnotatedContentURIs.get(0));
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------

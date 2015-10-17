@@ -127,15 +127,13 @@ public class RelationalSentencesCorpusCreator {
 		  annotatedDocumentsSentences .flatMap(new
 		 RelationalSentenceCandidateFlatMapFunction());
 		 
-		 relationalSentencesCandidates.collect();
-		/* 
-		 * JavaRDD<RelationalSentence> relationalSentences =
-		 * relationalSentencesCandidates .flatMap(new
-		 * RelationalSentenceFlatMapFunction());
-		 * 
-		 * System.out.println("relational sentences --> "
-		 * +relationalSentences.collect());
-		 */
+		 //relationalSentencesCandidates.collect();
+		
+		  JavaRDD<RelationalSentence> relationalSentences =
+		  relationalSentencesCandidates.map(new
+		  RelationalSentenceMapFunction());
+		  
+		 
 		return relationalSentence;
 	}
 
