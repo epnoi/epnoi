@@ -10,7 +10,7 @@
 	<knowledgeBase>
 		<lazy>true</lazy>
 		<wordnet>
-			<considered>false</considered>
+			<considered>true</considered>
 			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
 		</wordnet>
 		<wikidata>

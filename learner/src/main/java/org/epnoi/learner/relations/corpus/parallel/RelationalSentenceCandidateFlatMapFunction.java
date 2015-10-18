@@ -11,24 +11,34 @@ import java.util.Set;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 import gate.Annotation;
 import gate.Document;
 import gate.DocumentContent;
 
-public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
+public class RelationalSentenceCandidateFlatMapFunction
+		implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
 
 	private final int MIN_TERM_LENGTH = 2;
 
 	@Override
 	public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
 		List<RelationalSentenceCandidate> relationalSentencesCandidate = new ArrayList<>();
-		return relationalSentencesCandidate;
+		// System.out.println(currentSentence);
+		return _testSentence(currentSentence);
+		
 	}
 
-
-	private void _testSentence(Sentence sentence) {
+	private List<RelationalSentenceCandidate> _testSentence(Sentence sentence) {
+		List<RelationalSentenceCandidate> relationalSentencesCandidates = new ArrayList<>();
 		Long sentenceStartOffset = sentence.getAnnotation().getStartNode().getOffset();
 		Long sentenceEndOffset = sentence.getAnnotation().getEndNode().getOffset();
 
@@ -36,81 +46,72 @@ public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFuncti
 		// This table stores the string representation of each sentence terms
 		// and their corresponding annotation
 		Map<String, Annotation> termsAnnotationsTable = _initTermsAnnotationsTable(sentence, sentenceTerms);
-
+		// System.out.println("ternsAbb"+termsAnnotationsTable);
 		Iterator<String> termsIt = sentenceTerms.iterator();
 		boolean found = false;
-		while (termsIt.hasNext() && !found) {
+		while (termsIt.hasNext()) {
 			String term = termsIt.next();
-			if (term != null && term.length() > 0) {
+			if (term != null && term.length() > MIN_TERM_LENGTH) {
 				// For each term we retrieve its well-known hypernyms
-				Set<String> termHypernyms = new HashSet<>();//this.knowledgeBase.getHypernyms(term);
+
+				Set<String> termHypernyms = _retrieveHypernyms(term);
+				/*
+				 * System.out.println("term> "+ term); System.out.println(
+				 * "term hypernyms> "+termHypernyms); System.out.println(
+				 * "sentence terms> "+sentenceTerms); System.out.println(
+				 * "Sentence content "+sentence.getContent());
+				 */
 				termHypernyms.retainAll(sentenceTerms);
 				// termHypernyms.removeAll(this.knowledgeBase.stem(term));
 
 				// If the intersection of the well-known hypernyms and the terms
 				// that belong to the sentence, this is a relational sentence
 				if (termHypernyms.size() > 0) {
-					/*
-					 * System.out.println("FOUND SENTENCE BETWEEN " +
-					 * sentenceStartOffset + "," + sentenceEndOffset +
-					 * " when testing for the term " + sentenceTerms);
-					 */
-					/*
-					 * ESTAS AQUI CREANDO
-					 * _createRelationalSentence(sentenceContent,
-					 * sentenceStartOffset, termsAnnotationsTable, term,
-					 * termHypernyms);
-					 */
-					found = true;
+
+					System.out.println("FOUND SENTENCE BETWEEN " + sentenceStartOffset + "," + sentenceEndOffset
+							+ " when testing for the term " + sentenceTerms);
+					System.out.println(">> " + sentence.getContent());
+
+					List<RelationalSentenceCandidate> candidates = _createRelationalSentence(sentence,
+							termsAnnotationsTable, term, termHypernyms);
+
+					relationalSentencesCandidates.addAll(candidates);
 
 				}
 			}
 
 		}
-
+		return relationalSentencesCandidates;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private void _createRelationalSentence(DocumentContent sentenceContent, Long sentenceStartOffset,
-			Map<String, Annotation> termsAnnotationsTable, String term, Set<String> termHypernyms) {
-		Annotation sourceTermAnnotation = termsAnnotationsTable.get(term);
+	private Set<String> _retrieveHypernyms(String term) {
+		ClientConfig config = new DefaultClientConfig();
+		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+		Client client = Client.create(config);
+		String knowledgeBasePath = "/uia/knowledgebase";
 
-		// Note that the offset is relative to the beginning of the
-		// sentence
-		OffsetRangeSelector source = new OffsetRangeSelector(
-				sourceTermAnnotation.getStartNode().getOffset() - sentenceStartOffset,
-				sourceTermAnnotation.getEndNode().getOffset() - sentenceStartOffset);
-		// For each target term a relational sentence is created
-		for (String destinationTerm : termHypernyms) {
+		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-			Annotation destinationTermAnnotation = termsAnnotationsTable.get(destinationTerm);
+		Set<String> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
+				.queryParam("source", term).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
+		return hypernyms;
+	}
 
-			// Note that the offset is relative to the beginning of
-			// the
-			// sentence
-			OffsetRangeSelector target = new OffsetRangeSelector(
-					destinationTermAnnotation.getStartNode().getOffset() - sentenceStartOffset,
-					destinationTermAnnotation.getEndNode().getOffset() - sentenceStartOffset);
+	// ----------------------------------------------------------------------------------------------------------------------
 
-			Document annotatedContent = null;
-			/*
-			 * try { annotatedContent =
-			 * core.getNLPHandler().process(sentenceContent.toString()); } catch
-			 * (EpnoiResourceAccessException e) { // TODO Auto-generated catch
-			 * block e.printStackTrace(); }
-			 */
-			RelationalSentence relationalSentence = new RelationalSentence(source, target, sentenceContent.toString(),
-					annotatedContent.toXml());
-			annotatedContent.cleanup();
-			// annotatedContent=null;
+	private Set<String> _stem(String term) {
+		ClientConfig config = new DefaultClientConfig();
+		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+		Client client = Client.create(config);
+		String knowledgeBasePath = "/uia/knowledgebase";
 
-			if (!target.equals(source)) {
+		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		//		corpus.getSentences().add(relationalSentence);
-			}
-
-		}
+		Set<String> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParam("term", term)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
+		return stemmedForms;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
@@ -123,7 +124,6 @@ public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFuncti
 					- sentence.getAnnotation().getStartNode().getOffset();
 			Long endOffset = termAnnotation.getEndNode().getOffset()
 					- sentence.getAnnotation().getStartNode().getOffset();
-			;
 
 			String term = "";
 			try {
@@ -140,18 +140,18 @@ public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFuncti
 			// We stem the surface form (we left open the possibility of
 			// different stemming results so we consider a set of stemmed
 			// forms)
-			_addTermToTermsTable(sentenceTerms, termsAnnotationsTable, termAnnotation, term);
+			_addTermToTermsTable(term, termAnnotation, sentenceTerms, termsAnnotationsTable);
 		}
 		return termsAnnotationsTable;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private void _addTermToTermsTable(Set<String> sentenceTerms, HashMap<String, Annotation> termsAnnotationsTable,
-			Annotation termAnnotation, String term) {
-	/*
+	private void _addTermToTermsTable(String term, Annotation termAnnotation, Set<String> sentenceTerms,
+			HashMap<String, Annotation> termsAnnotationsTable) {
+
 		if (term.length() > MIN_TERM_LENGTH) {
-			for (String stemmedTerm : this.knowledgeBase.stem(term)) {
+			for (String stemmedTerm : _stem(term)) {
 
 				termsAnnotationsTable.put(stemmedTerm, termAnnotation);
 				sentenceTerms.add(stemmedTerm);
@@ -161,9 +161,25 @@ public class RelationalSentenceCandidateFlatMapFunction implements FlatMapFuncti
 			termsAnnotationsTable.put(term, termAnnotation);
 			sentenceTerms.add(term);
 		}
-*/
-	}
 
+	}
+	// ----------------------------------------------------------------------------------------------------------------------
+
+	private List<RelationalSentenceCandidate> _createRelationalSentence(Sentence sentence,
+			Map<String, Annotation> termsAnnotationsTable, String term, Set<String> termHypernyms) {
+		List<RelationalSentenceCandidate> relationalSentenceCandidates = new ArrayList<>();
+		Annotation sourceTermAnnotation = termsAnnotationsTable.get(term);
+
+		for (String destinationTerm : termHypernyms) {
+
+			Annotation targetTermAnnotation = termsAnnotationsTable.get(destinationTerm);
+
+			RelationalSentenceCandidate relationalSentenceCandidate = new RelationalSentenceCandidate(sentence,
+					sourceTermAnnotation, targetTermAnnotation);
+			relationalSentenceCandidates.add(relationalSentenceCandidate);
+		}
+		return relationalSentenceCandidates;
+	}
 	// ----------------------------------------------------------------------------------------------------------------------
 
 }

@@ -1,6 +1,13 @@
 package org.epnoi.model;
 
-public class OffsetRangeSelector {
+import java.io.Serializable;
+
+public class OffsetRangeSelector implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1045582730543038449L;
 	private Long start;
 	private Long end;
 

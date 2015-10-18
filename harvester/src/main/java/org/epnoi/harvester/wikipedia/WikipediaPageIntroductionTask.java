@@ -56,9 +56,7 @@ try{
 
 				String sectionContent = wikipediaPage.getSectionsContent().get(sections.get(i));
 
-				String annotatedContentURI = _extractURI(wikipediaPage.getUri(), sections.get(i),
-
-				AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
+				String annotatedContentURI = _extractURI(wikipediaPage.getUri(), sections.get(i),AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
 				_putWikipediaPageSectionAnnnotatedContent(wikipediaPage, sectionContent, annotatedContentURI);
 			}
 		}

@@ -1,27 +1,17 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Selector;
 import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.SelectorHelper;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-
-import gate.Document;
 
 public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunction<String, String> {
 
@@ -38,6 +28,7 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 			e.printStackTrace();
 		}
 
+		
 		return sectionsAnnotatedContentURIs;
 	}
 
@@ -63,7 +54,7 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 	// --------------------------------------------------------------------------------------------------------------------
 
 	private WikipediaPage _retrieveWikipediaPage(String wikipediaPageURI) {
-		String domainsPath = "/uia/resources/bytype/wikipediapages/resource";
+		String wikipediaPagePath = "/uia/resources/bytype/wikipediapages/resource";
 
 		ClientConfig config = new DefaultClientConfig();
 
@@ -71,9 +62,11 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		WikipediaPage retrievedDomain = service.path(domainsPath).queryParam("uri", wikipediaPageURI)
+		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
-		return retrievedDomain;
+		
+		return retrievedWikipediaPage;
 	}
+
 
 }
