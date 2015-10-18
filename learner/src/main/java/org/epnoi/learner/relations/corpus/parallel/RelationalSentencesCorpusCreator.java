@@ -29,15 +29,14 @@ public class RelationalSentencesCorpusCreator {
 
 	private Core core;
 	private RelationalSentencesCorpus corpus;
-	private KnowledgeBase knowledgeBase;
 	private RelationalSentencesCorpusCreationParameters parameters;
 	private boolean storeResult;
 	private boolean verbose;
 
-	private long nonRelationalSentencesCounter = 0;
-
 	private int MAX_SENTENCE_LENGTH;
-	private static final String JOB_NAME = "";
+
+
+	private static final String JOB_NAME = "RELATIONAL_SENTENCES_CORPUS";
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
@@ -48,12 +47,6 @@ public class RelationalSentencesCorpusCreator {
 		this.core = core;
 		this.parameters = parameters;
 		this.corpus = new RelationalSentencesCorpus();
-
-		try {
-			this.knowledgeBase = core.getKnowledgeBaseHandler().getKnowledgeBase();
-		} catch (EpnoiResourceAccessException e) {
-			throw new EpnoiInitializationException(e.getMessage());
-		}
 
 		this.storeResult = (boolean) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
 
@@ -70,7 +63,7 @@ public class RelationalSentencesCorpusCreator {
 		logger.info("Creating a relational sencences corpus with the following parameters:");
 		logger.info(this.parameters.toString());
 		// This should be done in parallel!!
-		List<String> URIs = _collectURIs();
+		List<String> URIs = _collectCorpusURIs();
 
 		corpus.setUri((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
@@ -79,7 +72,7 @@ public class RelationalSentencesCorpusCreator {
 		corpus.setType((String) this.parameters.getParameterValue(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER));
 
-		corpus.setSentences(_createCorpus(URIs));
+		corpus.setSentences(_findRelationalSentences(URIs));
 
 		if (this.verbose) {
 			RelationalSentencesCorpusViewer.showRelationalSentenceCorpusInfo(corpus);
@@ -92,8 +85,8 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private List<RelationalSentence> _createCorpus(List<String> URIs) {
-		List<RelationalSentence> relationalSentence = new ArrayList<>();
+	private List<RelationalSentence> _findRelationalSentences(List<String> URIs) {
+		
 
 		SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
 
@@ -133,8 +126,9 @@ public class RelationalSentencesCorpusCreator {
 		  relationalSentencesCandidates.map(new
 		  RelationalSentenceMapFunction());
 		  
+		 //System.out.println("------>"+relationalSentences.collect());
 		 
-		return relationalSentence;
+		return relationalSentences.collect();
 	}
 
 	private void _storeCorpus() {
@@ -144,7 +138,7 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private List<String> _collectURIs() {
+	private List<String> _collectCorpusURIs() {
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		// String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
@@ -159,16 +153,6 @@ public class RelationalSentencesCorpusCreator {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	// ----------------------------------------------------------------------------------------------------------------------
-
-	private String _extractURI(String URI, String section, String annotationType) {
-
-		String cleanedSection = section.replaceAll("\\s+$", "").replaceAll("\\s+", "_");
-
-		return URI + "/" + cleanedSection + "/" + annotationType;
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
 		logger.info("Starting the Relation Sentences Corpus Creator");
@@ -223,13 +207,14 @@ public class RelationalSentencesCorpusCreator {
 		 */
 
 		relationSentencesCorpusCreator.createCorpus();
-
+/*
 		System.out.println("Checking if the Relational Sentence Corpus can be retrieved");
 
 		RelationalSentencesCorpus relationalSentenceCorpus = (RelationalSentencesCorpus) core.getInformationHandler()
 				.get(relationalCorpusURI, RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		System.out.println("The readed relational sentences corpus " + relationalSentenceCorpus);
 		logger.info("Stopping the Relation Sentences Corpus Creator");
+	*/
 	}
 
 }

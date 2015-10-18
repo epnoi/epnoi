@@ -1,8 +1,10 @@
 package org.epnoi.model;
 
-import org.epnoi.model.OffsetRangeSelector;
+import java.io.Serializable;
 
-public class RelationalSentence {
+public class RelationalSentence implements Serializable {
+
+	private static final long serialVersionUID = 3221551114320542638L;
 	private OffsetRangeSelector source;
 	private OffsetRangeSelector target;
 	private String sentence;
@@ -10,13 +12,13 @@ public class RelationalSentence {
 
 	// --------------------------------------------------------------------------------------
 
-	public RelationalSentence(OffsetRangeSelector source,
-			OffsetRangeSelector target, String sentence, String annotatedSentence) {
+	public RelationalSentence(OffsetRangeSelector source, OffsetRangeSelector target, String sentence,
+			String annotatedSentence) {
 		super();
 		this.source = source;
 		this.target = target;
-		this.sentence = sentence;	
-		this.annotatedSentence=annotatedSentence;
+		this.sentence = sentence;
+		this.annotatedSentence = annotatedSentence;
 
 	}
 
@@ -58,17 +60,14 @@ public class RelationalSentence {
 
 	// --------------------------------------------------------------------------------------
 
-
 	@Override
 	public String toString() {
 		return "RelationalSentence [source=" + source + ", target=" + target
-				+ ", sentence=" + sentence+"]";
-				/*
+				+ ", sentence=" + sentence
 				+ ", annotatedSentence="
-				+ annotatedSentence + "]";
-*/
-	}
+				+ annotatedSentence.length() + "]";
 
+	}
 
 	// --------------------------------------------------------------------------------------
 

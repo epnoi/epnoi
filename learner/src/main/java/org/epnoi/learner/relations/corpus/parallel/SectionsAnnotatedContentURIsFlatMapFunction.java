@@ -29,7 +29,7 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 		}
 
 		
-		return Arrays.asList(sectionsAnnotatedContentURIs.get(0));
+		return sectionsAnnotatedContentURIs;
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------

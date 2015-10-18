@@ -25,13 +25,13 @@ public class NLPClient {
 		ClientConfig config = new DefaultClientConfig();
 
 		Client client = Client.create(config);
-		String knowledgeBasePath = "/uia/nlp/process";
+		String basePath = "/uia/nlp/process";
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
 		// http://en.wikipedia.org/wiki/Autism/first/object/gate
 
-		String content = service.path(knowledgeBasePath).queryParam("content", "My taylor is rich and my mother is in the kitchen")
+		String content = service.path(basePath).queryParam("content", "My taylor is rich and my mother is in the kitchen")
 				.type(javax.ws.rs.core.MediaType.APPLICATION_XML).get(String.class);
 
 		Document document = GateUtils.deserializeGATEDocument(content);

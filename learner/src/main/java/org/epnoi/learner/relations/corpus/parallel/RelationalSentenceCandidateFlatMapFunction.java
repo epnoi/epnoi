@@ -33,8 +33,8 @@ public class RelationalSentenceCandidateFlatMapFunction
 	public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
 		List<RelationalSentenceCandidate> relationalSentencesCandidate = new ArrayList<>();
 		// System.out.println(currentSentence);
-		_testSentence(currentSentence);
-		return relationalSentencesCandidate;
+		return _testSentence(currentSentence);
+		
 	}
 
 	private List<RelationalSentenceCandidate> _testSentence(Sentence sentence) {
