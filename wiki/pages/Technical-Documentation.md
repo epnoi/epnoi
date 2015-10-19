@@ -27,7 +27,7 @@ This content-based recommender system is updated with both gathered and submitte
 ![resources](https://dl.dropboxusercontent.com/u/299257/epnoi/images/epnoi-resources900x700.png) 
  
 
-Each of them representing:  
+Each of them has several [states](https://github.com/epnoi/epnoi/wiki/ResourceStates) and represents the following information:  
 - **[source](https://github.com/epnoi/epnoi/wiki/ResourceSource)**: a repository of documents 
 - **[domain](https://github.com/epnoi/epnoi/wiki/ResourceDomain)**: a logical grouping of documents
 - **[document](https://github.com/epnoi/epnoi/wiki/ResourceDocument)**: a logic entity that includes meta-information and content of a resource
