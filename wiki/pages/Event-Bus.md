@@ -29,18 +29,25 @@ getting a dynamic distribution of load between them.
 
 Message consumers attach to a *queue* by these values and receive messages from the *queue* that is bound to an *exchange*.
 
+### Message
+
+The content of the message can be a string of characters or an array of bytes. 
+
+Depending of the type of event, i.e. the *routing key*, it will be one of them. The list of available messages is detailed [here](https://github.com/epnoi/epnoi/wiki/Event-Bus-Messages).
+
+
 ### Routing Key
 
 Messages sent to a event bus can't have an arbitrary *routing_key* - it must be a list of words, delimited by dots. 
 
 Our ***routing_key*** consists of three words (two dots). The first two words are *mandatory* and the third one is *optional*. 
 
-The first one describes the ***resource***, i.e. *source*, *domain*, *document*, *item*, *part*, *relation* or *word*. 
-The second one is the ***action*** executed on the resource, i.e. *new*, *deleted* or *updated*. 
-The third one is the ***status*** of the action, i.e. *clear*, *opened*, *closed*, *modified*, *stable* or *set. (More details 
-about the states [here](https://github.com/epnoi/epnoi/wiki/ResourceStates)) 
-
 ![event-bus-message](https://dl.dropboxusercontent.com/u/299257/epnoi/images/epnoi-eventbus-message900x700.png)
+
+- ***resource***: type of entity,  i.e. *source*, *domain*, *document*, *item*, *part*, *relation* or *word*.
+- ***action***: operation executed on this resource, i.e. *new*, *deleted* or *updated*.
+- ***status***: new state of the resource, i.e. *clear*, *opened*, *closed*, *modified*, *stable* or *set. (More details [here](https://github.com/epnoi/epnoi/wiki/ResourceStates))
+
 
 ### Binding Key
 
