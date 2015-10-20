@@ -9,10 +9,10 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>epnoi-web</artifactId>
+	<artifactId>epnoi-api</artifactId>
 	<packaging>war</packaging>
-	<name>epnoi web</name>
-	<description>epnoi web</description>
+	<name>epnoi api</name>
+	<description>epnoi api</description>
 
 	<dependencies>
 
