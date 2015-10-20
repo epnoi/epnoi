@@ -110,16 +110,18 @@
 		<module>sources</module>
 		<module>wrappers</module>
 		<module>core</module>
-		<module>web</module>
+		<module>comparator</module>
+		<module>api</module>
 		<module>model</module>
 		<module>nlp</module>
 		<module>harvester</module>
 		<module>hoarder</module>
 		<module>learner</module>
-		<module>topics</module>
+		<module>modeler</module>
 		<module>knowledgebase</module>
 		<module>app</module>
 		<module>vms</module>
+		<module>watcher</module>
 	</modules>
 
 	<dependencyManagement>
