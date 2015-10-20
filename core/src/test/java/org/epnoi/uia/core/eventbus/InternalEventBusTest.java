@@ -48,7 +48,7 @@ public class InternalEventBusTest {
             }
         };
 
-        eventBus.publish(publisher, new Event("no body should be listening"));
+        eventBus.publish(publisher, new Event.Builder().fromString("no body should be listening"));
 
         eventBus.subscribe(new EventBusSubscriber() {
             @Override
@@ -65,12 +65,12 @@ public class InternalEventBusTest {
             @Subscribe
             @Override
             public void onEvent(Event event) {
-                System.out.println("Reacting to the event ! " + event);
+                System.out.println("Reacting to the event ! " + event.toString());
                 counter.incrementAndGet();
             }
         });
 
-        eventBus.publish(publisher, new Event((new Date()).toString()));
+        eventBus.publish(publisher, new Event.Builder().fromString((new Date()).toString()));
 
         Thread.sleep(100);
 

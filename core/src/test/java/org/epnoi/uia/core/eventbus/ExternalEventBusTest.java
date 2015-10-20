@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -62,7 +63,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test1.source.new";
             }
-        }, new Event("test-message"));
+        }, new Event.Builder().fromString("test-message"));
 
         Thread.sleep(500);
 
@@ -116,7 +117,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test2.source.new";
             }
-        }, new Event("test-message"));
+        }, new Event.Builder().fromString("test-message"));
 
         Thread.sleep(500);
 
@@ -141,7 +142,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("[1] New event received: " + event);
+                System.out.println("[1] New event received: " + event.toString());
                 received.incrementAndGet();
             }
         });
@@ -169,7 +170,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test3.source.new";
             }
-        }, new Event("test-message"));
+        }, new Event.Builder().fromString("test-message"));
 
         Thread.sleep(500);
 
@@ -187,7 +188,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test4.source.new";
             }
-        }, new Event("test-message"));
+        }, new Event.Builder().fromString("test-message"));
 
         Thread.sleep(500);
 
@@ -214,5 +215,96 @@ public class ExternalEventBusTest {
 
         Assert.assertEquals(0, received.get());
     }
+
+
+    @Test
+    public void OneToOneByURI() throws InterruptedException, IOException {
+
+        final AtomicInteger received = new AtomicInteger(0);
+
+        final String topic  = "test5.source.new";
+
+        final String uri    = "http://epnoi.org/source/1213-1213";
+
+        this.eventBus.publish(new EventBusPublisher() {
+            @Override
+            public String topic() {
+                return topic;
+            }
+        }, new Event.Builder().fromURI(URI.create(uri)));
+
+        Thread.sleep(500);
+
+
+        this.eventBus.subscribe(new EventBusSubscriber() {
+            @Override
+            public String topic() {
+                return topic;
+            }
+
+            @Override
+            public String group() {
+                return "test-subscriber";
+            }
+
+            @Override
+            public void onEvent(Event event) {
+
+                System.out.println(" New event received: " + event);
+                Assert.assertEquals(URI.create(uri),event.toURI());
+
+                received.incrementAndGet();
+            }
+        });
+
+        Thread.sleep(500);
+
+        Assert.assertEquals(0, received.get());
+    }
+
+    @Test
+    public void OneToOneByObject() throws InterruptedException, IOException {
+
+        final AtomicInteger received = new AtomicInteger(0);
+
+        final String topic  = "test5.source.new";
+
+        this.eventBus.publish(new EventBusPublisher() {
+            @Override
+            public String topic() {
+                return topic;
+            }
+        }, new Event.Builder().fromObject(new Double("23.30")));
+
+        Thread.sleep(500);
+
+
+        this.eventBus.subscribe(new EventBusSubscriber() {
+            @Override
+            public String topic() {
+                return topic;
+            }
+
+            @Override
+            public String group() {
+                return "test-subscriber";
+            }
+
+            @Override
+            public void onEvent(Event event) {
+
+                System.out.println(" New event received: " + event);
+                Assert.assertEquals(new Double("23.30"),(Double) event.toObject());
+
+                received.incrementAndGet();
+            }
+        });
+
+        Thread.sleep(500);
+
+        Assert.assertEquals(0, received.get());
+    }
+
+
 
 }

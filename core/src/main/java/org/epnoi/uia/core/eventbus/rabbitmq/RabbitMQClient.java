@@ -101,18 +101,18 @@ public class RabbitMQClient {
      * @param message
      * @throws IOException
      */
-    public void publish(Channel channel, String exchange, String routingKey, String message) throws IOException {
+    public void publish(Channel channel, String exchange, String routingKey, byte[] message) throws IOException {
 
-        //TODO should be configurable
+        //TODO externalize by publisher
         AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
                 .contentType("text/plain")
                 .deliveryMode(2) // persistent
                 .priority(0)
                 .build();
 
-        channel.basicPublish(exchange, routingKey, properties, message.getBytes());
+        channel.basicPublish(exchange, routingKey, properties, message);
 
-        logger.fine(" Message: '" + message + "' sent to exchange: '" + exchange + "' with routingKey: '" + routingKey +"'");
+        logger.fine(" Message: [" + message + "] sent to exchange: '" + exchange + "' with routingKey: '" + routingKey +"'");
     }
 
 
@@ -120,7 +120,7 @@ public class RabbitMQClient {
 
         Channel channel = newChannel(exchange);
 
-        //TODO should be defined in config file
+        //TODO externalize to config file
         //a non-durable, non-exclusive, autodelete queue with a well-known name and a maximum length of 1000 messages
         Map<String, Object> args = new HashMap<>();
         args.put("x-max-length", 1000); // x-max-length-bytes
@@ -141,13 +141,12 @@ public class RabbitMQClient {
                 String routingKey   = envelope.getRoutingKey();
                 String contentType  = properties.getContentType();
                 long deliveryTag    = envelope.getDeliveryTag();
-                String message      = new String(body, "UTF-8");
 
-                logger.fine(" Received message: '" + message + "' in routingKey: '" + routingKey +"'");
+                logger.fine(" Received message: [" + body + "] in routingKey: '" + routingKey +"'");
 
-                subscriber.onEvent(new Event(message));
+                subscriber.onEvent(new Event.Builder().fromBytes(body));
 
-                //TODO Avoid Auto ACK. Handle ACK
+                //TODO Avoid Auto ACK. Handle manual ACK
                 //channel.basicAck(deliveryTag, false);
             }
         });

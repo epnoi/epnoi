@@ -38,7 +38,7 @@ public class RabbitMQClientTest {
 
         this.client.connect(uri);
 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
 
         this.client.disconnect();
 
