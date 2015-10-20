@@ -7,10 +7,10 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>epnoi-topics</artifactId>
+	<artifactId>epnoi-modeler</artifactId>
 	<packaging>jar</packaging>
-	<name>epnoi topics</name>
-	<description>epnoi topics</description>
+	<name>epnoi modeler</name>
+	<description>epnoi modeler</description>
 
 </project>
 
