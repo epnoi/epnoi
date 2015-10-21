@@ -63,7 +63,7 @@
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.pool.version>2.4.1</commons.pool.version>
 		<flexjson.version>2.0</flexjson.version>
-		<gate.version>7.1</gate.version>
+		<gate.version>8.1</gate.version>
 		<gate.standford.version>1.0</gate.standford.version>
 		<guava.version>18.0</guava.version>
 		<hector.version>1.1-3</hector.version>

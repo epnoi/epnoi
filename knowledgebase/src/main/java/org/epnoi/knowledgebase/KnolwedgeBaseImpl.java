@@ -146,6 +146,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		}
 		if (this.considerWordNet) {
 			String stemmedSource = this.wordNetHandler.stemNoun(source);
+			System.out.println("stemmedsource >"+stemmedSource);
 			Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
 			hypernyms.addAll(wordNetHypernyms);
 		}

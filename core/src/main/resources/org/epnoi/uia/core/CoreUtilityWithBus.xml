@@ -4,15 +4,17 @@
 	
 	<nlp>
 		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
-		<numberOfProcessors>1</numberOfProcessors>
+		<numberOfProcessors>10</numberOfProcessors>
 	</nlp>
+
 	<eventBus>
-		<uri>local:\\</uri>
+		<uri>amqp://guest:guest@eventBus:5672/drinventor</uri>
 	</eventBus>
+	
 	<knowledgeBase>
 		<lazy>true</lazy>
 		<wordnet>
-			<considered>true</considered>
+			<considered>false</considered>
 			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
 		</wordnet>
 		<wikidata>

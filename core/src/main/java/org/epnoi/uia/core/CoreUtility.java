@@ -3,6 +3,7 @@ package org.epnoi.uia.core;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import org.epnoi.model.Parameter;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
@@ -15,9 +16,15 @@ public class CoreUtility {
 
 	public static Core getUIACore() {
 
+	return getUIACore("CoreUtility.xml");
+
+	}
+
+	public static Core getUIACore(String configurationFile) {
+
 		long time = System.currentTimeMillis();
 		Core core = new CoreImpl();
-		ParametersModel parametersModel = _readParameters();
+		ParametersModel parametersModel = readParameters(configurationFile);
 		logger.info("Reading the following paramaters for the UIA: "+parametersModel);
 		try {
 			core.init(parametersModel);
@@ -35,9 +42,11 @@ public class CoreUtility {
 
 	}
 
-	// ----------------------------------------------------------------------------------------
+	public static ParametersModel readParameters(){
+		return readParameters("CoreUtility.xml");
+	}
 
-	public static ParametersModel _readParameters() {
+	public static ParametersModel readParameters(String configurationFile) {
 		ParametersModel parametersModel = null;
 
 		try {
@@ -48,11 +57,13 @@ public class CoreUtility {
 					.getPath());
 
 		} catch (Exception e) {
-			 
+
 			e.printStackTrace();
 		}
 
 		return parametersModel;
 	}
+
+	// ----------------------------------------------------------------------------------------
 
 }
