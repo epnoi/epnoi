@@ -8,9 +8,92 @@
 	</parent>
 
 	<artifactId>epnoi-hoarder</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>epnoi hoarder</name>
 	<description>epnoi hoarder</description>
+
+	<build>
+		<finalName>hoarder</finalName>
+		<plugins>
+			<!-- Attached JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>lib</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Copy Web Resources to target/classes but also to target/swagger-ui -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resources.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/webapp</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-test-resources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/jetty-classes/</outputDirectory>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>${basedir}/target/classes/</directory>
+									<filtering>false</filtering>
+								</resource>
+								<resource>
+									<directory>src/test/webapp</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- allows running this example with mvn jetty:run -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.plugin.version}</version>
+				<configuration>
+					<webAppSourceDirectory>target/jetty-classes</webAppSourceDirectory>
+					<webAppConfig>
+					    <contextPath>/hoarder</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 
 	<dependencies>
 
@@ -19,28 +102,67 @@
 			<groupId>org.epnoi</groupId>
 			<artifactId>epnoi-core</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-
-		<!-- Camel Testing -->
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-test</artifactId>
-			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Support for the “Advanced Message Queuing Protocol” via spring-rabbit -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Import Spring Boot’s default logging framework (Logback) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
+		<!-- Spring Web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+
+		<!-- Logging -->
+		<!--<dependency>-->
+			<!--<groupId>log4j</groupId>-->
+			<!--<artifactId>log4j</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.slf4j</groupId>-->
+			<!--<artifactId>slf4j-log4j12</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>ch.qos.logback</groupId>-->
+			<!--<artifactId>logback-classic</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>ch.qos.logback</groupId>-->
+			<!--<artifactId>logback-core</artifactId>-->
+		<!--</dependency>-->
+
 		<!-- Apache Camel context -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
@@ -71,11 +193,35 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-http</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-metrics</artifactId>
+		</dependency>
 
 		<!-- Apache Camel Stream component -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-stream</artifactId>
+		</dependency>
+
+		<!-- Apache Camel swagger api -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-swagger</artifactId>
+		</dependency>
+
+		<!-- Apache Camel content binding -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jaxb</artifactId>
 		</dependency>
 
 		<!-- Parse RSS Content -->
@@ -88,13 +234,6 @@
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-parsers</artifactId>
 			<classifier>jdk14</classifier>
-		</dependency>
-
-		<!-- Sugared annotations -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Camel OAI-PMH Component -->
@@ -115,13 +254,30 @@
 			<artifactId>guava</artifactId>
 		</dependency>
 
-		<!-- Jetty Embedded Server -->
+		<!-- TEST: Camel  -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- TEST: Jetty Embedded Server -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 

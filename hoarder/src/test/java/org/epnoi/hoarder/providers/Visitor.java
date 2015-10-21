@@ -1,8 +1,10 @@
 package org.epnoi.hoarder.providers;
 
 import com.google.common.base.Splitter;
+import es.cbadenes.lab.test.IntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 
+@Category(IntegrationTest.class)
 public class Visitor {
 
     static{
