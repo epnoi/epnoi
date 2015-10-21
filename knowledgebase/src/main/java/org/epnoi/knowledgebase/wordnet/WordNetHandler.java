@@ -86,35 +86,37 @@ public class WordNetHandler {
 	public Set<String> getNounFirstMeaningHypernyms(String noun) {
 
 		// We assume that the word has been stemmed
-
 		Set<String> nounHypernyms = new HashSet<String>();
+		System.out.println("-------------> "+noun);
+		if (noun!=null) {
 
-		//System.out.println("-------------> "+noun);
-		IIndexWord idxWord = this.wordNetDictionary
-				.getIndexWord(noun, POS.NOUN);
-		if (idxWord != null) {
-			IWordID wordID = idxWord.getWordIDs().get(0); // We obtain the first
-															// meaning (the fist
-															// lemma that
-															// belongs to
-															// the more frequent
-															// synset)
-			IWord word = this.wordNetDictionary.getWord(wordID);
-			ISynset synset = word.getSynset();
-			List<ISynsetID> hypernyms = synset
-					.getRelatedSynsets(Pointer.HYPERNYM);
 
-			List<IWord> words;
-			for (ISynsetID sid : hypernyms) {
-				words = this.wordNetDictionary.getSynset(sid).getWords();
-				// System.out.print(sid + " {");
-				for (Iterator<IWord> i = words.iterator(); i.hasNext();) {
+	IIndexWord idxWord = this.wordNetDictionary
+			.getIndexWord(noun, POS.NOUN);
+	if (idxWord != null) {
+		IWordID wordID = idxWord.getWordIDs().get(0); // We obtain the first
+		// meaning (the fist
+		// lemma that
+		// belongs to
+		// the more frequent
+		// synset)
+		IWord word = this.wordNetDictionary.getWord(wordID);
+		ISynset synset = word.getSynset();
+		List<ISynsetID> hypernyms = synset
+				.getRelatedSynsets(Pointer.HYPERNYM);
 
-					nounHypernyms.add(i.next().getLemma());
-				}
+		List<IWord> words;
+		for (ISynsetID sid : hypernyms) {
+			words = this.wordNetDictionary.getSynset(sid).getWords();
+			// System.out.print(sid + " {");
+			for (Iterator<IWord> i = words.iterator(); i.hasNext(); ) {
 
+				nounHypernyms.add(i.next().getLemma());
 			}
+
 		}
+	}
+}
 		return nounHypernyms;
 
 	}

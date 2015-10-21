@@ -8,7 +8,7 @@
 	</nlp>
 
 	<eventBus>
-		<uri>amqp://guest:guest@eventBus:5672/drinventor</uri>
+		<uri>local://</uri>
 	</eventBus>
 	
 	<knowledgeBase>
