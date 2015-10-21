@@ -685,12 +685,15 @@
 		</repository>
 
 		<!-- OEG Aldebaran Repository -->
+
 		<repository>
 			<id>aldebaran-libs</id>
 			<name>aldebaran-drinventor-external-libs</name>
 			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
+			<snapshots>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
 		</repository>
-
 		<!-- Spring Milestone Repository -->
 		<repository>
 			<id>spring-milestones</id>

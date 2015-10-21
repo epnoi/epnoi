@@ -12,6 +12,7 @@ public class KnowledgeBaseClient {
 
 	public static void main(String[] args) {
 
+
 		ClientConfig config = new DefaultClientConfig();
 		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		Client client = Client.create(config);
