@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:provenance="http://www.openarchives.org/OAI/2.0/provenance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <responseDate>2015-03-03T14:28:29Z</responseDate>
+    <request verb="ListRecords" metadataPrefix="oai_dc" from="2015-03-03T13:00:00Z">http://eprints.ucm.es/cgi/oai2</request>
+    <ListRecords>
+        <record>
+            <header>
+                <identifier>oai:www.ucm.es:28974</identifier>
+                <datestamp>2015-03-03T13:38:54Z</datestamp>
+                <setSpec>7374617475733D756E707562</setSpec>
+                <setSpec>7375626A656374733D42:425F33</setSpec>
+                <setSpec>74797065733D746865736973</setSpec>
+            </header>
+            <metadata>
+                <dc>
+                    <dc:relation>http://eprints.ucm.es/28974/</dc:relation>
+                    <dc:title>Identificación y caracterización funcional del complejo nuclear de proteínas LSM de "Arabidopsis thaliana" en la respuesta de aclimatación a las temperaturas bajas</dc:title>
+                    <dc:creator>Hernández Verdeja, Tamara</dc:creator>
+                    <dc:contributor>Salinas Muñoz, Julio</dc:contributor>
+                    <dc:subject>Biología</dc:subject>
+                    <dc:publisher>Universidad Complutense de Madrid</dc:publisher>
+                    <dc:date>2014-12-12</dc:date>
+                    <dc:type>info:eu-repo/semantics/doctoralThesis</dc:type>
+                    <dc:type>PeerReviewed</dc:type>
+                    <dc:identifier>http://eprints.ucm.es/28974/1/T35886.pdf</dc:identifier>
+                    <dc:format>application/pdf</dc:format>
+                    <dc:language>es</dc:language>
+                    <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+                </dc>
+            </metadata>
+        </record>
+    </ListRecords>
+</OAI-PMH>

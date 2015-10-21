@@ -56,6 +56,8 @@
 
 		<!-- Project Dependencies -->
 		<atmosphere.version>2.0.1</atmosphere.version>
+		<camel.euia.version>1.0.0</camel.euia.version>
+		<camel.oaipmh.version>1.0.5</camel.oaipmh.version>
 		<camel.version>2.15.2</camel.version>
 		<cloning.version>1.9.1</cloning.version>
 		<commons.lang.version>2.6</commons.lang.version>
@@ -92,6 +94,7 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<solr.version>4.6.0</solr.version>
 		<spark.version>1.5.0</spark.version>
+		<springboot.version>1.2.1.RELEASE</springboot.version>
 		<spring.version>4.1.7.RELEASE</spring.version>
 		<standford.parser.version>1.0</standford.parser.version>
 		<surefire.junit.version>2.12</surefire.junit.version>
@@ -143,6 +146,46 @@
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-metrics</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-groovy</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-script</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-rss</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-http</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-stream</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>es.upm.oeg.camel</groupId>
+				<artifactId>camel-oaipmh</artifactId>
+				<version>${camel.oaipmh.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>es.upm.oeg.camel</groupId>
+				<artifactId>camel-euia</artifactId>
+				<version>${camel.euia.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-saxon</artifactId>
 				<version>${camel.version}</version>
 			</dependency>
 
@@ -407,6 +450,16 @@
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-amqp</artifactId>
+				<version>${springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-logging</artifactId>
+				<version>${springboot.version}</version>
+			</dependency>
 
 			<!-- Unit tests Libraries -->
 			<dependency>
@@ -423,6 +476,11 @@
 				<groupId>es.cbadenes.lab</groupId>
 				<artifactId>test-utils</artifactId>
 				<version>${testutils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-test</artifactId>
+				<version>${camel.version}</version>
 			</dependency>
 
 			<!-- Virtuoso Libraries -->
@@ -492,7 +550,6 @@
 				<artifactId>jersey-json</artifactId>
 				<version>${jersey.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-jersey2-jaxrs</artifactId>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/">
+  <channel rdf:about="http://slashdot.org/">
+    <title>Slashdot</title>
+    <link>http://slashdot.org/</link>
+    <description>News for nerds, stuff that matters</description>
+    <items>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://entertainment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+      </rdf:Seq>
+    </items>
+    <sy:updatePeriod>hourly</sy:updatePeriod>
+    <sy:updateFrequency>1</sy:updateFrequency>
+    <sy:updateBase>1970-01-01T00:00:00Z</sy:updateBase>
+    <dc:creator>help@slashdot.org</dc:creator>
+    <dc:subject>Technology</dc:subject>
+    <dc:publisher>Dice</dc:publisher>
+    <dc:date>2015-03-06T13:37:20Z</dc:date>
+    <dc:language>en-us</dc:language>
+    <dc:rights>Copyright 1997-2015, Dice. All Rights Reserved. Slashdot is a Dice Holdings, Inc. service</dc:rights>
+  </channel>
+  <image>
+    <title>Slashdot</title>
+    <url>http://a.fsdn.com/sd/topics/topicslashdot.gif</url>
+    <link>http://slashdot.org/</link>
+  </image>
+  <item rdf:about="http://entertainment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+    <title>Musician Releases Album of Music To Code By</title>
+    <link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/qFYJLyH7aXA/musician-releases-album-of-music-to-code-by</link>
+    <slash:department xmlns:slash="http://purl.org/rss/1.0/modules/slash/">brian-eno</slash:department>
+    <slash:section xmlns:slash="http://purl.org/rss/1.0/modules/slash/">entertainment</slash:section>
+    <slash:comments xmlns:slash="http://purl.org/rss/1.0/modules/slash/">135</slash:comments>
+    <slash:hit_parade xmlns:slash="http://purl.org/rss/1.0/modules/slash/">135,134,90,70,21,10,3</slash:hit_parade>
+    <feedburner:origLink xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">http://entertainment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink>
+    <description>itwbennett writes Music and programming go hand-in-keyboard. And now programmer/musician Carl Franklin has released an album of music he wrote specifically for use as background music when writing software. "The biggest challenge was dialing back my instinct to make real music," Franklin told ITworld's Phil Johnson. "This had to fade into the background. It couldn't distract the listener, but it couldn't be boring either. That was a particular challenge that I think most musicians would have found maddening."&lt;p&gt;&lt;div class="share_submission" style="position:relative;"&gt;
+&lt;a class="slashpop" href="http://twitter.com/home?status=Musician+Releases+Album+of+Music+To+Code+By%3A+http%3A%2F%2Fbit.ly%2F1BdhjQq"&gt;&lt;img src="http://a.fsdn.com/sd/twitter_icon_large.png"&gt;&lt;/a&gt;
+&lt;a class="slashpop" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fentertainment.slashdot.org%2Fstory%2F15%2F03%2F05%2F2325238%2Fmusician-releases-album-of-music-to-code-by%3Futm_source%3Dslashdot%26utm_medium%3Dfacebook"&gt;&lt;img src="http://a.fsdn.com/sd/facebook_icon_large.png"&gt;&lt;/a&gt;
+
+&lt;a class="nobg" href="http://plus.google.com/share?url=http://entertainment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source=slashdot&amp;amp;utm_medium=googleplus" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"&gt;&lt;img src="http://www.gstatic.com/images/icons/gplus-16.png" alt="Share on Google+"/&gt;&lt;/a&gt;                                                                                                                                                                              
+
+
+
+&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="http://entertainment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source=rss1.0moreanon&amp;amp;utm_medium=feed"&gt;Read more of this story&lt;/a&gt; at Slashdot.&lt;/p&gt;&lt;iframe src="http://slashdot.org/slashdot-it.pl?op=discuss&amp;amp;id=7060155&amp;amp;smallembed=1" style="height: 300px; width: 100%; border: none;"&gt;&lt;/iframe&gt;&lt;img src="//feeds.feedburner.com/~r/Slashdot/slashdot/~4/qFYJLyH7aXA" height="1" width="1" alt=""/&gt;</description>
+    <dc:creator>samzenpus</dc:creator>
+    <dc:subject>music</dc:subject>
+    <dc:date>2015-03-06T03:03:00Z</dc:date>
+  </item>
+  <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rdf+xml" href="http://rss.slashdot.org/Slashdot/slashdot" />
+  <feedburner:info xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" uri="slashdot/slashdot" />
+  <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+</rdf:RDF>
+

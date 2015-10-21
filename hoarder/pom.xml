@@ -20,7 +20,132 @@
 			<artifactId>epnoi-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- Camel Testing -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Support for the “Advanced Message Queuing Protocol” via spring-rabbit -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+		<!-- Import Spring Boot’s default logging framework (Logback) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+		<!-- Apache Camel context -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-groovy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-script</artifactId>
+		</dependency>
+
+		<!-- Camel Saxon for XPath 2.0 -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-saxon</artifactId>
+		</dependency>
+
+		<!-- Apache Camel RSS component -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-rss</artifactId>
+		</dependency>
+
+		<!-- Apache Camel HTTP component -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+		</dependency>
+
+		<!-- Apache Camel Stream component -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-stream</artifactId>
+		</dependency>
+
+		<!-- Parse RSS Content -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<classifier>jdk14</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<classifier>jdk14</classifier>
+		</dependency>
+
+		<!-- Sugared annotations -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Camel OAI-PMH Component -->
+		<dependency>
+			<groupId>es.upm.oeg.camel</groupId>
+			<artifactId>camel-oaipmh</artifactId>
+		</dependency>
+
+		<!-- Camel Epnoi UIA Component -->
+		<dependency>
+			<groupId>es.upm.oeg.camel</groupId>
+			<artifactId>camel-euia</artifactId>
+		</dependency>
+
+		<!-- Google Guava Library -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
+		<!-- Jetty Embedded Server -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
+
+
+	<repositories>
+		<!-- GitHub Camel-OAIPMH Repository -->
+		<repository>
+			<id>camel-oaipmh-mvn-repo</id>
+			<url>https://raw.github.com/cbadenes/camel-oaipmh/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<!-- GitHub Camel-EUIA Repository -->
+		<repository>
+			<id>camel-euia-mvn-repo</id>
+			<url>https://raw.github.com/cbadenes/camel-euia/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>
 
