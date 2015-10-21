@@ -13,17 +13,6 @@ import org.junit.Test;
 public class EventBusFactoryTest {
 
     @Test
-    public void readParameters(){
-
-        ParametersModel parameters = CoreUtility._readParameters();
-
-        EventBus instance = EventBusFactory.newInstance(parameters);
-
-        Assert.assertTrue( instance instanceof ExternalEventBusImpl);
-
-    }
-
-    @Test
     public void simulateInternalParameters(){
 
         ParametersModel parameters = new ParametersModel();
@@ -57,10 +46,6 @@ public class EventBusFactoryTest {
     public void emptyParameters(){
 
         ParametersModel parameters = new ParametersModel();
-
-//        EventBusParameters parameter = new EventBusParameters();
-//        parameter.setUri("amqp://");
-//        parameters.setEventBus(parameter);
 
         EventBus instance = EventBusFactory.newInstance(parameters);
 
