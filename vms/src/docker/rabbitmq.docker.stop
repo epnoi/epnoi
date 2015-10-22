@@ -1,0 +1,4 @@
+# Management Plugin: http://eventbus.server:15672
+# default user and password: guest / guest
+docker stop rabbit1
+docker rm rabbit1
