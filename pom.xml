@@ -47,6 +47,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Maven Plugins -->
+		<maven.appassembler.plugin.version>1.9</maven.appassembler.plugin.version>
 		<maven.assembly.plugin.version>2.5.5</maven.assembly.plugin.version>
 		<maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
 		<maven.jar.plugin.version>2.6</maven.jar.plugin.version>
@@ -104,6 +105,8 @@
 		<sweble.version>1.1.0</sweble.version>
 		<testutils.version>1.0.0</testutils.version>
 		<tika.version>0.10</tika.version>
+		<tomcat.version>8.0.21</tomcat.version>
+		<tomcat.jasper.version>7.0.8</tomcat.jasper.version>
 		<tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
 		<virtuoso.jena.version>1.0</virtuoso.jena.version>
 		<virtuoso.jdbc.version>1.0</virtuoso.jdbc.version>
@@ -466,6 +469,28 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-logging</artifactId>
 				<version>${springboot.version}</version>
+			</dependency>
+
+			<!-- Tomcat Libraries -->
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>tomcat-catalina</artifactId>
+				<version>${tomcat.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>tomcat-util</artifactId>
+				<version>${tomcat.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-core</artifactId>
+				<version>${tomcat.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-jasper</artifactId>
+				<version>${tomcat.jasper.version}</version>
 			</dependency>
 
 			<!-- Unit tests Libraries -->

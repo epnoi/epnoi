@@ -15,6 +15,23 @@
 	<build>
 		<finalName>hoarder</finalName>
 		<plugins>
+			<!-- WAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven.war.plugin.version}</version>
+				<configuration>
+					<warName>${project.build.finalName}</warName>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp/META-INF</directory>
+							<filtering>true</filtering>
+							<targetPath>META-INF</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
 			<!-- Attached JAR -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
