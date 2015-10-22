@@ -710,11 +710,11 @@
 		</repository>
 
 		<!-- OEG Aldebaran Repository -->
-		<!--<repository>-->
-			<!--<id>aldebaran-libs</id>-->
-			<!--<name>aldebaran-drinventor-external-libs</name>-->
-			<!--<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>-->
-		<!--</repository>-->
+		<repository>
+			<id>aldebaran-libs</id>
+			<name>aldebaran-drinventor-external-libs</name>
+			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
+		</repository>
 
 		<!-- Spring Milestone Repository -->
 		<repository>
