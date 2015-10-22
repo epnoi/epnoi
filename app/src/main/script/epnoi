@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+start() {
+    eval "./*.docker.start"
+    eval "./modules start"
+}
+
+console() {
+    eval "./*.docker.start"
+    eval "./modules console"
+}
+
+stopit() {
+    eval "./modules stop"
+    eval "./*.docker.stop"
+}
+
+status() {
+    eval "./modules status"
+}
+
+case "$1" in
+
+    'start')
+        start
+        ;;
+
+    'stop')
+        stopit
+        ;;
+
+    'console')
+        console
+        ;;
+
+    'restart')
+        stopit
+        start
+        ;;
+
+    'status')
+        checkUser "" $1
+        status
+        ;;
+
+    *)
+        echo "Usage: $0 { console | start | stop | restart | status }"
+        exit 1
+        ;;
+esac
+
+exit 0
