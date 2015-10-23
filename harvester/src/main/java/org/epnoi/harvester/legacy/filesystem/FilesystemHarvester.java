@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,30 +92,30 @@ public class FilesystemHarvester {
 
 	// ----------------------------------------------------------------------------------------
 
-	public void run() {
+	public List<Paper> run() {
 
-		harvest(this.path);
+		return harvest(this.path);
 	}
 
 	// ----------------------------------------------------------------------------------------
 
-	public void harvest(String directoryToHarvest) {
-		HashMap<String, Item> items = new HashMap<String, Item>();
+	public List<Paper> harvest(String directoryToHarvest) {
+		List<Paper> harvestedPapers = new ArrayList<>();
 		try {
-			File harvestDirectoy = new File(directoryToHarvest);
+			File harvestDirectory = new File(directoryToHarvest);
 
-			String[] filesToHarvest = scanFilesToHarverst(harvestDirectoy);
+			String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
 
 			// System.out.println("..........> "
 			// + Arrays.toString(filesToHarvest));
 			for (String fileToHarvest : filesToHarvest) {
 				logger.info("Harvesting the file "
-						+ harvestDirectoy.getAbsolutePath() + "/"
+						+ harvestDirectory.getAbsolutePath() + "/"
 						+ fileToHarvest);
 				Context context = new Context();
 				Paper paper = _harvestFile(directoryToHarvest + "/"
 						+ fileToHarvest, fileToHarvest);
-
+				harvestedPapers.add(paper);
 				if (core.getInformationHandler().contains(paper.getUri(),
 						RDFHelper.PAPER_CLASS)) {
 					if (overwrite) {
@@ -133,7 +134,7 @@ public class FilesystemHarvester {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return harvestedPapers;
 	}
 
 	private void _addPaper(Paper paper) {
@@ -309,7 +310,7 @@ public class FilesystemHarvester {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		harvester.run();
+		List<Paper> harvestedPapers = harvester.run();
 
 		System.out
 				.println("These are the resources annotated as belonging to the corpus");

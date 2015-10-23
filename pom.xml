@@ -43,7 +43,7 @@
 
 		<!-- Project Details -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.java.version>1.7</project.java.version>
+		<project.java.version>1.8</project.java.version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Maven Plugins -->
@@ -103,7 +103,7 @@
 		<swagger.jersey.version>1.5.0</swagger.jersey.version>
 		<sweble.version>1.1.0</sweble.version>
 		<testutils.version>1.0.0</testutils.version>
-		<tika.version>0.10</tika.version>
+		<tika.version>1.10</tika.version>
 		<tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
 		<virtuoso.jena.version>1.0</virtuoso.jena.version>
 		<virtuoso.jdbc.version>1.0</virtuoso.jdbc.version>
@@ -680,20 +680,19 @@
 			<url>https://raw.github.com/cbadenes/test-utils/mvn-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
+				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
 
 		<!-- OEG Aldebaran Repository -->
-
+<!--
 		<repository>
 			<id>aldebaran-libs</id>
 			<name>aldebaran-drinventor-external-libs</name>
 			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
-			<snapshots>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
+
 		</repository>
+		-->
 		<!-- Spring Milestone Repository -->
 		<repository>
 			<id>spring-milestones</id>
