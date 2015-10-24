@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.AnnotatedWord;
 import org.epnoi.model.Content;

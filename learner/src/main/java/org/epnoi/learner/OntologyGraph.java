@@ -1,4 +1,4 @@
-package org.epnoi.learner.automata;
+package org.epnoi.learner;
 
 import org.epnoi.learner.relations.RelationEdge;
 import org.epnoi.learner.terms.TermVertice;

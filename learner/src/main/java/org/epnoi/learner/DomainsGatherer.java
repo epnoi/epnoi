@@ -3,7 +3,6 @@ package org.epnoi.learner;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.modules.Core;
 

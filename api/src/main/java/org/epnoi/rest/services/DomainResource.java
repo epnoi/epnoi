@@ -23,7 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.epnoi.learner.automata.OntologyLearningTask;
+import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;

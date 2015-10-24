@@ -3,12 +3,13 @@ package org.epnoi.model;
 public class Domain implements Resource {
 
 	private String uri;
-	private String label="";
+
 	//Extensional definition
 	private String type; // Type of the considered resources in
 										// the domain
 	private String expression="";// Expression that defines such resources
 
+	private String label="";
 	//Intensional definition
 	private String resources; // Each domain can define an aggregation
 										// of the resources that belong to it in

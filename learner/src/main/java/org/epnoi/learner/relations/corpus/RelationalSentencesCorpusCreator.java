@@ -154,13 +154,14 @@ public class RelationalSentencesCorpusCreator {
 
 			if (this.core.getInformationHandler().contains(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS)) {
 
-				// System.out.println(count++ + " Retrieving " + uri);
+				System.out.println(count++ + " Retrieving " + uri);
+				/*
 				if (count % 200 == 0) {
 					logger.info("Analyzing " + count++ + "> " + uri);
 				} else {
 					count++;
 				}
-
+*/
 				WikipediaPage wikipediaPage = (WikipediaPage) this.core.getInformationHandler().get(uri,
 						RDFHelper.WIKIPEDIA_PAGE_CLASS);
 
@@ -190,6 +191,8 @@ public class RelationalSentencesCorpusCreator {
 					}
 				}
 
+			}else{
+				logger.info("The wikipedia page "+uri+ " couldn't be found in the UIA");
 			}
 
 		}
@@ -435,7 +438,7 @@ public class RelationalSentencesCorpusCreator {
 
 		parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER, 80);
 
-		parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, false);
+		parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, true);
 
 		parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 

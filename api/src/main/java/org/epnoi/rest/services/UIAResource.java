@@ -117,7 +117,7 @@ public class UIAResource extends UIAService {
 		demoDataLoader.init(core);
 		demoDataLoader.load();
 
-		// We retrieve the knowledge base, since it is initialized in a lazy manner
+
 	
 		
 		logger.info("Retrieving the knowledge base");

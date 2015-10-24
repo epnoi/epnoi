@@ -33,8 +33,8 @@ public class WikipediaPagesRetriever {
 		List<String> queryResults = informationStore.query(queryExpression);
 
 		
-		//return queryResults;
-		return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
+		return queryResults;
+		//return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
 	}
 
 }
