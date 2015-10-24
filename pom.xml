@@ -103,7 +103,7 @@
 		<swagger.jersey.version>1.5.0</swagger.jersey.version>
 		<sweble.version>1.1.0</sweble.version>
 		<testutils.version>1.0.0</testutils.version>
-		<tika.version>1.10</tika.version>
+		<tika.version>1.7</tika.version>
 		<tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
 		<virtuoso.jena.version>1.0</virtuoso.jena.version>
 		<virtuoso.jdbc.version>1.0</virtuoso.jdbc.version>
@@ -408,13 +408,13 @@
 				<groupId>org.apache.tika</groupId>
 				<artifactId>tika-core</artifactId>
 				<version>${tika.version}</version>
-				<classifier>jdk14</classifier>
+				<!--<classifier>jdk14</classifier>-->
 			</dependency>
 			<dependency>
 				<groupId>org.apache.tika</groupId>
 				<artifactId>tika-parsers</artifactId>
 				<version>${tika.version}</version>
-				<classifier>jdk14</classifier>
+				<!--<classifier>jdk14</classifier>-->
 			</dependency>
 			<dependency>
 				<groupId>org.apache.jena</groupId>

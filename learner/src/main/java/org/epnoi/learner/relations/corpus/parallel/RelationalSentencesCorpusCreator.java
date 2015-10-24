@@ -36,7 +36,7 @@ public class RelationalSentencesCorpusCreator {
 	private int MAX_SENTENCE_LENGTH;
 
 
-	private static final String JOB_NAME = "RELATIONAL_SENTENCES_CORPUS";
+	private static final String JOB_NAME = "RELATIONAL_SENTENCES_CORPUS_CREATION";
 
 	// ----------------------------------------------------------------------------------------------------------------------
 

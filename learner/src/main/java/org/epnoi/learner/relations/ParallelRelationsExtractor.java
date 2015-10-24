@@ -1,13 +1,18 @@
 package org.epnoi.learner.relations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
+import gate.DocumentContent;
+import gate.util.InvalidOffsetException;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.relations.corpus.ProbableRelationalSentencesFilter;
+import org.epnoi.learner.relations.corpus.parallel.*;
+import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
@@ -21,18 +26,16 @@ import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-import gate.DocumentContent;
-import gate.util.InvalidOffsetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
-public class RelationsExtractor {
+public class ParallelRelationsExtractor {
     private static final Logger logger = Logger
-            .getLogger(RelationsExtractor.class.getName());
+            .getLogger(ParallelRelationsExtractor.class.getName());
     private static final long MAX_DISTANCE = 20;
     private Core core;
     private RelationalPatternsModel softPatternModel;
@@ -46,7 +49,7 @@ public class RelationsExtractor {
     private boolean considerKnowledgeBase = false;
     private KnowledgeBase knowledgeBase;
 
-
+    private static final String JOB_NAME = "RELATIONS_EXTRACTION";
     // --------------------------------------------------------------------------------------
 
     public void init(Core core, DomainsTable domainsTable, Parameters parameters)
@@ -98,11 +101,28 @@ public class RelationsExtractor {
         // The relations finding task is only performed in the target domain,
         // these are the resources that we should consider
 
-        for (String domainResourceURI : domainsTable.getDomainResources().get(
-                domainsTable.getTargetDomain().getUri())) {
-            logger.info("Indexing the resource " + domainResourceURI);
-            _findRelationsInResource(domainResourceURI);
+        List<String> domainResourceUris = domainsTable.getDomainResources().get(
+                domainsTable.getTargetDomain().getUri());
+        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
+
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        // First we must create the RDD with the URIs of the resources to be
+        // included in the creation of the corpus
+        JavaRDD<String> corpusURIs = sparkContext.parallelize(domainResourceUris);
+
+        JavaRDD<Document> corpusAnnotatedDocuments = corpusURIs.flatMap(new DocumentRetrievalFlatMapFunction());
+
+        JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapFunction());
+
+        JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(new SentenceToRelationCandidateFunction());
+        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceMapFunction());
+        JavaRDD<RelationalSentence> probableRelationalSentences = relationalSentences.filter(new ProbableRelationalSentencesFilter());
+        JavaRDD<Relation> relations = probableRelationalSentences.map(new RelationalSentenceToRelationMapper());
+        for (Relation relation : relations.collect()) {
+            relationsTable.addRelation(relation);
         }
+
         return relationsTable;
     }
 
@@ -134,7 +154,7 @@ public class RelationsExtractor {
             _testSentence(sentenceStartOffset, sentenceEndOffset,
                     annotatedResourceDocument, termCandidateBuilder);
             /*
-			 * _testSentence(sentenceStartOffset, sentenceContent,
+             * _testSentence(sentenceStartOffset, sentenceContent,
 			 * annotatedResourceAnnotations.getContained( sentenceStartOffset,
 			 * sentenceEndOffset));
 			 */
@@ -241,7 +261,7 @@ public class RelationsExtractor {
                                  String targetTermWord, double relationProbability) {
         Term sourceTerm = this.termsTable.getTerm(Term.buildURI(sourceTermWord,
                 this.targetDomain));
-		/*
+        /*
 		 * String targetToken = (String) target.getFeatures() .get("string");
 		 */
 

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;

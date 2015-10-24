@@ -146,7 +146,6 @@ System.out.println("---------------------------------------------------------___
 	// ---------------------------------------------------------------------------------------------------
 
 	public ResearchObject read(String URI) {
-System.out.println("............URI................> "+URI);
 		Query sparql = QueryFactory.create("DESCRIBE <" + URI + "> FROM <"
 				+ parameters.getGraph() + ">");
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(

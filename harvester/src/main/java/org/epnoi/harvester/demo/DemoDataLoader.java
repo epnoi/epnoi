@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.sun.org.omg.CORBA.ContextIdentifierHelper;
+import org.apache.poi.util.SystemOutLogger;
 import org.epnoi.harvester.legacy.filesystem.FilesystemHarvester;
 import org.epnoi.harvester.legacy.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.model.Domain;
@@ -15,8 +16,11 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 
+import javax.swing.*;
+
 public class DemoDataLoader {
     Core core;
+    public static final String DOMAIN_URI="http://www.epnoi.org/CGTestCorpusDomain";
     private static final Logger logger = Logger.getLogger(DemoDataLoader.class
             .getName());
 
@@ -47,7 +51,7 @@ public class DemoDataLoader {
                 "http://CGTestCorpus");
         parameters.setParameter(FilesystemHarvesterParameters.VERBOSE, true);
 
-        parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, true);
+        parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, false);
 
         parameters.setParameter(FilesystemHarvesterParameters.FILEPATH,
                 "/opt/epnoi/epnoideployment/firstReviewResources/CGCorpus");
@@ -63,14 +67,14 @@ public class DemoDataLoader {
 
     private void _createTheSimpleDomain(List<Paper> papers) {
         Domain domain = new Domain();
-        domain.setUri("http://demodomain");
+        domain.setUri(DOMAIN_URI);
         domain.setExpression("sparqlexpression");
         domain.setLabel("simple demo domain");
         domain.setType(RDFHelper.PAPER_CLASS);
-        domain.setResources("http://demodomain/resources");
-
+        domain.setResources(DOMAIN_URI+"/resources");
+      //  _eraseDomainsAndResearchObjects();
         ResearchObject resources = new ResearchObject();
-        resources.setUri("http://demodomain/resources");
+        resources.setUri(DOMAIN_URI+"/resources");
 
         resources.setAggregatedResources(papers.stream().map(element -> element.getUri()).collect(Collectors.toList()));
 
@@ -81,6 +85,15 @@ public class DemoDataLoader {
         this.core.getInformationHandler().put(domain,
                 org.epnoi.model.Context.getEmptyContext());
 
+
+
+        System.out.println("The retrieved uris of the domain are ");
+        List<String> uris = core.getDomainsHandler().gather(domain);
+        System.out.println(uris);
+        System.out.println("There are "+uris.size());
+    }
+
+    private void _eraseDomainsAndResearchObjects() {
         List<String> domainURIs = this.core.getInformationHandler().getAll(
                 RDFHelper.DOMAIN_CLASS);
         for (String domainURI : domainURIs) {
@@ -89,7 +102,6 @@ public class DemoDataLoader {
             this.core.getInformationHandler().remove(domainURI + "/resources",
                     RDFHelper.RESEARCH_OBJECT_CLASS);
         }
-
     }
 
     // --------------------------------------------------------------------------------------------
@@ -115,5 +127,6 @@ public class DemoDataLoader {
         DemoDataLoader demoDataLoader = new DemoDataLoader();
         demoDataLoader.init(core);
         demoDataLoader.load();
+
     }
 }

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.automata.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Term;

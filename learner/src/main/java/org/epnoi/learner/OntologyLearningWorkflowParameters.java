@@ -1,4 +1,4 @@
-package org.epnoi.learner.automata;
+package org.epnoi.learner;
 
 import org.epnoi.model.commons.Parameters;
 

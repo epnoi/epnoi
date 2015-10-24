@@ -3,6 +3,7 @@ package org.epnoi.uia.domains;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.epnoi.model.Domain;
 import org.epnoi.model.ResearchObject;
@@ -41,7 +42,7 @@ public class DomainsHandlerImpl implements DomainsHandler {
 			}
 		}
 
-		List<String> cleanedURI = _cleanMissingResources(foundURIs, domain);
+		List<String> cleanedURI = _cleanMissingAndRepeatedResources(foundURIs, domain);
 		return cleanedURI;
 	}
 
@@ -64,7 +65,7 @@ public class DomainsHandlerImpl implements DomainsHandler {
 				.getInformationHandler().get(domain.getResources(),
 						RDFHelper.RESEARCH_OBJECT_CLASS);
 		
-		//System.out.println("( "+domain.getResources()+" )RESOUUCE OBJSCT "+ resources);
+		System.out.println("( "+domain.getResources()+" )RESOUUCE OBJSCT "+ resources);
 		if (resources != null) {
 			List<String> foundURIs = resources.getAggregatedResources();
 			if (foundURIs != null) {
@@ -88,11 +89,12 @@ public class DomainsHandlerImpl implements DomainsHandler {
 	 *            The current domain
 	 * @return
 	 */
-	private List<String> _cleanMissingResources(List<String> foundURIs,
-			Domain domain) {
-		List<String> cleanedURIs = new ArrayList<String>();
-		for (String uri : foundURIs) {
-			System.out.println(">>> "+domain);
+	private List<String> _cleanMissingAndRepeatedResources(List<String> foundURIs,
+														   Domain domain) {
+		List<String> cleanedURIs = new ArrayList<>();
+
+		for (String uri : foundURIs.stream().distinct().collect(Collectors.toList())) {
+			//System.out.println(">>> "+domain);
 			if (core.getInformationHandler().contains(uri, domain.getType())) {
 				cleanedURIs.add(uri);
 			}
