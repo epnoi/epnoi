@@ -66,7 +66,7 @@
 		<commons.pool.version>2.4.1</commons.pool.version>
 		<flexjson.version>2.0</flexjson.version>
 		<gate.version>8.1</gate.version>
-		<gate.standford.version>1.0</gate.standford.version>
+		<gate.stanford.version>1.0</gate.stanford.version>
 		<guava.version>18.0</guava.version>
 		<hector.version>1.1-3</hector.version>
 		<hibernate.version>4.3.0.Beta5</hibernate.version>
@@ -99,7 +99,7 @@
 		<spark.version>1.5.0</spark.version>
 		<springboot.version>1.2.1.RELEASE</springboot.version>
 		<spring.version>4.1.7.RELEASE</spring.version>
-		<standford.parser.version>1.0</standford.parser.version>
+		<stanford.parser.version>1.0</stanford.parser.version>
 		<surefire.junit.version>2.12</surefire.junit.version>
 		<swagger.jersey.version>1.5.0</swagger.jersey.version>
 		<sweble.version>1.1.0</sweble.version>
@@ -385,12 +385,12 @@
 			<dependency>
 				<groupId>gate-stanford</groupId>
 				<artifactId>gate-stanford</artifactId>
-				<version>${gate.standford.version}</version>
+				<version>${gate.stanford.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>standford-parser</groupId>
-				<artifactId>standford-parser</artifactId>
-				<version>${standford.parser.version}</version>
+				<groupId>stanford-parser</groupId>
+				<artifactId>stanford-parser</artifactId>
+				<version>${stanford.parser.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>uk.ac.gate</groupId>
@@ -709,15 +709,16 @@
 			</snapshots>
 		</repository>
 
-		<!-- OEG Aldebaran Repository -->
-
+		<!-- External Libraries -->
 		<repository>
-			<id>aldebaran-libs</id>
-			<name>aldebaran-drinventor-external-libs</name>
-			<url>http://development.seals-project.eu/artifactory/drinventor-external-libs-local</url>
-
+			<id>external-libs</id>
+			<url>https://raw.github.com/epnoi/external-libs/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
-		
+
 		<!-- Spring Milestone Repository -->
 		<repository>
 			<id>spring-milestones</id>
@@ -728,23 +729,5 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
-
-	<distributionManagement>
-
-		<!-- OEG Aldebaran Releases Repository -->
-		<repository>
-			<id>aldebaran-releases</id>
-			<name>aldebaran-drinventor-releases</name>
-			<url>http://development.seals-project.eu/artifactory/drinventor-releases-local</url>
-		</repository>
-
-		<!-- OEG Aldebaran Snapshot Repository -->
-		<snapshotRepository>
-			<id>aldebaran-snapshot</id>
-			<name>aldebaran-drinventor-snapshots</name>
-			<url>http://development.seals-project.eu/artifactory/drinventor-snapshots-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-
+	
 </project>
