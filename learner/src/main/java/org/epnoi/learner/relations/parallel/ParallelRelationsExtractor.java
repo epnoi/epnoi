@@ -1,4 +1,4 @@
-package org.epnoi.learner.relations;
+package org.epnoi.learner.relations.parallel;
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -12,7 +12,6 @@ import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.corpus.ProbableRelationalSentencesFilter;
 import org.epnoi.learner.relations.corpus.parallel.*;
-import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
@@ -192,6 +191,7 @@ public class ParallelRelationsExtractor {
             for (int j = i + 1; j < termAnnotations.size(); j++) {
                 Annotation source = termAnnotations.get(i);
                 Annotation target = termAnnotations.get(j);
+
                 if (!_areFar(source, target)) {
                     // For each pair of terms we check both as target and as
                     // source
