@@ -1,6 +1,8 @@
 package org.epnoi.learner;
 
-import gate.Document;
+import gate.*;
+import gate.corpora.DocumentContentImpl;
+import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -8,8 +10,10 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.learner.relations.corpus.parallel.*;
 import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
@@ -41,6 +45,39 @@ public class CommonGateFunctionsTests {
 
     // ----------------------------------------------------------------------------------------------------------------------
 
+public void testSentence(){
+    Document document=null;
+    try {
+
+        document = core.getNLPHandler().process("Autism is a neurodevelopmental disorder characterized by impaired social interaction, verbal and non-verbal communication, and restricted and repetitive behavior. Parents usually notice signs in the first two years of their child's life.");
+    } catch (EpnoiResourceAccessException e) {
+        e.printStackTrace();
+    }
+
+
+    gate.Annotation sentence = document.getAnnotations().get(NLPAnnotationsConstants.SENTENCE).iterator().next();
+        System.out.println(sentence);
+    //System.out.println(document);
+    System.out.println("dc"+document.getContent());
+    try {
+        document.edit(sentence.getStartNode().getOffset(), sentence.getEndNode().getOffset(), new DocumentContentImpl(""));
+
+    } catch (InvalidOffsetException e) {
+        e.printStackTrace();
+    }
+    System.out.println("dc"+document.getContent());
+
+/*
+    try {
+        document.edit(0L, startOffset, new DocumentContentImpl(""));
+
+        document.edit(endOffset + 1, document.getAnnotations().lastNode().getOffset(), new DocumentContentImpl(""));
+    } catch (InvalidOffsetException e) {
+        e.printStackTrace();
+    }
+    */
+}
+
 
     public void test(List<String> uris) {
 
@@ -60,13 +97,32 @@ public class CommonGateFunctionsTests {
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
 
-
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
                 .flatMap(new DocumentToSentencesFlatMapFunction());
 
-        System.out.println(annotatedDocumentsSentences.collect().get(0));
-	/*
-		for (Sentence sentence : annotatedDocumentsSentences.collect()) {
+
+        Sentence sentence = annotatedDocumentsSentences.collect().get(0);
+        Document document = sentence.getContainedAnnotations().getDocument();
+
+        Long startOffset = sentence.getAnnotation().getStartNode().getOffset();
+        Long endOffset = sentence.getAnnotation().getEndNode().getOffset();
+        System.out.println("A______>>  "+document.getContent());
+        System.out.println("S length > "+(endOffset-startOffset));
+        System.out.println("lengafter"+document.getContent().size());
+        Document newDocument = null;
+        try {
+            document.edit(0L, startOffset, new DocumentContentImpl(""));
+            System.out.println("lengbefore>" + document.getContent().size());
+            document.edit(endOffset -startOffset, document.getAnnotations().lastNode().getOffset(), new DocumentContentImpl(""));
+        } catch (InvalidOffsetException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("A______>>  "+document);
+
+
+    /*
+        for (Sentence sentence : annotatedDocumentsSentences.collect()) {
 			System.out.println("-------> " + sentence);
 		}
 
@@ -84,7 +140,7 @@ public class CommonGateFunctionsTests {
 */
         //System.out.println("------>"+relationalSentences.collect());
 
-     //   return relationalSentences.collect();
+        //   return relationalSentences.collect();
     }
     // ----------------------------------------------------------------------------------------------------------------------
 
@@ -97,7 +153,6 @@ public class CommonGateFunctionsTests {
         Core core = CoreUtility.getUIACore();
 
 
-
         try {
             relationSentencesCorpusCreator.init(core);
         } catch (EpnoiInitializationException e) {
@@ -108,7 +163,7 @@ public class CommonGateFunctionsTests {
 
 
         relationSentencesCorpusCreator.test(Arrays.asList("http://en.wikipedia.org/wiki/Autism"));
-
+//relationSentencesCorpusCreator.testSentence();
     }
 
 }
