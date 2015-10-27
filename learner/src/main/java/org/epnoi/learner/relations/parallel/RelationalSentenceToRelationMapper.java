@@ -8,6 +8,7 @@ import org.epnoi.model.RelationalSentence;
 public class RelationalSentenceToRelationMapper implements Function<RelationalSentence,Relation> {
     @Override
     public Relation call(RelationalSentence relationalSentence) throws Exception {
+
         return null;
     }
 
