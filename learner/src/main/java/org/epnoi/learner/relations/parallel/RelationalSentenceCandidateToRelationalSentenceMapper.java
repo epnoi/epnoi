@@ -7,7 +7,6 @@ import org.apache.spark.api.java.function.Function;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
 import org.epnoi.learner.relations.corpus.parallel.Sentence;
 import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.Relation;
 import org.epnoi.model.RelationalSentence;
 
 
@@ -33,7 +32,7 @@ public class RelationalSentenceCandidateToRelationalSentenceMapper implements Fu
         Long endOffset = sentence.getAnnotation().getEndNode().getOffset();
 
         try {
-            //The content from de beginning of the doccument to the beginning of the sentece must be removed
+            //The content from de beginning of the document to the beginning of the sentece must be removed
             document.edit(0L, startOffset, new DocumentContentImpl(""));
 
             //We delete also the content from the end of the sentence to the end of the document
