@@ -11,10 +11,9 @@ import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGene
 
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternNode;
 import org.epnoi.learner.terms.TermCandidateBuilder;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.Term;
+import org.epnoi.model.*;
 import org.epnoi.uia.commons.GateUtils;
+import org.epnoi.uia.informationstore.dao.cassandra.RelationsTableCassandraHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +21,10 @@ import java.util.List;
 
 public class RelationalSentenceToRelationMapper implements FlatMapFunction<RelationalSentence, Relation> {
     private final double THRESHOLD = 0.4;
+    private String domain = "";
     private RelationalPatternsModel softPatternModel = new BigramSoftPatternModel();
+
+    //------------------------------------------------------------------------------------------------------------------
 
     @Override
     public Iterable<Relation> call(RelationalSentence relationalSentence) throws Exception {
@@ -33,21 +35,20 @@ public class RelationalSentenceToRelationMapper implements FlatMapFunction<Relat
                 .generate(relationalSentence);
 
         Iterator<RelationalPattern> generatedPatternsIt = generatedPatterns.iterator();
-        double relationHood = 0;
+        double relationhood = 0;
         while (generatedPatternsIt.hasNext()) {
-            relationHood = Math.max(relationHood, this.softPatternModel
+            relationhood = Math.max(relationhood, this.softPatternModel
                     .calculatePatternProbability(generatedPatternsIt.next()));
-
         }
-
-        if (relationHood > THRESHOLD) {
-            Relation relation = _createRelation(relationalSentence, relationHood);
-
+        if (relationhood > THRESHOLD) {
+            Relation relation = _createRelation(relationalSentence, relationhood);
+            foundRelations.add(relation);
         }
-
 
         return foundRelations;
     }
+
+    //------------------------------------------------------------------------------------------------------------------
 
     private Relation _createRelation(RelationalSentence relationalSentence,
                                      double relationhood) {
@@ -56,20 +57,23 @@ public class RelationalSentenceToRelationMapper implements FlatMapFunction<Relat
         TermCandidateBuilder termCandidateBulder = new TermCandidateBuilder(relationalSentenceDocument);
 
         Relation relation = new Relation();
+        AnnotatedWord<TermMetadata> sourceTerm = termCandidateBulder.buildTermCandidate(relationalSentence.getSource());
+        AnnotatedWord<TermMetadata> targetTerm = termCandidateBulder.buildTermCandidate(relationalSentence.getTarget());
 
-/*
-        String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
-                        .getWord(), targetTerm.getAnnotatedTerm().getWord(), type,
-                domain);
+        String relationURI = Relation.buildURI(sourceTerm
+                .getWord(), targetTerm.getWord(), RelationHelper.HYPERNYM, domain);
 
         // If the relation is not already stored, we simply add it
 
         relation.setUri(relationURI);
-        relation.setSource(sourceTerm.getUri());
-        relation.setTarget(targetTerm.getUri());
-        relation.setType(RelationsHelper);
-        relation.addProvenanceSentence(provenanceSentence, relationhood);
-*/
+        relation.setSource(Term.buildURI(sourceTerm.getWord(), domain));
+        relation.setTarget(Term.buildURI(targetTerm.getWord(), domain));
+        relation.setType(RelationHelper.HYPERNYM);
+        relation.addProvenanceSentence(relationalSentence.getSentence(), relationhood);
+
         return relation;
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+
 }
