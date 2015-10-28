@@ -55,21 +55,21 @@ public class RelationalSentenceToRelationMapper implements FlatMapFunction<Relat
         Document relationalSentenceDocument = GateUtils.deserializeGATEDocument(relationalSentence.getAnnotatedSentence());
         TermCandidateBuilder termCandidateBulder = new TermCandidateBuilder(relationalSentenceDocument);
 
+        Relation relation = new Relation();
 
-
-
+/*
         String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
                         .getWord(), targetTerm.getAnnotatedTerm().getWord(), type,
                 domain);
 
         // If the relation is not already stored, we simply add it
-        Relation relation = new Relation();
+
         relation.setUri(relationURI);
         relation.setSource(sourceTerm.getUri());
         relation.setTarget(targetTerm.getUri());
         relation.setType(RelationsHelper);
         relation.addProvenanceSentence(provenanceSentence, relationhood);
-
+*/
         return relation;
     }
 }
