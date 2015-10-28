@@ -24,6 +24,9 @@ public class RelationalSentenceToRelationMapper implements FlatMapFunction<Relat
     private String domain = "";
     private RelationalPatternsModel softPatternModel = new BigramSoftPatternModel();
 
+
+
+
     //------------------------------------------------------------------------------------------------------------------
 
     @Override
