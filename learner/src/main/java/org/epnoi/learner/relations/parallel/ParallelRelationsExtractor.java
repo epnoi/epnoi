@@ -116,9 +116,9 @@ public class ParallelRelationsExtractor {
 
         JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(new SentenceToRelationCandidateFunction());
         JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceMapFunction());
-        JavaRDD<RelationalSentence> probableRelationalSentences = relationalSentences.filter(new ProbableRelationalSentencesFilter());
-        JavaRDD<Relation> relations = probableRelationalSentences.map(new RelationalSentenceToRelationMapper());
-        for (Relation relation : relations.collect()) {
+        JavaRDD<Relation> probableRelations = relationalSentences.flatMap(new RelationalSentenceToRelationMapper());
+
+        for (Relation relation : probableRelations.collect()) {
             relationsTable.addRelation(relation);
         }
 
