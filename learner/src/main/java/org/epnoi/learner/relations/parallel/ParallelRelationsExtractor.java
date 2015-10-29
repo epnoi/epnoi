@@ -8,6 +8,7 @@ import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.corpus.ProbableRelationalSentencesFilter;
@@ -28,6 +29,7 @@ import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -262,7 +264,7 @@ public class ParallelRelationsExtractor {
         Term sourceTerm = this.termsTable.getTerm(Term.buildURI(sourceTermWord,
                 this.targetDomain));
         /*
-		 * String targetToken = (String) target.getFeatures() .get("string");
+         * String targetToken = (String) target.getFeatures() .get("string");
 		 */
 
         Term targetTerm = this.termsTable.getTerm(Term.buildURI(targetTermWord,
@@ -311,5 +313,23 @@ public class ParallelRelationsExtractor {
         return annotatedContent;
     }
 
+    public static void main(String[] args) {
+        System.out.println("starting");
 
+        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
+
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+    final Broadcast<String> separator= sparkContext.broadcast("/");
+
+        JavaRDD<String> corpusURIs = sparkContext.parallelize(Arrays.asList("world", "boadilla", "madrid"));
+
+        JavaRDD<String> greetingsRDD = corpusURIs.map(s -> {
+            SimpleTestFunction simpleTestFunction = new SimpleTestFunction(separator.getValue());
+            return simpleTestFunction.test(s);
+        });
+        System.out.println(greetingsRDD.collect());
+
+        System.out.println("stoping");
+    }
 }
