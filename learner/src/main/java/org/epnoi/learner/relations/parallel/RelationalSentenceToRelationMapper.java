@@ -3,6 +3,8 @@ package org.epnoi.learner.relations.parallel;
 import gate.Document;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.epnoi.learner.OntologyLearningWorkflow;
+import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
@@ -19,17 +21,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class RelationalSentenceToRelationMapper implements FlatMapFunction<RelationalSentence, Relation> {
-    private final double THRESHOLD = 0.4;
-    private String domain = "";
-    private RelationalPatternsModel softPatternModel = new BigramSoftPatternModel();
-
-
+public class RelationalSentenceToRelationMapper {
+    private BigramSoftPatternModel softPatternModel;
+    private double THRESHOLD;
+    private String domain;
 
 
     //------------------------------------------------------------------------------------------------------------------
 
-    @Override
+
+    public RelationalSentenceToRelationMapper(OntologyLearningWorkflowParameters parameters) {
+        this.softPatternModel = (BigramSoftPatternModel) parameters.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL);
+        this.THRESHOLD = (double) parameters.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
+        this.domain = (String) parameters.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+    }
+    //------------------------------------------------------------------------------------------------------------------
+
+
     public Iterable<Relation> call(RelationalSentence relationalSentence) throws Exception {
         List<Relation> foundRelations = new ArrayList<>();
         LexicalRelationalPatternGenerator patternsGenerator = new LexicalRelationalPatternGenerator();
@@ -57,16 +65,15 @@ public class RelationalSentenceToRelationMapper implements FlatMapFunction<Relat
                                      double relationhood) {
 
         Document relationalSentenceDocument = GateUtils.deserializeGATEDocument(relationalSentence.getAnnotatedSentence());
-        TermCandidateBuilder termCandidateBulder = new TermCandidateBuilder(relationalSentenceDocument);
+        TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(relationalSentenceDocument);
 
         Relation relation = new Relation();
-        AnnotatedWord<TermMetadata> sourceTerm = termCandidateBulder.buildTermCandidate(relationalSentence.getSource());
-        AnnotatedWord<TermMetadata> targetTerm = termCandidateBulder.buildTermCandidate(relationalSentence.getTarget());
+        AnnotatedWord<TermMetadata> sourceTerm = termCandidateBuilder.buildTermCandidate(relationalSentence.getSource());
+        AnnotatedWord<TermMetadata> targetTerm = termCandidateBuilder.buildTermCandidate(relationalSentence.getTarget());
 
         String relationURI = Relation.buildURI(sourceTerm
                 .getWord(), targetTerm.getWord(), RelationHelper.HYPERNYM, domain);
 
-        // If the relation is not already stored, we simply add it
 
         relation.setUri(relationURI);
         relation.setSource(Term.buildURI(sourceTerm.getWord(), domain));

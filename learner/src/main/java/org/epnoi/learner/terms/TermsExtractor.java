@@ -524,7 +524,7 @@ public class TermsExtractor {
 
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
 
-		List<String> consideredDomains = Arrays.asList("CGTestCorpus");
+		ArrayList<String> consideredDomains = new ArrayList(Arrays.asList("CGTestCorpus"));
 		String targetDomain = "CGTestCorpus";
 		Double hyperymMinimumThreshold = 0.7;
 		boolean extractTerms = true;
