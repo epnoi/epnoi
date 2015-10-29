@@ -1,5 +1,6 @@
 package org.epnoi.learner.terms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -84,7 +85,7 @@ public class TermsRetriever {
 
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
 
-		List<String> consideredDomains = Arrays.asList("CGTestCorpus");
+		ArrayList<String> consideredDomains = new ArrayList(Arrays.asList("CGTestCorpus"));
 		String targetDomain = "CGTestCorpus";
 		Double hyperymMinimumThreshold = 0.7;
 		boolean extractTerms = true;

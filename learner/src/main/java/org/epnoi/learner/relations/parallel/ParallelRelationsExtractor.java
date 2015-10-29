@@ -8,6 +8,7 @@ import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.corpus.ProbableRelationalSentencesFilter;
@@ -28,6 +29,7 @@ import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -86,6 +88,7 @@ public class ParallelRelationsExtractor {
 
             this.softPatternModel = RelationalPatternsModelSerializer
                     .deserialize(hypernymModelPath);
+            parameters.setParameter(OntologyLearningWorkflowParameters.HYPERNYM_MODEL, softPatternModel);
         } catch (EpnoiResourceAccessException e) {
             throw new EpnoiInitializationException(e.getMessage());
         }
@@ -106,6 +109,8 @@ public class ParallelRelationsExtractor {
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
+        Broadcast<OntologyLearningWorkflowParameters> parametersBroadcast = sparkContext.broadcast((OntologyLearningWorkflowParameters) this.parameters);
+
         // First we must create the RDD with the URIs of the resources to be
         // included in the creation of the corpus
         JavaRDD<String> corpusURIs = sparkContext.parallelize(domainResourceUris);
@@ -114,9 +119,15 @@ public class ParallelRelationsExtractor {
 
         JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapFunction());
 
-        JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(new SentenceToRelationCandidateFunction());
+        JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(relationalSentenceCandidate -> {
+            SentenceToRelationCandidateFunction mapper = new SentenceToRelationCandidateFunction(parametersBroadcast.getValue());
+            return mapper.call(relationalSentenceCandidate);
+        });
         JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceMapFunction());
-        JavaRDD<Relation> probableRelations = relationalSentences.flatMap(new RelationalSentenceToRelationMapper());
+        JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
+            RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
+            return mapper.call(relationalSentence);
+        });
 
         for (Relation relation : probableRelations.collect()) {
             relationsTable.addRelation(relation);
@@ -262,7 +273,7 @@ public class ParallelRelationsExtractor {
         Term sourceTerm = this.termsTable.getTerm(Term.buildURI(sourceTermWord,
                 this.targetDomain));
         /*
-		 * String targetToken = (String) target.getFeatures() .get("string");
+         * String targetToken = (String) target.getFeatures() .get("string");
 		 */
 
         Term targetTerm = this.termsTable.getTerm(Term.buildURI(targetTermWord,
@@ -296,8 +307,8 @@ public class ParallelRelationsExtractor {
 
         Content<Object> annotatedContent = core.getInformationHandler()
                 .getAnnotatedContent(selector);
-		/*
-		 * Document document = null; try { document = (Document) Factory
+        /*
+         * Document document = null; try { document = (Document) Factory
 		 * .createResource( "gate.corpora.DocumentImpl", Utils.featureMap(
 		 * gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME, (String)
 		 * annotatedContent.getContent(),
@@ -311,5 +322,23 @@ public class ParallelRelationsExtractor {
         return annotatedContent;
     }
 
+    public static void main(String[] args) {
+        System.out.println("starting");
 
+        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
+
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        final Broadcast<String> separator = sparkContext.broadcast("/");
+
+        JavaRDD<String> corpusURIs = sparkContext.parallelize(Arrays.asList("world", "boadilla", "madrid"));
+
+        JavaRDD<String> greetingsRDD = corpusURIs.map(s -> {
+            SimpleTestFunction simpleTestFunction = new SimpleTestFunction(separator.getValue());
+            return simpleTestFunction.test(s);
+        });
+        System.out.println(greetingsRDD.collect());
+
+        System.out.println("stoping");
+    }
 }

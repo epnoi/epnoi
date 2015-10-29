@@ -1,5 +1,6 @@
 package org.epnoi.learner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -105,7 +106,7 @@ public class OntologyLearningTask {
 	public void perform(Core core, Domain domain) {
 		System.out.println("Starting the Ontology Learning Task");
 		this.domain = domain;
-		List<Domain> consideredDomains = Arrays.asList(domain);
+		ArrayList<Domain> consideredDomains = new ArrayList(Arrays.asList(domain));
 
 		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
 		ontologyLearningParameters.setParameter(

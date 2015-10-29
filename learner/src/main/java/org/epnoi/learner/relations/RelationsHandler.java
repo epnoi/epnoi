@@ -256,7 +256,7 @@ public class RelationsHandler {
 
 		// List<Domain> consideredDomains = Arrays.asList(domain);
 
-		List<Domain> consideredDomains = new ArrayList<Domain>();
+		ArrayList<Domain> consideredDomains = new ArrayList<Domain>();
 		String targetDomain = domainURI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;

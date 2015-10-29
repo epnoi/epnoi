@@ -2,7 +2,9 @@ package org.epnoi.learner;
 
 import org.epnoi.model.commons.Parameters;
 
-public class OntologyLearningWorkflowParameters extends Parameters<Object> {
+import java.io.Serializable;
+
+public class OntologyLearningWorkflowParameters extends Parameters<Serializable> implements Serializable {
 
 	// Domain Definition
 	// Parameters--------------------------------------------------------------------------------
@@ -21,6 +23,8 @@ public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 	// Expansion phase
 	// parameters-----------------------------------------------------------------------------------
 
+	public static final String MAX_RELATIONAL_SENTENCE_LENGTH = "MAX_RELATIONAL_SENTENCE_LENGTH";
+
 	public static final String NUMBER_INITIAL_TERMS = "NUMBER_INITIAL_TERMS";
 	// number of initial terms in the ontology
 
@@ -31,6 +35,8 @@ public class OntologyLearningWorkflowParameters extends Parameters<Object> {
 	public static final String EXTRACT_TERMS = "EXTRACT_TERMS";
 
 	public static final String HYPERNYM_MODEL_PATH = "HYPERNYM_MODEL_PATH";
+
+	public static final String HYPERNYM_MODEL = "HYPERNYM_MODEL";
 
 	public static final String HYPERNYM_RELATION_EXTRACTION_THRESHOLD = "HYPERNYM_RELATION_EXTRACTION_THRESHOLD";
 

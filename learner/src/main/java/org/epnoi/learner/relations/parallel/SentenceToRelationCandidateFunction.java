@@ -3,6 +3,8 @@ package org.epnoi.learner.relations.parallel;
 import gate.Annotation;
 import gate.AnnotationSet;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.epnoi.learner.OntologyLearningWorkflow;
+import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
 import org.epnoi.learner.relations.corpus.parallel.Sentence;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
@@ -11,10 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SentenceToRelationCandidateFunction implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
-    private static final long MAX_DISTANCE = 1;
+public class SentenceToRelationCandidateFunction {
+    private int MAX_DISTANCE;
 
-    @Override
+
+
+    SentenceToRelationCandidateFunction(OntologyLearningWorkflowParameters parameters){
+        this.MAX_DISTANCE = (Integer) parameters.getParameterValue(OntologyLearningWorkflowParameters.MAX_RELATIONAL_SENTENCE_LENGTH);
+    }
+
     public Iterable<RelationalSentenceCandidate> call(Sentence sentence) throws Exception {
         List<RelationalSentenceCandidate> generatedRelationalSentenceCandidates = new ArrayList<>();
 

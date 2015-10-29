@@ -1,9 +1,6 @@
 package org.epnoi.learner;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import org.epnoi.learner.relations.RelationsExtractor;
@@ -163,7 +160,7 @@ public class OntologyLearningWorkflow {
 			System.exit(0);
 		}
 
-		List<Domain> consideredDomains = Arrays.asList(domain);
+		ArrayList<Domain> consideredDomains = new ArrayList(Arrays.asList(domain));
 		String targetDomain = DOMAIN_URI;
 
 		Double hyperymExpansionMinimumThreshold = 0.7;
