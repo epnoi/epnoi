@@ -6,6 +6,7 @@ import gate.Document;
 import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
@@ -128,6 +129,10 @@ public class ParallelRelationsExtractor {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
             return mapper.call(relationalSentence);
         });
+
+        JavaPairRDD<String, Relation> probableRelationsByUri = probableRelations.mapToPair(new ResourceKeyValueMapper());
+
+        JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new Rekla):
 
         for (Relation relation : probableRelations.collect()) {
             relationsTable.addRelation(relation);
