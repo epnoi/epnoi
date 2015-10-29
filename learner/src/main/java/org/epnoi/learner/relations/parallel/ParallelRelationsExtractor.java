@@ -28,6 +28,7 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,10 +133,10 @@ public class ParallelRelationsExtractor {
 
         JavaPairRDD<String, Relation> probableRelationsByUri = probableRelations.mapToPair(new ResourceKeyValueMapper());
 
-        JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new Rekla):
+        JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new RelationsReduceByKeyFunction());
 
-        for (Relation relation : probableRelations.collect()) {
-            relationsTable.addRelation(relation);
+        for (Tuple2<String, Relation> tuple: aggregatedProbableRelationsByUri.collect()) {
+            relationsTable.addRelation(tuple._2());
         }
 
         return relationsTable;
