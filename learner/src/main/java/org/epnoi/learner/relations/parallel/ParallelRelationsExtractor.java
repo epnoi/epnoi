@@ -6,6 +6,7 @@ import gate.Document;
 import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
@@ -27,6 +28,7 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,8 +131,12 @@ public class ParallelRelationsExtractor {
             return mapper.call(relationalSentence);
         });
 
-        for (Relation relation : probableRelations.collect()) {
-            relationsTable.addRelation(relation);
+        JavaPairRDD<String, Relation> probableRelationsByUri = probableRelations.mapToPair(new ResourceKeyValueMapper());
+
+        JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new RelationsReduceByKeyFunction());
+
+        for (Tuple2<String, Relation> tuple: aggregatedProbableRelationsByUri.collect()) {
+            relationsTable.addRelation(tuple._2());
         }
 
         return relationsTable;
