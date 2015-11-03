@@ -42,8 +42,6 @@ public class CoreImpl implements Core {
 	private HashMap<String, InformationStore> informationStores;
 	private HashMap<String, List<InformationStore>> informationStoresByType;
 
-//	private RSSHoarder rssHoarder;
-//	private RSSHarvester rssHarvester;
 	private InformationHandler informationHandler;
 	private InformationSourcesHandler informationSourcesHandler = null;
 
@@ -57,21 +55,15 @@ public class CoreImpl implements Core {
 	private KnowldedgeBaseHandler knowledgeBaseHandler = null;
 	private NLPHandler nlpHandler = null;
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.core.CoreInterface#init(org.epnoi.model.parameterization.ParametersModel)
-	 */
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.core.Core#init(org.epnoi.model.parameterization.ParametersModel)
-	 */
 	@Override
 	public synchronized void init(ParametersModel parametersModel) throws EpnoiInitializationException {
 		logger.info(
 				"\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
 		logger.info("Initializing the epnoi uia core with the following parameters ");
 		logger.info(parametersModel.toString());
-		this.informationStores = new HashMap<String, InformationStore>();
-		this.informationStoresByType = new HashMap<String, List<InformationStore>>();
+		this.informationStores = new HashMap<>();
+		this.informationStoresByType = new HashMap<>();
 		this.parametersModel = parametersModel;
 		this._initEventBus();
 		this._initNLPHandler();
@@ -93,12 +85,6 @@ public class CoreImpl implements Core {
 		logger.info("");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.core.CoreInterface#getNLPHandler()
-	 */
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.core.Core#getNLPHandler()
-	 */
 
 	@Override
 	public NLPHandler getNLPHandler() {
@@ -234,38 +220,7 @@ public class CoreImpl implements Core {
 		informationsStoresOfType.add(informationStore);
 	}
 
-	// ----------------------------------------------------------------------------------------------------------
-/*
-	private void _hoardersInitialization() {
-		logger.info("Initializing hoarders");
-		RSSHoarderParameters parameters = this.parametersModel.getRssHoarder();
-		if (parameters != null) {
-			this.rssHoarder = new RSSHoarder(parameters);
-			this.rssHoarder.start();
-		} else {
-			logger.info("There was no RSSHoarder defined in the configuration file");
-		}
-	}
-*/
-	// ----------------------------------------------------------------------------------------------------------
-/*
-	private void _harvestersInitialization() throws EpnoiInitializationException {
-		logger.info("Initializing the HarvestersHandler");
 
-		this.harvestersHandler = new HarvestersHandler();
-		this.harvestersHandler.init(this);
-
-		logger.info("Initializing the RSSHarvester");
-		RSSHarvesterParameters parameters = this.parametersModel.getRssHarvester();
-
-		if (parameters != null) {
-			this.rssHarvester = new RSSHarvester(this, parameters);
-			this.rssHarvester.start();
-		} else {
-			logger.info("There was no RSSHarvester defined in the configuration file");
-		}
-	}
-*/
 	// ----------------------------------------------------------------------------------------------------------
 
 	private void _initSearchHandler() {

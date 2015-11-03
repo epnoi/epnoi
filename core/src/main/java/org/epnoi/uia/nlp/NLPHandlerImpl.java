@@ -22,9 +22,6 @@ public class NLPHandlerImpl implements NLPHandler {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.nlp.NLPHandler#init(org.epnoi.uia.core.Core, org.epnoi.model.parameterization.ParametersModel)
-	 */
 	@Override
 	public void init(Core core, ParametersModel parameters) {
 
@@ -45,9 +42,6 @@ public class NLPHandlerImpl implements NLPHandler {
 
 	// ----------------------------------------------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.epnoi.uia.nlp.NLPHandler#process(java.lang.String)
-	 */
 	@Override
 	public Document process(String content) throws EpnoiResourceAccessException {
 		if (this.parameters.getNlp() != null) {
