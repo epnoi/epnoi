@@ -117,24 +117,36 @@ public class ParallelRelationsExtractor {
         // included in the creation of the corpus
         JavaRDD<String> corpusURIs = sparkContext.parallelize(domainResourceUris);
 
+        //We retrieve for each document its annotated document
         JavaRDD<Document> corpusAnnotatedDocuments = corpusURIs.flatMap(new DocumentRetrievalFlatMapFunction());
 
+
+        //Each annotated document is split in sentences
         JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapFunction());
 
+        //For each sentence we create all the possible RelationalSentenceCandidates
         JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(relationalSentenceCandidate -> {
             SentenceToRelationCandidateFunction mapper = new SentenceToRelationCandidateFunction(parametersBroadcast.getValue());
             return mapper.call(relationalSentenceCandidate);
         });
+
         JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceMapFunction());
+
         JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
             return mapper.call(relationalSentence);
         });
 
+
+        //Now we aggregate those relations that are repeated in to a single relation that aggregates them
+
+        //First, we create pairs <relationURI, relation>
         JavaPairRDD<String, Relation> probableRelationsByUri = probableRelations.mapToPair(new ResourceKeyValueMapper());
 
+        //We reduce them by key
         JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new RelationsReduceByKeyFunction());
 
+        //Finally each aggregated relation is added to the relations table
         for (Tuple2<String, Relation> tuple: aggregatedProbableRelationsByUri.collect()) {
             relationsTable.addRelation(tuple._2());
         }
@@ -142,191 +154,9 @@ public class ParallelRelationsExtractor {
         return relationsTable;
     }
 
-    // -----------------------------------------------------------------------------------
-
-    private void _findRelationsInResource(String domainResourceURI) {
-        Content<Object> annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
-        Document annotatedResourceDocument = (Document) annotatedResource
-                .getContent();
-
-        AnnotationSet sentenceAnnotations = annotatedResourceDocument
-                .getAnnotations().get(NLPAnnotationsConstants.SENTENCE);
-
-        System.out.println("There are " + sentenceAnnotations.size());
-        DocumentContent sentenceContent = null;
-        AnnotationSet resourceAnnotations = annotatedResourceDocument
-                .getAnnotations();
-
-        Iterator<Annotation> sentencesIt = sentenceAnnotations.iterator();
-        while (sentencesIt.hasNext()) {
-            Annotation sentenceAnnotation = sentencesIt.next();
-
-            Long sentenceStartOffset = sentenceAnnotation.getStartNode()
-                    .getOffset();
-            Long sentenceEndOffset = sentenceAnnotation.getEndNode()
-                    .getOffset();
-            TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
-                    annotatedResourceDocument);
-            _testSentence(sentenceStartOffset, sentenceEndOffset,
-                    annotatedResourceDocument, termCandidateBuilder);
-            /*
-             * _testSentence(sentenceStartOffset, sentenceContent,
-			 * annotatedResourceAnnotations.getContained( sentenceStartOffset,
-			 * sentenceEndOffset));
-			 */
-
-        }
-
-    }
-
-    // -------------------------------------------------------------------------------------------
-
-    private void _testSentence(Long sentenceStartOffset,
-                               Long sentenceEndOffset, Document annotatedResource,
-                               TermCandidateBuilder termCandidateBuilder) {
-
-        AnnotationSet senteceAnnotationSet = annotatedResource.getAnnotations()
-                .get(sentenceStartOffset, sentenceEndOffset);
-        List<Annotation> termAnnotations = new ArrayList<Annotation>();
-        for (Annotation termAnnotation : senteceAnnotationSet
-                .get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
-            termAnnotations.add(termAnnotation);
-        }
-
-        String sentenceContent = null;
-        try {
-            sentenceContent = annotatedResource.getContent()
-                    .getContent(sentenceStartOffset, sentenceEndOffset)
-                    .toString();
-        } catch (InvalidOffsetException e) {
-
-            e.printStackTrace();
-        }
-        int combinations = 0;
-        long time = System.currentTimeMillis();
-        for (int i = 0; i < termAnnotations.size(); i++)
-            for (int j = i + 1; j < termAnnotations.size(); j++) {
-                Annotation source = termAnnotations.get(i);
-                Annotation target = termAnnotations.get(j);
-
-                if (!_areFar(source, target)) {
-                    // For each pair of terms we check both as target and as
-                    // source
-
-                    _extractProbableRelationsFromSentence(source, target,
-                            annotatedResource, sentenceContent,
-                            termCandidateBuilder);
-
-                    _extractProbableRelationsFromSentence(target, source,
-                            annotatedResource, sentenceContent,
-                            termCandidateBuilder);
-                    combinations++;
-
-                } else {
-                    // System.out.println("Are far:"+source+" > "+target);
-                }
-            }
-        // System.out.println("Sentence took "+ Math.abs(time -
-        // System.currentTimeMillis())+ " consisting of "+combinations);
-
-    }
-
-    // --------------------------------------------------------------------------------------------
-
-    private boolean _areFar(Annotation source, Annotation target) {
-        return (Math.abs(target.getEndNode().getOffset()
-                - source.getEndNode().getOffset()) > MAX_DISTANCE);
-
-    }
-
-    // --------------------------------------------------------------------------------------------
-
-    private void _extractProbableRelationsFromSentence(Annotation source,
-                                                       Annotation target, Document annotatedResource,
-                                                       String sentenceContent, TermCandidateBuilder termCandidateBuilder) {
-        String sourceTermWord = termCandidateBuilder.buildTermCandidate(source)
-                .getWord();
-        String targetTermWord = termCandidateBuilder.buildTermCandidate(target)
-                .getWord();
 
 
-        if (this.considerKnowledgeBase && this.knowledgeBase.areRelated(sourceTermWord, targetTermWord,
-                RelationHelper.HYPERNYM)) {
-            _createRelation(sentenceContent, sourceTermWord, targetTermWord,
-                    1.0);
-        } else {
 
-            List<LexicalRelationalPattern> generatedPatterns = this.patternsGenerator
-                    .generate(source, target, annotatedResource);
-            for (LexicalRelationalPattern pattern : generatedPatterns) {
-                double relationProbability = this.softPatternModel
-                        .calculatePatternProbability(pattern);
-
-                if (relationProbability > this.hypernymExtractionThreshold) {
-
-                    _createRelation(sentenceContent, sourceTermWord,
-                            targetTermWord, relationProbability);
-
-                }
-            }
-        }
-    }
-
-    // --------------------------------------------------------------------------------------
-
-    private void _createRelation(String sentenceContent, String sourceTermWord,
-                                 String targetTermWord, double relationProbability) {
-        Term sourceTerm = this.termsTable.getTerm(Term.buildURI(sourceTermWord,
-                this.targetDomain));
-        /*
-         * String targetToken = (String) target.getFeatures() .get("string");
-		 */
-
-        Term targetTerm = this.termsTable.getTerm(Term.buildURI(targetTermWord,
-                this.targetDomain));
-
-        if (sourceTerm != null && targetTerm != null) {
-
-            this.relationsTable.introduceRelation(this.targetDomain,
-                    sourceTerm, targetTerm, RelationHelper.HYPERNYM,
-                    sentenceContent, relationProbability);
-        } else {
-            // System.out.println("S_word " + sourceTermWord +
-            // " S_term "
-            // + sourceTerm);
-            // System.out.println("T_word " + targetTermWord +
-            // " T_term "
-            // + targetTerm);
-
-        }
-    }
-
-    // ---------------------------------------------------------------------------------------
-
-    private Content<Object> retrieveAnnotatedDocument(String URI) {
-
-        Selector selector = new Selector();
-        selector.setProperty(SelectorHelper.URI, URI);
-        selector.setProperty(SelectorHelper.TYPE, RDFHelper.PAPER_CLASS);
-        selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, URI + "/"
-                + AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
-
-        Content<Object> annotatedContent = core.getInformationHandler()
-                .getAnnotatedContent(selector);
-        /*
-         * Document document = null; try { document = (Document) Factory
-		 * .createResource( "gate.corpora.DocumentImpl", Utils.featureMap(
-		 * gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME, (String)
-		 * annotatedContent.getContent(),
-		 * gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
-		 * 
-		 * } catch (ResourceInstantiationException e) { // TODO Auto-generated
-		 * System.out .println(
-		 * "Couldn't retrieve the GATE document that represents the annotated content of "
-		 * + URI); e.printStackTrace(); }
-		 */
-        return annotatedContent;
-    }
 
     public static void main(String[] args) {
         System.out.println("starting");
