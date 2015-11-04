@@ -8,6 +8,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.learner.relations.parallel.RelationalSentenceCandidateToRelationalSentenceMapper;
 import org.epnoi.model.Context;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
@@ -119,12 +120,19 @@ public class RelationalSentencesCorpusCreator {
 		 JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
 		  annotatedDocumentsSentences .flatMap(new
 		 RelationalSentenceCandidateFlatMapFunction());
-		 
+
+
 		 //relationalSentencesCandidates.collect();
-		
+		/*
 		  JavaRDD<RelationalSentence> relationalSentences =
 		  relationalSentencesCandidates.map(new
 		  RelationalSentenceMapFunction());
+*/
+		JavaRDD<RelationalSentence> relationalSentences =
+				relationalSentencesCandidates.map(new
+						RelationalSentenceCandidateToRelationalSentenceMapper());
+
+
 		  
 		 //System.out.println("------>"+relationalSentences.collect());
 		 
