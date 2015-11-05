@@ -14,5 +14,8 @@ public class RelationalSentencesCorpusCreationParameters extends
 	public static final String VERBOSE = "VERBOSE_PARAMETER";
 	public static final String MAX_SENTENCE_LENGTH_PARAMETER = "MAX_SENTENCE_LENGTH_PARAMETER";
 	public static final String TEST = "TEST_PARAMETER";
+	public static final String UIA_PATH = "UIA_PATH";
+	public static final String SPARK_PATH = "SPARK_PATH";
+
 
 }

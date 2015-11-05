@@ -22,7 +22,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 
 import java.util.List;
-
+@Deprecated
 public class RelationalSentenceMapFunction
         implements Function<RelationalSentenceCandidate, RelationalSentence> {
 

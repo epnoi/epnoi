@@ -48,4 +48,6 @@ public class OntologyLearningWorkflowParameters extends Parameters<Serializable>
 	
 	public static final String CONSIDER_KNOWLEDGE_BASE= "CONSIDER_KNOWLDEDGE_BASE";
 
+	public static final String UIA_PATH = "UIA_PATH";
+
 }

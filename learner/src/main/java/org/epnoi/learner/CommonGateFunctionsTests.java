@@ -6,17 +6,12 @@ import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.corpus.parallel.*;
-import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.SelectorHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +75,7 @@ public void testSentence(){
 
 
     public void test(List<String> uris) {
-
+/*
 
         SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
 
@@ -93,8 +88,8 @@ public void testSentence(){
         System.out.println("init!!!!!");
         // THen we obtain the URIs of the annotated content documents that are
         // stored at the UIA
-        JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new SectionsAnnotatedContentURIsFlatMapFunction());
-        JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new DocumentRetrievalFlatMapFunction());
+        JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new UriToSectionsAnnotatedContentURIsFlatMapFunction());
+        JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new UriToAnnotatedDocumentFlatMapFunction());
 
 
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
@@ -121,7 +116,7 @@ public void testSentence(){
         System.out.println("A______>>  "+document);
 
 
-    /*
+
         for (Sentence sentence : annotatedDocumentsSentences.collect()) {
 			System.out.println("-------> " + sentence);
 		}
@@ -129,7 +124,7 @@ public void testSentence(){
 
         JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
                 annotatedDocumentsSentences .flatMap(new
-                        RelationalSentenceCandidateFlatMapFunction());
+                        SentenceToRelationalSentenceCandidateFlatMapFunction());
 */
         //relationalSentencesCandidates.collect();
 
