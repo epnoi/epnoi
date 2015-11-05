@@ -24,7 +24,7 @@ import gate.Annotation;
 import gate.Document;
 import gate.DocumentContent;
 
-public class RelationalSentenceCandidateFlatMapFunction
+public class SentenceToRelationalSentenceCandidateFlatMapFunction
 		implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
 
 	private final int MIN_TERM_LENGTH = 2;
