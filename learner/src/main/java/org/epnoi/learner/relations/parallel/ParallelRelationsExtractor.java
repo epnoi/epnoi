@@ -109,14 +109,14 @@ public class ParallelRelationsExtractor {
         JavaRDD<Document> corpusAnnotatedDocuments;
         corpusAnnotatedDocuments = corpusURIs.flatMap(uri -> {
                     String uiaPath = (String) parametersBroadcast.value().getParameterValue(OntologyLearningWorkflowParameters.UIA_PATH);
-                    UriToAnnotatedDocumentFlatMapFunction flatMapper = new UriToAnnotatedDocumentFlatMapFunction(uiaPath);
+                    UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
                     return flatMapper.call(uri);
                 }
         );
 
 
         //Each annotated document is split in sentences
-        JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapFunction());
+        JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapper());
 
         //For each sentence we create all the possible RelationalSentenceCandidates
         JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(relationalSentenceCandidate -> {

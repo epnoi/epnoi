@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gate.AnnotationSet;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
@@ -24,10 +25,16 @@ import gate.Annotation;
 import gate.Document;
 import gate.DocumentContent;
 
-public class SentenceToRelationalSentenceCandidateFlatMapFunction
+import javax.ws.rs.core.MultivaluedMap;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
+
+public class SentenceToRelationalSentenceCandidateFlatMapper
 		implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
 
 	private final int MIN_TERM_LENGTH = 2;
+	private Map<String, Set<String>> stemmingTable = new HashMap<>();
+	private Map<String, Set<String>> hypernymsTable = new HashMap<>();
 
 	@Override
 	public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
@@ -42,10 +49,11 @@ public class SentenceToRelationalSentenceCandidateFlatMapFunction
 		Long sentenceStartOffset = sentence.getAnnotation().getStartNode().getOffset();
 		Long sentenceEndOffset = sentence.getAnnotation().getEndNode().getOffset();
 
-		Set<String> sentenceTerms = new HashSet<String>();
+		Set<String> sentenceTerms=_initSentenceTerms(sentence);
+
 		// This table stores the string representation of each sentence terms
 		// and their corresponding annotation
-		Map<String, Annotation> termsAnnotationsTable = _initTermsAnnotationsTable(sentence, sentenceTerms);
+		Map<String, Annotation> termsAnnotationsTable = _initTermsAnnotationsTable(sentence);
 		// System.out.println("ternsAbb"+termsAnnotationsTable);
 		Iterator<String> termsIt = sentenceTerms.iterator();
 		boolean found = false;
@@ -54,7 +62,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapFunction
 			if (term != null && term.length() > MIN_TERM_LENGTH) {
 				// For each term we retrieve its well-known hypernyms
 
-				Set<String> termHypernyms = _retrieveHypernyms(term);
+				Set<String> termHypernyms = _hypernyms(term);
 				/*
 				 * System.out.println("term> "+ term); System.out.println(
 				 * "term hypernyms> "+termHypernyms); System.out.println(
@@ -79,29 +87,29 @@ public class SentenceToRelationalSentenceCandidateFlatMapFunction
 
 				}
 			}
-
 		}
 		return relationalSentencesCandidates;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private Set<String> _retrieveHypernyms(String term) {
+	private Map<String, Set<String>> _retrieveHypernyms(Set<String> terms) {
 		ClientConfig config = new DefaultClientConfig();
 		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		Client client = Client.create(config);
 		String knowledgeBasePath = "/uia/knowledgebase";
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+		MultivaluedMap<String, String> map = new MultivaluedMapImpl();
 
-		Set<String> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
-				.queryParam("source", term).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
+		Map<String, Set<String>> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
+				.queryParams(map).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
 		return hypernyms;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private Set<String> _stem(String term) {
+	private Map<String, Set<String>> _retrieveStems(Set<String> terms) {
 		ClientConfig config = new DefaultClientConfig();
 		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		Client client = Client.create(config);
@@ -109,15 +117,45 @@ public class SentenceToRelationalSentenceCandidateFlatMapFunction
 
 		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-		Set<String> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParam("term", term)
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Set.class);
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+		for(String term: terms){
+			queryParams.add("term", term);
+		}
+
+
+
+		Map<String,Set<String>> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParams(queryParams)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
 		return stemmedForms;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private Map<String, Annotation> _initTermsAnnotationsTable(Sentence sentence, Set<String> sentenceTerms) {
+	private Set<String> _stem(String term) {
+	Set<String> stems= this.stemmingTable.get(term);
+		if(stems!=null)
+			return stems;
+		else
+			return new HashSet<>();
+	}
+
+	private Set<String> _hypernyms(String term) {
+		Set<String> hypernyms= this.hypernymsTable.get(term);
+		if(hypernyms!=null)
+			return hypernyms;
+		else
+			return new HashSet<>();
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
+
+	private Map<String, Annotation> _initTermsAnnotationsTable(Sentence sentence) {
 		HashMap<String, Annotation> termsAnnotationsTable = new HashMap<String, Annotation>();
+
+		AnnotationSet termCandidatesAnnotationSet= sentence.getContainedAnnotations()
+				.get(NLPAnnotationsConstants.TERM_CANDIDATE);
+
+
 		for (Annotation termAnnotation : sentence.getContainedAnnotations()
 				.get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 			Long startOffset = termAnnotation.getStartNode().getOffset()
@@ -140,26 +178,88 @@ public class SentenceToRelationalSentenceCandidateFlatMapFunction
 			// We stem the surface form (we left open the possibility of
 			// different stemming results so we consider a set of stemmed
 			// forms)
-			_addTermToTermsTable(term, termAnnotation, sentenceTerms, termsAnnotationsTable);
+			_addTermToTermsTable(term, termAnnotation, termsAnnotationsTable);
 		}
 		return termsAnnotationsTable;
 	}
 
+	/**
+	 *
+	 * @param sentence
+	 * @return The set of term candidates surface and stemmed forms that appear in the sentence
+	 */
+	private Set<String> _initSentenceTerms(Sentence sentence) {
+		Set<String> termCandatesSurfaceForms = _getSentenceTermsSurfaceForms(sentence);
+		_initStemmingTable(termCandatesSurfaceForms);
+		_initHypernymsTable(termCandatesSurfaceForms);
+
+		Set<String> termCandidatesSurfaceAndStemmedForms=_addStemmsToSentenceTerms(termCandatesSurfaceForms);
+
+
+		return termCandatesSurfaceForms;
+	}
+
+	private Set<String> _addStemmsToSentenceTerms(Set<String> termCandatesSurfaceForms) {
+		Set<String> sentenceTerms = new HashSet<>();
+		for(String term: termCandatesSurfaceForms){
+			sentenceTerms.add(term);
+			sentenceTerms.retainAll(_stem(term));
+		}
+		return sentenceTerms;
+
+	}
+	
+
+	private void _initHypernymsTable(Set<String> termCandatesSurfaceForms) {
+		this.hypernymsTable= _retrieveHypernyms(termCandatesSurfaceForms);
+	}
+
+	private void _initStemmingTable(Set<String> termCandatesSurfaceForms) {
+		this.stemmingTable= _retrieveStems(termCandatesSurfaceForms);
+	}
+
+
+	private Set<String> _getSentenceTermsSurfaceForms(Sentence sentence) {
+		AnnotationSet termCandidatesAnnotationSet = sentence.getContainedAnnotations().get(NLPAnnotationsConstants.TERM_CANDIDATE);
+
+		Set<String> termCandatesSurfaceForms= new HashSet<>();
+
+		for (Annotation termAnnotation : termCandidatesAnnotationSet) {
+			Long startOffset = termAnnotation.getStartNode().getOffset()
+					- sentence.getAnnotation().getStartNode().getOffset();
+			Long endOffset = termAnnotation.getEndNode().getOffset()
+					- sentence.getAnnotation().getStartNode().getOffset();
+
+			String termSurfaceForm=null;
+			try {
+				// First of all we retrieve the surface form of the term
+
+				termSurfaceForm = sentence.getContent().getContent(startOffset, endOffset).toString();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+
+
+			}
+			if (termCandatesSurfaceForms != null) {
+				termCandatesSurfaceForms.add(termSurfaceForm);
+			}
+		}
+		return termCandatesSurfaceForms;
+	}
+
+
+
 	// ----------------------------------------------------------------------------------------------------------------------
 
-	private void _addTermToTermsTable(String term, Annotation termAnnotation, Set<String> sentenceTerms,
+	private void _addTermToTermsTable(String term, Annotation termAnnotation,
 			HashMap<String, Annotation> termsAnnotationsTable) {
 
 		if (term.length() > MIN_TERM_LENGTH) {
 			for (String stemmedTerm : _stem(term)) {
-
 				termsAnnotationsTable.put(stemmedTerm, termAnnotation);
-				sentenceTerms.add(stemmedTerm);
-
 			}
-
 			termsAnnotationsTable.put(term, termAnnotation);
-			sentenceTerms.add(term);
 		}
 
 	}

@@ -103,7 +103,7 @@ public class RelationalSentencesCorpusCreator {
         // stored at the UIA
 
         JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(uri -> {
-            UriToSectionsAnnotatedContentURIsFlatMapFunction mapper = new UriToSectionsAnnotatedContentURIsFlatMapFunction(parametersBroadcast.getValue());
+            UriToSectionsAnnotatedContentURIsFlatMapper mapper = new UriToSectionsAnnotatedContentURIsFlatMapper(parametersBroadcast.getValue());
             return mapper.call(uri);
         });
 
@@ -111,13 +111,13 @@ public class RelationalSentencesCorpusCreator {
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
             String uiaPath=(String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
-            UriToAnnotatedDocumentFlatMapFunction flatMapper = new UriToAnnotatedDocumentFlatMapFunction(uiaPath);
+            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
             return flatMapper.call(uri);
         });
 
 
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
-                .flatMap(new DocumentToSentencesFlatMapFunction());
+                .flatMap(new DocumentToSentencesFlatMapper());
     /*
         for (Sentence sentence : annotatedDocumentsSentences.collect()) {
 			System.out.println("-------> " + sentence);
@@ -126,7 +126,7 @@ public class RelationalSentencesCorpusCreator {
 
         JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
                 annotatedDocumentsSentences.flatMap(new
-                        SentenceToRelationalSentenceCandidateFlatMapFunction());
+                        SentenceToRelationalSentenceCandidateFlatMapper());
 
 
         //relationalSentencesCandidates.collect();

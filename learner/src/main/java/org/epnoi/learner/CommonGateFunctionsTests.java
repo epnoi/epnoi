@@ -88,12 +88,12 @@ public void testSentence(){
         System.out.println("init!!!!!");
         // THen we obtain the URIs of the annotated content documents that are
         // stored at the UIA
-        JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new UriToSectionsAnnotatedContentURIsFlatMapFunction());
-        JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new UriToAnnotatedDocumentFlatMapFunction());
+        JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(new UriToSectionsAnnotatedContentURIsFlatMapper());
+        JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(new UriToAnnotatedDocumentFlatMapper());
 
 
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
-                .flatMap(new DocumentToSentencesFlatMapFunction());
+                .flatMap(new DocumentToSentencesFlatMapper());
 
 
         Sentence sentence = annotatedDocumentsSentences.collect().get(0);
@@ -124,7 +124,7 @@ public void testSentence(){
 
         JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
                 annotatedDocumentsSentences .flatMap(new
-                        SentenceToRelationalSentenceCandidateFlatMapFunction());
+                        SentenceToRelationalSentenceCandidateFlatMapper());
 */
         //relationalSentencesCandidates.collect();
 

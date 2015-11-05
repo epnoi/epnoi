@@ -14,7 +14,7 @@ import gate.Document;
 import gate.DocumentContent;
 import gate.annotation.AnnotationSetImpl;
 
-public class DocumentToSentencesFlatMapFunction implements FlatMapFunction<Document, Sentence> {
+public class DocumentToSentencesFlatMapper implements FlatMapFunction<Document, Sentence> {
 
 	@Override
 	public Iterable<Sentence> call(Document currentDocument) throws Exception {

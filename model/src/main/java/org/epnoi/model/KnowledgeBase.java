@@ -8,6 +8,14 @@ public interface KnowledgeBase {
 
 	void init(KnowledgeBaseParameters parameters);
 
+
+	/**
+	 *
+	 * @param source Surface form of the source
+	 * @param target Surface form of the target
+	 * @param type The type of the relationships
+	 * @return Whether this relationship holds between the source and the target
+	 */
 	boolean areRelated(String source, String target, String type);
 
 	boolean areRelatedInWordNet(String source, String target);
