@@ -137,17 +137,20 @@ public class KnowledgeBaseResource extends UIAService {
             @ApiResponse(code = 404, message = "A resource with such URI could not be found")})
     @ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
     public Response getResource(
-            @ApiParam(value = "Surface form of the term to be stemmed", required = true, allowMultiple = false) @QueryParam("term") String term) {
+            @ApiParam(value = "Surface form of the term to be stemmed", required = true, allowMultiple =true) @QueryParam("term") List<String> terms) {
 
-        logger.info("GET:> source=" + term);
-        if (term != null) {
-
+        logger.info("GET:> source=" + terms);
+        if (terms != null) {
+            Map<String, Set<String>> termsStems = new HashMap<>();
 
             try {
                 logger.info("As the parameters seemed ok");
-                Set<String> stemmedTerms = core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term);
 
-                return Response.ok().entity(stemmedTerms).build();
+                for(String term:terms) {
+                    Set<String> stemmedTerms = core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term);
+                    termsStems.put(term, stemmedTerms);
+                }
+                return Response.ok().entity(termsStems).build();
             } catch (Exception exception) {
                 exception.printStackTrace();
                 logger.severe(exception.getMessage());

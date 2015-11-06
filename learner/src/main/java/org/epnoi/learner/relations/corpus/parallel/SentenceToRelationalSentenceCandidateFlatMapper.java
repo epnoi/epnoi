@@ -1,32 +1,18 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import gate.AnnotationSet;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import gate.Annotation;
-import gate.Document;
-import gate.DocumentContent;
+import gate.AnnotationSet;
+import org.apache.spark.api.java.function.FlatMapFunction;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import javax.ws.rs.core.MultivaluedMap;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import java.util.*;
 
 
 public class SentenceToRelationalSentenceCandidateFlatMapper
@@ -125,7 +111,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
 
 
 		Map<String,Set<String>> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParams(queryParams)
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(HashMap.class);
 		return stemmedForms;
 	}
 

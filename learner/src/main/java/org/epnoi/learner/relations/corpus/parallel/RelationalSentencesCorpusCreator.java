@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -158,11 +159,12 @@ public class RelationalSentencesCorpusCreator {
         // String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 
         // logger.info("Retrieving the URIs of the Wikipedia articles ");
-
+/*WHAT SHOULD BE
         List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
 
         return wikipediaPages;
-
+*/
+        return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
