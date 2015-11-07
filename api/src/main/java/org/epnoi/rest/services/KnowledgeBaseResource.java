@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.sun.jersey.spi.resource.Singleton;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
@@ -26,7 +27,9 @@ import io.swagger.annotations.ApiResponses;
 
 
 @Path("/uia/knowledgebase")
+
 @Api(value = "/uia/knowledgebase", description = "Knowledge base related operations")
+@Singleton
 public class KnowledgeBaseResource extends UIAService {
     private static final String RELATIONS_HANDLER = "RELATIONS_HANDLER";
 
@@ -103,15 +106,15 @@ public class KnowledgeBaseResource extends UIAService {
     public Response getResource(
             @ApiParam(value = "Surface form of the source term of the relation", required = true, allowMultiple = true) @QueryParam("source") List<String> sources,
             @ApiParam(value = "Relation type", required = true, allowMultiple = false, allowableValues = "hypernymy,mereology") @PathParam("RELATION_TYPE") String type) {
-        Map<String, Set<String>> sourcesTargets = new HashMap<>();
-        logger.info("GET:> source=" + sources);
+        Map<String, List<String>> sourcesTargets = new HashMap<>();
+        logger.info("hypernyms GET:> source=" + sources);
 
         if ((sources != null) && validRelationTypes.contains(type)) {
 
             type = resourceTypesTable.get(type);
             try {
                 for (String source : sources) {
-                    Set<String> targets = core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source);
+                    List<String> targets = new ArrayList<>(core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source));
                     sourcesTargets.put(source, targets);
                 }
                 return Response.ok().entity(sourcesTargets).build();
@@ -139,15 +142,15 @@ public class KnowledgeBaseResource extends UIAService {
     public Response getResource(
             @ApiParam(value = "Surface form of the term to be stemmed", required = true, allowMultiple =true) @QueryParam("term") List<String> terms) {
 
-        logger.info("GET:> source=" + terms);
+        logger.info("stem GET:> source=" + terms);
         if (terms != null) {
-            Map<String, Set<String>> termsStems = new HashMap<>();
+            Map<String, List<String>> termsStems = new HashMap<>();
 
             try {
                 logger.info("As the parameters seemed ok");
 
                 for(String term:terms) {
-                    Set<String> stemmedTerms = core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term);
+                    List<String> stemmedTerms = new ArrayList(core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term));
                     termsStems.put(term, stemmedTerms);
                 }
                 return Response.ok().entity(termsStems).build();
