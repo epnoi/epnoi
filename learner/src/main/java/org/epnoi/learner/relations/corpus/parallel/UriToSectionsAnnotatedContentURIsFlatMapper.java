@@ -14,11 +14,11 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-public class UriToSectionsAnnotatedContentURIsFlatMapFunction {
+public class UriToSectionsAnnotatedContentURIsFlatMapper {
 
 	private RelationalSentencesCorpusCreationParameters parameters;
 
-	public UriToSectionsAnnotatedContentURIsFlatMapFunction(RelationalSentencesCorpusCreationParameters parameters) {
+	public UriToSectionsAnnotatedContentURIsFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
 		this.parameters = parameters;
 	}
 

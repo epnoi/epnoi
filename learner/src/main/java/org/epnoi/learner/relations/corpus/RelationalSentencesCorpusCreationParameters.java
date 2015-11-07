@@ -2,8 +2,9 @@ package org.epnoi.learner.relations.corpus;
 
 import org.epnoi.model.commons.Parameters;
 
-public class RelationalSentencesCorpusCreationParameters extends
-		Parameters<Object> {
+import java.io.Serializable;
+
+public class RelationalSentencesCorpusCreationParameters extends Parameters<Serializable> implements Serializable {
 
 	public static final String KNOWLEDGE_BASE_PARAMETERS_PARAMETER = "KNOWLEDGE_BASE_PARAMETERS_PARAMETER";
 	public static final String RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER = "RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER";

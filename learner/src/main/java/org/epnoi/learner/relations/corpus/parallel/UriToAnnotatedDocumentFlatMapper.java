@@ -15,12 +15,12 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import gate.Document;
 
-public class UriToAnnotatedDocumentFlatMapFunction {
+public class UriToAnnotatedDocumentFlatMapper {
 
    private String uiaPath;
     private final String knowledgeBasePath = "/uia/annotatedcontent";
 
-    public UriToAnnotatedDocumentFlatMapFunction(String uiaPath) {
+    public UriToAnnotatedDocumentFlatMapper(String uiaPath) {
         this.uiaPath=uiaPath;
     }
 

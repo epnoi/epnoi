@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -87,7 +88,7 @@ public class RelationalSentencesCorpusCreator {
     private List<RelationalSentence> _findRelationalSentences(List<String> URIs) {
 
 
-        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
+        SparkConf sparkConf = new SparkConf().setMaster("local[36]").setAppName(JOB_NAME);
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
@@ -103,7 +104,7 @@ public class RelationalSentencesCorpusCreator {
         // stored at the UIA
 
         JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(uri -> {
-            UriToSectionsAnnotatedContentURIsFlatMapFunction mapper = new UriToSectionsAnnotatedContentURIsFlatMapFunction(parametersBroadcast.getValue());
+            UriToSectionsAnnotatedContentURIsFlatMapper mapper = new UriToSectionsAnnotatedContentURIsFlatMapper(parametersBroadcast.getValue());
             return mapper.call(uri);
         });
 
@@ -111,13 +112,13 @@ public class RelationalSentencesCorpusCreator {
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
             String uiaPath=(String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
-            UriToAnnotatedDocumentFlatMapFunction flatMapper = new UriToAnnotatedDocumentFlatMapFunction(uiaPath);
+            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
             return flatMapper.call(uri);
         });
 
 
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
-                .flatMap(new DocumentToSentencesFlatMapFunction());
+                .flatMap(new DocumentToSentencesFlatMapper());
     /*
         for (Sentence sentence : annotatedDocumentsSentences.collect()) {
 			System.out.println("-------> " + sentence);
@@ -126,7 +127,7 @@ public class RelationalSentencesCorpusCreator {
 
         JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
                 annotatedDocumentsSentences.flatMap(new
-                        SentenceToRelationalSentenceCandidateFlatMapFunction());
+                        SentenceToRelationalSentenceCandidateFlatMapper());
 
 
         //relationalSentencesCandidates.collect();
@@ -158,11 +159,12 @@ public class RelationalSentencesCorpusCreator {
         // String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 
         // logger.info("Retrieving the URIs of the Wikipedia articles ");
-
+/*WHAT SHOULD BE
         List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
 
         return wikipediaPages;
-
+*/
+        return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
