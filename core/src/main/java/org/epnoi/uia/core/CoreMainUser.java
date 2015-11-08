@@ -31,7 +31,7 @@ public class CoreMainUser {
 		Core core = new CoreImpl();
 		ParametersModel parametersModel = _readParameters();
 		try {
-			core.init(parametersModel);
+			core.init();
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

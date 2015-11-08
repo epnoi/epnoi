@@ -10,7 +10,7 @@ import org.epnoi.model.parameterization.ParametersModel;
 public interface Core {
 
 
-	void init(ParametersModel parametersModel) throws EpnoiInitializationException;
+	void init() throws EpnoiInitializationException;
 
 	NLPHandler getNLPHandler();
 

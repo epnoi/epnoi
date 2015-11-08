@@ -27,7 +27,7 @@ public class CoreUtility {
 		ParametersModel parametersModel = readParameters(configurationFile);
 		logger.info("Reading the following paramaters for the UIA: "+parametersModel);
 		try {
-			core.init(parametersModel);
+			core.init();
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

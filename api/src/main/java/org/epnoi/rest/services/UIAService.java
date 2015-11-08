@@ -37,7 +37,7 @@ public abstract class UIAService {
 			this.core = new CoreImpl();
 			parametersModel = this._readParameters();
 			try {
-				core.init(parametersModel);
+				core.init();
 			} catch (EpnoiInitializationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
