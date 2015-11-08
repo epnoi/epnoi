@@ -46,6 +46,9 @@ public class CoreImpl implements Core {
     @Autowired
     private ParametersModel parametersModel;
 
+    @Autowired
+    private NLPHandler nlpHandler;
+
     private HashMap<String, InformationStore> informationStores;
     private HashMap<String, List<InformationStore>> informationStoresByType;
 
@@ -59,12 +62,12 @@ public class CoreImpl implements Core {
     private HarvestersHandler harvestersHandler = null;
     private EventBus eventBus = null;
     private KnowldedgeBaseHandler knowledgeBaseHandler = null;
-    private NLPHandler nlpHandler = null;
 
 
     public CoreImpl() {
     }
-@PostConstruct
+
+    @PostConstruct
     @Override
     public synchronized void init() throws EpnoiInitializationException {
         logger.info(
@@ -75,7 +78,7 @@ public class CoreImpl implements Core {
         this.informationStoresByType = new HashMap<>();
         this.parametersModel = parametersModel;
         this._initEventBus();
-        this._initNLPHandler();
+        //this._initNLPHandler();
         this._informationStoresInitialization();
         this._initInformationHandler();
         this._initInformationSourcesHandler();
@@ -110,13 +113,14 @@ public class CoreImpl implements Core {
 
     // ----------------------------------------------------------------------------------------------------------
 
+  /*
     private void _initNLPHandler() {
 
         this.nlpHandler = new NLPHandlerImpl();
         this.nlpHandler.init(this, parametersModel);
 
     }
-
+*/
     // ----------------------------------------------------------------------------------------------------------
 
     private void _initDomainsHandler() {

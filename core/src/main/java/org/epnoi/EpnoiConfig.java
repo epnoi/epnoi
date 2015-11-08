@@ -5,6 +5,7 @@ import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.core.CoreImpl;
 import org.epnoi.uia.core.CoreMain;
+import org.epnoi.uia.nlp.NLPHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,7 +15,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@ComponentScan(basePackageClasses = {CoreImpl.class})
+@ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class})
 @PropertySource("classpath:/epnoi.properties")
 public class EpnoiConfig {
 
