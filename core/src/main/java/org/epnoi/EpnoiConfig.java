@@ -9,19 +9,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@ComponentScan(basePackageClasses = {Core.class,})
-//@PropertySource("classpath:epnoi.properties")
+@ComponentScan(basePackageClasses = {Core.class})
+@PropertySource("classpath:/epnoi.properties")
 public class EpnoiConfig {
 
     @Autowired
     Environment environment;
 
     @Bean
+    public
+    static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
     public ParametersModel parametersModel() {
-        //String path = environment.getProperty("epnoi.config.path");
+        System.out.println("========>"+environment.getProperty("epnoi.config.path"));
         String path = CoreMain.class.getResource("CoreUtility.xml").getPath();
         ParametersModel parametersModel = ParametersModelReader.read(path);
 
