@@ -1,19 +1,15 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.commons.GateUtils;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-
 import gate.Document;
+import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.commons.GateUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UriToAnnotatedDocumentFlatMapper {
 

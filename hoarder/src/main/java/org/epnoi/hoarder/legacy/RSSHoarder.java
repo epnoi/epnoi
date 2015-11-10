@@ -1,15 +1,15 @@
 package org.epnoi.hoarder.legacy;
 
-import java.awt.Toolkit;
+import org.epnoi.model.parameterization.RSSFeedParameters;
+import org.epnoi.model.parameterization.RSSHoarderParameters;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-import org.epnoi.model.parameterization.RSSFeedParameters;
-import org.epnoi.model.parameterization.RSSHoarderParameters;
 
 public class RSSHoarder {
 	private static final Logger logger = Logger.getLogger(RSSHoarder.class

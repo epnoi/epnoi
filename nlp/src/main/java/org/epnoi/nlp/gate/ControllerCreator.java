@@ -1,16 +1,15 @@
 package org.epnoi.nlp.gate;
 
-import java.io.File;
-import java.net.MalformedURLException;
-
-import org.epnoi.model.parameterization.ParametersModel;
-
 import gate.Factory;
 import gate.FeatureMap;
 import gate.LanguageAnalyser;
 import gate.ProcessingResource;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
+import org.epnoi.model.parameterization.ParametersModel;
+
+import java.io.File;
+import java.net.MalformedURLException;
 
 public class ControllerCreator {
 	private ParametersModel parameters;

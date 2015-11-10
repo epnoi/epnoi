@@ -1,18 +1,14 @@
 package org.epnoi.learner.relations.patterns.syntactic;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.apache.mahout.classifier.sgd.L2;
 import org.apache.mahout.classifier.sgd.OnlineLogisticRegression;
 import org.apache.mahout.math.RandomAccessSparseVector;
 import org.apache.mahout.math.Vector;
-import org.epnoi.learner.relations.patterns.PatternsConstants;
-import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelBuilder;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.learner.relations.patterns.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class SyntacticRelationalPatternsModelBuilder implements
 		RelationalPatternsModelBuilder {

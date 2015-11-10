@@ -1,25 +1,12 @@
 package org.epnoi.harvester.legacy.url;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Logger;
-
+import gate.Document;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Paper;
-import org.epnoi.model.Selector;
+import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
@@ -28,7 +15,14 @@ import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.xml.sax.ContentHandler;
 
-import gate.Document;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
 
 public class URLHarvester {
 	private Core core;

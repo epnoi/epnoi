@@ -1,15 +1,8 @@
 package org.epnoi.learner.terms;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.epnoi.model.Term;
+
+import java.util.*;
 
 /**
  * The Terms Table is used to: 

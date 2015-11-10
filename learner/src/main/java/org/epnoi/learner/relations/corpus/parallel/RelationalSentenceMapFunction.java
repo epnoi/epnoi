@@ -1,27 +1,14 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Node;
-import gate.annotation.AnnotationImpl;
-import gate.annotation.AnnotationSetImpl;
-import gate.annotation.DefaultAnnotationFactory;
-import gate.annotation.NodeImpl;
-import gate.corpora.DocumentImpl;
-import org.apache.spark.api.java.function.Function;
-
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.uia.commons.GateUtils;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-
 import gate.Document;
-
-import java.util.List;
+import gate.corpora.DocumentImpl;
+import org.apache.spark.api.java.function.Function;
+import org.epnoi.model.OffsetRangeSelector;
+import org.epnoi.model.RelationalSentence;
 @Deprecated
 public class RelationalSentenceMapFunction
         implements Function<RelationalSentenceCandidate, RelationalSentence> {

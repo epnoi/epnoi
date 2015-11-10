@@ -1,21 +1,9 @@
 package org.epnoi.hoarder.legacy;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.logging.Logger;
+import org.epnoi.model.parameterization.RSSFeedParameters;
+import org.epnoi.model.parameterization.manifest.ManifestHandler;
+import org.epnoi.model.parameterization.manifest.RSSManifest;
+import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,13 +11,14 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.epnoi.model.Feed;
-import org.epnoi.model.Item;
-import org.epnoi.model.parameterization.RSSFeedParameters;
-import org.epnoi.model.parameterization.manifest.ManifestHandler;
-import org.epnoi.model.parameterization.manifest.RSSManifest;
-import org.w3c.dom.Document;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 class RSSHoardTask implements Runnable {
 	private final Logger logger = Logger.getLogger(RSSHoardTask.class

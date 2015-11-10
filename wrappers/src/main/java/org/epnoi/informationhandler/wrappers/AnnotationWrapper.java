@@ -1,10 +1,6 @@
 package org.epnoi.informationhandler.wrappers;
 
-import org.epnoi.model.Annotation;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
+import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.modules.InformationStoreHelper;

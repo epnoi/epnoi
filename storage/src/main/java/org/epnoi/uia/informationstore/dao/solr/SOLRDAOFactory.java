@@ -1,10 +1,6 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
-import org.epnoi.model.Feed;
-import org.epnoi.model.Paper;
-import org.epnoi.model.ResearchObject;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
+import org.epnoi.model.*;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 import org.epnoi.model.rdf.FeedRDFHelper;

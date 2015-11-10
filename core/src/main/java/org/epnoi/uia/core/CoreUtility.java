@@ -1,13 +1,12 @@
 package org.epnoi.uia.core;
 
-import java.net.URL;
-import java.util.logging.Logger;
-
-import org.epnoi.model.Parameter;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
+
+import java.net.URL;
+import java.util.logging.Logger;
 
 public class CoreUtility {
 	// ---------------------------------------------------------------------------------

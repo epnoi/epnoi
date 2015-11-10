@@ -3,8 +3,6 @@ package org.epnoi.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class User implements Resource {
 
 	private Long id;

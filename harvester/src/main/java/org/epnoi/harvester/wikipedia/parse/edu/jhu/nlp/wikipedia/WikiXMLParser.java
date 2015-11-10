@@ -1,14 +1,14 @@
 package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
 
+import org.apache.tools.bzip2.CBZip2InputStream;
+import org.xml.sax.InputSource;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
-
-import org.apache.tools.bzip2.CBZip2InputStream;
-import org.xml.sax.InputSource;
 
 /**
  * 

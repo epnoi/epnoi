@@ -1,9 +1,8 @@
 package org.epnoi.rest.services;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+import com.sun.jersey.api.Responses;
+import io.swagger.annotations.*;
+import org.epnoi.model.Resource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -14,16 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.model.Resource;
-
-import com.sun.jersey.api.Responses;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 @Path("/uia/resources/bylabel")
 @Api(value = "/uia/resources/bylabel", description = "Operations for retrieving resources by label")

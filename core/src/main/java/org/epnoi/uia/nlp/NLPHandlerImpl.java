@@ -1,7 +1,6 @@
 package org.epnoi.uia.nlp;
 
-import java.util.logging.Logger;
-
+import gate.Document;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
@@ -10,13 +9,11 @@ import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.nlp.NLPProcessor;
 import org.epnoi.nlp.NLPProcessorsPool;
 import org.epnoi.nlp.gate.GATEInitializer;
-import org.epnoi.uia.core.CoreUtility;
-
-import gate.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
 @Component
 public class NLPHandlerImpl implements NLPHandler {

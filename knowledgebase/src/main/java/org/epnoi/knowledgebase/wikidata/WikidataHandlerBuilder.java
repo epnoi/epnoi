@@ -1,20 +1,16 @@
 package org.epnoi.knowledgebase.wikidata;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
+import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
+
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * A factory that creates WikidataHandlers

@@ -1,30 +1,23 @@
 package org.epnoi.learner.terms;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
-
+import gate.Annotation;
+import gate.Document;
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.AnnotatedWord;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Selector;
-import org.epnoi.model.Term;
-import org.epnoi.model.TermMetadata;
+import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Annotation;
-import gate.Document;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 public class TermsExtractor {
 

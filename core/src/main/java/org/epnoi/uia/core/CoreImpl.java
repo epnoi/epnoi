@@ -1,43 +1,19 @@
 package org.epnoi.uia.core;
 
+import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.*;
+import org.epnoi.model.parameterization.*;
+import org.epnoi.uia.core.eventbus.EventBusFactory;
+import org.epnoi.uia.informationstore.InformationStoreFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
-
-import org.epnoi.knowledgebase.KnowledgeBaseHandlerImpl;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.modules.AnnotationHandler;
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.modules.DomainsHandler;
-import org.epnoi.model.modules.EventBus;
-import org.epnoi.model.modules.HarvestersHandler;
-import org.epnoi.model.modules.InformationHandler;
-import org.epnoi.model.modules.InformationSourcesHandler;
-import org.epnoi.model.modules.InformationStore;
-import org.epnoi.model.modules.InformationStoreHelper;
-import org.epnoi.model.modules.KnowldedgeBaseHandler;
-import org.epnoi.model.modules.NLPHandler;
-import org.epnoi.model.modules.SearchHandler;
-import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
-import org.epnoi.model.parameterization.MapInformationStoreParameters;
-import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
-import org.epnoi.sources.InformationSourcesHandlerImpl;
-import org.epnoi.uia.annotation.AnnotationHandlerImpl;
-import org.epnoi.uia.core.eventbus.EventBusFactory;
-import org.epnoi.uia.core.eventbus.InternalEventBusImpl;
-import org.epnoi.uia.domains.DomainsHandlerImpl;
-import org.epnoi.uia.informationhandler.InformationHandlerImp;
-import org.epnoi.uia.informationstore.InformationStoreFactory;
-import org.epnoi.uia.nlp.NLPHandlerImpl;
-import org.epnoi.uia.search.SearchHandlerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class CoreImpl implements Core {
@@ -49,19 +25,32 @@ public class CoreImpl implements Core {
     @Autowired
     private NLPHandler nlpHandler;
 
+    @Autowired
+    private SearchHandler searchHandler;
+
+    @Autowired
+    private AnnotationHandler annotationHandler;
+
+    @Autowired
+    private InformationHandler informationHandler;
+
+    @Autowired
+    private DomainsHandler domainsHandler = null;
+
+    @Autowired
+    private KnowldedgeBaseHandler knowledgeBaseHandler;
+
+    @Autowired
+    private InformationSourcesHandler informationSourcesHandler;
+
+    @Autowired
+    private HarvestersHandler harvestersHandler;
+
     private HashMap<String, InformationStore> informationStores;
     private HashMap<String, List<InformationStore>> informationStoresByType;
 
-    private InformationHandler informationHandler;
-    private InformationSourcesHandler informationSourcesHandler = null;
 
-
-    private SearchHandler searchHandler = null;
-    private AnnotationHandler annotationHandler = null;
-    private DomainsHandler domainsHandler = null;
-    private HarvestersHandler harvestersHandler = null;
     private EventBus eventBus = null;
-    private KnowldedgeBaseHandler knowledgeBaseHandler = null;
 
 
     public CoreImpl() {
@@ -76,19 +65,10 @@ public class CoreImpl implements Core {
         logger.info(parametersModel.toString());
         this.informationStores = new HashMap<>();
         this.informationStoresByType = new HashMap<>();
-        this.parametersModel = parametersModel;
+
         this._initEventBus();
-        //this._initNLPHandler();
         this._informationStoresInitialization();
-        this._initInformationHandler();
-        this._initInformationSourcesHandler();
-        this._initSearchHandler();
-        this._initAnnotationsHandler();
-        this._initDomainsHandler();
-        /*
-         * this._hoardersInitialization(); this._harvestersInitialization();
-		 */
-        this._knowedlgeBaseHandlerInitialization();
+
         logger.info("");
         logger.info("");
         logger.info(
@@ -111,25 +91,8 @@ public class CoreImpl implements Core {
         this.nlpHandler = (NLPHandler) nlpHandler;
     }
 
-    // ----------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------
 
-  /*
-    private void _initNLPHandler() {
-
-        this.nlpHandler = new NLPHandlerImpl();
-        this.nlpHandler.init(this, parametersModel);
-
-    }
-*/
-    // ----------------------------------------------------------------------------------------------------------
-
-    private void _initDomainsHandler() {
-        this.domainsHandler = new DomainsHandlerImpl();
-        this.domainsHandler.init(this);
-
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
 
     private void _initEventBus() {
 
@@ -139,11 +102,6 @@ public class CoreImpl implements Core {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-
-    private void _initAnnotationsHandler() {
-        this.annotationHandler = new AnnotationHandlerImpl(this);
-
-    }
 
     /**
      * Information Stores initialization
@@ -212,18 +170,6 @@ public class CoreImpl implements Core {
 
     // ----------------------------------------------------------------------------------------------------------
 
-    private void _initInformationHandler() {
-        this.informationHandler = new InformationHandlerImp(this);
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    private void _initInformationSourcesHandler() {
-        this.informationSourcesHandler = new InformationSourcesHandlerImpl(this);
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
     private void _addInformationStoreByType(InformationStore informationStore, String type) {
         List<InformationStore> informationsStoresOfType = this.informationStoresByType.get(type);
         if (informationsStoresOfType == null) {
@@ -233,12 +179,6 @@ public class CoreImpl implements Core {
         informationsStoresOfType.add(informationStore);
     }
 
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    private void _initSearchHandler() {
-        this.searchHandler = new SearchHandlerImpl(this);
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
@@ -339,14 +279,14 @@ public class CoreImpl implements Core {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-
+/*
     private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
 
         this.knowledgeBaseHandler = new KnowledgeBaseHandlerImpl();
         this.knowledgeBaseHandler.init(this);
 
     }
-
+*/
     // ----------------------------------------------------------------------------------------------------------
 
 

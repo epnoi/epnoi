@@ -1,10 +1,10 @@
 package org.epnoi.harvester.legacy.rss.parse;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 

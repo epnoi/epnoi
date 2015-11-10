@@ -1,9 +1,5 @@
 package org.epnoi.uia.informationstore;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -15,15 +11,11 @@ import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchSelectResult;
 import org.epnoi.model.search.SelectExpression;
-import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAO;
-import org.epnoi.uia.informationstore.dao.cassandra.CassandraDAOFactory;
-import org.epnoi.uia.informationstore.dao.cassandra.CassandraQueryResolver;
-import org.epnoi.uia.informationstore.dao.cassandra.ContentCassandraDAO;
-import org.epnoi.uia.informationstore.dao.cassandra.FeedCassandraHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.ItemCassandraHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.WikipediaPageCassandraHelper;
+import org.epnoi.uia.informationstore.dao.cassandra.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CassandraInformationStore implements InformationStore {
 	private InformationStoreParameters parameters;

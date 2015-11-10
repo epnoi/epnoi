@@ -1,26 +1,35 @@
 package org.epnoi;
 
-import org.epnoi.model.modules.Core;
+import org.epnoi.knowledgebase.KnolwedgeBaseImpl;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
+import org.epnoi.sources.InformationSourcesHandlerImpl;
+import org.epnoi.uia.annotation.AnnotationHandlerImpl;
 import org.epnoi.uia.core.CoreImpl;
-import org.epnoi.uia.core.CoreMain;
+import org.epnoi.uia.domains.DomainsHandlerImpl;
+import org.epnoi.uia.harvester.HarvestersHandlerImpl;
+import org.epnoi.uia.informationhandler.InformationHandlerImpl;
 import org.epnoi.uia.nlp.NLPHandlerImpl;
+import org.epnoi.uia.search.SearchHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 @Configuration
-@ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class})
+@ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class, SearchHandlerImpl.class, AnnotationHandlerImpl.class, InformationSourcesHandlerImpl.class, InformationHandlerImpl.class, DomainsHandlerImpl.class, KnolwedgeBaseImpl.class, HarvestersHandlerImpl.class})
 @PropertySource("classpath:/epnoi.properties")
 public class EpnoiConfig {
 
+    public static final String DEPLOY_PROFILE = "deploy";
+    public static final String DEVELOP_PROFILE = "develop";
+    public static final String EPNOI_PROPERTIES = "epnoi.configurable.properties";
+    public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
+
+
     @Autowired
-    Environment environment;
+    ConfigurableEnvironment configurableEnvironment;
 
     @Bean
     public
@@ -28,19 +37,45 @@ public class EpnoiConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Bean
-    public ParametersModel parametersModel() {
-        System.out.println("========>" + environment.getProperty("epnoi.config.path"));
-        String path = CoreMain.class.getResource("CoreUtility.xml").getPath();
-        ParametersModel parametersModel = ParametersModelReader.read(path);
+    @Value("${epnoi.config.path}")
+    String configurationFilePath;
 
+
+    @Bean
+    @Profile(DEVELOP_PROFILE)
+    public ParametersModel developParametersModel() {
+        System.out.println("DEVELOP!");
+        String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
+        System.out.println("--------> " + configurableEnvironment);
+        ParametersModel parametersModel =null;
+        if(deployPath!=null) {
+
+
+            ParametersModelReader.read(deployPath);
+        }else{
+            ParametersModelReader.read(configurationFilePath);
+        }
         return parametersModel;
     }
-/*
-    @Bean
-    public Core core(ParametersModel parametersModel) {
 
-        return new CoreImpl(parametersModel);
+
     }
-    */
+/* LEFT FOR FUTURE USE
+    @Bean
+    @Profile(DEPLOY_PROFILE)
+    public ParametersModel deployParametersModel() {
+        System.out.println("->" + configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH));
+        String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
+        ParametersModel parametersModel =null;
+        if(deployPath!=null) {
+
+
+          ParametersModelReader.read(deployPath);
+        }else{
+            ParametersModelReader.read(deployPath);
+        }
+        return parametersModel;
+    }
+*/
+
 }

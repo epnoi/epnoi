@@ -1,12 +1,13 @@
 package org.epnoi.model.modules;
 
-import java.util.List;
-
 import org.epnoi.model.InformationSourceNotification;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 
+import java.util.List;
 
 
 public interface InformationSourcesHandler {
-	public List<InformationSourceNotification> retrieveNotifications(String informationSourceSubscription);
+	void init() throws EpnoiInitializationException;
+	List<InformationSourceNotification> retrieveNotifications(String informationSourceSubscription);
 	
 }

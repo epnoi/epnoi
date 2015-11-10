@@ -1,7 +1,6 @@
 package org.epnoi.learner.relations.corpus;
 
-import java.util.logging.Logger;
-
+import gate.Document;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
@@ -9,7 +8,7 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 
-import gate.Document;
+import java.util.logging.Logger;
 
 public class MockUpRelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger

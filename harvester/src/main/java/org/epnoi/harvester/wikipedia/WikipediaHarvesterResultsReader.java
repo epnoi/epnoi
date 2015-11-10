@@ -1,8 +1,5 @@
 package org.epnoi.harvester.wikipedia;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
 import org.epnoi.model.Selector;
@@ -15,6 +12,9 @@ import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class WikipediaHarvesterResultsReader {
 	private static final Logger logger = Logger

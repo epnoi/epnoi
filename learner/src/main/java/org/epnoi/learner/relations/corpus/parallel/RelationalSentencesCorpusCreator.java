@@ -1,28 +1,22 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
+import gate.Document;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.parallel.RelationalSentenceCandidateToRelationalSentenceMapper;
-import org.epnoi.model.Context;
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationalSentencesCorpus;
-import org.epnoi.model.Selector;
+import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Document;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class RelationalSentencesCorpusCreator {
     private static final Logger logger = Logger.getLogger(RelationalSentencesCorpusCreator.class.getName());

@@ -1,18 +1,17 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.commons.GateUtils;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 import gate.DocumentContent;
 import gate.annotation.AnnotationSetImpl;
+import org.apache.spark.api.java.function.FlatMapFunction;
+import org.epnoi.nlp.gate.NLPAnnotationsConstants;
+import org.epnoi.uia.commons.GateUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DocumentToSentencesFlatMapper implements FlatMapFunction<Document, Sentence> {
 

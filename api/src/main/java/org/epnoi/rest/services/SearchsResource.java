@@ -1,6 +1,9 @@
 package org.epnoi.rest.services;
 
-import java.util.List;
+import io.swagger.annotations.*;
+import org.epnoi.model.search.SearchContext;
+import org.epnoi.model.search.SearchResult;
+import org.epnoi.model.search.SelectExpression;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -11,16 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.model.search.SearchContext;
-import org.epnoi.model.search.SearchResult;
-import org.epnoi.model.search.SelectExpression;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.util.List;
 
 @Path("/uia/searchs")
 @Api(value = "/uia/searchs", description = "Operations about search")

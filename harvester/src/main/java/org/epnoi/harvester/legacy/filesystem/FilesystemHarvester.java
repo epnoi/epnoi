@@ -1,5 +1,20 @@
 package org.epnoi.harvester.legacy.filesystem;
 
+import gate.Document;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.epnoi.model.*;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.core.CoreUtility;
+import org.epnoi.uia.informationstore.SelectorHelper;
+import org.xml.sax.ContentHandler;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -9,30 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
-
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Item;
-import org.epnoi.model.Paper;
-import org.epnoi.model.Selector;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
-import org.epnoi.uia.informationstore.SelectorHelper;
-import org.xml.sax.ContentHandler;
-
-import gate.Document;
 
 public class FilesystemHarvester {
 	private Core core;

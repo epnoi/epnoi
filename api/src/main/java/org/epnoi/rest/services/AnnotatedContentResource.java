@@ -1,6 +1,11 @@
 package org.epnoi.rest.services;
 
-import java.util.logging.Logger;
+import com.sun.jersey.api.Responses;
+import gate.Document;
+import io.swagger.annotations.*;
+import org.epnoi.model.Content;
+import org.epnoi.model.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -11,20 +16,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Selector;
-import org.epnoi.rest.services.response.WikidataViewSummary;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
-import com.sun.jersey.api.Responses;
-
-import gate.Document;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.util.logging.Logger;
 
 @Path("/uia/annotatedcontent/")
 @Api(value = "/uia/annotatedcontent/", description = "Operations for handling the annotated content stored in the UIA")

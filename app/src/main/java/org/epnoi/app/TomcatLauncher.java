@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 /**
  * Created by cbadenes on 22/10/15.

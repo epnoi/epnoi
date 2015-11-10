@@ -1,18 +1,9 @@
 package org.epnoi.model.parameterization.manifest;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import javax.xml.bind.*;
+import java.io.*;
 import java.util.logging.Logger;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-import javax.xml.bind.Unmarshaller;
 
 
 public class ManifestHandler {

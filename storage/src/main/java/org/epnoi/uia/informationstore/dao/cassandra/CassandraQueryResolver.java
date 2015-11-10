@@ -1,18 +1,6 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
 import com.google.common.base.Splitter;
-
 import me.prettyprint.cassandra.model.CqlQuery;
 import me.prettyprint.cassandra.model.CqlRows;
 import me.prettyprint.cassandra.serializers.StringSerializer;
@@ -22,6 +10,16 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
+import org.epnoi.model.Content;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
+import org.epnoi.model.Selector;
+import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class CassandraQueryResolver extends CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";

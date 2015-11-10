@@ -1,11 +1,5 @@
 package org.epnoi.harvester.demo;
 
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import com.sun.org.omg.CORBA.ContextIdentifierHelper;
-import org.apache.poi.util.SystemOutLogger;
 import org.epnoi.harvester.legacy.filesystem.FilesystemHarvester;
 import org.epnoi.harvester.legacy.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.model.Domain;
@@ -16,7 +10,9 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 
-import javax.swing.*;
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class DemoDataLoader {
     Core core;

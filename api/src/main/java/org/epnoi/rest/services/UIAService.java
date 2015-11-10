@@ -1,16 +1,15 @@
 package org.epnoi.rest.services;
 
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
-
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.core.CoreImpl;
+
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import java.util.logging.Logger;
 
 public abstract class UIAService {
 
@@ -34,7 +33,8 @@ public abstract class UIAService {
 		if (this.core == null) {
 			System.out.println("Loading the model!");
 			long time = System.currentTimeMillis();
-			this.core = new CoreImpl();
+
+				this.core = new CoreImpl();
 			parametersModel = this._readParameters();
 			try {
 				core.init();

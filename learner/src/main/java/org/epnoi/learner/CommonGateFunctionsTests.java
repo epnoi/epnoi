@@ -1,12 +1,8 @@
 package org.epnoi.learner;
 
-import gate.*;
+import gate.Document;
 import gate.corpora.DocumentContentImpl;
 import gate.util.InvalidOffsetException;
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.epnoi.learner.relations.corpus.parallel.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;

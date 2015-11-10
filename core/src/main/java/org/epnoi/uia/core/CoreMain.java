@@ -1,10 +1,9 @@
 package org.epnoi.uia.core;
 
-import java.util.logging.Logger;
-
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
-import org.epnoi.uia.commons.GateUtils;
+
+import java.util.logging.Logger;
 
 public class CoreMain {
 	private static final Logger logger = Logger.getLogger(CoreMain.class

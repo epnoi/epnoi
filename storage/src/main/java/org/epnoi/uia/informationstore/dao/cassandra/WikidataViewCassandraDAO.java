@@ -1,26 +1,14 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.WikidataView;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class WikidataViewCassandraDAO extends CassandraDAO {
 	final Joiner joiner;

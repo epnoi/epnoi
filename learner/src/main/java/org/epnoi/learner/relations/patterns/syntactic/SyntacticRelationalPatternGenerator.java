@@ -1,10 +1,7 @@
 package org.epnoi.learner.relations.patterns.syntactic;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
+import gate.Annotation;
+import gate.Document;
 import org.epnoi.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternGenerator;
@@ -18,8 +15,10 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.DijkstraShortestPath;
 
-import gate.Annotation;
-import gate.Document;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 public class SyntacticRelationalPatternGenerator implements
 		RelationalPatternGenerator {

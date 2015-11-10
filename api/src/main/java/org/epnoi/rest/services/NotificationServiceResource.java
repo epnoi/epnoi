@@ -1,13 +1,5 @@
 package org.epnoi.rest.services;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
@@ -15,6 +7,14 @@ import org.atmosphere.cpr.DefaultBroadcaster;
 import org.atmosphere.jersey.SuspendResponse;
 import org.epnoi.sources.monitors.RSSInformationSourceMonitor;
 import org.epnoi.sources.subscribers.EventBus;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 
 

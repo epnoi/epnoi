@@ -1,23 +1,6 @@
 package org.epnoi.rest.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import io.swagger.annotations.*;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.learner.relations.RelationsHandlerParameters;
 import org.epnoi.model.Domain;
@@ -25,9 +8,14 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 
-
-
-import io.swagger.annotations.*;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Path("/uia/resources/relations")
 @Api(value = "/uia/resources/relations", description = "Operations for handling relations")

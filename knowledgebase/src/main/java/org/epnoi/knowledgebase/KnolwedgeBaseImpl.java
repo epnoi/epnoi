@@ -1,15 +1,15 @@
 package org.epnoi.knowledgebase;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.epnoi.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class KnolwedgeBaseImpl implements KnowledgeBase {
 
@@ -105,12 +105,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#getHypernyms(java.lang.String)
-	 */
+
 	@Override
 	public Set<String> getHypernyms(String source) {
 
@@ -137,12 +132,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#stem(java.lang.String)
-	 */
+
 	@Override
 	public Set<String> stem(String term) {
 

@@ -1,21 +1,15 @@
 package org.epnoi.learner.relations.patterns.syntactic;
 
-import java.util.logging.Logger;
-
 import org.epnoi.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.RelationalPatternsCorpus;
-import org.epnoi.learner.relations.patterns.RelationalPatternsCorpusCreator;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelBuilder;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
+import org.epnoi.learner.relations.patterns.*;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.uia.core.CoreUtility;
+
+import java.util.logging.Logger;
 
 public class SyntacticRelationalModelCreator {
 	private static final Logger logger = Logger

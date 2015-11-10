@@ -1,16 +1,15 @@
 package org.epnoi.uia.informationstore.dao.map;
 
 
-
-import java.io.File;
-import java.util.concurrent.ConcurrentNavigableMap;
-
 import org.epnoi.model.Content;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;
 import org.epnoi.uia.informationstore.dao.DAO;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+
+import java.io.File;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 public abstract class MapDAO implements DAO {
 	protected static DB database;

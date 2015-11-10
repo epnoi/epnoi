@@ -1,14 +1,5 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.util.Iterator;
-
-import org.epnoi.model.Context;
-import org.epnoi.model.InformationSource;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Term;
-import org.epnoi.model.WikidataView;
-import org.epnoi.model.rdf.RDFHelper;
-
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.NodeFactory;
@@ -16,11 +7,14 @@ import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
-
+import org.epnoi.model.*;
+import org.epnoi.model.rdf.RDFHelper;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
 import virtuoso.jena.driver.VirtuosoUpdateRequest;
+
+import java.util.Iterator;
 
 public class WikidataViewRDFDAO extends RDFDAO {
 

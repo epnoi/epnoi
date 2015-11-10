@@ -1,39 +1,23 @@
 package org.epnoi.rest.services;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.Responses;
+import io.swagger.annotations.*;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.rest.services.response.jsonld.JSONLDResearchObjectResponseBuilder;
 import org.epnoi.rest.services.response.jsonld.JSONLDResponse;
 
-import com.sun.jersey.api.Responses;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 @Path("/uia/researchobjects/researchobject")
 @Api(value = "/uia/researchobjects/researchobject", description = "Operations for handling Research Objects")

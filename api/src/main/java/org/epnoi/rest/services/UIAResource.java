@@ -1,28 +1,21 @@
 package org.epnoi.rest.services;
 
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.epnoi.harvester.demo.DemoDataLoader;
-import org.epnoi.model.modules.InformationStore;
-import org.epnoi.rest.services.response.UIA;
-
 import com.sun.jersey.api.Responses;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.epnoi.harvester.demo.DemoDataLoader;
+import org.epnoi.model.modules.InformationStore;
+import org.epnoi.rest.services.response.UIA;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
 
 @Path("/uia")
 @Api(value = "/uia", description = "UIA status and management")

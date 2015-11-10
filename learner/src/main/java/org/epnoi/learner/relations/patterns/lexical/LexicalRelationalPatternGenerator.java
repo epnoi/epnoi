@@ -1,9 +1,7 @@
 package org.epnoi.learner.relations.patterns.lexical;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import gate.Annotation;
+import gate.Document;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternGenerator;
 import org.epnoi.model.OffsetRangeSelector;
@@ -12,8 +10,9 @@ import org.epnoi.nlp.gate.AnnotationsComparator;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.commons.GateUtils;
 
-import gate.Annotation;
-import gate.Document;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 

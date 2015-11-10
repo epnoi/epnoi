@@ -3,8 +3,6 @@ package org.epnoi.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-
 
 
 public class InformationSourceNotificationsSet implements Resource {

@@ -1,10 +1,12 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.rdf.model.Model;
 import org.epnoi.model.Context;
 import org.epnoi.model.Feed;
 import org.epnoi.model.Item;
@@ -16,20 +18,12 @@ import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.OAIORERDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import virtuoso.jena.driver.*;
 
-import com.hp.hpl.jena.graph.Graph;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.rdf.model.Model;
-
-import virtuoso.jena.driver.VirtGraph;
-import virtuoso.jena.driver.VirtuosoQueryExecution;
-import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
-import virtuoso.jena.driver.VirtuosoUpdateFactory;
-import virtuoso.jena.driver.VirtuosoUpdateRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class FeedRDFDAO extends RDFDAO {
 

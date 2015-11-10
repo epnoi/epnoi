@@ -1,22 +1,16 @@
 package org.epnoi.learner.automata.test;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;
 import edu.mit.jwi.data.ILoadPolicy;
-import edu.mit.jwi.item.IIndexWord;
-import edu.mit.jwi.item.ISynset;
-import edu.mit.jwi.item.ISynsetID;
-import edu.mit.jwi.item.IWord;
-import edu.mit.jwi.item.IWordID;
-import edu.mit.jwi.item.POS;
-import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.item.*;
 import edu.mit.jwi.morph.WordnetStemmer;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class JWITest {
 

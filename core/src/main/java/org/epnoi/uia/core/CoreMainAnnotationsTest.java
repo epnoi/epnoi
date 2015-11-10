@@ -1,15 +1,14 @@
 package org.epnoi.uia.core;
 
-import java.util.List;
-
+import gate.Annotation;
+import gate.Document;
+import gate.util.InvalidOffsetException;
 import org.epnoi.model.Context;
 import org.epnoi.model.User;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 
-import gate.Annotation;
-import gate.Document;
-import gate.util.InvalidOffsetException;
+import java.util.List;
 
 public class CoreMainAnnotationsTest {
 

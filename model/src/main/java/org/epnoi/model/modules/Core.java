@@ -1,11 +1,10 @@
 package org.epnoi.model.modules;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.parameterization.ParametersModel;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface Core {
 

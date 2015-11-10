@@ -1,12 +1,12 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
-
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.rdf.model.Model;
 import org.epnoi.model.Context;
 import org.epnoi.model.Item;
 import org.epnoi.model.Resource;
@@ -15,19 +15,17 @@ import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.OAIORERDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
-
-import com.hp.hpl.jena.graph.Graph;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.rdf.model.Model;
-
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
 import virtuoso.jena.driver.VirtuosoUpdateRequest;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Locale;
 
 
 

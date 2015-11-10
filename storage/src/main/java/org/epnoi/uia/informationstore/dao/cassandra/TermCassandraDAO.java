@@ -1,19 +1,11 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import java.util.ArrayList;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.Term;
-import org.epnoi.model.TermMetadata;
-
 import com.google.common.collect.Lists;
-
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+
+import java.util.ArrayList;
 
 public class TermCassandraDAO extends CassandraDAO {
 

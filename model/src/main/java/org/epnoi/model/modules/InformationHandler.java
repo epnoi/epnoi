@@ -1,12 +1,12 @@
 package org.epnoi.model.modules;
 
-import java.util.List;
-
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.ParametersModel;
+
+import java.util.List;
 
 
 

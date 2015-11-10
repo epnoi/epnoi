@@ -1,11 +1,6 @@
 package org.epnoi.sources.subscribers;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
+import flexjson.JSONSerializer;
 import org.atmosphere.cpr.Broadcaster;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
@@ -15,7 +10,11 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationAccessListener;
 import org.epnoi.uia.informationhandler.events.EventsHelper;
 
-import flexjson.JSONSerializer;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class EventBus implements InformationAccessListener {
 	private static final Logger logger = Logger.getLogger(EventBus.class

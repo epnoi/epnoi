@@ -1,10 +1,10 @@
 package org.epnoi.learner;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.epnoi.model.Domain;
 import org.epnoi.model.modules.Core;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DomainsGatherer {
 	private static final Logger logger = Logger.getLogger(DomainsGatherer.class

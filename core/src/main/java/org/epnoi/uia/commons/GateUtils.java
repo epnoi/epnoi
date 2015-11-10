@@ -1,21 +1,17 @@
 package org.epnoi.uia.commons;
 
-import java.io.Reader;
-import java.io.StringReader;
+import gate.Annotation;
+import gate.Document;
+import gate.DocumentContent;
+import gate.corpora.DocumentImpl;
+import gate.corpora.DocumentStaxUtils;
+import gate.util.InvalidOffsetException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import gate.Annotation;
-import gate.Document;
-import gate.DocumentContent;
-import gate.Factory;
-import gate.Utils;
-import gate.corpora.DocumentImpl;
-import gate.corpora.DocumentStaxUtils;
-import gate.creole.ResourceInstantiationException;
-import gate.util.InvalidOffsetException;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class GateUtils {
 

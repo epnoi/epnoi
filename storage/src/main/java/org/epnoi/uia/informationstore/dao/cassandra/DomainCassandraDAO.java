@@ -1,16 +1,9 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Domain;
-import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+import org.epnoi.uia.informationstore.SelectorHelper;
 
 public class DomainCassandraDAO extends CassandraDAO {
 

@@ -1,39 +1,20 @@
 package org.epnoi.rest.services;
 
+import com.sun.jersey.api.Responses;
+import io.swagger.annotations.*;
+import org.epnoi.model.Resource;
+import org.epnoi.model.rdf.*;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.epnoi.model.Resource;
-import org.epnoi.model.rdf.AnnotationRDFHelper;
-import org.epnoi.model.rdf.InformationSourceRDFHelper;
-import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.model.rdf.UserRDFHelper;
-
-import com.sun.jersey.api.Responses;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @Path("/uia/resources/bytype")
 @Api(value = "/uia/resources/bytype", description = "Operations for handling resources of different types")
