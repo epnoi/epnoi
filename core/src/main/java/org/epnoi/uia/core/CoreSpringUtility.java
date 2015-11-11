@@ -9,20 +9,25 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.StandardEnvironment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by rgonza on 8/11/15.
  */
 public class CoreSpringUtility {
+    private static final Logger logger = Logger.getLogger(CoreSpringUtility.class
+            .getName());
 
-    public static Core getCore(String configFilePath){
+    public static Core getCore(String configFilePath) {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 
 
         applicationContext.getEnvironment().setActiveProfiles(EpnoiConfig.DEVELOP_PROFILE);
-        MutablePropertySources propertySources =applicationContext.getEnvironment().getPropertySources();
+        MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 
         Map epnoiProperties = new HashMap();
         epnoiProperties.put(EpnoiConfig.EPNOI_PROPERTIES_PATH, configFilePath);
@@ -30,48 +35,48 @@ public class CoreSpringUtility {
         applicationContext.register(org.epnoi.EpnoiConfig.class);
         applicationContext.refresh();
 
-        for(String bean: applicationContext.getBeanDefinitionNames()){
-            System.out.println("Bean: "+ bean);
+        List<String> beans = new ArrayList<>();
+        for (String bean : applicationContext.getBeanDefinitionNames()) {
+            beans.add("   Bean: " + bean);
         }
+        logger.info("Initializing the Spring context with the following beans: \n"+String.join("\n",beans));
+
         Core core = applicationContext.getBean(Core.class);
         return core;
     }
 
-    public static Core getCore(){
-     return CoreSpringUtility.getCore(null);
+    public static Core getCore() {
+        return CoreSpringUtility.getCore(null);
     }
-
+/* TEST
     public static void main(String[] args) {
         System.out.println("Entering!");
-
-
 
 
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 
 
         applicationContext.getEnvironment().setActiveProfiles(EpnoiConfig.DEPLOY_PROFILE);
-        MutablePropertySources propertySources =applicationContext.getEnvironment().getPropertySources();
+        MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 
         Map myMap = new HashMap();
         myMap.put(EpnoiConfig.EPNOI_PROPERTIES_PATH, "thepath");
         propertySources.addFirst(new MapPropertySource(EpnoiConfig.EPNOI_PROPERTIES, myMap));
 
 
-       applicationContext.register(org.epnoi.EpnoiConfig.class);
+        applicationContext.register(org.epnoi.EpnoiConfig.class);
         applicationContext.refresh();
 
-      //  applicationContext.setEnvironment();
-        for(String bean: applicationContext.getBeanDefinitionNames()){
-            System.out.println("Bean: "+ bean);
+
+        for (String bean : applicationContext.getBeanDefinitionNames()) {
+            System.out.println("Bean: " + bean);
         }
-   /*
+
         ParametersModel parametersModel = applicationContext.getBean(ParametersModel.class);
         System.out.println("This is the readed bean >"+parametersModel);
         System.out.println("Exiting!");
         Core core = applicationContext.getBean(Core.class);
-*/
-/*
+
         try {
             System.out.println("--->" + core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYM));
         } catch (EpnoiInitializationException e) {
@@ -86,7 +91,7 @@ public class CoreSpringUtility {
             e.printStackTrace();
         }
         }
-        */
-    }
 
+    }
+*/
 }

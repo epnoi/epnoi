@@ -1,6 +1,8 @@
 package org.epnoi.uia.core;
 
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
@@ -9,60 +11,54 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 public class CoreUtility {
-	// ---------------------------------------------------------------------------------
-	private static final Logger logger = Logger.getLogger(CoreUtility.class
-			.getName());
+    // ---------------------------------------------------------------------------------
+    private static final Logger logger = Logger.getLogger(CoreUtility.class
+            .getName());
 
-	public static Core getUIACore() {
+    public static Core getUIACore() {
 
-	return getUIACore("CoreUtility.xml");
+        return getUIACore(null);
 
-	}
+    }
 
-	public static Core getUIACore(String configurationFile) {
+    public static Core getUIACore(String configurationFile) {
 
-		long time = System.currentTimeMillis();
-		Core core = new CoreImpl();
-		ParametersModel parametersModel = readParameters(configurationFile);
-		logger.info("Reading the following paramaters for the UIA: "+parametersModel);
-		try {
-			core.init();
-		} catch (EpnoiInitializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(-1);
-		}
+        long time = System.currentTimeMillis();
 
-		long afterTime = System.currentTimeMillis();
-		logger.info("It took " + (Long) (afterTime - time) / 1000.0
-				+ "to load the UIA core");
+        //logger.info("Reading the following paramaters for the UIA: " + parametersModel);
 
-		return core;
+        Core core = CoreSpringUtility.getCore(configurationFile);
 
-	}
+        long afterTime = System.currentTimeMillis();
+        logger.info("It took " + (Long) (afterTime - time) / 1000.0
+                + "to load the UIA core");
 
-	public static ParametersModel readParameters(){
-		return readParameters("CoreUtility.xml");
-	}
+        return core;
 
-	public static ParametersModel readParameters(String configurationFile) {
-		ParametersModel parametersModel = null;
+    }
 
-		try {
+    public static ParametersModel readParameters(String configurationFile) {
+        ParametersModel parametersModel = null;
 
-			URL configFileURL = CoreMain.class.getResource("CoreUtility.xml");
+        try {
+            parametersModel = ParametersModelReader.read(configurationFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-			parametersModel = ParametersModelReader.read(configFileURL
-					.getPath());
+        return parametersModel;
+    }
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
-		return parametersModel;
-	}
-
-	// ----------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------
+    public static void main(String[] args) {
+        Core core = CoreUtility.getUIACore();
+        try {
+            System.out.println("-> "+core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYM));
+        } catch (EpnoiInitializationException e) {
+            e.printStackTrace();
+        } catch (EpnoiResourceAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
