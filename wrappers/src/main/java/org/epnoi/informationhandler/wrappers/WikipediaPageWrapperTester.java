@@ -1,22 +1,5 @@
 package org.epnoi.informationhandler.wrappers;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Selector;
-import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
-import gate.Document;
-import gate.Factory;
-
 public class WikipediaPageWrapperTester {
 	
 	/*

@@ -1,12 +1,12 @@
 package org.epnoi.learner.relations.patterns;
 
+import org.epnoi.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModel;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import org.epnoi.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModel;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 
 public class RelationalPatternsModelSerializer {
 	// ------------------------------------------------------------------------------------

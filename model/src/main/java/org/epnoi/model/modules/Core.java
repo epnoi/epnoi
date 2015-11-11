@@ -1,16 +1,15 @@
 package org.epnoi.model.modules;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.parameterization.ParametersModel;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface Core {
 
 
-	void init(ParametersModel parametersModel) throws EpnoiInitializationException;
+	void init() throws EpnoiInitializationException;
 
 	NLPHandler getNLPHandler();
 

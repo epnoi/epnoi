@@ -1,10 +1,10 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.io.Serializable;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.DocumentContent;
+
+import java.io.Serializable;
 
 public class Sentence implements Serializable {
 

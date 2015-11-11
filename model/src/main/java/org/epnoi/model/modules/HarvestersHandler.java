@@ -4,10 +4,8 @@ import org.epnoi.model.Domain;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 
 public interface HarvestersHandler {
-	public void init(Core core) throws EpnoiInitializationException;
+	void init() throws EpnoiInitializationException;
 	
 
-	// -----------------------------------------------------------------------------------
-
-	public void harvestURL(String url, Domain domain);
+	void harvestURL(String url, Domain domain);
 }

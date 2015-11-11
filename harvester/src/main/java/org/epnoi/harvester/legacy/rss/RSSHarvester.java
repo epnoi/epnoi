@@ -1,6 +1,11 @@
 package org.epnoi.harvester.legacy.rss;
 
-import java.awt.Toolkit;
+import org.epnoi.model.modules.Core;
+import org.epnoi.model.parameterization.RSSHarvesterParameters;
+import org.epnoi.model.parameterization.manifest.Manifest;
+import org.epnoi.model.parameterization.manifest.ManifestHandler;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashMap;
@@ -8,11 +13,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-import org.epnoi.model.modules.Core;
-import org.epnoi.model.parameterization.RSSHarvesterParameters;
-import org.epnoi.model.parameterization.manifest.Manifest;
-import org.epnoi.model.parameterization.manifest.ManifestHandler;
 
 public class RSSHarvester {
 

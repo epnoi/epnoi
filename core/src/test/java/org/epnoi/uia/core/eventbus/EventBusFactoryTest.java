@@ -3,7 +3,6 @@ package org.epnoi.uia.core.eventbus;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.parameterization.EventBusParameters;
 import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.uia.core.CoreUtility;
 import org.junit.Assert;
 import org.junit.Test;
 

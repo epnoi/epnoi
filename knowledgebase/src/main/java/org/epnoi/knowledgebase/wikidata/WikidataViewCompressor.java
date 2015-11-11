@@ -1,14 +1,14 @@
 package org.epnoi.knowledgebase.wikidata;
 
+import org.epnoi.model.RelationHelper;
+import org.epnoi.model.WikidataView;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.WikidataView;
 
 public class WikidataViewCompressor {
 	private static final Logger logger = Logger

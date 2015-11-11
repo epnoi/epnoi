@@ -1,16 +1,14 @@
 package org.epnoi.rest.clients;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.epnoi.model.Domain;
-import org.epnoi.model.ResearchObject;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
+import org.epnoi.model.Domain;
+import org.epnoi.model.ResearchObject;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DomainResourceClient {
 

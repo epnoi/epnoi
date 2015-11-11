@@ -1,12 +1,12 @@
 package org.epnoi.uia.core;
 
-import java.util.Arrays;
-
 import org.epnoi.model.Context;
 import org.epnoi.model.Paper;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.dao.cassandra.PaperCassandraDAO;
+
+import java.util.Arrays;
 
 public class SimpleLatencyTest {
 	public static final String paperURI = "http://papertest";

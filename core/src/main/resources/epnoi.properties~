@@ -1,0 +1,3 @@
+epnoi.config.develop.path = /opt/epnoi/epnoi/core/src/main/resources/CoreUtility.xml
+epnoi.config.deployment.path
+

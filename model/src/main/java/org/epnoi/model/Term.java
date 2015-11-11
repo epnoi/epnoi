@@ -1,7 +1,5 @@
 package org.epnoi.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import org.epnoi.model.commons.StringUtils;
 
 public class Term implements Resource {

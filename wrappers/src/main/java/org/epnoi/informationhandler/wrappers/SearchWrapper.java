@@ -1,7 +1,5 @@
 package org.epnoi.informationhandler.wrappers;
 
-import java.util.logging.Logger;
-
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
@@ -11,6 +9,8 @@ import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.rdf.SearchRDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.logging.Logger;
 
 
 public class SearchWrapper implements Wrapper {

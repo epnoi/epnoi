@@ -1,9 +1,9 @@
 package org.epnoi.learner.relations.patterns.lexical;
 
+import org.epnoi.learner.relations.patterns.RelationalPattern;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.epnoi.learner.relations.patterns.RelationalPattern;
 
 public class LexicalRelationalPattern implements RelationalPattern {
 	private List<LexicalRelationalPatternNode> nodes;

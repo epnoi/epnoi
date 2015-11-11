@@ -2,10 +2,6 @@ package org.epnoi.informationhandler.wrappers;
 
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.modules.Core;
@@ -13,7 +9,6 @@ import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.epnoi.uia.informationstore.dao.cassandra.RelationalSentencesCorpusCassandraDAO;
 
 public class RelationalSentencesCorpusWrapper implements Wrapper {
 	private Core core;

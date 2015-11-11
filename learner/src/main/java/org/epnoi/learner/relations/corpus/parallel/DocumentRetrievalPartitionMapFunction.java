@@ -1,9 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import gate.Document;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Content;
@@ -14,7 +11,9 @@ import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Document;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DocumentRetrievalPartitionMapFunction implements FlatMapFunction<Iterator<String>, Document> {
 	Core core;

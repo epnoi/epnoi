@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:provenance="http://www.openarchives.org/OAI/2.0/provenance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <responseDate>2015-03-03T14:28:29Z</responseDate>
     <request verb="ListRecords" metadataPrefix="oai_dc" from="2015-03-03T13:00:00Z">http://eprints.ucm.es/cgi/oai2</request>
     <ListRecords>

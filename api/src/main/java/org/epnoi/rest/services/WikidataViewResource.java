@@ -1,25 +1,7 @@
 package org.epnoi.rest.services;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.Responses;
+import io.swagger.annotations.*;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.knowledgebase.wikidata.WikidataViewCreator;
@@ -29,13 +11,17 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.rest.services.response.WikidataViewSummary;
 
-import com.sun.jersey.api.Responses;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.logging.Logger;
 
 @Path("/uia/knowledgebase/wikidataview")
 @Api(value = "/uia/knowledgebase/wikidataview", description = "Operations for handling the wikidata view of the knowledge base")

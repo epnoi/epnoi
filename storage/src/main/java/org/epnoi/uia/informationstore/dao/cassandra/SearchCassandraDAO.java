@@ -1,18 +1,12 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
+import org.epnoi.model.*;
 
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Search;
-import org.epnoi.model.Selector;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchCassandraDAO extends CassandraDAO {

@@ -1,8 +1,7 @@
 package org.epnoi.rest.services.response;
 
-import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 @XmlRootElement
 public class UIA {

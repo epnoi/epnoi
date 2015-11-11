@@ -1,12 +1,12 @@
 package org.epnoi.uia.core;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import org.epnoi.model.Context;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class CoreWikipediaPageTest {
 

@@ -1,9 +1,9 @@
 package org.epnoi.learner.relations.patterns.syntactic;
 
-import java.util.List;
-
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
+
+import java.util.List;
 
 public class SyntacticRelationalPattern implements RelationalPattern {
 

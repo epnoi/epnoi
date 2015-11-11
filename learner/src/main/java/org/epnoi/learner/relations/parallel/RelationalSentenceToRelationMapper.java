@@ -1,21 +1,13 @@
 package org.epnoi.learner.relations.parallel;
 
 import gate.Document;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function;
-import org.epnoi.learner.OntologyLearningWorkflow;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
-import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
-
-import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternNode;
 import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.model.*;
 import org.epnoi.uia.commons.GateUtils;
-import org.epnoi.uia.informationstore.dao.cassandra.RelationsTableCassandraHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

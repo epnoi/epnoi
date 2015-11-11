@@ -1,9 +1,13 @@
 package org.epnoi.rest.services;
 
 
-
-import java.util.List;
-import java.util.logging.Logger;
+import com.sun.jersey.api.Responses;
+import io.swagger.annotations.*;
+import org.epnoi.learner.OntologyLearningTask;
+import org.epnoi.model.Domain;
+import org.epnoi.model.Relation;
+import org.epnoi.model.RelationsTable;
+import org.epnoi.model.rdf.RDFHelper;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -14,20 +18,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.learner.OntologyLearningTask;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationsTable;
-import org.epnoi.model.rdf.RDFHelper;
-
-import com.sun.jersey.api.Responses;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Path("/uia/domains/domain/relations")
 @Api(value = "/uia/domains/domain/relations", description = "Operations for retrieving a domain relation")

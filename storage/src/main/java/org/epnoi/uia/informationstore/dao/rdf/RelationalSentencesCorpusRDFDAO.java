@@ -1,15 +1,13 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
 import org.epnoi.model.Context;
 import org.epnoi.model.InformationSource;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Resource;
 import org.epnoi.model.rdf.RDFHelper;
-
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
-
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
 import virtuoso.jena.driver.VirtuosoUpdateRequest;
 

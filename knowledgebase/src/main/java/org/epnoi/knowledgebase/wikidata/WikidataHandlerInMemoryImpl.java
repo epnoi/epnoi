@@ -1,8 +1,8 @@
 package org.epnoi.knowledgebase.wikidata;
 
-import java.util.Set;
-
 import org.epnoi.model.WikidataView;
+
+import java.util.Set;
 
 public class WikidataHandlerInMemoryImpl implements WikidataHandler {
 	private WikidataStemmer stemmer = new WikidataStemmer();

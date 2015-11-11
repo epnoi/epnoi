@@ -1,14 +1,14 @@
 package org.epnoi.learner.relations.patterns.lexical;
 
+import org.epnoi.learner.relations.patterns.RelationalPattern;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelBuilder;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-
-import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelBuilder;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 
 public class RelaxedBigramSoftPatternModelBuilder implements
 		RelationalPatternsModelBuilder {

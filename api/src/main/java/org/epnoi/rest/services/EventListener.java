@@ -3,7 +3,6 @@ package org.epnoi.rest.services;
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.websocket.WebSocketEventListener.WebSocketEvent.TYPE;
 import org.atmosphere.websocket.WebSocketEventListenerAdapter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

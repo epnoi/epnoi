@@ -1,22 +1,15 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import me.prettyprint.cassandra.service.ColumnSliceIterator;
+import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+import org.epnoi.uia.informationstore.SelectorHelper;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
-import me.prettyprint.cassandra.service.ColumnSliceIterator;
-import me.prettyprint.hector.api.beans.HColumn;
 
 public class WikipediaPageCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");

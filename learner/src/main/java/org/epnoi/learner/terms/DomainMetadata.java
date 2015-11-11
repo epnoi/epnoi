@@ -1,7 +1,6 @@
 package org.epnoi.learner.terms;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DomainMetadata implements Comparable<DomainMetadata> {

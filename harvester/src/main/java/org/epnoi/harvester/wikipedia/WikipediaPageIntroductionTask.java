@@ -1,8 +1,6 @@
 package org.epnoi.harvester.wikipedia;
 
-import java.util.List;
-import java.util.logging.Logger;
-
+import gate.Document;
 import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.Context;
@@ -13,7 +11,8 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Document;
+import java.util.List;
+import java.util.logging.Logger;
 
 // -------------------------------------------------------------------------------------------------------------------
 

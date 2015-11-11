@@ -1,10 +1,10 @@
 package org.epnoi.rest.services.response.jsonld;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.epnoi.model.ResearchObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JSONLDAggregation {
 	@JsonProperty("@type")

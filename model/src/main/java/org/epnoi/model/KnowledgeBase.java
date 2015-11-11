@@ -1,8 +1,8 @@
 package org.epnoi.model;
 
-import java.util.Set;
-
 import org.epnoi.model.modules.KnowledgeBaseParameters;
+
+import java.util.Set;
 
 public interface KnowledgeBase {
 

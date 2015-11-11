@@ -1,7 +1,6 @@
 package org.epnoi.model.commons;
 
-import java.io.File;
-import java.io.StringReader;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,8 +8,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.xml.sax.InputSource;
+import java.io.File;
+import java.io.StringReader;
 
 
 

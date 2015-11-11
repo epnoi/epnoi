@@ -1,13 +1,10 @@
 package org.epnoi.uia.annotation;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.commons.StringUtils;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.AnnotationHandler;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
@@ -16,17 +13,30 @@ import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.AnnotationOntologyRDFHelper;
 import org.epnoi.model.rdf.AnnotationRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+@Component
 public class AnnotationHandlerImpl implements AnnotationHandler {
+	private static final Logger logger = Logger.getLogger(AnnotationHandlerImpl.class.getName());
+	@Autowired
 	private Core core;
 
 	// ------------------------------------------------------------------------------
 
-	public AnnotationHandlerImpl(Core core) {
-		this.core = core;
+	public AnnotationHandlerImpl(){
 	}
 
 	// ------------------------------------------------------------------------------
+	@PostConstruct
+	public void init() throws EpnoiInitializationException {
+		logger.info("Initializing the annotations handler");
+	}
 
 	public void annotate(Annotation annotation, String URI) {
 		annotation.setAnnotatesResource(URI);

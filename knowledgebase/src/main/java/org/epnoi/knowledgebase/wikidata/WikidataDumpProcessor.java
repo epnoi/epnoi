@@ -1,13 +1,13 @@
 package org.epnoi.knowledgebase.wikidata;
 
-import java.io.IOException;
-
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocumentProcessor;
 import org.wikidata.wdtk.dumpfiles.DumpContentType;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor;
 import org.wikidata.wdtk.dumpfiles.EntityTimerProcessor.TimeoutException;
+
+import java.io.IOException;
 
 public class WikidataDumpProcessor {
 	private DumpProcessingController dumpProcessingController;

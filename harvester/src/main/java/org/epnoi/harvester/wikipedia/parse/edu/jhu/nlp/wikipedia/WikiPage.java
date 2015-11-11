@@ -1,8 +1,8 @@
 package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
-import java.util.Vector;
-
 import de.tudarmstadt.ukp.wikipedia.api.WikiConstants.Language;
+
+import java.util.Vector;
 
 /**
  * Data structures for a wikipedia page.

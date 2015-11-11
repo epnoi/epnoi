@@ -1,10 +1,5 @@
 package org.epnoi.learner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.epnoi.learner.relations.RelationsExtractor;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.learner.relations.RelationsRetriever;
@@ -17,6 +12,10 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class OntologyLearningTask {
 	private static final Logger logger = Logger

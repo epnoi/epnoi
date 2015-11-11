@@ -1,14 +1,13 @@
 package org.epnoi.nlp.gate;
 
+import gate.Gate;
+import gate.util.GateException;
+import org.epnoi.model.parameterization.ParametersModel;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
-
-import org.epnoi.model.parameterization.ParametersModel;
-
-import gate.Gate;
-import gate.util.GateException;
 
 public class GATEInitializer {
 

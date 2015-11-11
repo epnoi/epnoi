@@ -1,8 +1,6 @@
 package org.epnoi.model;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TermMetadata implements Comparable<TermMetadata> {
 	// Map<String, Object> metadata = new HashMap<>();

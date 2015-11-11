@@ -1,8 +1,5 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -13,13 +10,11 @@ import org.apache.solr.common.SolrDocument;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.model.search.Facet;
-import org.epnoi.model.search.FacetValue;
-import org.epnoi.model.search.SearchContext;
-import org.epnoi.model.search.SearchSelectResult;
-import org.epnoi.model.search.SelectExpression;
-import org.epnoi.model.search.SelectionResultTuple;
+import org.epnoi.model.search.*;
 import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class SOLRDAOQueryResolver {
 	private static final Logger logger = Logger

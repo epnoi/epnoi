@@ -2,13 +2,11 @@ package org.epnoi.informationhandler.wrappers;
 
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
-import org.epnoi.model.ResearchObject;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.modules.InformationStoreHelper;
-import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.informationstore.SelectorHelper;
 

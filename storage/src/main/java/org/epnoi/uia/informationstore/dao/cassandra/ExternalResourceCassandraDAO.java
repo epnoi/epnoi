@@ -2,12 +2,7 @@ package org.epnoi.uia.informationstore.dao.cassandra;
 
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.hector.api.beans.HColumn;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
+import org.epnoi.model.*;
 
 
 

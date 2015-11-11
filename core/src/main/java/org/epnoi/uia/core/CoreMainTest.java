@@ -1,16 +1,10 @@
 package org.epnoi.uia.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.epnoi.model.Context;
-import org.epnoi.model.Feed;
-import org.epnoi.model.InformationSource;
-import org.epnoi.model.InformationSourceSubscription;
-import org.epnoi.model.Item;
-import org.epnoi.model.Paper;
-import org.epnoi.model.User;
+import gate.Document;
+import gate.Factory;
+import gate.Utils;
+import gate.creole.ResourceInstantiationException;
+import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.InformationSourceRDFHelper;
@@ -19,10 +13,9 @@ import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchResult;
 import org.epnoi.model.search.SelectExpression;
 
-import gate.Document;
-import gate.Factory;
-import gate.Utils;
-import gate.creole.ResourceInstantiationException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CoreMainTest {
 	public static String TEST_USER_URI = "http://www.epnoi.org/users/testUser";

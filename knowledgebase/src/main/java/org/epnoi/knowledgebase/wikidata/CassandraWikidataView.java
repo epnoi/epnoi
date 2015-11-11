@@ -1,12 +1,12 @@
 package org.epnoi.knowledgebase.wikidata;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.uia.informationstore.CassandraInformationStore;
 import org.epnoi.uia.informationstore.dao.cassandra.WikidataViewCassandraHelper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CassandraWikidataView {
 	private String URI;

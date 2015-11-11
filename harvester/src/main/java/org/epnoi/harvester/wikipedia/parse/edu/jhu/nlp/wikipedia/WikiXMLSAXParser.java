@@ -1,10 +1,10 @@
 package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
-import java.io.InputStream;
-
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import java.io.InputStream;
 
 /**
  * 

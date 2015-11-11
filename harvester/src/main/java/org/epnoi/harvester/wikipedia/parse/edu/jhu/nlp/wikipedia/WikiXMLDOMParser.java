@@ -1,12 +1,12 @@
 package org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia;
 
-import java.io.InputStream;
-import java.util.Vector;
-
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.InputStream;
+import java.util.Vector;
 
 /**
  * A memory efficient parser for easy access to Wikipedia XML dumps in native and compressed XML formats.<br>

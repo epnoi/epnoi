@@ -1,21 +1,16 @@
 package org.epnoi.rest.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.User;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.UserRDFHelper;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/users/{USER_ID}/notifications/informationSources")
 public class UserNotificationsResource extends UIAService {

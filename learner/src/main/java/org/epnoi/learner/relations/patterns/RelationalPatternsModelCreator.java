@@ -1,7 +1,5 @@
 package org.epnoi.learner.relations.patterns;
 
-import java.util.logging.Logger;
-
 import org.epnoi.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.syntactic.SyntacticRelationalModelCreationParameters;
 import org.epnoi.model.RelationalSentencesCorpus;
@@ -10,6 +8,8 @@ import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
+
+import java.util.logging.Logger;
 
 public class RelationalPatternsModelCreator {
 	private static final Logger logger = Logger

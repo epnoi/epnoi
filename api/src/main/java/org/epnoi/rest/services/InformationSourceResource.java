@@ -1,17 +1,13 @@
 package org.epnoi.rest.services;
 
+import org.epnoi.model.User;
+import org.epnoi.model.rdf.UserRDFHelper;
+
 import javax.servlet.ServletContext;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.model.User;
-import org.epnoi.model.rdf.UserRDFHelper;
 
 @Path("/informationSources")
 public class InformationSourceResource extends UIAService {

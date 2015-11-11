@@ -1,10 +1,10 @@
 package org.epnoi.model;
 
+import org.epnoi.model.commons.StringUtils;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.epnoi.model.commons.StringUtils;
 
 public class Relation implements Resource {
 	private String uri;

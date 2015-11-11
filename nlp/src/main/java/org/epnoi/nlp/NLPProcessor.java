@@ -1,15 +1,6 @@
 package org.epnoi.nlp;
 
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.nlp.gate.ControllerCreator;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.SimpleGraph;
-
 import com.rits.cloning.Cloner;
-
 import gate.Annotation;
 import gate.Corpus;
 import gate.Document;
@@ -19,6 +10,11 @@ import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
 import gate.util.InvalidOffsetException;
+import org.epnoi.model.parameterization.ParametersModel;
+import org.epnoi.nlp.gate.ControllerCreator;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class NLPProcessor {
 	private static final Logger logger = Logger.getLogger(NLPProcessor.class.getName());

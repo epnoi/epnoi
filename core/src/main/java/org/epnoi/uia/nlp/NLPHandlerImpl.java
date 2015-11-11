@@ -1,7 +1,7 @@
 package org.epnoi.uia.nlp;
 
-import java.util.logging.Logger;
-
+import gate.Document;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.NLPHandler;
@@ -9,13 +9,19 @@ import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.nlp.NLPProcessor;
 import org.epnoi.nlp.NLPProcessorsPool;
 import org.epnoi.nlp.gate.GATEInitializer;
-import org.epnoi.uia.core.CoreUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import gate.Document;
+import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
+@Component
 public class NLPHandlerImpl implements NLPHandler {
+	@Autowired
 	private Core core;
+	@Autowired
 	private ParametersModel parameters;
+
 	private NLPProcessorsPool pool;
 
 	private static final Logger logger = Logger.getLogger(NLPHandlerImpl.class.getName());
@@ -23,11 +29,10 @@ public class NLPHandlerImpl implements NLPHandler {
 	// ----------------------------------------------------------------------------------------------------------
 
 	@Override
-	public void init(Core core, ParametersModel parameters) {
+	@PostConstruct
+	public void init() throws EpnoiInitializationException {
 
 		logger.info("Initializing the NLPHandler");
-		this.core = core;
-		this.parameters = parameters;
 		if (parameters.getNlp() != null) {
 			GATEInitializer gateInitializer = new GATEInitializer();
 			gateInitializer.init(parameters);
@@ -64,7 +69,7 @@ public class NLPHandlerImpl implements NLPHandler {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------
-
+/*FOR TEST
 	public static void main(String[] args) {
 		Core core = CoreUtility.getUIACore();
 		System.out.println(core.getParameters().getNlp());
@@ -74,13 +79,13 @@ public class NLPHandlerImpl implements NLPHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//_testComplexConcurrentNLPRequests(core);
 
 		// _testConcurrentNLPAccess(core);
 
 	}
-
+*/
 	// ----------------------------------------------------------------------------------------------------------
 
 	private static void _testComplexConcurrentNLPRequests(Core core) {

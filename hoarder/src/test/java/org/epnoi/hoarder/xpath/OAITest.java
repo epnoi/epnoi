@@ -1,6 +1,5 @@
 package org.epnoi.hoarder.xpath;
 
-import org.epnoi.hoarder.AbstractRouteBuilder;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
@@ -8,6 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.epnoi.hoarder.AbstractRouteBuilder;
 import org.junit.Test;
 
 

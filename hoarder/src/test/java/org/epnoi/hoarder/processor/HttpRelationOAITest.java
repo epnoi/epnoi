@@ -1,7 +1,5 @@
 package org.epnoi.hoarder.processor;
 
-import org.epnoi.hoarder.AbstractRouteBuilder;
-import org.epnoi.hoarder.utils.FileServer;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Produce;
@@ -10,6 +8,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.epnoi.hoarder.AbstractRouteBuilder;
+import org.epnoi.hoarder.utils.FileServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
