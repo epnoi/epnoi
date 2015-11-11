@@ -8,12 +8,19 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.learner.relations.corpus.parallel.*;
+
+import org.epnoi.learner.relations.corpus.parallel.DocumentToSentencesFlatMapper;
+import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
+import org.epnoi.learner.relations.corpus.parallel.Sentence;
+import org.epnoi.learner.relations.corpus.parallel.UriToAnnotatedDocumentFlatMapper;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermsTable;
-import org.epnoi.model.*;
+import org.epnoi.model.KnowledgeBase;
+import org.epnoi.model.Relation;
+import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.RelationsTable;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
@@ -106,11 +113,17 @@ public class ParallelRelationsExtractor {
         JavaRDD<String> corpusURIs = sparkContext.parallelize(domainResourceUris);
 
         //We retrieve for each document its annotated document
-        JavaRDD<Document> corpusAnnotatedDocuments = corpusURIs.flatMap(new DocumentRetrievalFlatMapFunction());
+        JavaRDD<Document> corpusAnnotatedDocuments;
+        corpusAnnotatedDocuments = corpusURIs.flatMap(uri -> {
+                    String uiaPath = (String) parametersBroadcast.value().getParameterValue(OntologyLearningWorkflowParameters.UIA_PATH);
+                    UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
+                    return flatMapper.call(uri);
+                }
+        );
 
 
         //Each annotated document is split in sentences
-        JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapFunction());
+        JavaRDD<Sentence> corpusSentences = corpusAnnotatedDocuments.flatMap(new DocumentToSentencesFlatMapper());
 
         //For each sentence we create all the possible RelationalSentenceCandidates
         JavaRDD<RelationalSentenceCandidate> relationsCandidates = corpusSentences.flatMap(relationalSentenceCandidate -> {
@@ -118,7 +131,7 @@ public class ParallelRelationsExtractor {
             return mapper.call(relationalSentenceCandidate);
         });
 
-        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceMapFunction());
+        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceCandidateToRelationalSentenceMapper());
 
         JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
@@ -135,15 +148,12 @@ public class ParallelRelationsExtractor {
         JavaPairRDD<String, Relation> aggregatedProbableRelationsByUri = probableRelationsByUri.reduceByKey(new RelationsReduceByKeyFunction());
 
         //Finally each aggregated relation is added to the relations table
-        for (Tuple2<String, Relation> tuple: aggregatedProbableRelationsByUri.collect()) {
+        for (Tuple2<String, Relation> tuple : aggregatedProbableRelationsByUri.collect()) {
             relationsTable.addRelation(tuple._2());
         }
 
         return relationsTable;
     }
-
-
-
 
 
     public static void main(String[] args) {

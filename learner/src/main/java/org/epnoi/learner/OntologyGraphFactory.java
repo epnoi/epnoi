@@ -1,12 +1,12 @@
 package org.epnoi.learner;
 
-import java.util.List;
-
 import org.epnoi.learner.terms.TermVertice;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.commons.Parameters;
+
+import java.util.List;
 
 public class OntologyGraphFactory {
 

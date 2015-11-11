@@ -1,20 +1,19 @@
 package org.epnoi.rest.clients;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.lucene.index.Terms;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Relation;
-import org.epnoi.model.ResearchObject;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import org.apache.lucene.index.Terms;
+import org.epnoi.model.Domain;
+import org.epnoi.model.Relation;
+import org.epnoi.model.ResearchObject;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DemoClient {
 

@@ -1,12 +1,9 @@
 package org.epnoi.uia.core.eventbus;
 
-import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
 import org.epnoi.model.modules.EventBus;
-import org.epnoi.model.parameterization.EventBusParameters;
 import org.epnoi.model.parameterization.ParametersModel;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 /**

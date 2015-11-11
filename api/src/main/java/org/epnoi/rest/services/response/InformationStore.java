@@ -1,8 +1,8 @@
 package org.epnoi.rest.services.response;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.epnoi.model.parameterization.InformationStoreParameters;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class InformationStore {

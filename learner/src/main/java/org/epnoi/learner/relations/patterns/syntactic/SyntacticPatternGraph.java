@@ -1,11 +1,11 @@
 package org.epnoi.learner.relations.patterns.syntactic;
 
+import org.jgrapht.graph.SimpleGraph;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.jgrapht.graph.SimpleGraph;
 
 
 

@@ -1,8 +1,8 @@
 package org.epnoi.model.modules;
 
-import java.util.List;
-
 import org.epnoi.model.Annotation;
+
+import java.util.List;
 
 public interface AnnotationHandler {
 

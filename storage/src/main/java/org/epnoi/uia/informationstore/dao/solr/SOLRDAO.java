@@ -1,17 +1,17 @@
 package org.epnoi.uia.informationstore.dao.solr;
 
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
+import org.epnoi.model.parameterization.InformationStoreParameters;
+import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Logger;
-
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
-import org.epnoi.model.parameterization.InformationStoreParameters;
-import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
 
 public abstract class SOLRDAO {
 	private static final Logger logger = Logger.getLogger(SOLRDAO.class

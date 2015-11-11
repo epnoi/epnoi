@@ -1,10 +1,10 @@
 package org.epnoi.uia.informationstore.dao.map;
 
-import java.util.regex.Pattern;
-
 import org.epnoi.model.Content;
 import org.epnoi.model.Selector;
 import org.epnoi.uia.informationstore.SelectorHelper;
+
+import java.util.regex.Pattern;
 
 public class TestMapDAO extends MapDAO {
 

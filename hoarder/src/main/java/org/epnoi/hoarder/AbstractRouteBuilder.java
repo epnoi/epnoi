@@ -1,11 +1,13 @@
 package org.epnoi.hoarder;
 
 import com.google.common.base.Joiner;
-import org.epnoi.hoarder.processor.*;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
+import org.epnoi.hoarder.processor.ErrorHandler;
+import org.epnoi.hoarder.processor.TimeGenerator;
+import org.epnoi.hoarder.processor.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

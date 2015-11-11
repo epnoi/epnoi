@@ -1,16 +1,7 @@
 package org.epnoi.model.parameterization;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
+import java.io.*;
 
 public class ParametersModelReader {
 	public static void write(ParametersModel model, String fileName) {

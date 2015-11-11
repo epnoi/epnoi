@@ -1,15 +1,15 @@
 package org.epnoi.knowledgebase;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.epnoi.knowledgebase.wikidata.WikidataHandler;
 import org.epnoi.knowledgebase.wordnet.WordNetHandler;
 import org.epnoi.model.KnowledgeBase;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.modules.KnowledgeBaseParameters;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class KnolwedgeBaseImpl implements KnowledgeBase {
 
@@ -30,13 +30,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#init(org.epnoi.uia.
-	 * knowledgebase.KnowledgeBaseParameters)
-	 */
+
 	@Override
 	public void init(KnowledgeBaseParameters parameters) {
 		this.parameters = parameters;
@@ -46,13 +40,10 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelated(java.lang.
-	 * String, java.lang.String, java.lang.String)
+	/**
+	 *@see
 	 */
+
 	@Override
 	public boolean areRelated(String source, String target, String type) {
 		System.out.println("Wordnet "+this.considerWordNet +" Wikidata "+this.considerWikidata);
@@ -72,13 +63,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWordNet(
-	 * java.lang.String, java.lang.String)
-	 */
+
 	@Override
 	public boolean areRelatedInWordNet(String source, String target) {
 
@@ -96,13 +81,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#areRelatedInWikidata(
-	 * java.lang.String, java.lang.String)
-	 */
+
 	@Override
 	public boolean areRelatedInWikidata(String source, String target) {
 		System.out.println("> " + source + " " + target);
@@ -126,14 +105,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	}
 
-	// -----------------------------------------------------------------------------------------------
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#getHypernyms(java.lang
-	 * .String)
-	 */
+
 	@Override
 	public Set<String> getHypernyms(String source) {
 
@@ -141,9 +113,14 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 		if (this.considerWikidata) {
 
 			Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYM);
-			
 			hypernyms.addAll(wikidataHypernyms);
-		}
+
+			String stemmedSource = this.wikidataHandler.stem(source);
+			wikidataHypernyms = this.wikidataHandler.getRelated(stemmedSource, RelationHelper.HYPERNYM);
+
+			hypernyms.addAll(wikidataHypernyms);
+
+			}
 		if (this.considerWordNet) {
 			String stemmedSource = this.wordNetHandler.stemNoun(source);
 			System.out.println("stemmedsource >"+stemmedSource);
@@ -155,12 +132,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.epnoi.uia.knowledgebase.KnowledgeBaseInterface#stem(java.lang.String)
-	 */
+
 	@Override
 	public Set<String> stem(String term) {
 

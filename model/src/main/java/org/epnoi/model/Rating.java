@@ -1,7 +1,5 @@
 package org.epnoi.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Rating implements Resource {
 	public static final String WORKFLOW_RATING ="WORKFLOW";
 	public static final String FILE_RATING ="FILE";

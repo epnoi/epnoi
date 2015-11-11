@@ -1,12 +1,7 @@
 package org.epnoi.uia.informationstore;
 
 import org.epnoi.model.modules.InformationStore;
-import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
-import org.epnoi.model.parameterization.InformationStoreParameters;
-import org.epnoi.model.parameterization.MapInformationStoreParameters;
-import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.model.parameterization.SOLRInformationStoreParameters;
-import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
+import org.epnoi.model.parameterization.*;
 import org.epnoi.uia.informationstore.exception.UnknownInformationStoreException;
 
 public class InformationStoreFactory {

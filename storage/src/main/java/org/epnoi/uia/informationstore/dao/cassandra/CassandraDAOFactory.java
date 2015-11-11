@@ -1,16 +1,6 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
-import org.epnoi.model.Domain;
-import org.epnoi.model.Feed;
-import org.epnoi.model.Paper;
-import org.epnoi.model.RelationalSentencesCorpus;
-import org.epnoi.model.RelationsTable;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.Term;
-import org.epnoi.model.User;
-import org.epnoi.model.WikidataView;
-import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.*;
 import org.epnoi.model.parameterization.CassandraInformationStoreParameters;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.rdf.FeedRDFHelper;

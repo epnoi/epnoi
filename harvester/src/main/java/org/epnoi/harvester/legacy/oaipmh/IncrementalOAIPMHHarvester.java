@@ -1,27 +1,7 @@
 package org.epnoi.harvester.legacy.oaipmh;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
-import org.epnoi.model.Context;
-import org.epnoi.model.Paper;
-import org.epnoi.model.Selector;
+import gate.Document;
+import org.epnoi.model.*;
 import org.epnoi.model.commons.CommandLineTool;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
@@ -31,7 +11,20 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import gate.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class IncrementalOAIPMHHarvester extends CommandLineTool {
 	public static final String PARAMETER_COMMAND = "-command";

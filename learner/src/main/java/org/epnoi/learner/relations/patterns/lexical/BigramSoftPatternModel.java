@@ -1,13 +1,13 @@
 package org.epnoi.learner.relations.patterns.lexical;
 
+import org.epnoi.learner.relations.patterns.RelationalPattern;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 
 public class BigramSoftPatternModel implements RelationalPatternsModel {
 

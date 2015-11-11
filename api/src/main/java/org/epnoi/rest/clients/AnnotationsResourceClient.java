@@ -1,16 +1,15 @@
 package org.epnoi.rest.clients;
 
-import java.util.ArrayList;
-
-import org.epnoi.model.Annotation;
-import org.epnoi.model.ResearchObject;
-import org.epnoi.model.rdf.DublinCoreRDFHelper;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import org.epnoi.model.Annotation;
+import org.epnoi.model.ResearchObject;
+import org.epnoi.model.rdf.DublinCoreRDFHelper;
+
+import java.util.ArrayList;
 
 public class AnnotationsResourceClient {
 

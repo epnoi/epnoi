@@ -1,8 +1,8 @@
 package org.epnoi.model.modules;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.epnoi.model.commons.Parameters;
+
+import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="knowledgeBaseParameters")
 public class KnowledgeBaseParameters extends Parameters<Object> {
 	public static String RETRIEVE_WIKIDATA_VIEW = "RETRIEVE_WIKIDATA_VIEW";

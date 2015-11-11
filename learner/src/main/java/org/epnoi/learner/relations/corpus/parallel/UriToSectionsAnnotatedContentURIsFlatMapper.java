@@ -1,21 +1,24 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.WikipediaPage;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.model.AnnotatedContentHelper;
+import org.epnoi.model.WikipediaPage;
 
-public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunction<String, String> {
+import java.util.ArrayList;
+import java.util.List;
 
-	@Override
+public class UriToSectionsAnnotatedContentURIsFlatMapper {
+
+	private RelationalSentencesCorpusCreationParameters parameters;
+
+	public UriToSectionsAnnotatedContentURIsFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
+		this.parameters = parameters;
+	}
+
 	public Iterable<String> call(String uri) throws Exception {
 		List<String> sectionsAnnotatedContentURIs = new ArrayList<>();
 		try {
@@ -60,7 +63,7 @@ public class SectionsAnnotatedContentURIsFlatMapFunction implements FlatMapFunct
 
 		Client client = Client.create(config);
 
-		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+		WebResource service = client.resource((String)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH));
 
 		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);

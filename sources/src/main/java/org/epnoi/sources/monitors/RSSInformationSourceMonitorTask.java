@@ -1,16 +1,15 @@
 package org.epnoi.sources.monitors;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
-
+import flexjson.JSONSerializer;
 import org.atmosphere.cpr.Broadcaster;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.sources.generators.RSSInformationSourceRandomGenerator;
 
-import flexjson.JSONSerializer;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 class RSSInformationSourceMonitorTask implements Runnable {
 	private Broadcaster broadcaster;

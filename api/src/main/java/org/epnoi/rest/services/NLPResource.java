@@ -1,10 +1,12 @@
 package org.epnoi.rest.services;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
+import gate.Document;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.epnoi.learner.relations.RelationsHandler;
+import org.epnoi.model.Resource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -15,15 +17,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.epnoi.learner.relations.RelationsHandler;
-import org.epnoi.model.Resource;
-
-import gate.Document;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 @Path("/uia/nlp")
 @Api(value = "/uia/nlp", description = "Natural Language Processing service")

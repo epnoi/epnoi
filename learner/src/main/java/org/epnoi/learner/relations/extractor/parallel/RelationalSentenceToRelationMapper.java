@@ -5,7 +5,6 @@ import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
-
 import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.model.*;
 import org.epnoi.uia.commons.GateUtils;

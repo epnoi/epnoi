@@ -1,7 +1,5 @@
 package org.epnoi.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Annotation implements Resource {
 	private String uri;
 	private PAVProperties pavProperties;

@@ -1,7 +1,5 @@
 package org.epnoi.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Item implements Resource {
 
 	private String title = "";

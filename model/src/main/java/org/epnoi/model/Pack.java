@@ -2,8 +2,6 @@ package org.epnoi.model;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Pack implements Resource{
 	Long id;
 	String uri;

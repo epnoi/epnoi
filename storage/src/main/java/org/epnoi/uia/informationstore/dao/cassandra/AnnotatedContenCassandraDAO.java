@@ -1,7 +1,6 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
 import org.epnoi.model.Content;
-import org.epnoi.model.ContentHelper;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;

@@ -1,37 +1,24 @@
 package org.epnoi.rest.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import flexjson.JSONDeserializer;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.InformationSourceSubscription;
 import org.epnoi.model.Resource;
 import org.epnoi.model.modules.InformationStore;
-import org.epnoi.model.rdf.AnnotationRDFHelper;
-import org.epnoi.model.rdf.InformationSourceRDFHelper;
-import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.model.rdf.UserRDFHelper;
+import org.epnoi.model.rdf.*;
 import org.epnoi.rest.services.response.UIA;
 
-import flexjson.JSONDeserializer;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Path("/uiaflexjon")
 public class UIAResourceFlexjon extends UIAService {

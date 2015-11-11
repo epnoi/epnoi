@@ -1,10 +1,6 @@
 package org.epnoi.knowledgebase.wikidata;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.base.Joiner;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -12,7 +8,10 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
 import org.tartarus.snowball.ext.EnglishStemmer;
 
-import com.google.common.base.Joiner;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An stemmer for the WikidataHandler (currently just for english!)

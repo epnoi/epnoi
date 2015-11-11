@@ -1,12 +1,12 @@
 package org.epnoi.learner.relations.patterns;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class RelationalPatternsCorpusCreator {
 	private static final Logger logger = Logger

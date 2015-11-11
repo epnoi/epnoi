@@ -1,15 +1,14 @@
 package org.epnoi.rest.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-
+import flexjson.JSONSerializer;
 import org.atmosphere.cpr.Broadcaster;
 import org.epnoi.model.InformationSourceNotification;
 import org.epnoi.model.InformationSourceNotificationsSet;
 import org.epnoi.model.Item;
 
-import flexjson.JSONSerializer;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 public class EventGenerator {
 

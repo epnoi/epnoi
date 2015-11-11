@@ -1,13 +1,21 @@
 package org.epnoi.model;
 
-import java.util.Set;
-
 import org.epnoi.model.modules.KnowledgeBaseParameters;
+
+import java.util.Set;
 
 public interface KnowledgeBase {
 
 	void init(KnowledgeBaseParameters parameters);
 
+
+	/**
+	 *
+	 * @param source Surface form of the source
+	 * @param target Surface form of the target
+	 * @param type The type of the relationships
+	 * @return Whether this relationship holds between the source and the target
+	 */
 	boolean areRelated(String source, String target, String type);
 
 	boolean areRelatedInWordNet(String source, String target);

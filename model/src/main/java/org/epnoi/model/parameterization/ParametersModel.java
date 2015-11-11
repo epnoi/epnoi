@@ -1,8 +1,7 @@
 package org.epnoi.model.parameterization;
 
-import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 //import javax.xml.bind.annotation.
 @XmlRootElement(name = "parametersModel")

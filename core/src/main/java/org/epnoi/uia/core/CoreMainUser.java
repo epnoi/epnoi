@@ -1,17 +1,6 @@
 package org.epnoi.uia.core;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.epnoi.model.Context;
-import org.epnoi.model.Feed;
-import org.epnoi.model.InformationSource;
-import org.epnoi.model.InformationSourceSubscription;
-import org.epnoi.model.Item;
-import org.epnoi.model.User;
+import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
@@ -19,6 +8,12 @@ import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.model.rdf.FeedRDFHelper;
 import org.epnoi.model.rdf.InformationSourceRDFHelper;
 import org.epnoi.model.rdf.UserRDFHelper;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class CoreMainUser {
 	// ---------------------------------------------------------------------------------
@@ -31,7 +26,7 @@ public class CoreMainUser {
 		Core core = new CoreImpl();
 		ParametersModel parametersModel = _readParameters();
 		try {
-			core.init(parametersModel);
+			core.init();
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

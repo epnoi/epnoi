@@ -1,11 +1,11 @@
 package org.epnoi.learner;
 
+import org.epnoi.model.Domain;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.epnoi.model.Domain;
 
 public class DomainsTable {
 	Map<String, Domain> domains; // Map that stores the domains (their URI is

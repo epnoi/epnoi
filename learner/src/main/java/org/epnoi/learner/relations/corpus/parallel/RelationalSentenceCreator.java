@@ -1,16 +1,5 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
-
-import gate.Annotation;
-import gate.Document;
-import gate.DocumentContent;
-
 public class RelationalSentenceCreator {
 	/*
 	private void _createRelationalSentence(DocumentContent sentenceContent, Long sentenceStartOffset,

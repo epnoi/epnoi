@@ -1,16 +1,12 @@
 package org.epnoi.learner.terms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.epnoi.learner.automata.Automaton;
 import org.epnoi.learner.automata.AutomatonImpl;
 import org.epnoi.learner.automata.Input;
 import org.epnoi.model.AnnotatedWord;
 import org.epnoi.model.TermMetadata;
+
+import java.util.*;
 
 public class TermsDetector {
 

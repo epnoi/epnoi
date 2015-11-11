@@ -1,28 +1,9 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import org.epnoi.model.Annotation;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Feed;
-import org.epnoi.model.InformationSource;
-import org.epnoi.model.InformationSourceSubscription;
-import org.epnoi.model.Item;
-import org.epnoi.model.Paper;
-import org.epnoi.model.RelationalSentencesCorpus;
-import org.epnoi.model.ResearchObject;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.model.Term;
-import org.epnoi.model.User;
-import org.epnoi.model.WikidataView;
-import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.*;
 import org.epnoi.model.parameterization.InformationStoreParameters;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
-import org.epnoi.model.rdf.AnnotationRDFHelper;
-import org.epnoi.model.rdf.FeedRDFHelper;
-import org.epnoi.model.rdf.InformationSourceRDFHelper;
-import org.epnoi.model.rdf.InformationSourceSubscriptionRDFHelper;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.model.rdf.UserRDFHelper;
+import org.epnoi.model.rdf.*;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.dao.exception.DAONotFoundException;
 

@@ -1,20 +1,5 @@
 package org.epnoi.harvester.legacy.rss;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
-
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -28,6 +13,16 @@ import org.epnoi.model.Item;
 import org.epnoi.model.parameterization.manifest.Manifest;
 import org.epnoi.model.rdf.InformationSourceRDFHelper;
 import org.xml.sax.ContentHandler;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Logger;
 
 class RSSHarvestDirectoryTask implements Runnable {
 	private Manifest manifest;

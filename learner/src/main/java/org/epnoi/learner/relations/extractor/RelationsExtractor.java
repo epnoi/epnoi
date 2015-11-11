@@ -1,10 +1,10 @@
 package org.epnoi.learner.relations.extractor;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
+import gate.DocumentContent;
+import gate.util.InvalidOffsetException;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
@@ -22,11 +22,10 @@ import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-import gate.DocumentContent;
-import gate.util.InvalidOffsetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class RelationsExtractor {
     private static final Logger logger = Logger

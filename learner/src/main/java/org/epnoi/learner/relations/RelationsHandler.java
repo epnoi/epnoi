@@ -1,28 +1,17 @@
 package org.epnoi.learner.relations;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
-import org.epnoi.model.Domain;
-import org.epnoi.model.KnowledgeBase;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.RelationsTable;
-import org.epnoi.model.Term;
+import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
+
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * 

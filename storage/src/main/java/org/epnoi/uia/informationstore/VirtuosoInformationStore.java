@@ -1,7 +1,5 @@
 package org.epnoi.uia.informationstore;
 
-import java.util.List;
-
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
@@ -14,6 +12,8 @@ import org.epnoi.model.search.SelectExpression;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAO;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOFactory;
 import org.epnoi.uia.informationstore.dao.rdf.RDFDAOQueryResolver;
+
+import java.util.List;
 
 public class VirtuosoInformationStore implements InformationStore {
 	VirtuosoInformationStoreParameters parameters;

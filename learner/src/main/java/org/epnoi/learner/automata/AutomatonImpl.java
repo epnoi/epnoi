@@ -1,11 +1,11 @@
 package org.epnoi.learner.automata;
 
+import org.epnoi.model.AnnotatedWord;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.epnoi.model.AnnotatedWord;
 
 public class AutomatonImpl implements Automaton<AnnotatedWord<String>> {
 

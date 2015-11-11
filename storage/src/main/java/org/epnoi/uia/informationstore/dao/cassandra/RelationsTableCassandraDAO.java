@@ -1,20 +1,12 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
+import me.prettyprint.cassandra.service.ColumnSliceIterator;
+import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.ExternalResource;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationsTable;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Search;
-import org.epnoi.model.Selector;
-
-import me.prettyprint.cassandra.service.ColumnSliceIterator;
-import me.prettyprint.hector.api.beans.HColumn;
 
 public class RelationsTableCassandraDAO extends CassandraDAO {
 

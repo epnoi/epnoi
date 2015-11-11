@@ -1,8 +1,5 @@
 package org.epnoi.uia.informationstore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
@@ -15,6 +12,9 @@ import org.epnoi.model.search.SelectExpression;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAO;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOFactory;
 import org.epnoi.uia.informationstore.dao.solr.SOLRDAOQueryResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SOLRInformationStore implements InformationStore {
 

@@ -1,23 +1,21 @@
 package org.epnoi.uia.informationstore.dao.rdf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.epnoi.model.Context;
-import org.epnoi.model.Resource;
-import org.epnoi.model.parameterization.InformationStoreParameters;
-import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.engine.binding.Binding;
-
+import org.epnoi.model.Context;
+import org.epnoi.model.Resource;
+import org.epnoi.model.parameterization.InformationStoreParameters;
+import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RDFDAO {
 

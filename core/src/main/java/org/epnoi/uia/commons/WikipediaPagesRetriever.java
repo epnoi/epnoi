@@ -1,15 +1,13 @@
 package org.epnoi.uia.commons;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
 import org.epnoi.model.modules.InformationStoreHelper;
 import org.epnoi.model.parameterization.VirtuosoInformationStoreParameters;
 import org.epnoi.model.rdf.RDFHelper;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class WikipediaPagesRetriever {
 	private static final Logger logger = Logger

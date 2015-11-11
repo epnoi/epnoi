@@ -1,22 +1,14 @@
 package org.epnoi.uia.informationstore.dao.cassandra;
 
 
+import me.prettyprint.cassandra.service.ColumnSliceIterator;
+import me.prettyprint.hector.api.beans.HColumn;
+import org.epnoi.model.*;
+import org.epnoi.uia.informationstore.SelectorHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationalSentencesCorpus;
-import org.epnoi.model.Resource;
-import org.epnoi.model.Selector;
-import org.epnoi.uia.informationstore.SelectorHelper;
-
-import me.prettyprint.cassandra.service.ColumnSliceIterator;
-import me.prettyprint.hector.api.beans.HColumn;
 
 public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 	private static final Pattern pattern = Pattern.compile("\\[[^\\]]*\\]");

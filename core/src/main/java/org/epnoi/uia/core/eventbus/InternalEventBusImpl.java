@@ -9,7 +9,6 @@ import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.EventBusPublisher;
 import org.epnoi.model.modules.EventBusSubscriber;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class InternalEventBusImpl implements EventBus {

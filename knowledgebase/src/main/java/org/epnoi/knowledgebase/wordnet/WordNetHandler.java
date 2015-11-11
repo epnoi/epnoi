@@ -1,29 +1,16 @@
 package org.epnoi.knowledgebase.wordnet;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-
 import edu.mit.jwi.IRAMDictionary;
 import edu.mit.jwi.RAMDictionary;
 import edu.mit.jwi.data.ILoadPolicy;
-import edu.mit.jwi.item.IIndexWord;
-import edu.mit.jwi.item.ISynset;
-import edu.mit.jwi.item.ISynsetID;
-import edu.mit.jwi.item.IWord;
-import edu.mit.jwi.item.IWordID;
-import edu.mit.jwi.item.POS;
-import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.item.*;
 import edu.mit.jwi.morph.WordnetStemmer;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class WordNetHandler {
     private WordNetHandlerParameters parameters;

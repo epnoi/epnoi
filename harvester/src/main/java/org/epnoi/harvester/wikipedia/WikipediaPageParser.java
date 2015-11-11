@@ -1,15 +1,14 @@
 package org.epnoi.harvester.wikipedia;
 
-import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
-import org.epnoi.model.Context;
-import org.epnoi.model.WikipediaPage;
-import org.epnoi.model.commons.StringUtils;
-
 import de.tudarmstadt.ukp.wikipedia.parser.Content;
 import de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import de.tudarmstadt.ukp.wikipedia.parser.Section;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParser;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
+import org.epnoi.harvester.wikipedia.parse.edu.jhu.nlp.wikipedia.WikiPage;
+import org.epnoi.model.Context;
+import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.commons.StringUtils;
 
 public class WikipediaPageParser {
 	private static final String templateRegExp = "TEMPLATE\\[";

@@ -1,23 +1,10 @@
 package org.epnoi.learner.relations.corpus;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import org.epnoi.model.AnnotatedContentHelper;
-import org.epnoi.model.Content;
-import org.epnoi.model.Context;
-import org.epnoi.model.KnowledgeBase;
-import org.epnoi.model.OffsetRangeSelector;
-import org.epnoi.model.RelationHelper;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationalSentencesCorpus;
-import org.epnoi.model.Selector;
-import org.epnoi.model.WikipediaPage;
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Document;
+import gate.DocumentContent;
+import org.epnoi.model.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
@@ -28,10 +15,8 @@ import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Document;
-import gate.DocumentContent;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class RelationalSentencesCorpusCreator {
 	private static final Logger logger = Logger.getLogger(RelationalSentencesCorpusCreator.class.getName());

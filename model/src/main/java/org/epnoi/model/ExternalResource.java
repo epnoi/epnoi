@@ -1,7 +1,5 @@
 package org.epnoi.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class ExternalResource implements Resource {
 
 	private String uri;
