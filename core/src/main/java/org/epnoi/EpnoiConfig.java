@@ -48,19 +48,23 @@ public class EpnoiConfig {
     @Profile(DEVELOP_PROFILE)
     public ParametersModel developParametersModel() {
         logger.info("Creating the parameters model");
-        String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
-        logger.info("The deployment path set in the configurable environment is set to " + deployPath);
         ParametersModel parametersModel = null;
-        if (deployPath != null) {
-            parametersModel = ParametersModelReader.read(deployPath);
+        if (configurableEnvironment.containsProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH)) {
+            String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
+
+            logger.info("The deployment path set in the configurable environment is set to " + deployPath);
+
+            if (deployPath != null) {
+                parametersModel = ParametersModelReader.read(deployPath);
+            }
+
         } else {
             parametersModel = ParametersModelReader.read(configurationFilePath);
         }
-
         return parametersModel;
+
+
     }
-
-
 }
 /* LEFT FOR FUTURE USE
     @Bean

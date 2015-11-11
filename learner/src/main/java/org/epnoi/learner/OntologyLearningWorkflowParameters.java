@@ -1,6 +1,7 @@
 package org.epnoi.learner;
 
 import org.epnoi.model.commons.Parameters;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 

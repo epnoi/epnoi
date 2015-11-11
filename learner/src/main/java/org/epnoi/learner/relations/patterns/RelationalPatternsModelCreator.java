@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.patterns;
 
+import org.epnoi.EpnoiConfig;
 import org.epnoi.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.syntactic.SyntacticRelationalModelCreationParameters;
 import org.epnoi.model.RelationalSentencesCorpus;
@@ -8,7 +9,14 @@ import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class RelationalPatternsModelCreator {
@@ -41,6 +49,7 @@ public class RelationalPatternsModelCreator {
 		this.parameters = parameters;
 		String relationalSentencesCorpusURI = (String) this.parameters
 				.getParameterValue(SyntacticRelationalModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
+
 
 		this.patternsCorpusCreator = new RelationalPatternsCorpusCreator();
 		RelationalPatternGenerator relationalPatternsGenerator = null;
@@ -215,8 +224,36 @@ public class RelationalPatternsModelCreator {
 		parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
 				true);
 
-		Core core = CoreUtility.getUIACore();
+	//	Core core = CoreUtility.getUIACore();
 
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+
+
+
+		applicationContext.getEnvironment().setActiveProfiles(EpnoiConfig.DEVELOP_PROFILE);
+/*
+		MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
+
+		Map epnoiProperties = new HashMap();
+
+		epnoiProperties.put(EpnoiConfig.EPNOI_PROPERTIES_PATH, configFilePath);
+		propertySources.addFirst(new MapPropertySource(EpnoiConfig.EPNOI_PROPERTIES, epnoiProperties));
+
+
+*/
+		applicationContext.register(org.epnoi.learner.LearnerConfig.class);
+		applicationContext.refresh();
+
+		List<String> beans = new ArrayList<>();
+		for (String bean : applicationContext.getBeanDefinitionNames()) {
+			beans.add("   Bean: " + bean);
+		}
+		logger.info("Initializing the Spring context with the following beans: \n"+String.join("\n",beans));
+
+
+
+
+/*
 		RelationalPatternsModelCreator modelCreator = new RelationalPatternsModelCreator();
 		try {
 			modelCreator.init(core, parameters);
@@ -228,6 +265,7 @@ public class RelationalPatternsModelCreator {
 		modelCreator.create();
 
 		System.out.println("Ending the Relational Model creation");
+*/
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
