@@ -1,9 +1,7 @@
-package org.epnoi.learner.relations.parallel;
+package org.epnoi.learner.relations.extractor.parallel;
 
 import gate.Annotation;
 import gate.AnnotationSet;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.epnoi.learner.OntologyLearningWorkflow;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
 import org.epnoi.learner.relations.corpus.parallel.Sentence;

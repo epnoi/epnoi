@@ -1,4 +1,4 @@
-package org.epnoi.learner.relations.parallel;
+package org.epnoi.learner.relations.extractor.parallel;
 
 import java.io.Serializable;
 

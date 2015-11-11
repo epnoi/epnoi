@@ -35,7 +35,7 @@ public class RelationalPatternsModelCreator {
 	public void init(Core core,
 			RelationalPatternsModelCreationParameters parameters)
 			throws EpnoiInitializationException {
-		logger.info("Initializing the SyntacticRealationalModelCreator with the following parameters");
+		logger.info("Initializing the RelationalModelCreator with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
@@ -93,16 +93,13 @@ public class RelationalPatternsModelCreator {
 	// ------------------------------------------------------------------------------------------------------------------------
 
 	public void create() {
-
 		_obtainCorpora();
 		this.model = _createModel();
 		if (this.verbose) {
 			this.model.show();
 		}
 		if (this.store) {
-
 			_storeModel();
-
 		}
 	}
 

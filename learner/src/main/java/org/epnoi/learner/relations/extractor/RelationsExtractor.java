@@ -1,7 +1,6 @@
-package org.epnoi.learner.relations;
+package org.epnoi.learner.relations.extractor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import gate.Annotation;

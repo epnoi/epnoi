@@ -1,10 +1,6 @@
-package org.epnoi.learner.relations.parallel;
+package org.epnoi.learner.relations.extractor.parallel;
 
-import gate.Annotation;
-import gate.AnnotationSet;
 import gate.Document;
-import gate.DocumentContent;
-import gate.util.InvalidOffsetException;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -12,27 +8,19 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.OntologyLearningWorkflowParameters;
-import org.epnoi.learner.relations.corpus.ProbableRelationalSentencesFilter;
 import org.epnoi.learner.relations.corpus.parallel.*;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
-import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
-import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.*;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
-import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.informationstore.SelectorHelper;
 import scala.Tuple2;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 

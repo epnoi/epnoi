@@ -41,7 +41,7 @@ public class OntologyLearningWorkflowParameters extends Parameters<Serializable>
 	public static final String HYPERNYM_RELATION_EXTRACTION_THRESHOLD = "HYPERNYM_RELATION_EXTRACTION_THRESHOLD";
 
 	// Minimum probability for a detected hypernym relation to be consider for
-	// being extracted in the relation extraction phase in the ontology learning
+	// being extracted in the relation extractor phase in the ontology learning
 	// process
 
 	public static final String RELATIONS_HANDLER_PARAMETERS = "RELATIONS_HANDLER_PARAMETER";

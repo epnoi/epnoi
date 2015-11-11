@@ -2,10 +2,9 @@ package org.epnoi.learner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
-import org.epnoi.learner.relations.RelationsExtractor;
+import org.epnoi.learner.relations.extractor.RelationsExtractor;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.learner.relations.RelationsRetriever;
 import org.epnoi.learner.terms.TermsExtractor;

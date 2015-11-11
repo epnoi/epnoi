@@ -3,7 +3,7 @@ package org.epnoi.learner;
 import java.util.*;
 import java.util.logging.Logger;
 
-import org.epnoi.learner.relations.RelationsExtractor;
+import org.epnoi.learner.relations.extractor.RelationsExtractor;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.learner.relations.RelationsRetriever;
 import org.epnoi.learner.terms.TermVertice;

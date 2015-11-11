@@ -1,4 +1,4 @@
-package org.epnoi.learner.relations.parallel;
+package org.epnoi.learner.relations.extractor.parallel;
 
 import org.apache.spark.api.java.function.Function2;
 import org.epnoi.model.Relation;

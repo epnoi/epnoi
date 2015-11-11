@@ -1,8 +1,7 @@
-package org.epnoi.learner.relations.parallel;
+package org.epnoi.learner.relations.extractor.parallel;
 
 import org.apache.spark.api.java.function.PairFunction;
 import org.epnoi.model.Relation;
-import org.epnoi.model.Resource;
 import scala.Tuple2;
 
 /**
