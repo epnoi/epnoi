@@ -1,5 +1,6 @@
 package org.epnoi.learner;
 
+import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.springframework.context.annotation.*;
 
@@ -19,10 +20,34 @@ public class LearnerConfig {
     public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
 
-    @Bean
+    @Bean(name = "relationalPatternsModelCreationParameters")
     @Profile(DEVELOP_PROFILE)
     public RelationalPatternsModelCreationParameters developRelationalPatternsModelCreationParametersModel() {
-        return new RelationalPatternsModelCreationParameters();
+        RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
+        parameters
+                .setParameter(
+                        RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+                        "http://drInventorFirstReview/relationalSentencesCorpus");
+        parameters
+                .setParameter(
+                        RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
+                        20);
+
+        parameters.setParameter(
+                RelationalPatternsModelCreationParameters.MODEL_PATH,
+                "/JUNK/syntacticModel.bin");
+        parameters.setParameter(RelationalPatternsModelCreationParameters.TYPE,
+                PatternsConstants.SYNTACTIC);
+
+        parameters.setParameter(
+                RelationalPatternsModelCreationParameters.STORE, false);
+
+        parameters.setParameter(
+                RelationalPatternsModelCreationParameters.VERBOSE, true);
+
+        parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
+                true);
+        return parameters;
     }
 
 }

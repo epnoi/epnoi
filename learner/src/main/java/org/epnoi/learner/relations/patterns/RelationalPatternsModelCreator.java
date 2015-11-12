@@ -19,10 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
 public class RelationalPatternsModelCreator {
 	private static final Logger logger = Logger
 			.getLogger(RelationalPatternsModelCreator.class.getName());
 	private RelationalPatternsModelCreationParameters parameters;
+
 	private Core core;
 
 	String relationalSentencesCorpusURI;

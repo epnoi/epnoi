@@ -278,16 +278,6 @@ public class CoreImpl implements Core {
         this.eventBus = eventBus;
     }
 
-    // ----------------------------------------------------------------------------------------------------------
-/*
-    private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
-
-        this.knowledgeBaseHandler = new KnowledgeBaseHandlerImpl();
-        this.knowledgeBaseHandler.init(this);
-
-    }
-*/
-    // ----------------------------------------------------------------------------------------------------------
 
 
     @Override
