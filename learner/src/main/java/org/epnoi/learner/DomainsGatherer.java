@@ -13,23 +13,23 @@ public class DomainsGatherer {
 	private List<Domain> consideredDomains;
 	private String targetDomain;
 
-	private OntologyLearningWorkflowParameters parameters;
+	private OntologyLearningParameters parameters;
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
-	public void init(Core core, OntologyLearningWorkflowParameters parameters) {
+	public void init(Core core, OntologyLearningParameters parameters) {
 		logger.info("Initializing the DomainsGatherer with the following parameters: ");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
 
 		this.consideredDomains = (List<Domain>) this.parameters
-				.getParameterValue(OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS);
+				.getParameterValue(OntologyLearningParameters.CONSIDERED_DOMAINS);
 
 		this.domainsTable = new DomainsTable();
 		this.targetDomain = (String) this.parameters
-				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 	}
 
 	// -----------------------------------------------------------------------------------

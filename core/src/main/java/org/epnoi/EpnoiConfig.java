@@ -14,9 +14,11 @@ import org.epnoi.uia.search.SearchHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.*;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Configuration
@@ -48,19 +50,26 @@ public class EpnoiConfig {
     @Profile(DEVELOP_PROFILE)
     public ParametersModel developParametersModel() {
         logger.info("Creating the parameters model");
-        String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
-        logger.info("The deployment path set in the configurable environment is set to " + deployPath);
         ParametersModel parametersModel = null;
-        if (deployPath != null) {
+        org.springframework.core.env.PropertySource<?> epnoiPropertySources =configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES);
+
+        if (epnoiPropertySources!=null && (epnoiPropertySources.getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH) != null))
+        {
+            String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
+
+            logger.info("The deployment path set in the configurable environment is set to " + deployPath);
+
+
             parametersModel = ParametersModelReader.read(deployPath);
-        } else {
+
+
+        }else{
             parametersModel = ParametersModelReader.read(configurationFilePath);
         }
-
         return parametersModel;
+
+
     }
-
-
 }
 /* LEFT FOR FUTURE USE
     @Bean

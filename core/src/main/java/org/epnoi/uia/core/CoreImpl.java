@@ -43,7 +43,8 @@ public class CoreImpl implements Core {
     @Autowired
     private InformationSourcesHandler informationSourcesHandler;
 
-    @Autowired
+  //  @Autowired
+   @Deprecated
     private HarvestersHandler harvestersHandler;
 
     private HashMap<String, InformationStore> informationStores;
@@ -278,16 +279,6 @@ public class CoreImpl implements Core {
         this.eventBus = eventBus;
     }
 
-    // ----------------------------------------------------------------------------------------------------------
-/*
-    private void _knowedlgeBaseHandlerInitialization() throws EpnoiInitializationException {
-
-        this.knowledgeBaseHandler = new KnowledgeBaseHandlerImpl();
-        this.knowledgeBaseHandler.init(this);
-
-    }
-*/
-    // ----------------------------------------------------------------------------------------------------------
 
 
     @Override

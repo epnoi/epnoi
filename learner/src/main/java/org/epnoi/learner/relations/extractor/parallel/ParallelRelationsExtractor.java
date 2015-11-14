@@ -7,7 +7,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 
 import org.epnoi.learner.relations.corpus.parallel.DocumentToSentencesFlatMapper;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
@@ -58,14 +58,14 @@ public class ParallelRelationsExtractor {
         this.core = core;
         this.parameters = parameters;
         String hypernymModelPath = (String) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH);
+                .getParameterValue(OntologyLearningParameters.HYPERNYM_MODEL_PATH);
         this.hypernymExtractionThreshold = (double) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
+                .getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
         this.targetDomain = (String) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+                .getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 
         this.considerKnowledgeBase = (boolean) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE);
+                .getParameterValue(OntologyLearningParameters.CONSIDER_KNOWLEDGE_BASE);
         this.patternsGenerator = new LexicalRelationalPatternGenerator();
         this.domainsTable = domainsTable;
         this.relationsTable = new RelationsTable();
@@ -85,7 +85,7 @@ public class ParallelRelationsExtractor {
 
             this.softPatternModel = RelationalPatternsModelSerializer
                     .deserialize(hypernymModelPath);
-            parameters.setParameter(OntologyLearningWorkflowParameters.HYPERNYM_MODEL, softPatternModel);
+            parameters.setParameter(OntologyLearningParameters.HYPERNYM_MODEL, softPatternModel);
         } catch (EpnoiResourceAccessException e) {
             throw new EpnoiInitializationException(e.getMessage());
         }
@@ -106,7 +106,7 @@ public class ParallelRelationsExtractor {
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
-        Broadcast<OntologyLearningWorkflowParameters> parametersBroadcast = sparkContext.broadcast((OntologyLearningWorkflowParameters) this.parameters);
+        Broadcast<OntologyLearningParameters> parametersBroadcast = sparkContext.broadcast((OntologyLearningParameters) this.parameters);
 
         // First we must create the RDD with the URIs of the resources to be
         // included in the creation of the corpus
@@ -115,7 +115,7 @@ public class ParallelRelationsExtractor {
         //We retrieve for each document its annotated document
         JavaRDD<Document> corpusAnnotatedDocuments;
         corpusAnnotatedDocuments = corpusURIs.flatMap(uri -> {
-                    String uiaPath = (String) parametersBroadcast.value().getParameterValue(OntologyLearningWorkflowParameters.UIA_PATH);
+                    String uiaPath = (String) parametersBroadcast.value().getParameterValue(OntologyLearningParameters.UIA_PATH);
                     UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
                     return flatMapper.call(uri);
                 }

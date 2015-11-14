@@ -18,14 +18,10 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Logger;
-
 public class OntologyLearningTask {
 	private static final Logger logger = Logger
 			.getLogger(OntologyLearningTask.class.getName());
-	private OntologyLearningWorkflowParameters ontologyLearningParameters;
+	private OntologyLearningParameters ontologyLearningParameters;
 	private TermsExtractor termExtractor;
 	private TermsRetriever termsRetriever;
 	private TermsTable termsTable;
@@ -45,7 +41,7 @@ public class OntologyLearningTask {
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,
-			OntologyLearningWorkflowParameters ontologyLearningParameters)
+			OntologyLearningParameters ontologyLearningParameters)
 			throws EpnoiInitializationException {
 
 		logger.info("Initializing the OntologyLearningTask with the following parameters: ");
@@ -54,9 +50,9 @@ public class OntologyLearningTask {
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
 		this.hypernymRelationsThreshold = (double) this.ontologyLearningParameters
-				.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
+				.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
 		this.extractTerms = (boolean) this.ontologyLearningParameters
-				.getParameterValue(OntologyLearningWorkflowParameters.EXTRACT_TERMS);
+				.getParameterValue(OntologyLearningParameters.EXTRACT_TERMS);
 
 		this.ontologyLearningParameters = ontologyLearningParameters;
 
@@ -112,33 +108,33 @@ public class OntologyLearningTask {
 		this.domain = domain;
 		ArrayList<Domain> consideredDomains = new ArrayList(Arrays.asList(domain));
 
-		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
+		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
+				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.TARGET_DOMAIN,
+				OntologyLearningParameters.TARGET_DOMAIN,
 				domain.getUri());
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						0.7);
 
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
 						0.00195);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.EXTRACT_TERMS, true);
+				OntologyLearningParameters.EXTRACT_TERMS, true);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS, 10);
+				OntologyLearningParameters.NUMBER_INITIAL_TERMS, 10);
 
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
+						OntologyLearningParameters.HYPERNYM_MODEL_PATH,
 						"/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin");
-		ontologyLearningParameters.setParameter(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE, true);
+		ontologyLearningParameters.setParameter(OntologyLearningParameters.CONSIDER_KNOWLEDGE_BASE, true);
 		
 
 		try {
