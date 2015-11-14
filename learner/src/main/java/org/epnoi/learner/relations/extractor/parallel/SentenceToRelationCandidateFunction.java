@@ -2,7 +2,7 @@ package org.epnoi.learner.relations.extractor.parallel;
 
 import gate.Annotation;
 import gate.AnnotationSet;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
 import org.epnoi.learner.relations.corpus.parallel.Sentence;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
@@ -16,8 +16,8 @@ public class SentenceToRelationCandidateFunction {
 
 
 
-    SentenceToRelationCandidateFunction(OntologyLearningWorkflowParameters parameters){
-        this.MAX_DISTANCE = (Integer) parameters.getParameterValue(OntologyLearningWorkflowParameters.MAX_RELATIONAL_SENTENCE_LENGTH);
+    SentenceToRelationCandidateFunction(OntologyLearningParameters parameters){
+        this.MAX_DISTANCE = (Integer) parameters.getParameterValue(OntologyLearningParameters.MAX_RELATIONAL_SENTENCE_LENGTH);
     }
 
     public Iterable<RelationalSentenceCandidate> call(Sentence sentence) throws Exception {

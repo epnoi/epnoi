@@ -2,7 +2,7 @@ package org.epnoi.learner.terms;
 
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Term;
@@ -92,20 +92,20 @@ public class TermsRetriever {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
+		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
+				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();

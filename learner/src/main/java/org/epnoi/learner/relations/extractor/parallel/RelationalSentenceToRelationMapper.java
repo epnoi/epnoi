@@ -1,7 +1,7 @@
 package org.epnoi.learner.relations.extractor.parallel;
 
 import gate.Document;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
@@ -22,10 +22,10 @@ public class RelationalSentenceToRelationMapper {
     //------------------------------------------------------------------------------------------------------------------
 
 
-    public RelationalSentenceToRelationMapper(OntologyLearningWorkflowParameters parameters) {
-        this.softPatternModel = (BigramSoftPatternModel) parameters.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL);
-        this.THRESHOLD = (double) parameters.getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
-        this.domain = (String) parameters.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+    public RelationalSentenceToRelationMapper(OntologyLearningParameters parameters) {
+        this.softPatternModel = (BigramSoftPatternModel) parameters.getParameterValue(OntologyLearningParameters.HYPERNYM_MODEL);
+        this.THRESHOLD = (double) parameters.getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
+        this.domain = (String) parameters.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
     }
     //------------------------------------------------------------------------------------------------------------------
 

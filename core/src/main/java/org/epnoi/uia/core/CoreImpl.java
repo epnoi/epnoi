@@ -43,7 +43,8 @@ public class CoreImpl implements Core {
     @Autowired
     private InformationSourcesHandler informationSourcesHandler;
 
-    @Autowired
+  //  @Autowired
+   @Deprecated
     private HarvestersHandler harvestersHandler;
 
     private HashMap<String, InformationStore> informationStores;

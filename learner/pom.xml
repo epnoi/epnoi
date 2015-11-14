@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>epnoi-learner</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>epnoi learner</name>
 	<description>epnoi learner</description>
 
@@ -87,9 +87,51 @@
 			<artifactId>genson</artifactId>
 			<version>1.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
 
 
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.plugin.version}</version>
+				<configuration>
+					<webApp>
+						<contextPath>/learner</contextPath>
+
+					</webApp>
+					<httpConnector>
+						<port>8082</port>
+					</httpConnector>
+					<!--
+                                        <connectors
+                                            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                                                <port>8080</port>
+
+                                            </connector>
+                                        </connectors>
+                                        -->
+					<!-- <jettyXml>src/main/resources/jetty.xml</jettyXml> <scanIntervalSeconds>10</scanIntervalSeconds> -->
+				</configuration>
+
+
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
 

@@ -4,7 +4,7 @@ import gate.Annotation;
 import gate.Document;
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
@@ -41,14 +41,14 @@ public class TermsExtractor {
 	private final double domainConsensusWeight = 1 - cValueWeight
 			- domainPertinenceWeight;
 
-	OntologyLearningWorkflowParameters parameters;
+	OntologyLearningParameters parameters;
 
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, DomainsTable domainsTable,
-			OntologyLearningWorkflowParameters parameters) {
+			OntologyLearningParameters parameters) {
 		logger.info("Initializing the TermExtractor with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
@@ -57,7 +57,7 @@ public class TermsExtractor {
 		this.domainsTable = domainsTable;
 
 		this.targetDomain = (String) parameters
-				.getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -524,20 +524,20 @@ public class TermsExtractor {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
+		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
+				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();

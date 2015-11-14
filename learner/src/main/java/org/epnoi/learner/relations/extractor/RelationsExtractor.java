@@ -6,7 +6,7 @@ import gate.Document;
 import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
@@ -54,14 +54,14 @@ public class RelationsExtractor {
         this.core = core;
         this.parameters = parameters;
         String hypernymModelPath = (String) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH);
+                .getParameterValue(OntologyLearningParameters.HYPERNYM_MODEL_PATH);
         this.hypernymExtractionThreshold = (double) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
+                .getParameterValue(OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
         this.targetDomain = (String) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.TARGET_DOMAIN);
+                .getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
 
         this.considerKnowledgeBase = (boolean) parameters
-                .getParameterValue(OntologyLearningWorkflowParameters.CONSIDER_KNOWLEDGE_BASE);
+                .getParameterValue(OntologyLearningParameters.CONSIDER_KNOWLEDGE_BASE);
         this.patternsGenerator = new LexicalRelationalPatternGenerator();
         this.domainsTable = domainsTable;
         this.relationsTable = new RelationsTable();
