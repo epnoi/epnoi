@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 
 @Configuration
 @Import(org.epnoi.EpnoiConfig.class)
-@ComponentScan(basePackageClasses = {RelationalPatternsModelCreationParameters.class, LearnerImpl.class})
+//@ComponentScan(basePackageClasses = {RelationalPatternsModelCreationParameters.class, LearnerImpl.class})
+@ComponentScan(basePackages = {"org.epnoi.learner"})
 @PropertySource("classpath:/epnoi.properties")
 
 public class LearnerConfig {
@@ -31,7 +32,7 @@ public class LearnerConfig {
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
-                        "http://drInventorFirstReview/relationalSentencesCorpus");
+                        "http://drInventor.eu/reviews/second/relationalSentencesCorpus");
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
@@ -39,7 +40,7 @@ public class LearnerConfig {
 
         parameters.setParameter(
                 RelationalPatternsModelCreationParameters.MODEL_PATH,
-                "/JUNK/syntacticModel.bin");
+                "/opt/epnoi/epnoideployment/secondReviewResources/syntacticModel/model.bin");
         parameters.setParameter(RelationalPatternsModelCreationParameters.TYPE,
                 PatternsConstants.SYNTACTIC);
 
@@ -51,7 +52,7 @@ public class LearnerConfig {
 
         parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
                 true);
-        System.out.println("parameters> "+parameters);
+        System.out.println("parameters> " + parameters);
         return parameters;
     }
 
@@ -62,7 +63,7 @@ public class LearnerConfig {
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
-                        "http://drInventorFirstReview/relationalSentencesCorpus");
+                        "http://drInventor.eu/reviews/second/relationalSentencesCorpus");
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
@@ -70,7 +71,7 @@ public class LearnerConfig {
 
         parameters.setParameter(
                 RelationalPatternsModelCreationParameters.MODEL_PATH,
-                "/JUNK/syntacticModel.bin");
+                "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model.bin");
         parameters.setParameter(RelationalPatternsModelCreationParameters.TYPE,
                 PatternsConstants.LEXICAL);
 
@@ -94,7 +95,7 @@ public class LearnerConfig {
 
         RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
-        String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
+        String relationalCorpusURI = "http://drInventor.eu/reviews/second/relationalSentencesCorpus";
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
                 relationalCorpusURI);
@@ -104,7 +105,7 @@ public class LearnerConfig {
 
         parameters.setParameter(
                 RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
-                "DrInventor first review relational sentences corpus");
+                "DrInventor second relational sentences corpus");
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
                 relationalCorpusURI);
@@ -115,6 +116,6 @@ public class LearnerConfig {
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 
-return parameters;
+        return parameters;
     }
 }
