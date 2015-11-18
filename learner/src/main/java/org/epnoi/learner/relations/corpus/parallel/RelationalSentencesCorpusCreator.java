@@ -14,17 +14,24 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Component
 public class RelationalSentencesCorpusCreator {
     private static final Logger logger = Logger.getLogger(RelationalSentencesCorpusCreator.class.getName());
-
+    @Autowired
     private Core core;
-    private RelationalSentencesCorpus corpus;
+    @Autowired
     private RelationalSentencesCorpusCreationParameters parameters;
+
+    private RelationalSentencesCorpus corpus;
+
     private boolean storeResult;
     private boolean verbose;
 
@@ -35,12 +42,13 @@ public class RelationalSentencesCorpusCreator {
 
     // ----------------------------------------------------------------------------------------------------------------------
 
-    public void init(Core core, RelationalSentencesCorpusCreationParameters parameters)
+
+    @PostConstruct
+    public void init()
             throws EpnoiInitializationException {
         logger.info("Initializing the RelationalSentencesCorpusCreator with the following parameters "
                 + parameters.toString());
-        this.core = core;
-        this.parameters = parameters;
+
         this.corpus = new RelationalSentencesCorpus();
 
         this.storeResult = (boolean) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.STORE);
@@ -106,7 +114,7 @@ public class RelationalSentencesCorpusCreator {
         System.out.println("..> " + annotatedContentURIs.collect());
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
-            String uiaPath=(String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
+            String uiaPath = (String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
             UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
             return flatMapper.call(uri);
         });
@@ -126,7 +134,7 @@ public class RelationalSentencesCorpusCreator {
 
 
         //relationalSentencesCandidates.collect();
-		/*
+        /*
 		  JavaRDD<RelationalSentence> relationalSentences =
 		  relationalSentencesCandidates.map(new
 		  RelationalSentenceMapFunction());
@@ -164,7 +172,7 @@ public class RelationalSentencesCorpusCreator {
 
     // ----------------------------------------------------------------------------------------------------------------------
 
-
+/*
     public static void main(String[] args) {
         logger.info("Starting the Relation Sentences Corpus Creator");
 
@@ -204,6 +212,7 @@ public class RelationalSentencesCorpusCreator {
             e.printStackTrace();
             System.exit(-1);
         }
+        */
 		/*
 		 * RelationalSentencesCorpus testRelationalSentenceCorpus =
 		 * relationSentencesCorpusCreator .createTestCorpus();
@@ -219,7 +228,7 @@ public class RelationalSentencesCorpusCreator {
 		 * System.exit(0);
 		 */
 
-        relationSentencesCorpusCreator.createCorpus();
+//        relationSentencesCorpusCreator.createCorpus();
 /*
 		System.out.println("Checking if the Relational Sentence Corpus can be retrieved");
 
@@ -228,6 +237,6 @@ public class RelationalSentencesCorpusCreator {
 		System.out.println("The readed relational sentences corpus " + relationalSentenceCorpus);
 		logger.info("Stopping the Relation Sentences Corpus Creator");
 	*/
-    }
+ //   }
 
 }

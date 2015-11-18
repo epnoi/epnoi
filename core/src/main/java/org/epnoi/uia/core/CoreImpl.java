@@ -68,7 +68,7 @@ public class CoreImpl implements Core {
         this.informationStoresByType = new HashMap<>();
 
         this._initEventBus();
-        this._informationStoresInitialization();
+        //this._informationStoresInitialization();
 
         logger.info("");
         logger.info("");
