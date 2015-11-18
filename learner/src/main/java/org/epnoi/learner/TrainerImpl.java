@@ -20,6 +20,6 @@ public class TrainerImpl implements Trainer {
 
     @PostConstruct
     public void init() throws EpnoiInitializationException {
-        logger.info("Initializing the Learner");
+        logger.info("Initializing the Trainer");
     }
 }

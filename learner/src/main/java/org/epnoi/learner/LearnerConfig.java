@@ -1,7 +1,11 @@
 package org.epnoi.learner;
 
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.model.RelationHelper;
+import org.epnoi.model.modules.Core;
+import org.epnoi.uia.core.CoreUtility;
 import org.springframework.context.annotation.*;
 
 import java.util.logging.Logger;
@@ -82,5 +86,35 @@ public class LearnerConfig {
     }
 
 
+    @Bean()
+    @Profile(DEVELOP_PROFILE)
+    public RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusParameters() {
+        logger.info("Starting the Relation Sentences Corpus Creator");
 
+
+        RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
+
+        String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+                relationalCorpusURI);
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
+                RelationHelper.HYPERNYM);
+
+        parameters.setParameter(
+                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
+                "DrInventor first review relational sentences corpus");
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+                relationalCorpusURI);
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER, 80);
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, true);
+
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
+
+return parameters;
+    }
 }
