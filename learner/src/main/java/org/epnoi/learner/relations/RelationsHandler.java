@@ -1,6 +1,6 @@
 package org.epnoi.learner.relations;
 
-import org.epnoi.learner.OntologyLearningWorkflowParameters;
+import org.epnoi.learner.OntologyLearningParameters;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.*;
@@ -264,30 +264,30 @@ public class RelationsHandler {
 				RelationsHandlerParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
-		OntologyLearningWorkflowParameters ontologyLearningParameters = new OntologyLearningWorkflowParameters();
+		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.CONSIDERED_DOMAINS,
+				OntologyLearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.TARGET_DOMAIN, targetDomain);
+				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
 
 		ontologyLearningParameters
 				.setParameter(
-						OntologyLearningWorkflowParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+						OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.EXTRACT_TERMS, extractTerms);
+				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.NUMBER_INITIAL_TERMS,
+				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 		ontologyLearningParameters.setParameter(
-				OntologyLearningWorkflowParameters.HYPERNYM_MODEL_PATH,
+				OntologyLearningParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
 
 		RelationsHandler relationsHandler = new RelationsHandler();
