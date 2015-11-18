@@ -43,8 +43,8 @@ public class CoreImpl implements Core {
     @Autowired
     private InformationSourcesHandler informationSourcesHandler;
 
-  //  @Autowired
-   @Deprecated
+    //  @Autowired
+    @Deprecated
     private HarvestersHandler harvestersHandler;
 
     private HashMap<String, InformationStore> informationStores;
@@ -68,7 +68,7 @@ public class CoreImpl implements Core {
         this.informationStoresByType = new HashMap<>();
 
         this._initEventBus();
-        //this._informationStoresInitialization();
+        this._informationStoresInitialization();
 
         logger.info("");
         logger.info("");
@@ -114,58 +114,95 @@ public class CoreImpl implements Core {
         logger.info("Initializing Virtuoso information stores");
         for (VirtuosoInformationStoreParameters virtuosoInformationStoreParameters : parametersModel
                 .getVirtuosoInformationStore()) {
-            logger.info(virtuosoInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(virtuosoInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.RDF_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            _initVirtuosoInformationStore(virtuosoInformationStoreParameters);
 
         }
         logger.info("Initializing SOLR information stores");
         for (SOLRInformationStoreParameters solrInformationStoreParameters : parametersModel
                 .getSolrInformationStore()) {
-            logger.info(solrInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(solrInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.SOLR_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            _initSOLRInformationStore(solrInformationStoreParameters);
 
         }
         logger.info("Initializing Cassandra information stores");
         for (CassandraInformationStoreParameters cassandraInformationStoreParameters : parametersModel
                 .getCassandraInformationStore()) {
-            logger.info(cassandraInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(cassandraInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            _initCassandraInformationStore(cassandraInformationStoreParameters);
 
         }
         logger.info("Initializing map information stores");
         for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
-            logger.info(mapInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(mapInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.MAP_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            _initMapInformationStore(mapInformationStoreParameters);
 
         }
+
+    }
+
+    private void _initMapInformationStore(MapInformationStoreParameters mapInformationStoreParameters) {
+        logger.info(mapInformationStoreParameters.toString());
+        InformationStore newInformationStore = null;
+        try {
+            newInformationStore = InformationStoreFactory
+                    .buildInformationStore(mapInformationStoreParameters, parametersModel);
+            logger.info("The status of the information source is " + newInformationStore.test());
+        } catch (Exception e) {
+            logger.severe("Something went wrong in the MapInfomration store");
+        }
+        this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
+
+        _addInformationStoreByType(newInformationStore, InformationStoreHelper.MAP_INFORMATION_STORE);
+
+    }
+
+    private void _initCassandraInformationStore(CassandraInformationStoreParameters cassandraInformationStoreParameters) {
+        logger.info(cassandraInformationStoreParameters.toString());
+
+        InformationStore newInformationStore = null;
+        try {
+            newInformationStore = InformationStoreFactory
+                    .buildInformationStore(cassandraInformationStoreParameters, parametersModel);
+            logger.info("The status of the information source is " + newInformationStore.test());
+        } catch (Exception e) {
+            logger.severe("Something went wrong in the CassandraInformationStore initialization!");
+           // e.printStackTrace();
+        }
+        this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
+
+        _addInformationStoreByType(newInformationStore, InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
+
+    }
+
+    private void _initSOLRInformationStore(SOLRInformationStoreParameters solrInformationStoreParameters) {
+        logger.info(solrInformationStoreParameters.toString());
+        InformationStore newInformationStore = null;
+        try {
+            newInformationStore = InformationStoreFactory
+                    .buildInformationStore(solrInformationStoreParameters, parametersModel);
+            logger.info("The status of the information source is " + newInformationStore.test());
+        } catch (Exception e) {
+            logger.severe("Something went wrong in the SOLRInformationStore initialization!");
+            //e.printStackTrace();
+        }
+        this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
+
+        _addInformationStoreByType(newInformationStore, InformationStoreHelper.SOLR_INFORMATION_STORE);
+
+    }
+
+    private void _initVirtuosoInformationStore(VirtuosoInformationStoreParameters virtuosoInformationStoreParameters) {
+        logger.info(virtuosoInformationStoreParameters.toString());
+        InformationStore newInformationStore = null;
+        try {
+            newInformationStore = InformationStoreFactory
+                    .buildInformationStore(virtuosoInformationStoreParameters, parametersModel);
+            logger.info("The status of the information source is " + newInformationStore.test());
+        } catch (Exception e) {
+            logger.severe("Something went wrong in the VirtuosoInfomrationStore initialization!");
+          //  e.printStackTrace();
+        }
+        this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
+
+        _addInformationStoreByType(newInformationStore, InformationStoreHelper.RDF_INFORMATION_STORE);
+
 
     }
 
@@ -278,7 +315,6 @@ public class CoreImpl implements Core {
     public void setEventBus(EventBus eventBus) {
         this.eventBus = eventBus;
     }
-
 
 
     @Override
