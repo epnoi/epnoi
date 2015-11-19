@@ -4,6 +4,7 @@ import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.parameterization.ParametersModel;
 
 import java.util.Collection;
@@ -23,11 +24,7 @@ public interface InformationHandler {
 
 	public void remove(String URI, String resourceType);
 
-	public void init(ParametersModel parameters);
-
-	public void addInformationStore(InformationStore informationStore);
-
-	public void removeInformationStore(String URI);
+	public void init() throws EpnoiInitializationException;
 
 	public void update(Resource resource);
 

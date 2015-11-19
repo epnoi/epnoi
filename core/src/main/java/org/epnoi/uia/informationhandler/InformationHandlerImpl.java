@@ -61,19 +61,18 @@ public class InformationHandlerImpl implements InformationHandler {
             this.informationStores = new HashMap<>();
             this.informationStoresByType = new HashMap<>();
             this._informationStoresInitialization();
-            this.initialized= checkInitialization();
-        }
-        else {
+            this.initialized = checkInitialization();
+        } else {
             throw new EpnoiInitializationException("Error trying to reinitialize the Information Handler");
         }
     }
 
     private boolean checkInitialization() {
-        return ((this.initialized= this.getInformationStoresByType(
-                InformationStoreHelper.MAP_INFORMATION_STORE)!=null) &&(this.getInformationStoresByType(
-                InformationStoreHelper.SOLR_INFORMATION_STORE)!=null) && (this.getInformationStoresByType(
-                InformationStoreHelper.RDF_INFORMATION_STORE)!=null) && (this.getInformationStoresByType(
-                InformationStoreHelper.CASSANDRA_INFORMATION_STORE)!=null));
+        return ((this.initialized = this.getInformationStoresByType(
+                InformationStoreHelper.MAP_INFORMATION_STORE) != null) && (this.getInformationStoresByType(
+                InformationStoreHelper.SOLR_INFORMATION_STORE) != null) && (this.getInformationStoresByType(
+                InformationStoreHelper.RDF_INFORMATION_STORE) != null) && (this.getInformationStoresByType(
+                InformationStoreHelper.CASSANDRA_INFORMATION_STORE) != null));
     }
 
     // ---------------------------------------------------------------------------
@@ -87,19 +86,25 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     public void update(Resource resource) {
-        if(this.initialized) {
+        if (this.initialized) {
             Wrapper wrapper = this.wrapperFactory.build(resource);
             wrapper.update(resource);
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
         }
     }
 
     // ---------------------------------------------------------------------------
 
     public void put(Resource resource, Context context) {
-        Wrapper wrapper = this.wrapperFactory.build(resource);
-        wrapper.put(resource, context);
-        resource = null;
-        context.clear();
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(resource);
+            wrapper.put(resource, context);
+            resource = null;
+            context.clear();
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
+        }
 
     }
 
@@ -108,12 +113,18 @@ public class InformationHandlerImpl implements InformationHandler {
     public Resource get(String URI) {
         // TODO: As it is now it just delivers items/feeds
         Resource resource = null;
+        if (this.initialized) {
+            String resourceType = this.getType(URI);
+            if (resourceType != null) {
 
-        String resourceType = this.getType(URI);
-        if (resourceType != null) {
+                Wrapper wrapper = this.wrapperFactory.build(resourceType);
+                resource = wrapper.get(URI);
+            } else {
+                logger.severe("The type " + resourceType + " cannot be resolved as a valid type. A null is returned");
 
-            Wrapper wrapper = this.wrapperFactory.build(resourceType);
-            resource = wrapper.get(URI);
+            }
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
 
         }
         return resource;
@@ -122,45 +133,39 @@ public class InformationHandlerImpl implements InformationHandler {
     // ---------------------------------------------------------------------------
 
     public Resource get(String URI, String resourceType) {
-        Wrapper wrapper = this.wrapperFactory.build(resourceType);
-        return wrapper.get(URI);
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(resourceType);
+            return wrapper.get(URI);
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
+            return null;
+        }
     }
 
     // ---------------------------------------------------------------------------
 
     public void remove(String URI, String resourceType) {
-        Wrapper wrapper = this.wrapperFactory.build(resourceType);
-        wrapper.remove(URI);
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(resourceType);
+            wrapper.remove(URI);
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated with regarding "+URI);
+        }
     }
 
     // ---------------------------------------------------------------------------
 
     public void remove(Resource resource) {
-        Wrapper wrapper = this.wrapperFactory.build(resource);
-        wrapper.remove(resource.getUri());
-
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(resource);
+            wrapper.remove(resource.getUri());
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+resource.getUri());
+        }
     }
 
     // ---------------------------------------------------------------------------
 
-    public void init(ParametersModel parameters) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public void addInformationStore(InformationStore informationStore) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public void removeInformationStore(String URI) {
-        // TODO Auto-generated method stub
-
-    }
 
     // ---------------------------------------------------------------------------
 
@@ -181,32 +186,45 @@ public class InformationHandlerImpl implements InformationHandler {
 
     @Override
     public Content<String> getContent(Selector selector) {
-        Wrapper wrapper = this.wrapperFactory.build(selector
-                .getProperty(SelectorHelper.TYPE));
-        Content<String> content = wrapper.getContent(selector);
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(selector
+                    .getProperty(SelectorHelper.TYPE));
+            Content<String> content = wrapper.getContent(selector);
 
-        return content;
+            return content;
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
+            return null;
+        }
     }
 
     // ---------------------------------------------------------------------------
 
     @Override
     public Content<Object> getAnnotatedContent(Selector selector) {
-        Wrapper wrapper = this.wrapperFactory.build(selector
-                .getProperty(SelectorHelper.TYPE));
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(selector
+                    .getProperty(SelectorHelper.TYPE));
 
-        Content<Object> content = wrapper.getAnnotatedContent(selector);
-        return content;
+            Content<Object> content = wrapper.getAnnotatedContent(selector);
+            return content;
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
+            return null;
+        }
     }
 
     // ---------------------------------------------------------------------------
 
     @Override
     public void setContent(Selector selector, Content<String> content) {
-        Wrapper wrapper = this.wrapperFactory.build(selector
-                .getProperty(SelectorHelper.TYPE));
-        wrapper.setContent(selector, content);
-
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(selector
+                    .getProperty(SelectorHelper.TYPE));
+            wrapper.setContent(selector, content);
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -214,24 +232,31 @@ public class InformationHandlerImpl implements InformationHandler {
     @Override
     public void setAnnotatedContent(Selector selector,
                                     Content<Object> annotatedContent) {
-        Wrapper wrapper = this.wrapperFactory.build(selector
-                .getProperty(SelectorHelper.TYPE));
+        if (this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(selector
+                    .getProperty(SelectorHelper.TYPE));
 
-        wrapper.setAnnotatedContent(selector, annotatedContent);
-
+            wrapper.setAnnotatedContent(selector, annotatedContent);
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
+        }
     }
 
     // ---------------------------------------------------------------------------
 
     @Override
     public boolean contains(String URI, String resourceType) {
+        if (this.initialized) {
+            Selector selector = new Selector();
+            selector.setProperty(SelectorHelper.TYPE, resourceType);
+            selector.setProperty(SelectorHelper.URI, URI);
+            Wrapper wrapper = this.wrapperFactory.build(resourceType);
+            return wrapper.exists(URI);
 
-        Selector selector = new Selector();
-        selector.setProperty(SelectorHelper.TYPE, resourceType);
-        selector.setProperty(SelectorHelper.URI, URI);
-        Wrapper wrapper = this.wrapperFactory.build(resourceType);
-        return wrapper.exists(URI);
-
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A default false value has been returned when asking for "+URI);
+            return false;
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -239,24 +264,28 @@ public class InformationHandlerImpl implements InformationHandler {
     @Override
     public List<String> getAll(String resourceType) {
         // ------------------------------------------------------------------------------
+        if (this.initialized) {
+            InformationStore informationStore = this.core.getInformationHandler()
+                    .getInformationStoresByType(
+                            InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
-        InformationStore informationStore = this.core.getInformationHandler()
-                .getInformationStoresByType(
-                        InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
+            String queryExpression = "SELECT DISTINCT ?uri FROM <{GRAPH}>"
+                    + "{ ?uri a <" + resourceType + "> ." + "}";
 
-        String queryExpression = "SELECT DISTINCT ?uri FROM <{GRAPH}>"
-                + "{ ?uri a <" + resourceType + "> ." + "}";
+            queryExpression = queryExpression
+                    .replace(
+                            "{GRAPH}",
+                            ((VirtuosoInformationStoreParameters) informationStore
+                                    .getParameters()).getGraph());
 
-        queryExpression = queryExpression
-                .replace(
-                        "{GRAPH}",
-                        ((VirtuosoInformationStoreParameters) informationStore
-                                .getParameters()).getGraph());
+            System.out.println("QUERY EXPRESSION ----------> " + queryExpression);
+            List<String> queryResults = informationStore.query(queryExpression);
 
-        System.out.println("QUERY EXPRESSION ----------> " + queryExpression);
-        List<String> queryResults = informationStore.query(queryExpression);
-
-        return queryResults;
+            return queryResults;
+        } else {
+            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A simple empty list has been returned when getting the resources of type "+resourceType);
+            return new ArrayList<>();
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -375,12 +404,12 @@ public class InformationHandlerImpl implements InformationHandler {
     // ----------------------------------------------------------------------------------------------------------
 
     private void _addInformationStoreByType(InformationStore informationStore, String type) {
-        List<InformationStore> informationsStoresOfType = this.informationStoresByType.get(type);
-        if (informationsStoresOfType == null) {
-            informationsStoresOfType = new ArrayList<InformationStore>();
-            this.informationStoresByType.put(type, informationsStoresOfType);
+        List<InformationStore> informationStoresOfType = this.informationStoresByType.get(type);
+        if (informationStoresOfType == null) {
+            informationStoresOfType = new ArrayList<InformationStore>();
+            this.informationStoresByType.put(type, informationStoresOfType);
         }
-        informationsStoresOfType.add(informationStore);
+        informationStoresOfType.add(informationStore);
     }
 
 
