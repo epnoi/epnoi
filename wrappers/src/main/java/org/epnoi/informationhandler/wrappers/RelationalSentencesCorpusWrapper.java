@@ -21,13 +21,13 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	@Override
 	public void put(Resource resource, Context context) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 	}
@@ -36,7 +36,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 
 	@Override
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -46,7 +46,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		informationStore.remove(selector);
@@ -69,7 +69,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 				RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);

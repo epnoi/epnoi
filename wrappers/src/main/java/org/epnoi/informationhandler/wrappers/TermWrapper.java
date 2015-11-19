@@ -23,13 +23,13 @@ public class TermWrapper implements Wrapper {
 
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -43,7 +43,7 @@ public class TermWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.TERM_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
@@ -59,14 +59,14 @@ public class TermWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.TERM_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
 
@@ -85,7 +85,7 @@ public class TermWrapper implements Wrapper {
 	@Override
 	public boolean exists(String URI) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);

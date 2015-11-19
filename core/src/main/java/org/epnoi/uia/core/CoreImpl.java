@@ -47,8 +47,7 @@ public class CoreImpl implements Core {
     @Deprecated
     private HarvestersHandler harvestersHandler;
 
-    private HashMap<String, InformationStore> informationStores;
-    private HashMap<String, List<InformationStore>> informationStoresByType;
+
 
 
     private EventBus eventBus = null;
@@ -64,11 +63,10 @@ public class CoreImpl implements Core {
                 "\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
         logger.info("Initializing the epnoi uia core with the following parameters ");
         logger.info(parametersModel.toString());
-        this.informationStores = new HashMap<>();
-        this.informationStoresByType = new HashMap<>();
+
 
         this._initEventBus();
-        this._informationStoresInitialization();
+
 
         logger.info("");
         logger.info("");
@@ -103,134 +101,6 @@ public class CoreImpl implements Core {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-
-    /**
-     * Information Stores initialization
-     */
-
-    private void _informationStoresInitialization() {
-
-        logger.info("Initializing information stores");
-        logger.info("Initializing Virtuoso information stores");
-        for (VirtuosoInformationStoreParameters virtuosoInformationStoreParameters : parametersModel
-                .getVirtuosoInformationStore()) {
-            _initVirtuosoInformationStore(virtuosoInformationStoreParameters);
-
-        }
-        logger.info("Initializing SOLR information stores");
-        for (SOLRInformationStoreParameters solrInformationStoreParameters : parametersModel
-                .getSolrInformationStore()) {
-            _initSOLRInformationStore(solrInformationStoreParameters);
-
-        }
-        logger.info("Initializing Cassandra information stores");
-        for (CassandraInformationStoreParameters cassandraInformationStoreParameters : parametersModel
-                .getCassandraInformationStore()) {
-            _initCassandraInformationStore(cassandraInformationStoreParameters);
-
-        }
-        logger.info("Initializing map information stores");
-        for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
-            _initMapInformationStore(mapInformationStoreParameters);
-
-        }
-
-    }
-
-    private void _initMapInformationStore(MapInformationStoreParameters mapInformationStoreParameters) {
-        logger.info(mapInformationStoreParameters.toString());
-        InformationStore newInformationStore = null;
-        try {
-            newInformationStore = InformationStoreFactory
-                    .buildInformationStore(mapInformationStoreParameters, parametersModel);
-            logger.info("The status of the information source is " + newInformationStore.test());
-        } catch (Exception e) {
-            logger.severe("Something went wrong in the MapInfomration store");
-        }
-        this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
-
-        _addInformationStoreByType(newInformationStore, InformationStoreHelper.MAP_INFORMATION_STORE);
-
-    }
-
-    private void _initCassandraInformationStore(CassandraInformationStoreParameters cassandraInformationStoreParameters) {
-        logger.info(cassandraInformationStoreParameters.toString());
-
-        InformationStore newInformationStore = null;
-        try {
-            newInformationStore = InformationStoreFactory
-                    .buildInformationStore(cassandraInformationStoreParameters, parametersModel);
-            logger.info("The status of the information source is " + newInformationStore.test());
-        } catch (Exception e) {
-            logger.severe("Something went wrong in the CassandraInformationStore initialization!");
-           // e.printStackTrace();
-        }
-        this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
-
-        _addInformationStoreByType(newInformationStore, InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-
-    }
-
-    private void _initSOLRInformationStore(SOLRInformationStoreParameters solrInformationStoreParameters) {
-        logger.info(solrInformationStoreParameters.toString());
-        InformationStore newInformationStore = null;
-        try {
-            newInformationStore = InformationStoreFactory
-                    .buildInformationStore(solrInformationStoreParameters, parametersModel);
-            logger.info("The status of the information source is " + newInformationStore.test());
-        } catch (Exception e) {
-            logger.severe("Something went wrong in the SOLRInformationStore initialization!");
-            //e.printStackTrace();
-        }
-        this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
-
-        _addInformationStoreByType(newInformationStore, InformationStoreHelper.SOLR_INFORMATION_STORE);
-
-    }
-
-    private void _initVirtuosoInformationStore(VirtuosoInformationStoreParameters virtuosoInformationStoreParameters) {
-        logger.info(virtuosoInformationStoreParameters.toString());
-        InformationStore newInformationStore = null;
-        try {
-            newInformationStore = InformationStoreFactory
-                    .buildInformationStore(virtuosoInformationStoreParameters, parametersModel);
-            logger.info("The status of the information source is " + newInformationStore.test());
-        } catch (Exception e) {
-            logger.severe("Something went wrong in the VirtuosoInfomrationStore initialization!");
-          //  e.printStackTrace();
-        }
-        this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
-
-        _addInformationStoreByType(newInformationStore, InformationStoreHelper.RDF_INFORMATION_STORE);
-
-
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    private void _addInformationStoreByType(InformationStore informationStore, String type) {
-        List<InformationStore> informationsStoresOfType = this.informationStoresByType.get(type);
-        if (informationsStoresOfType == null) {
-            informationsStoresOfType = new ArrayList<InformationStore>();
-            this.informationStoresByType.put(type, informationsStoresOfType);
-        }
-        informationsStoresOfType.add(informationStore);
-    }
-
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    @Override
-    public Collection<InformationStore> getInformationStores() {
-        return this.informationStores.values();
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    @Override
-    public List<InformationStore> getInformationStoresByType(String type) {
-        return this.informationStoresByType.get(type);
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
@@ -269,19 +139,12 @@ public class CoreImpl implements Core {
 
     // ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean checkStatus(String informationStoreURI) {
-        InformationStore informationStore = this.informationStores.get(informationStoreURI);
-        return informationStore.test();
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
     @Override
     public void close() {
-        for (InformationStore dataSource : this.informationStores.values()) {
-            dataSource.close();
-        }
+
 
     }
 

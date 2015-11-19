@@ -15,7 +15,7 @@ public class WikipediaPagesRetriever {
 	public static List<String> getWikipediaArticles(Core core) {
 		logger.info("Retrieving the URIs of the Wikipedia articles ");
 
-		InformationStore informationStore = core
+		InformationStore informationStore = core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

@@ -22,16 +22,16 @@ public class PaperWrapper implements Wrapper {
 
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -42,7 +42,7 @@ public class PaperWrapper implements Wrapper {
 	public Resource get(String URI) {
 		Paper joinPaper = new Paper();
 		InformationStore informationStore = this.core
-				.getInformationStoresByType(
+				.getInformationHandler().getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
@@ -52,7 +52,7 @@ public class PaperWrapper implements Wrapper {
 
 		// System.out.println("joinPaper RDF----> "+joinPaper);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		Paper cassandraItem = (Paper) informationStore.get(selector);
@@ -68,7 +68,7 @@ public class PaperWrapper implements Wrapper {
 
 	public void remove(String URI) {
 		InformationStore informationStore = this.core
-				.getInformationStoresByType(
+				.getInformationHandler().getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
@@ -76,7 +76,7 @@ public class PaperWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		informationStore.remove(selector);
@@ -97,7 +97,7 @@ public class PaperWrapper implements Wrapper {
 	public boolean exists(String URI) {
 		boolean exists;
 		InformationStore informationStore = this.core
-				.getInformationStoresByType(
+				.getInformationHandler().getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		Selector selector = new Selector();
@@ -114,7 +114,7 @@ public class PaperWrapper implements Wrapper {
 */
 			if (exists) {
 
-				informationStore = this.core.getInformationStoresByType(
+				informationStore = this.core.getInformationHandler().getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 				// exists = informationStore.exists(selector);
 
@@ -144,7 +144,7 @@ public class PaperWrapper implements Wrapper {
 	public Content<String> getContent(Selector selector) {
 		// System.out.println("Entra y este es el selector "+selector);
 
-		CassandraInformationStore informationStore = (CassandraInformationStore) this.core
+		CassandraInformationStore informationStore = (CassandraInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
@@ -165,7 +165,7 @@ public class PaperWrapper implements Wrapper {
 
 	@Override
 	public Content<Object> getAnnotatedContent(Selector selector) {
-		MapInformationStore informationStore = (MapInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		return informationStore.getAnnotatedContent(selector);
@@ -176,7 +176,7 @@ public class PaperWrapper implements Wrapper {
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<Object> annotatedContent) {
-		MapInformationStore informationStore = (MapInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		informationStore.setAnnotatedContent(selector, annotatedContent);

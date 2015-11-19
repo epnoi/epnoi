@@ -24,12 +24,12 @@ public class FeedWrapper implements Wrapper {
 		System.out.println("R " + resource);
 		System.out.println("C " + context);
 		*/
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
 		informationStore.put(resource, context);
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		/*
 		System.out
@@ -40,7 +40,7 @@ public class FeedWrapper implements Wrapper {
 		
 		//-----------------
 		
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		/*
 		System.out

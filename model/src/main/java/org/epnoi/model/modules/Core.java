@@ -15,11 +15,7 @@ public interface Core {
 
 	void setNLPHandler(NLPHandler nlpHandler);
 
-	Collection<InformationStore> getInformationStores();
 
-	List<InformationStore> getInformationStoresByType(String type);
-
-	InformationHandler getInformationHandler();
 
 	InformationSourcesHandler getInformationSourcesHandler();
 
@@ -29,7 +25,7 @@ public interface Core {
 	@Deprecated
 	void setSearchHandler(SearchHandler searchHandler);
 
-	boolean checkStatus(String informationStoreURI);
+	//boolean checkStatus(String informationStoreURI);
 
 	void close();
 
@@ -55,4 +51,7 @@ public interface Core {
 
 	KnowldedgeBaseHandler getKnowledgeBaseHandler();
 
+	InformationHandler getInformationHandler();
+
+	// ----------------------------------------------------------------------------------------------------------
 }

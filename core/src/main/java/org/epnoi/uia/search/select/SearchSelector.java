@@ -30,7 +30,7 @@ public class SearchSelector {
 		*/
 		
 		
-		InformationStore informationStore=core.getInformationStoresByType(InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
+		InformationStore informationStore=core.getInformationHandler().getInformationStoresByType(InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		SearchSelectResult searchSelectResult =informationStore.query(selectExpression, searchContext);
 
 		

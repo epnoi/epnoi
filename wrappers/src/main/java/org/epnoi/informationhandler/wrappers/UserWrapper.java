@@ -24,14 +24,14 @@ public class UserWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, UserRDFHelper.USER_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
 	}
@@ -43,14 +43,14 @@ public class UserWrapper implements Wrapper {
 		logger.info("User: " + resource);
 		// First we update the information about the user in the cassandra
 		// stores
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
 		informationStore.put(resource, context);
 		// Finally we store the RDF information associated with the user
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 	}
@@ -58,7 +58,7 @@ public class UserWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
@@ -68,7 +68,7 @@ public class UserWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		User cassandraUser = (User) informationStore.get(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
 		User rdfUser = (User) informationStore.get(selector);

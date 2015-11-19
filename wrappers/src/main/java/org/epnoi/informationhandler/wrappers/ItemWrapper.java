@@ -21,12 +21,12 @@ public class ItemWrapper implements Wrapper {
 		System.out.println("Entra con estos valores ");
 		System.out.println("R " + resource);
 		System.out.println("C " + context);
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
 		informationStore.put(resource, context);
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -36,7 +36,7 @@ public class ItemWrapper implements Wrapper {
 
 	public Resource get(String URI) {
 		Item joinItem = new Item();
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -45,7 +45,7 @@ public class ItemWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		joinItem = (Item) informationStore.get(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		Item cassandraItem = (Item) informationStore.get(selector);
@@ -56,7 +56,7 @@ public class ItemWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

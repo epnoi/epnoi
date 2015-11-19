@@ -18,13 +18,13 @@ public class DomainWrapper implements Wrapper {
 
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -40,7 +40,7 @@ public class DomainWrapper implements Wrapper {
 
 
 		
-		InformationStore informationStore = this.core.getInformationStoresByType(
+		InformationStore informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		Domain domain = (Domain) informationStore.get(selector);
 	
@@ -56,14 +56,14 @@ public class DomainWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.DOMAIN_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.remove(selector);
 
@@ -82,7 +82,7 @@ public class DomainWrapper implements Wrapper {
 
 	@Override
 	public boolean exists(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);

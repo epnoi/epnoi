@@ -25,7 +25,7 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 	public void put(Resource resource, Context context) {
 		// InformationSource informationSource = (InformationSource) resource;
 
-		InformationStore informationStore = core.getInformationStoresByType(
+		InformationStore informationStore = core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 	}
@@ -33,7 +33,7 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -48,7 +48,7 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -64,7 +64,7 @@ public class InformationSourceSubscriptionWrapper implements Wrapper {
 
 	@Override
 	public void update(Resource resource) {
-		InformationStore informationStore = core.getInformationStoresByType(
+		InformationStore informationStore = core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.update(resource);
 		this.core.getInformationHandler()

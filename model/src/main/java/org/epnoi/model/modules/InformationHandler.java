@@ -6,6 +6,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.ParametersModel;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -46,6 +47,10 @@ public interface InformationHandler {
 	public void  setAnnotatedContent(Selector selector, Content<Object> annotatedContent);
 
 	public List<String> getAll(String resourceClass);
+	Collection<InformationStore> getInformationStores();
 
+	List<InformationStore> getInformationStoresByType(String type);
+
+	boolean checkStatus(String informationStoreURI);
 	
 }
