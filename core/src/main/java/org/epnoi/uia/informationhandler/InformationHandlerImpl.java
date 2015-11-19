@@ -37,11 +37,12 @@ public class InformationHandlerImpl implements InformationHandler {
     private HashMap<String, InformationStore> informationStores;
     private HashMap<String, List<InformationStore>> informationStoresByType;
 
+    volatile boolean initialized;
 
     // ---------------------------------------------------------------------------
 
     public InformationHandlerImpl() {
-
+        this.initialized = false;
     }
 
     @Override
@@ -52,17 +53,30 @@ public class InformationHandlerImpl implements InformationHandler {
 
 
     @PostConstruct
-    public void init() throws EpnoiInitializationException {
-        logger.info("Initializing the Information Handler");
-        this.wrapperFactory = new WrapperFactory(core);
-        this.listeners = new ArrayList<InformationAccessListener>();
-        this.informationStores = new HashMap<>();
-        this.informationStoresByType = new HashMap<>();
-        this._informationStoresInitialization();
+    public synchronized void init() throws EpnoiInitializationException {
+        if (!this.initialized) {
+            logger.info("Initializing the Information Handler");
+            this.wrapperFactory = new WrapperFactory(core);
+            this.listeners = new ArrayList<InformationAccessListener>();
+            this.informationStores = new HashMap<>();
+            this.informationStoresByType = new HashMap<>();
+            this._informationStoresInitialization();
+            this.initialized= checkInitialization();
+        }
+        else {
+            throw new EpnoiInitializationException("Error trying to reinitialize the Information Handler");
+        }
+    }
+
+    private boolean checkInitialization() {
+        return ((this.initialized= this.getInformationStoresByType(
+                InformationStoreHelper.MAP_INFORMATION_STORE)!=null) &&(this.getInformationStoresByType(
+                InformationStoreHelper.SOLR_INFORMATION_STORE)!=null) && (this.getInformationStoresByType(
+                InformationStoreHelper.RDF_INFORMATION_STORE)!=null) && (this.getInformationStoresByType(
+                InformationStoreHelper.CASSANDRA_INFORMATION_STORE)!=null));
     }
 
     // ---------------------------------------------------------------------------
-
 
 
     public void close() {
@@ -73,9 +87,10 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     public void update(Resource resource) {
-        Wrapper wrapper = this.wrapperFactory.build(resource);
-        wrapper.update(resource);
-
+        if(this.initialized) {
+            Wrapper wrapper = this.wrapperFactory.build(resource);
+            wrapper.update(resource);
+        }
     }
 
     // ---------------------------------------------------------------------------
