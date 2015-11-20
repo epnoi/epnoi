@@ -22,7 +22,7 @@ public class ResearchObjectWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		// System.out.println("--------------------------------------------->  "+informationStore);
@@ -40,7 +40,7 @@ public class ResearchObjectWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -55,7 +55,7 @@ public class ResearchObjectWrapper implements Wrapper {
 
 	public void remove(String URI) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -84,7 +84,7 @@ public class ResearchObjectWrapper implements Wrapper {
 
 	@Override
 	public boolean exists(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

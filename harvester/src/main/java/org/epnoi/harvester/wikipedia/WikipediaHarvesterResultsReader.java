@@ -109,7 +109,7 @@ public class WikipediaHarvesterResultsReader {
 	public List<String> getWikipediaArticles() {
 		logger.info("Retrieving the URIs of the Wikipedia articles ");
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

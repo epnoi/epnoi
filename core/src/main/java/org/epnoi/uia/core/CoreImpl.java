@@ -43,12 +43,11 @@ public class CoreImpl implements Core {
     @Autowired
     private InformationSourcesHandler informationSourcesHandler;
 
-  //  @Autowired
-   @Deprecated
+    //  @Autowired
+    @Deprecated
     private HarvestersHandler harvestersHandler;
 
-    private HashMap<String, InformationStore> informationStores;
-    private HashMap<String, List<InformationStore>> informationStoresByType;
+
 
 
     private EventBus eventBus = null;
@@ -64,11 +63,10 @@ public class CoreImpl implements Core {
                 "\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
         logger.info("Initializing the epnoi uia core with the following parameters ");
         logger.info(parametersModel.toString());
-        this.informationStores = new HashMap<>();
-        this.informationStoresByType = new HashMap<>();
+
 
         this._initEventBus();
-        //this._informationStoresInitialization();
+
 
         logger.info("");
         logger.info("");
@@ -103,97 +101,6 @@ public class CoreImpl implements Core {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-
-    /**
-     * Information Stores initialization
-     */
-
-    private void _informationStoresInitialization() {
-
-        logger.info("Initializing information stores");
-        logger.info("Initializing Virtuoso information stores");
-        for (VirtuosoInformationStoreParameters virtuosoInformationStoreParameters : parametersModel
-                .getVirtuosoInformationStore()) {
-            logger.info(virtuosoInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(virtuosoInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.RDF_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
-
-        }
-        logger.info("Initializing SOLR information stores");
-        for (SOLRInformationStoreParameters solrInformationStoreParameters : parametersModel
-                .getSolrInformationStore()) {
-            logger.info(solrInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(solrInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.SOLR_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
-
-        }
-        logger.info("Initializing Cassandra information stores");
-        for (CassandraInformationStoreParameters cassandraInformationStoreParameters : parametersModel
-                .getCassandraInformationStore()) {
-            logger.info(cassandraInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(cassandraInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.CASSANDRA_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
-
-        }
-        logger.info("Initializing map information stores");
-        for (MapInformationStoreParameters mapInformationStoreParameters : parametersModel.getMapInformationStore()) {
-            logger.info(mapInformationStoreParameters.toString());
-
-            InformationStore newInformationStore = InformationStoreFactory
-                    .buildInformationStore(mapInformationStoreParameters, parametersModel);
-
-            this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
-
-            _addInformationStoreByType(newInformationStore, InformationStoreHelper.MAP_INFORMATION_STORE);
-            logger.info("The status of the information source is " + newInformationStore.test());
-
-        }
-
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    private void _addInformationStoreByType(InformationStore informationStore, String type) {
-        List<InformationStore> informationsStoresOfType = this.informationStoresByType.get(type);
-        if (informationsStoresOfType == null) {
-            informationsStoresOfType = new ArrayList<InformationStore>();
-            this.informationStoresByType.put(type, informationsStoresOfType);
-        }
-        informationsStoresOfType.add(informationStore);
-    }
-
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    @Override
-    public Collection<InformationStore> getInformationStores() {
-        return this.informationStores.values();
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-    @Override
-    public List<InformationStore> getInformationStoresByType(String type) {
-        return this.informationStoresByType.get(type);
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
@@ -232,19 +139,12 @@ public class CoreImpl implements Core {
 
     // ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean checkStatus(String informationStoreURI) {
-        InformationStore informationStore = this.informationStores.get(informationStoreURI);
-        return informationStore.test();
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
     @Override
     public void close() {
-        for (InformationStore dataSource : this.informationStores.values()) {
-            dataSource.close();
-        }
+
 
     }
 
@@ -278,7 +178,6 @@ public class CoreImpl implements Core {
     public void setEventBus(EventBus eventBus) {
         this.eventBus = eventBus;
     }
-
 
 
     @Override

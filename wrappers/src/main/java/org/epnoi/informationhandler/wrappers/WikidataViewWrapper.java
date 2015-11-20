@@ -21,13 +21,13 @@ public class WikidataViewWrapper implements Wrapper {
 
 	@Override
 	public void put(Resource resource, Context context) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 		informationStore.put(resource, context);
 		
-		informationStore = this.core
+		informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE)
 				.get(0);
@@ -38,7 +38,7 @@ public class WikidataViewWrapper implements Wrapper {
 
 	@Override
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -47,7 +47,7 @@ public class WikidataViewWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		informationStore.remove(selector);
@@ -69,7 +69,7 @@ public class WikidataViewWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.WIKIDATA_VIEW_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 		
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);

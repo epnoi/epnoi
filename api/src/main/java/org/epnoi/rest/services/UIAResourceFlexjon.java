@@ -69,8 +69,8 @@ public class UIAResourceFlexjon extends UIAService {
 		String timeStamp = Long.toString(System.currentTimeMillis());
 		uia.setTimestamp(timeStamp);
 
-		System.out.println("--->>>-->> " + this.core.getInformationStores());
-		for (InformationStore informationStore : this.core
+		System.out.println("--->>>-->> " + this.core.getInformationHandler().getInformationStores());
+		for (InformationStore informationStore : this.core.getInformationHandler()
 				.getInformationStores()) {
 			org.epnoi.rest.services.response.InformationStore informationStoreResponse = new org.epnoi.rest.services.response.InformationStore();
 			System.out.println("----> " + informationStore);

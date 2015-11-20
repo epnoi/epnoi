@@ -19,7 +19,7 @@ public class AnnotationWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -31,7 +31,7 @@ public class AnnotationWrapper implements Wrapper {
 
 	public Resource get(String URI) {
 		Annotation annotation = new Annotation();
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -47,7 +47,7 @@ public class AnnotationWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

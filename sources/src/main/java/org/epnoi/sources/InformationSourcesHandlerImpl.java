@@ -38,7 +38,7 @@ public class InformationSourcesHandlerImpl implements InformationSourcesHandler 
     public List<InformationSourceNotification> retrieveNotifications(
             String informationSourceSubscriptionURI) {
         List<InformationSourceNotification> notifications = new ArrayList<InformationSourceNotification>();
-        InformationStore informationStore = core.getInformationStoresByType(
+        InformationStore informationStore = core.getInformationHandler().getInformationStoresByType(
                 InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
         VirtuosoInformationStoreParameters parameters = (VirtuosoInformationStoreParameters) informationStore
                 .getParameters();

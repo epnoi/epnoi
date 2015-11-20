@@ -46,7 +46,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 	// ------------------------------------------------------------------------------
 
 	public List<String> getAnnotatedAs(String topicURI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -74,7 +74,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 	// ------------------------------------------------------------------------------
 
 	public List<String> getAnnotatedAs(String topicURI, String type) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -151,7 +151,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public void removeAnnotation(String URI, String topicURI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -187,7 +187,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public void removeLabel(String URI, String label) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -220,7 +220,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public List<String> getLabeledAs(String label) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		String cleanLabel = StringUtils.cleanOddCharacters(label);
@@ -249,7 +249,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public List<String> getLabeledAs(String label, String type) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -280,7 +280,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 	@Override
 	public List<String> getAnnotations(String URI) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -311,7 +311,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public List<String> getLabels(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -342,7 +342,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 
 	@Override
 	public List<String> getAnnotations() {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 

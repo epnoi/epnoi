@@ -22,7 +22,7 @@ public class WikipediaPageWrapper implements Wrapper {
 
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
@@ -31,7 +31,7 @@ public class WikipediaPageWrapper implements Wrapper {
 		 * InformationStoreHelper.SOLR_INFORMATION_STORE).get(0);
 		 * informationStore.put(resource, context);
 		 */
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -46,7 +46,7 @@ public class WikipediaPageWrapper implements Wrapper {
 				RDFHelper.WIKIPEDIA_PAGE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
@@ -60,7 +60,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public void remove(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -70,7 +70,7 @@ public class WikipediaPageWrapper implements Wrapper {
 		selector.setProperty(SelectorHelper.URI, URI);
 		informationStore.remove(selector);
 
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 
 		informationStore.remove(selector);
@@ -93,7 +93,7 @@ public class WikipediaPageWrapper implements Wrapper {
 		// System.out.println(" checking the existence > " + URI);
 
 		boolean exists;
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 
@@ -104,7 +104,7 @@ public class WikipediaPageWrapper implements Wrapper {
 		exists = informationStore.exists(selector);
 
 		if (exists) {
-			informationStore = this.core.getInformationStoresByType(
+			informationStore = this.core.getInformationHandler().getInformationStoresByType(
 					InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 			exists = informationStore.exists(selector);
 
@@ -147,7 +147,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	@Override
 	public Content<Object> getAnnotatedContent(Selector selector) {
 
-		MapInformationStore informationStore = (MapInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 
@@ -159,7 +159,7 @@ public class WikipediaPageWrapper implements Wrapper {
 	@Override
 	public void setAnnotatedContent(Selector selector,
 			Content<Object> annotatedContent) {
-		MapInformationStore informationStore = (MapInformationStore) this.core
+		MapInformationStore informationStore = (MapInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.MAP_INFORMATION_STORE).get(0);
 		informationStore.setAnnotatedContent(selector, annotatedContent);

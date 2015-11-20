@@ -22,7 +22,7 @@ public class CassandraWikidataView {
 		this.core=core;
 		this.URI = URI;
 		
-		this.cassandraInformationStore =(CassandraInformationStore) this.core
+		this.cassandraInformationStore =(CassandraInformationStore) this.core.getInformationHandler()
 				.getInformationStoresByType(InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 	this.dictionaryURI=this.URI+"/dictionary";
 	this.reverseDictionaryURI=this.URI+"/reverseDictionary";

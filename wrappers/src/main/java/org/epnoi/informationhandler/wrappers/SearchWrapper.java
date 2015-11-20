@@ -29,11 +29,11 @@ public class SearchWrapper implements Wrapper {
 
 	public void put(Resource resource, Context context) {
 
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.RDF_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
-		informationStore = this.core.getInformationStoresByType(
+		informationStore = this.core.getInformationHandler().getInformationStoresByType(
 				InformationStoreHelper.CASSANDRA_INFORMATION_STORE).get(0);
 		informationStore.put(resource, context);
 
@@ -43,7 +43,7 @@ public class SearchWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-		InformationStore informationStore = this.core
+		InformationStore informationStore = this.core.getInformationHandler()
 				.getInformationStoresByType(
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
@@ -58,7 +58,7 @@ public class SearchWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------
 
 		public void remove(String URI) {
-			InformationStore informationStore = this.core
+			InformationStore informationStore = this.core.getInformationHandler()
 					.getInformationStoresByType(
 							InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 					.get(0);
