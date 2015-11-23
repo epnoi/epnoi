@@ -2,12 +2,9 @@ package org.epnoi.uia.core;
 
 import org.epnoi.EpnoiConfig;
 import org.epnoi.model.modules.Core;
-import org.epnoi.model.parameterization.ParametersModel;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.StandardEnvironment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package org.epnoi.rest.services;
 
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.model.Domain;
@@ -66,7 +66,7 @@ public class DomainRelationsResource extends UIAService {
 			}
 			
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
 

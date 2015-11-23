@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.model.Resource;
 import org.epnoi.model.rdf.*;
@@ -115,7 +115,7 @@ public class ResourcesByTypeResource extends UIAService {
 				return Response.ok(resource, MediaType.APPLICATION_JSON).build();
 			}
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 	// --------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ public class ResourcesByTypeResource extends UIAService {
 				return Response.ok(resource, MediaType.APPLICATION_JSON).build();
 			}
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 	// --------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ public class ResourcesByTypeResource extends UIAService {
 			this.core.getInformationHandler().remove(URI, resourceClass);
 			return Response.ok().build();
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 }

@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.learner.terms.TermsTable;
@@ -63,7 +63,7 @@ public class DomainTerminologyResource extends UIAService {
 						.build();
 			}
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
 

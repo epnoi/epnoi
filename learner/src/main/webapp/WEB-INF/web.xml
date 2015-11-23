@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
-		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-		 id="WebApp_ID" version="2.5">
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<display-name>Learner</display-name>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -23,151 +23,22 @@
 		<param-value>develop</param-value>
 	</context-param>
 
-	<!--
-         <servlet>
-            <servlet-name>jersey</servlet-name>
-            <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-            <init-param>
-                <param-name>com.sun.jersey.config.property.packages</param-name>
-                <param-value> io.swagger.jaxrs.json;io.swagger.jaxrs.listing;org.epnoi.rest.services</param-value>
-            </init-param>
-            <init-param>
-
-                <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-                <param-value>true</param-value>
-            </init-param>
-        </servlet>
-
-        <servlet-mapping>
-            <servlet-name>jersey</servlet-name>
-            <url-pattern>/rest/*</url-pattern>
-        </servlet-mapping>
-        -->
- <!--  
 	<servlet>
-		<description>AtmosphereServlet</description>
-		<servlet-name>AtmosphereServlet</servlet-name>
-		<servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+		<servlet-name>jersey-servlet</servlet-name>
+		<servlet-class>
+			org.glassfish.jersey.servlet.ServletContainer
+		</servlet-class>
 		<init-param>
-
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			  <param-value>
-                io.swagger.jaxrs.json,
-                io.swagger.jaxrs.listing,
-                org.epnoi.rest.services
-               </param-value>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>org.epnoi.learner.service.rest.LearnerApplication</param-value>
 		</init-param>
-		<init-param>
-
-			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<load-on-startup>0</load-on-startup>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>AtmosphereServlet</servlet-name>
+		<servlet-name>jersey-servlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
--->
-	<!-- <servlet> <servlet-name>jersey</servlet-name> <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class> 
-		<init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
-		<param-value>org.epnoi.uia.rest.services;com.wordnik.swagger.jersey.listing</param-value> 
-		</init-param> <init-param> <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name> 
-		<param-value>true</param-value> </init-param> <load-on-startup>0</load-on-startup> 
-		</servlet> <servlet-mapping> <servlet-name>jersey</servlet-name> <url-pattern>/*</url-pattern> 
-		</servlet-mapping> -->
-	<!--
-	<servlet>
-		<servlet-name>Jersey2Config</servlet-name>
-		<servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
-		<init-param>
-			<param-name>api.version</param-name>
-			<param-value>1.0.0</param-value>
-		</init-param>
-		<init-param>
-			<param-name>swagger.api.basepath</param-name>
-		 	
-		<param-value>http://localhost:8080/epnoi/rest</param-value> 
-	 		 <param-value>http://zavijava.dia.fi.upm.es:8080/epnoi/rest</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
--->
-	<!-- <servlet> <servlet-name>Jersey REST Service</servlet-name> <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class> 
-		<init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
-		<param-value>org.epnoi.uia.rest.services</param-value> </init-param> <init-param> 
-		<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name> <param-value>true</param-value> 
-		</init-param> <load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> 
-		<servlet-name>Jersey REST Service</servlet-name> <url-pattern>/rest/*</url-pattern> 
-		</servlet-mapping> -->
-
-<!--
-    <filter>
-        <filter-name>CORS</filter-name>
-        <filter-class>
-          org.eclipse.jetty.servlets.CrossOriginFilter
-        </filter-class>
-
-        <init-param>
-            <param-name>allowedOrigins</param-name>
-            <param-value>*</param-value>
-        </init-param>
-       <init-param>
-            <param-name>allowedMethods</param-name>
-            <param-value>GET,POST,DELETE,PUT,HEAD</param-value>
-        </init-param>
-        <init-param>
-            <param-name>allowedHeaders</param-name>
-            <param-value>
-               origin, content-type, accept, authorization, 
-                  x-requested-with
-            </param-value>
-        </init-param>
-        <init-param>
-            <param-name>supportsCredentials</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>CORS</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    -->
-<!-- anterior
-	<filter>
-		<filter-name>CORS</filter-name>
-		<filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
-		<init-param>
-			<param-name>allowedOrigins</param-name>
-			<param-value>*</param-value>
-		</init-param>
-		<init-param>
-			<param-name>allowedMethods</param-name>
-			<param-value>GET, POST, DELETE, PUT, PATCH, OPTIONS</param-value>
-		</init-param>
-		<init-param>
-			<param-name>allowedHeaders</param-name>
-			<param-value>origin, content-type, accept, authorization, x-requested-with </param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>CORS</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
-	<filter>
-		<filter-name>CORS Filter</filter-name>
-		<filter-class>org.epnoi.uia.security.CorsFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>CORS Filter</filter-name>
-		<servlet-name>AtmosphereServlet</servlet-name>
-	</filter-mapping>
--->
 
 
 

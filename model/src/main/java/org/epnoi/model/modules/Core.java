@@ -3,9 +3,6 @@ package org.epnoi.model.modules;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.parameterization.ParametersModel;
 
-import java.util.Collection;
-import java.util.List;
-
 public interface Core {
 
 

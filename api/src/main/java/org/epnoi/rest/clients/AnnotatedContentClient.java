@@ -1,12 +1,16 @@
 package org.epnoi.rest.clients;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 import gate.Document;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
+import org.glassfish.jersey.client.ClientConfig;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class AnnotatedContentClient {
 
@@ -20,17 +24,21 @@ public class AnnotatedContentClient {
 	}
 
 	private static Document _retrieveAnnotatedDocument(String uri) {
-		ClientConfig config = new DefaultClientConfig();
+		ClientConfig config = new ClientConfig();
 
-		Client client = Client.create(config);
+		Client client = ClientBuilder.newClient(config);
+		URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
+		WebTarget service = client.target(testServiceURI);
+
+
 		String knowledgeBasePath = "/uia/annotatedcontent";
 
-		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+
 
 			//		  http://en.wikipedia.org/wiki/Autism/first/object/gate
 		
 		String content = service.path(knowledgeBasePath).queryParam("uri", uri)
-				.queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
+				.queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).request().accept(javax.ws.rs.core.MediaType.APPLICATION_XML)
 				.get(String.class);
 
 	

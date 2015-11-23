@@ -2,17 +2,12 @@ package org.epnoi.uia.core;
 
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.*;
-import org.epnoi.model.parameterization.*;
+import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.uia.core.eventbus.EventBusFactory;
-import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 @Component
@@ -40,10 +35,11 @@ public class CoreImpl implements Core {
     @Autowired
     private KnowldedgeBaseHandler knowledgeBaseHandler;
 
-    @Autowired
+    @Autowired(required = false)
+    @Deprecated
     private InformationSourcesHandler informationSourcesHandler;
 
-    //  @Autowired
+    @Autowired (required = false)
     @Deprecated
     private HarvestersHandler harvestersHandler;
 

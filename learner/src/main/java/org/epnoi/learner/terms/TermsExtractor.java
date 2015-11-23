@@ -4,7 +4,7 @@ import gate.Annotation;
 import gate.Document;
 import org.epnoi.learner.DomainsGatherer;
 import org.epnoi.learner.DomainsTable;
-import org.epnoi.learner.OntologyLearningParameters;
+import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
@@ -41,14 +41,14 @@ public class TermsExtractor {
 	private final double domainConsensusWeight = 1 - cValueWeight
 			- domainPertinenceWeight;
 
-	OntologyLearningParameters parameters;
+	LearningParameters parameters;
 
 	private DomainsTable domainsTable;
 
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, DomainsTable domainsTable,
-			OntologyLearningParameters parameters) {
+			LearningParameters parameters) {
 		logger.info("Initializing the TermExtractor with the following parameters");
 		logger.info(parameters.toString());
 		this.core = core;
@@ -57,7 +57,7 @@ public class TermsExtractor {
 		this.domainsTable = domainsTable;
 
 		this.targetDomain = (String) parameters
-				.getParameterValue(OntologyLearningParameters.TARGET_DOMAIN);
+				.getParameterValue(LearningParameters.TARGET_DOMAIN);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -290,14 +290,14 @@ public class TermsExtractor {
 				/*
 				 * System.out .println("Labeling " + newTerm.getURI() + " as " +
 				 * this.parameters
-				 * .getParameterValue(OntologyLearningParameters.
+				 * .getParameterValue(LearningParameters.
 				 * TARGET_DOMAIN));
 				 */
 
 				/*
 				 * core.getAnnotationHandler() .label(newTerm.getURI(), (String)
 				 * this.parameters
-				 * .getParameterValue(OntologyLearningParameters.
+				 * .getParameterValue(LearningParameters.
 				 * TARGET_DOMAIN));
 				 */
 				core.getAnnotationHandler().label(newTerm.getUri(),
@@ -524,29 +524,29 @@ public class TermsExtractor {
 		Integer numberInitialTerms = 10;
 		String consideredResources = RDFHelper.PAPER_CLASS;
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_DOMAINS,
+		LearningParameters learningParameters = new LearningParameters();
+		learningParameters.setParameter(
+				LearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
-		ontologyLearningParameters
+		learningParameters.setParameter(
+				LearningParameters.TARGET_DOMAIN, targetDomain);
+		learningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymMinimumThreshold);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
+		learningParameters.setParameter(
+				LearningParameters.EXTRACT_TERMS, extractTerms);
+		learningParameters.setParameter(
+				LearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();
 		DomainsGatherer domainGatherer = new DomainsGatherer();
-		domainGatherer.init(core, ontologyLearningParameters);
+		domainGatherer.init(core, learningParameters);
 
 		DomainsTable domainsTable = domainGatherer.gather();
 
-		termExtractor.init(core, domainsTable, ontologyLearningParameters);
+		termExtractor.init(core, domainsTable, learningParameters);
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);

@@ -5,5 +5,7 @@ package org.epnoi.learner.modules;
  */
 public interface Trainer {
 
+void  createRelationalSentencesCorpus();
+void createRelationalPatternsModel();
 
 }

@@ -1,6 +1,6 @@
 package org.epnoi.learner.relations;
 
-import org.epnoi.learner.OntologyLearningParameters;
+import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.*;
@@ -264,30 +264,30 @@ public class RelationsHandler {
 				RelationsHandlerParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
-		OntologyLearningParameters ontologyLearningParameters = new OntologyLearningParameters();
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.CONSIDERED_DOMAINS,
+		LearningParameters learningParameters = new LearningParameters();
+		learningParameters.setParameter(
+				LearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.TARGET_DOMAIN, targetDomain);
-		ontologyLearningParameters
+		learningParameters.setParameter(
+				LearningParameters.TARGET_DOMAIN, targetDomain);
+		learningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+						LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
 
-		ontologyLearningParameters
+		learningParameters
 				.setParameter(
-						OntologyLearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+						LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
 						hyperymExpansionMinimumThreshold);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.EXTRACT_TERMS, extractTerms);
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.NUMBER_INITIAL_TERMS,
+		learningParameters.setParameter(
+				LearningParameters.EXTRACT_TERMS, extractTerms);
+		learningParameters.setParameter(
+				LearningParameters.NUMBER_INITIAL_TERMS,
 				numberInitialTerms);
 
-		ontologyLearningParameters.setParameter(
-				OntologyLearningParameters.HYPERNYM_MODEL_PATH,
+		learningParameters.setParameter(
+				LearningParameters.HYPERNYM_MODEL_PATH,
 				hypernymsModelPath);
 
 		RelationsHandler relationsHandler = new RelationsHandler();

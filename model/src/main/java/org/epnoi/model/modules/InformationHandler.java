@@ -5,7 +5,6 @@ import org.epnoi.model.Context;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Selector;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.parameterization.ParametersModel;
 
 import java.util.Collection;
 import java.util.List;

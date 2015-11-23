@@ -1,6 +1,5 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
 import io.swagger.annotations.*;
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Resource;
@@ -56,7 +55,7 @@ public class LabelsResource extends UIAService {
 			return Response.ok().entity(labels).build();
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -84,7 +83,7 @@ public class LabelsResource extends UIAService {
 
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 

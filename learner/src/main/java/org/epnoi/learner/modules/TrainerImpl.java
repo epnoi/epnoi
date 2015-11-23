@@ -1,8 +1,9 @@
 package org.epnoi.learner.modules;
 
 import org.epnoi.learner.LearnerConfig;
-import org.epnoi.learner.modules.Trainer;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentencesCorpusCreator;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,44 @@ public class TrainerImpl implements Trainer {
     @Autowired
     RelationalSentencesCorpusCreator relationalSentencesCorpusCreator;
 
+    //@Autowired
+    //@Qualifier("syntacticPatternsModelCreationParametersModel")
+    RelationalPatternsModelCreationParameters lexicalPatternsModelParameters;
+
     @PostConstruct
     public void init() throws EpnoiInitializationException {
         logger.info("Initializing the Trainer");
+    }
+
+    @Override
+    public void createRelationalSentencesCorpus() {
+        logger.info("Creating the relational sentences corpus");
+        try {
+            this.relationalSentencesCorpusCreator.createCorpus();
+        } catch (Exception e) {
+            logger.severe("There was a problem creating the relational sentences corpus");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createRelationalPatternsModel() {
+
+        RelationalPatternsModelCreator relationalPatternsModelCreator = new RelationalPatternsModelCreator();
+        try {
+            relationalPatternsModelCreator.init(core, lexicalPatternsModelParameters);
+        } catch (Exception e) {
+            logger.severe("There was a problem in the creation of the relational pattern model");
+            e.printStackTrace();
+
+        }
+    }
+
+    public RelationalSentencesCorpusCreator getRelationalSentencesCorpusCreationParamaters() {
+        return this.relationalSentencesCorpusCreator;
+    }
+
+    public RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters() {
+        return this.lexicalPatternsModelParameters;
     }
 }

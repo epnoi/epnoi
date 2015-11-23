@@ -59,7 +59,7 @@
         <!-- Project Dependencies -->
 
         <asm.version>5.0.4</asm.version>
-        <atmosphere.version>2.0.1</atmosphere.version>
+
         <camel.euia.version>1.0.0</camel.euia.version>
         <camel.oaipmh.version>1.0.5</camel.oaipmh.version>
         <camel.version>2.15.2</camel.version>
@@ -77,7 +77,7 @@
         <javatuples.version>1.2</javatuples.version>
         <javax.version>1.0</javax.version>
         <jaxb.version>2.2.11</jaxb.version>
-        <jersey.version>1.19</jersey.version>
+        <jersey.version>2.20</jersey.version>
         <jetty.plugin.version>9.3.4.RC1</jetty.plugin.version>
         <jetty.version>8.1.9.v20130131</jetty.version>
         <jena.version>2.10.1</jena.version>
@@ -293,6 +293,40 @@
                 <groupId>org.apache.mahout</groupId>
                 <artifactId>mahout-core</artifactId>
                 <version>${mahout.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-client</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-server</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-json</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.contribs</groupId>
+                        <artifactId>jersey-guice</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-grizzly2</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+                        <artifactId>jersey-test-framework-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+                        <artifactId>jersey-test-framework-grizzly2</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Message Broker Libraries -->
@@ -346,6 +380,7 @@
             </dependency>
 
             <!-- Networking Libraries -->
+
             <dependency>
                 <groupId>javax.annotation</groupId>
                 <artifactId>jsr250-api</artifactId>
@@ -360,22 +395,6 @@
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-core</artifactId>
                 <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.atmosphere</groupId>
-                <artifactId>atmosphere-runtime</artifactId>
-                <version>${atmosphere.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.atmosphere</groupId>
-                <artifactId>atmosphere-jersey</artifactId>
-                <version>${atmosphere.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.atmosphere</groupId>
-                <artifactId>atmosphere-jquery</artifactId>
-                <version>${atmosphere.version}</version>
-                <type>war</type>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -460,6 +479,40 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-core_2.10</artifactId>
                 <version>${spark.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-client</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-server</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-json</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.contribs</groupId>
+                        <artifactId>jersey-guice</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey</groupId>
+                        <artifactId>jersey-grizzly2</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+                        <artifactId>jersey-test-framework-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+                        <artifactId>jersey-test-framework-grizzly2</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Spring Libraries -->
@@ -576,20 +629,40 @@
 
             <!-- WS-REST Libraries -->
             <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-bundle</artifactId>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-spring3</artifactId>
+                <version>${jersey.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-web</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-server</artifactId>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-entity-filtering</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-json</artifactId>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jersey2-jaxrs</artifactId>
