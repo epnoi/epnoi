@@ -7,6 +7,7 @@ import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -25,8 +26,8 @@ public class TrainerImpl implements Trainer {
     @Autowired
     RelationalSentencesCorpusCreator relationalSentencesCorpusCreator;
 
-    //@Autowired
-    //@Qualifier("syntacticPatternsModelCreationParametersModel")
+    @Autowired
+    @Qualifier("syntacticPatternsModelCreationParametersModel")
     RelationalPatternsModelCreationParameters lexicalPatternsModelParameters;
 
     @PostConstruct

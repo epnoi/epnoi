@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 
 
 @Component
-@Path("/")
-public class LearnerResource {
-    private static final Logger logger = Logger.getLogger(LearnerResource.class
+@Path("/configuration")
+public class LearnerConfigurationResource {
+    private static final Logger logger = Logger.getLogger(LearnerConfigurationResource.class
             .getName());
     @Autowired
     private Learner learner;
