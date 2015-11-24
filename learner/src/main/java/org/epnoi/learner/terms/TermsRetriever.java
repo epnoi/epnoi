@@ -50,12 +50,35 @@ public class TermsRetriever {
 	// -----------------------------------------------------------------------------------
 
 	public TermsTable retrieve(Domain domain) {
+		String domainLabel = domain.getLabel();
+
+		TermsTable termsTable = getTermsTable(domainLabel);
+		return termsTable;
+	}
+
+	// -----------------------------------------------------------------------------------
+
+	public TermsTable retrieve(String domainUri) {
+		Domain domain = (Domain) core.getInformationHandler().get(domainUri,
+				RDFHelper.DOMAIN_CLASS);
+
+		if (domain != null) {
+
+			TermsTable termsTable = getTermsTable(domain.getLabel());
+			return termsTable;
+		}
+		return new TermsTable();
+	}
+
+	// -----------------------------------------------------------------------------------
+
+	private TermsTable getTermsTable(String domainLabel) {
 		TermsTable termsTable = new TermsTable();
 
 		// First we retrieve the URIs of the resources associated with the
 		// considered domain
 		List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
-				domain.getLabel(), RDFHelper.TERM_CLASS);
+				domainLabel, RDFHelper.TERM_CLASS);
 		// The terms are then retrieved and added to the Terms Table
 		for (String termURI : foundURIs) {
 			Term term = (Term) this.core.getInformationHandler().get(termURI,

@@ -12,9 +12,11 @@ import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 public class LearnerApplication extends ResourceConfig {
 
 
-    public LearnerApplication(){
+    public LearnerApplication() {
         register(RequestContextFilter.class);
+        register(LearnerResource.class);
         register(LearnerConfigurationResource.class);
+        register(TrainerResource.class);
         register(TrainerConfigurationResource.class);
         register(JacksonFeature.class);
     }

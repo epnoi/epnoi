@@ -22,8 +22,16 @@ public class RelationsRetriever {
 	// ------------------------------------------------------------------------------------------------------------
 
 	public RelationsTable retrieve(Domain domain) {
-		String URI = "";
+		String URI = domain.getUri()+"/relations";
 		return (RelationsTable) this.core.getInformationHandler().get(URI,
 				RDFHelper.RELATIONS_TABLE_CLASS);
 	}
+
+	public RelationsTable retrieve(String domainUri) {
+		String uri = domainUri+"/relations";
+		return (RelationsTable) this.core.getInformationHandler().get(uri,
+				RDFHelper.RELATIONS_TABLE_CLASS);
+	}
+
+
 }

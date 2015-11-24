@@ -28,7 +28,7 @@ public class TrainerConfigurationResource {
 
     @PostConstruct
     public void init() {
-        logger.info("Starting the TrainerResources");
+        logger.info("Starting the "+this.getClass());
     }
 
     @GET
