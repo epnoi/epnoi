@@ -11,6 +11,11 @@ jdk:
 os:
   - linux
 
+# whitelist
+branches:
+  only:
+    - develop
+
 #env:
 #  global:
 #    - JAVA_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
