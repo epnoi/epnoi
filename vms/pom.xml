@@ -19,7 +19,7 @@
             <version>${maven.assembly.plugin.version}</version>
             <configuration>
                 <descriptors>
-                    <descriptor>src/assembly/descriptor.xml</descriptor>
+                    <descriptor>src/main/assembly/descriptor.xml</descriptor>
                 </descriptors>
             </configuration>
             <executions>

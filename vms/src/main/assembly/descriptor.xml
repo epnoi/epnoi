@@ -8,7 +8,7 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>src/docker</directory>
+            <directory>src/main/docker</directory>
             <includes>
                 <include>*</include>
             </includes>

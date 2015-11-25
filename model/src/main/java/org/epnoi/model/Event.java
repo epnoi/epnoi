@@ -1,8 +1,11 @@
 package org.epnoi.model;
 
+import lombok.Data;
+
 import java.io.*;
 import java.net.URI;
 
+@Data
 public class Event {
 
     private byte[] bytes;
@@ -10,9 +13,8 @@ public class Event {
 	private Event() {
 	}
 
-    public Event setBytes(byte[] bytes){
+    private Event(byte[] bytes){
         this.bytes = bytes;
-        return this;
     }
 
     public String toString(){
@@ -23,63 +25,33 @@ public class Event {
         }
     }
 
-    public byte[] toBytes(){
-        return bytes;
-    }
-
-    public URI toURI(){
-        return (URI) toObject();
-    }
-
-    public Object toObject(){
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        ObjectInput in = null;
+    public static <T> Event from( T resource ){
         try {
-            in = new ObjectInputStream(bis);
-            return in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-           throw new RuntimeException(e);
-        }
-    }
-
-    public static class Builder{
-
-        private final Event event;
-
-        public Builder(){
-            this.event = new Event();
-        }
-
-        public Event fromBytes(byte[] bytes){
-            return event.setBytes(bytes);
-        }
-
-        public Event fromString(String text){
-            try {
-                return this.event.setBytes(text.getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                return this.event.setBytes(text.getBytes());
+            if (resource instanceof String){
+                return new Event(((String) resource).getBytes());
+            } else if (resource instanceof byte[]){
+                return new Event((byte[])resource);
             }
-        }
-
-        public Event fromURI(URI uri){
-            return fromObject(uri);
-        }
-
-
-        public Event fromObject(Object uri){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            try {
-                ObjectOutput out = new ObjectOutputStream(bos);
-                out.writeObject(uri);
-                return this.event.setBytes(bos.toByteArray());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ObjectOutput out = new ObjectOutputStream(bos);
+            out.writeObject(resource);
+            return new Event(bos.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-
     }
 
-
+    public <T> T to(Class<T> classType){
+        try {
+            if (classType.equals(String.class)){
+               return (T) toString();
+            }
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+            ObjectInput in = new ObjectInputStream(bis);
+            Object data = in.readObject();
+            return (T) data;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

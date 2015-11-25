@@ -144,7 +144,7 @@ public class RabbitMQClient {
 
                 logger.fine(" Received message: [" + body + "] in routingKey: '" + routingKey +"'");
 
-                subscriber.onEvent(new Event.Builder().fromBytes(body));
+                subscriber.onEvent(Event.from(body));
 
                 //TODO Avoid Auto ACK. Handle manual ACK
                 //channel.basicAck(deliveryTag, false);

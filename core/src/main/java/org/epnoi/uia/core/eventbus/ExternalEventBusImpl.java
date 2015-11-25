@@ -63,7 +63,7 @@ public class ExternalEventBusImpl implements EventBus {
             }
 
             logger.fine("publisher: " + publisher + "publishing the event: " + event);
-            this.client.publish(channels.get(publisher),API_EXCHANGE,publisher.topic(),event.toBytes());
+            this.client.publish(channels.get(publisher),API_EXCHANGE,publisher.topic(),event.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

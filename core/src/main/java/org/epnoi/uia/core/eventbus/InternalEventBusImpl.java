@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class InternalEventBusImpl implements EventBus {
 
 	private static final Logger logger = Logger.getLogger(InternalEventBusImpl.class.getName());
+
 	private AsyncEventBus bus = null;
 	private DeadEventsSubscriber deadEventsSubscriber = new DeadEventsSubscriber();
 
@@ -47,7 +48,7 @@ public class InternalEventBusImpl implements EventBus {
 	 */
 	@Override
 	public void publish(EventBusPublisher publisher, Event event) {
-		logger.info("The publisher " + publisher + " publis " + event);
+		logger.info("Publisher: '" + publisher + "' publishing:[" + event +"]");
 		this.bus.post(event);
 	}
 
@@ -64,9 +65,8 @@ public class InternalEventBusImpl implements EventBus {
 		@AllowConcurrentEvents
 		@Subscribe
 		public void handleDeadEvent(DeadEvent deadEvent) {
-			System.out.println("dead event handling!!!!! ------> "
-					+ deadEvent.getEvent());
-
+			logger.warning("Dead event handling of:[" + deadEvent.getEvent() + "]");
+			//TODO Implement logic for unrouted messages
 		}
 	}
 

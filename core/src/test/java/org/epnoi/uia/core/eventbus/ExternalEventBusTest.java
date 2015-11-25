@@ -25,7 +25,7 @@ public class ExternalEventBusTest {
 
     @Before
     public void setup() throws IOException {
-        this.eventBus = new ExternalEventBusImpl("amqp://guest:guest@eventBus:5672/drinventor");
+        this.eventBus = new ExternalEventBusImpl("amqp://guest:guest@192.168.99.100:5672/drinventor");
         this.eventBus.init();
     }
 
@@ -53,7 +53,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("New event received: " + event);
+                System.out.println("New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -63,7 +63,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test1.source.new";
             }
-        }, new Event.Builder().fromString("test-message"));
+        }, Event.from("test-message"));
 
         Thread.sleep(500);
 
@@ -89,7 +89,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("[1] New event received: " + event);
+                System.out.println("[1] New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -107,7 +107,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("[2] New event received: " + event);
+                System.out.println("[2] New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -117,7 +117,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test2.source.new";
             }
-        }, new Event.Builder().fromString("test-message"));
+        }, Event.from("test-message"));
 
         Thread.sleep(500);
 
@@ -142,7 +142,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("[1] New event received: " + event.toString());
+                System.out.println("[1] New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -160,7 +160,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println("[2] New event received: " + event);
+                System.out.println("[2] New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -170,7 +170,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test3.source.new";
             }
-        }, new Event.Builder().fromString("test-message"));
+        }, Event.from("test-message"));
 
         Thread.sleep(500);
 
@@ -188,7 +188,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return "test4.source.new";
             }
-        }, new Event.Builder().fromString("test-message"));
+        }, Event.from("test-message"));
 
         Thread.sleep(500);
 
@@ -206,7 +206,7 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-                System.out.println(" New event received: " + event);
+                System.out.println(" New event received: " + event.to(String.class));
                 received.incrementAndGet();
             }
         });
@@ -231,7 +231,7 @@ public class ExternalEventBusTest {
             public String topic() {
                 return topic;
             }
-        }, new Event.Builder().fromURI(URI.create(uri)));
+        }, Event.from(URI.create(uri)));
 
         Thread.sleep(500);
 
@@ -249,9 +249,9 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-
-                System.out.println(" New event received: " + event);
-                Assert.assertEquals(URI.create(uri),event.toURI());
+                URI eventURI = event.to(URI.class);
+                System.out.println(" New event received: " + eventURI);
+                Assert.assertEquals(URI.create(uri),eventURI);
 
                 received.incrementAndGet();
             }
@@ -267,14 +267,14 @@ public class ExternalEventBusTest {
 
         final AtomicInteger received = new AtomicInteger(0);
 
-        final String topic  = "test5.source.new";
+        final String topic  = "test6.source.new";
 
         this.eventBus.publish(new EventBusPublisher() {
             @Override
             public String topic() {
                 return topic;
             }
-        }, new Event.Builder().fromObject(new Double("23.30")));
+        }, Event.from(new Double("23.30")));
 
         Thread.sleep(500);
 
@@ -292,9 +292,9 @@ public class ExternalEventBusTest {
 
             @Override
             public void onEvent(Event event) {
-
-                System.out.println(" New event received: " + event);
-                Assert.assertEquals(new Double("23.30"),(Double) event.toObject());
+                Double eventDouble = event.to(Double.class);
+                System.out.println(" New event received: " + eventDouble);
+                Assert.assertEquals(new Double("23.30"),eventDouble);
 
                 received.incrementAndGet();
             }
