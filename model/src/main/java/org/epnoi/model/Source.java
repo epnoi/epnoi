@@ -7,4 +7,6 @@ public class Source implements Resource {
 
 	private String uri;
 
+	private String url;
+
 }
