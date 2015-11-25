@@ -41,7 +41,7 @@ public class TrainerConfigurationResource {
     public Response getConfiguration() {
         Map<String, Object> trainerConfiguration = new HashMap<String, Object>();
         trainerConfiguration.put("relationalPatternsModelCreationParameters", learner.getTrainer().getRelationalPatternsModelCreationParameters());
-        trainerConfiguration.put("relationalSentencesCorpusCreationParamaters", learner.getTrainer().getRelationalSentencesCorpusCreationParamaters());
+        trainerConfiguration.put("relationalSentencesCorpusCreationParameters", learner.getTrainer().getRelationalSentencesCorpusCreationParameters());
         return Response.status(Response.Status.OK).entity(trainerConfiguration).build();
     }
 }

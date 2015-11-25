@@ -1,14 +1,13 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.WikipediaPage;
-import org.glassfish.jersey.client.ClientConfig;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
@@ -62,14 +61,14 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
 	private WikipediaPage _retrieveWikipediaPage(String wikipediaPageURI) {
 		String wikipediaPagePath = "/uia/resources/bytype/wikipediapages/resource";
 
-		ClientConfig config = new ClientConfig();
+		ClientConfig config = new DefaultClientConfig();
 
-		Client client = ClientBuilder.newClient(config);
+		Client client = Client.create(config);
 		URI serviceURI = UriBuilder.fromUri((String) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH)).build();
-		WebTarget service = client.target(serviceURI);
+		WebResource service = client.resource(serviceURI);
 
-		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI).request()
-				.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
+		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
+				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
 		
 		return retrievedWikipediaPage;
 	}

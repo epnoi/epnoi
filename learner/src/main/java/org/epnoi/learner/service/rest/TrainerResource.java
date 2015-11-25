@@ -46,7 +46,7 @@ public class TrainerResource {
     public Response getConfiguration() {
         Map<String, Object> trainerConfiguration = new HashMap<String, Object>();
         trainerConfiguration.put("relationalPatternsModelCreationParameters", learner.getTrainer().getRelationalPatternsModelCreationParameters());
-        trainerConfiguration.put("relationalSentencesCorpusCreationParamaters", learner.getTrainer().getRelationalSentencesCorpusCreationParamaters());
+        trainerConfiguration.put("relationalSentencesCorpusCreationParamaters", learner.getTrainer().getRelationalSentencesCorpusCreationParameters());
         return Response.status(Response.Status.OK).entity(trainerConfiguration).build();
     }
 
@@ -61,7 +61,7 @@ public class TrainerResource {
         learner.getTrainer().createRelationalSentencesCorpus();
 
         URI uri =
-                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParamaters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
         return Response.created(uri).build();
     }
 
@@ -78,7 +78,7 @@ public class TrainerResource {
         learner.getTrainer().createRelationalPatternsModel();
 
         URI uri =
-                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParamaters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
         return Response.created(uri).build();
     }
 }

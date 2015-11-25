@@ -2,15 +2,17 @@ package org.epnoi.learner.relations.corpus.parallel;
 
 
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import gate.Annotation;
 import gate.AnnotationSet;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.glassfish.jersey.client.ClientConfig;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.*;
@@ -89,49 +91,45 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveHypernyms(Set<String> terms) {
-        ClientConfig config = new ClientConfig();
+        ClientConfig config = new DefaultClientConfig();
 
-        Client client = ClientBuilder.newClient(config);
+        Client client = Client.create(config);
         String knowledgeBasePath = "/uia/knowledgebase";
 
         URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
-        WebTarget service = client.target(testServiceURI);
+        WebResource service = client.resource(testServiceURI);
 
 
-
-        ArrayList<String> params = new ArrayList<>();
-        //params.add("source");
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         for (String term : terms) {
-            params.add(term);
+            queryParams.add("source", term);
         }
 
         Map<String, List<String>> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
-                .queryParam("source",params.toArray()).request().accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
+                .queryParams(queryParams).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
         return hypernyms;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveStems(Set<String> terms) {
-        ClientConfig config = new ClientConfig();
+        ClientConfig config = new DefaultClientConfig();
 
-        Client client = ClientBuilder.newClient(config);
+        Client client = Client.create(config);
         String knowledgeBasePath = "/uia/knowledgebase";
 
 
         URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
-        WebTarget service = client.target(testServiceURI);
+        WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
-        ArrayList<String> params = new ArrayList<>();
-        //params.add("source");
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         for (String term : terms) {
-            params.add(term);
+            queryParams.add("term", term);
         }
 
 
-
-        Map<String, List<String>> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParam("term",params.toArray()).request()
-                .accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
+        Map<String, List<String>> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParams(queryParams)
+                .type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
         Map<String, Set<String>> stemsMap = new HashMap<>();
 
         return stemmedForms;

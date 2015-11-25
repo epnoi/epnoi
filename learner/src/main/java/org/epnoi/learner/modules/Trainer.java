@@ -13,7 +13,7 @@ public interface Trainer {
 
     void createRelationalPatternsModel();
 
-   RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParamaters() ;
+   RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParameters() ;
 
    RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters();
 }

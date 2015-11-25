@@ -1,6 +1,7 @@
 package org.epnoi.learner.modules;
 
 import org.epnoi.learner.LearnerConfig;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
@@ -24,15 +25,20 @@ public class TrainerImpl implements Trainer {
     private Core core;
 
     @Autowired
-    RelationalSentencesCorpusCreator relationalSentencesCorpusCreator;
+    RelationalSentencesCorpusCreationParameters relationalSentencesCorpusCreatorParameters;
 
     @Autowired
-    @Qualifier("syntacticPatternsModelCreationParametersModel")
+    @Qualifier("lexicalPatternsModelCreationParameters")
     RelationalPatternsModelCreationParameters lexicalPatternsModelParameters;
+
+    @Autowired
+    RelationalSentencesCorpusCreator relationalSentencesCorpusCreator;
+
 
     @PostConstruct
     public void init() throws EpnoiInitializationException {
         logger.info("Initializing the Trainer");
+
     }
 
     @Override
@@ -58,9 +64,9 @@ public class TrainerImpl implements Trainer {
 
         }
     }
-
-    public RelationalSentencesCorpusCreator getRelationalSentencesCorpusCreationParamaters() {
-        return this.relationalSentencesCorpusCreator;
+@Override
+    public RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParameters() {
+        return this.relationalSentencesCorpusCreatorParameters;
     }
 
     public RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters() {

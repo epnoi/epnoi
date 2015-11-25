@@ -76,7 +76,7 @@ public class LearnerImpl implements Learner {
     @Override
     public RelationsTable retrieveRelations(String domainUri) {
         RelationsRetriever relationsRetriever = new RelationsRetriever(core);
-        relationsRetriever.retrieve(domainUri);
+        return relationsRetriever.retrieve(domainUri);
     }
 
     @Override

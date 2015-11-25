@@ -1,22 +1,8 @@
 package org.epnoi.rest.clients;
 
 
-
-import org.apache.lucene.index.Terms;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Relation;
-import org.epnoi.model.ResearchObject;
-import org.glassfish.jersey.client.ClientConfig;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DemoClient {
 

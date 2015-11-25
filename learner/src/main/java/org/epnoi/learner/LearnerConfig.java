@@ -25,7 +25,7 @@ public class LearnerConfig {
 
     @Bean
     @Profile(DEVELOP_PROFILE)
-    public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParametersModel() {
+    public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
@@ -56,7 +56,7 @@ public class LearnerConfig {
 
     @Bean
     @Profile(DEVELOP_PROFILE)
-    public RelationalPatternsModelCreationParameters lexicalRelationalPatternsModelCreationParametersModel() {
+    public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(

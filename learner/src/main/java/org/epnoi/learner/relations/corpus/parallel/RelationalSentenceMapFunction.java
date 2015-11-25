@@ -1,16 +1,20 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 import gate.corpora.DocumentImpl;
 import org.apache.spark.api.java.function.Function;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
-import org.glassfish.jersey.client.ClientConfig;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.jws.WebService;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+
 
 @Deprecated
 public class RelationalSentenceMapFunction
@@ -54,17 +58,18 @@ public class RelationalSentenceMapFunction
 
     private String _annotate(String sentence) {
 
-        ClientConfig config = new ClientConfig();
+        ClientConfig config = new DefaultClientConfig();
 
-        Client client = ClientBuilder.newClient(config);
+        Client client = Client.create(config);
         String basePath = "/uia/nlp/process";
+        URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
 
-        WebTarget service = client.target("http://localhost:8080/epnoi/rest");
+        WebResource service = client.resource(testServiceURI);
 
         // http://en.wikipedia.org/wiki/Autism/first/object/gate
 
-        String content = service.path(basePath).queryParam("content", sentence).request()
-                .accept(javax.ws.rs.core.MediaType.APPLICATION_XML).get(String.class);
+        String content = service.path(basePath).queryParam("content", sentence).
+                type(javax.ws.rs.core.MediaType.APPLICATION_XML).get(String.class);
 //System.out.println("-----> "+content);
         return content;
     }
