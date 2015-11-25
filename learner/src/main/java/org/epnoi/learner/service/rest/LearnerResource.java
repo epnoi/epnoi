@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ public class LearnerResource {
 
 
         if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
-            Collection<Relation> relations = learner.retrieveRelations(uri).getRelations();
+            List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
 
             return Response.status(Response.Status.OK).entity(relations).build();
         }
@@ -81,7 +82,7 @@ public class LearnerResource {
             @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
 
         if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
-            Collection<Term> terms = learner.retrieveTerminology(uri).getTerms();
+            List<Term> terms = new ArrayList<>(learner.retrieveTerminology(uri).getTerms());
 
             return Response.status(Response.Status.OK).entity(terms).build();
         }
