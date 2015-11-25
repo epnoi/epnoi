@@ -36,7 +36,7 @@ public class RelationsTable implements Resource {
 		List<Relation> relations = new ArrayList<>();
 		for (Relation relationFromSource : this.relationsBySource
 				.get(sourceURI)) {
-			if (relationFromSource.getRelationhood() >= expansionProbabilityThreshold) {
+			if (relationFromSource.calculateRelationhood() >= expansionProbabilityThreshold) {
 				relations.add(relationFromSource);
 			}
 		}
@@ -59,7 +59,7 @@ public class RelationsTable implements Resource {
 		for (Relation relationFromSource : this.relationsBySource
 				.get(sourceURI)) {
 			if (type.equals(relationFromSource.getType())
-					&& relationFromSource.getRelationhood() >= expansionProbabilityThreshold) {
+					&& relationFromSource.calculateRelationhood() >= expansionProbabilityThreshold) {
 				relations.add(relationFromSource);
 			}
 		}
@@ -93,7 +93,7 @@ public class RelationsTable implements Resource {
 
 		@Override
 		public int compare(Relation relationA, Relation relationB) {
-			if (relationA.getRelationhood() < relationB.getRelationhood()) {
+			if (relationA.calculateRelationhood() < relationB.calculateRelationhood()) {
 				return 1;
 			} else {
 				return -1;

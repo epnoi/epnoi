@@ -21,16 +21,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 
 @Component
-@Path("/")
+@Path("/domain")
 public class LearnerResource {
     private static final Logger logger = Logger.getLogger(LearnerResource.class
             .getName());
@@ -49,7 +51,7 @@ public class LearnerResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("terminology")
+    @Path("/relations")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The relations  found in the domain has been successfully retrieved"),
             @ApiResponse(code = 500, message = "Something went wrong in the UIA"),
@@ -59,10 +61,19 @@ public class LearnerResource {
             @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
 
 
-        if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
-            List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
+      //if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
+            //List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
+        if(true){
+            Relation relation = new Relation();
+            relation.setUri("http://whateverrelation");
+            relation.setSource("source");
+            relation.setTarget("target");
+            relation.addProvenanceSentence("esta es la frase", 0.2);
 
-            return Response.status(Response.Status.OK).entity(relations).build();
+            List<Relation> relations = Arrays.asList(relation);
+            GenericEntity<List<Relation>> entity = new GenericEntity<List<Relation>>(relations) {
+            };
+            return Response.status(Response.Status.OK).entity(entity).build();
         }
 
 
@@ -72,7 +83,7 @@ public class LearnerResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("relations")
+    @Path("/terms")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The relations  found in the domain has been successfully retrieved"),
             @ApiResponse(code = 500, message = "Something went wrong in the UIA"),

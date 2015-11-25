@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.epnoi.learner.modules.Learner;
+import org.epnoi.model.Relation;
+import org.epnoi.model.commons.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -39,9 +43,13 @@ public class TrainerConfigurationResource {
             @ApiResponse(code = 500, message = "Something went wrong in the learner")})
     @ApiOperation(value = "Returns the training configuration of the trainer module of the learner", notes = "", response = Map.class)
     public Response getConfiguration() {
-        Map<String, Object> trainerConfiguration = new HashMap<String, Object>();
+        Map<String, Parameters> trainerConfiguration = new HashMap<>();
         trainerConfiguration.put("relationalPatternsModelCreationParameters", learner.getTrainer().getRelationalPatternsModelCreationParameters());
         trainerConfiguration.put("relationalSentencesCorpusCreationParameters", learner.getTrainer().getRelationalSentencesCorpusCreationParameters());
-        return Response.status(Response.Status.OK).entity(trainerConfiguration).build();
+        GenericEntity<Map<String, Parameters>> entity = new GenericEntity<Map<String,Parameters>>(trainerConfiguration) {
+        };
+
+
+        return Response.status(Response.Status.OK).entity(entity).build();
     }
 }

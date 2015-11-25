@@ -1,5 +1,6 @@
 package org.epnoi.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.epnoi.model.commons.StringUtils;
 
 import java.util.Collection;
@@ -74,7 +75,7 @@ public class Relation implements Resource {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	public double getRelationhood() {
+	public double calculateRelationhood() {
 
 		return calculateAverage(this.provenanceRelationhoodTable.values());
 	}

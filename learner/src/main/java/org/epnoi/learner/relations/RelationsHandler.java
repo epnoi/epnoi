@@ -208,7 +208,7 @@ public class RelationsHandler {
 					Relation relation = relationsIt.next();
 
 					if (relation.getTarget().equals(targetTerm.getUri())) {
-						existenceProbability = relation.getRelationhood();
+						existenceProbability = relation.calculateRelationhood();
 					}
 
 				}
