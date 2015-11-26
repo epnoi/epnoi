@@ -30,6 +30,7 @@
             <version>${project.version}</version>
             <classifier>lib</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.epnoi</groupId>
             <artifactId>epnoi-harvester</artifactId>

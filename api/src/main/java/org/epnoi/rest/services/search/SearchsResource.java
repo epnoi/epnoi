@@ -1,9 +1,10 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.search;
 
 import io.swagger.annotations.*;
 import org.epnoi.model.search.SearchContext;
 import org.epnoi.model.search.SearchResult;
 import org.epnoi.model.search.SelectExpression;
+import org.epnoi.rest.services.UIAService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;

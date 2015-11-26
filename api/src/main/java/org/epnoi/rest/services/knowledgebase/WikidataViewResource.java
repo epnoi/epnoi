@@ -1,4 +1,4 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.knowledgebase;
 
 
 import io.swagger.annotations.*;
@@ -9,6 +9,7 @@ import org.epnoi.model.RelationHelper;
 import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.rest.services.UIAService;
 import org.epnoi.rest.services.response.WikidataViewSummary;
 
 import javax.annotation.PostConstruct;

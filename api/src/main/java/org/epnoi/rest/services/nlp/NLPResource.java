@@ -1,12 +1,12 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.nlp;
 
 import gate.Document;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.model.Resource;
+import org.epnoi.rest.services.UIAService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -29,7 +29,7 @@ public class NLPResource extends UIAService {
 
 	@Context
 	ServletContext context;
-	RelationsHandler relationsHandler = null;
+
 	private static Map<String, String> resourceTypesTable = new HashMap<String, String>();
 	private static Set<String> validRelationTypes = new HashSet<String>();
 

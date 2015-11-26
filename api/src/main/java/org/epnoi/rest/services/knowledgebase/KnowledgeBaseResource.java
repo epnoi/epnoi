@@ -1,10 +1,10 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.knowledgebase;
 
 
 import io.swagger.annotations.*;
-import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.Resource;
+import org.epnoi.rest.services.UIAService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -25,7 +25,7 @@ public class KnowledgeBaseResource extends UIAService {
 
     @Context
     ServletContext context;
-    RelationsHandler relationsHandler = null;
+   // RelationsHandler relationsHandler = null;
     private static Map<String, String> resourceTypesTable = new HashMap<String, String>();
     private static Set<String> validRelationTypes = new HashSet<String>();
 

@@ -9,8 +9,6 @@ import gate.Document;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 
-
-
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 

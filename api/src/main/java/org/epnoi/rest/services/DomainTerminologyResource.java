@@ -2,11 +2,9 @@ package org.epnoi.rest.services;
 
 
 import io.swagger.annotations.*;
-import org.epnoi.learner.OntologyLearningTask;
-import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;
-import org.epnoi.model.Term;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.rest.services.uia.DomainResource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -17,9 +15,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.logging.Logger;
-
+@Deprecated
 @Path("/uia/domains/domain/terms")
 @Api(value = "/uia/domains/domain/terms", description = "Operations for handling a domain terms")
 public class DomainTerminologyResource extends UIAService {
@@ -51,7 +48,7 @@ public class DomainTerminologyResource extends UIAService {
 
 		Domain domain = (Domain) core.getInformationHandler().get(uri,
 				RDFHelper.DOMAIN_CLASS);
-
+/*
 		if (domain != null) {
 			OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
 			ontologyLearningTask.perform(core, domain);
@@ -63,6 +60,7 @@ public class DomainTerminologyResource extends UIAService {
 						.build();
 			}
 		}
+		*/
 		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}

@@ -1,10 +1,11 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.uia;
 
 
 import io.swagger.annotations.*;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.rest.services.UIAService;
 import org.epnoi.rest.services.response.jsonld.JSONLDResearchObjectResponseBuilder;
 import org.epnoi.rest.services.response.jsonld.JSONLDResponse;
 

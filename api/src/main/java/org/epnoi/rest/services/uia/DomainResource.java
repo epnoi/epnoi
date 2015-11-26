@@ -1,14 +1,12 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.uia;
 
 
 import io.swagger.annotations.*;
-import org.epnoi.learner.OntologyLearningTask;
-import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
-import org.epnoi.model.Term;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.rest.services.UIAService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -19,7 +17,6 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -118,7 +115,7 @@ public class DomainResource extends UIAService {
 	}
 
 	// -----------------------------------------------------------------------------------------
-
+/*MOVED OUT FROM THE API
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/terms")
@@ -150,7 +147,7 @@ public class DomainResource extends UIAService {
 		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
-
+*/
 	// -----------------------------------------------------------------------------------------
 
 	@POST

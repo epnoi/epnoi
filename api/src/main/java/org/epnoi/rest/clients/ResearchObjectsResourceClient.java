@@ -1,10 +1,6 @@
 package org.epnoi.rest.clients;
 
 
-
-import org.epnoi.model.ResearchObject;
-import org.epnoi.model.rdf.DublinCoreRDFHelper;
-
 public class ResearchObjectsResourceClient {
 
 	public static void main(String[] args) {

@@ -1,13 +1,6 @@
 package org.epnoi.rest.clients;
 
 
-
-import org.epnoi.model.Annotation;
-import org.epnoi.model.ResearchObject;
-import org.epnoi.model.rdf.DublinCoreRDFHelper;
-
-import java.util.ArrayList;
-
 public class AnnotationsResourceClient {
 
 	public static void main(String[] args) {

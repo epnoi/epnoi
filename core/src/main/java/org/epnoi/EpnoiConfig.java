@@ -56,7 +56,6 @@ public class EpnoiConfig {
 
             logger.info("The deployment path set in the configurable environment is set to " + deployPath);
 
-
             parametersModel = ParametersModelReader.read(deployPath);
 
 

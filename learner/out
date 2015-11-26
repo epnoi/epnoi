@@ -1,0 +1,74 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building epnoi learner 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> jetty-maven-plugin:9.3.4.RC1:run (default-cli) > test-compile @ epnoi-learner >>>
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-model/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-model/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-nlp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-nlp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-storage/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-storage/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-sources/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-sources/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-knowledgebase/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-knowledgebase/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/epnoi/epnoi-wrappers/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/epnoi/epnoi-wrappers/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: https://raw.github.com/epnoi/external-libs/mvn-repo/org/springframework/spring-aop/maven-metadata.xml
+Downloading: https://raw.github.com/cbadenes/test-utils/mvn-repo/org/springframework/spring-aop/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-resources-plugin:2.3:resources (default-resources) @ epnoi-learner ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.3:compile (default-compile) @ epnoi-learner ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.3:testResources (default-testResources) @ epnoi-learner ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /opt/epnoi/epnoi/learner/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.3:testCompile (default-testCompile) @ epnoi-learner ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty-maven-plugin:9.3.4.RC1:run (default-cli) < test-compile @ epnoi-learner <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:9.3.4.RC1:run (default-cli) @ epnoi-learner ---
+[INFO] Logging initialized @20539ms
+[INFO] Configuring Jetty for project: epnoi learner
+[INFO] webAppSourceDirectory not set. Trying src/main/webapp
+[INFO] Reload Mechanic: automatic
+[INFO] Classes = /opt/epnoi/epnoi/learner/target/classes
+[INFO] Context path = /learner
+[INFO] Tmp directory = /opt/epnoi/epnoi/learner/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///opt/epnoi/epnoi/learner/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /opt/epnoi/epnoi/learner/src/main/webapp
+[INFO] jetty-9.3.4.RC1
+[INFO] Spring WebApplicationInitializers detected on classpath: [org.springframework.boot.autoconfigure.jersey.JerseyAutoConfiguration@679dd234]
+[INFO] Initializing Spring root WebApplicationContext
+----> /opt/epnoi/epnoi/core/src/main/resources/CoreUtility.xml
+parameters> RelationalPatternsModelCreationParameters [{MAX_PATTERN_LENGTH_PARAMETER=20, STORE_PARAMETER=false, RELATIONAL_SENTENCES_CORPUS_URI=http://drInventor.eu/reviews/second/relationalSentencesCorpus, VERBOSE_PARAMETER=true, TYPE_PARAMETER=SYNTACTIC, MODEL_PATH_PARAMETER=/opt/epnoi/epnoideployment/secondReviewResources/syntacticModel/model.bin, TEST_PARAMETER=true}]
+[INFO] Started o.e.j.m.p.JettyWebAppContext@4012d5bc{/learner,file:///opt/epnoi/epnoi/learner/src/main/webapp/,AVAILABLE}{file:///opt/epnoi/epnoi/learner/src/main/webapp/}
+[INFO] Started ServerConnector@5183131d{HTTP/1.1,[http/1.1]}{0.0.0.0:8082}
+[INFO] Started @46060ms
+[INFO] Started Jetty Server
+[INFO] Stopped ServerConnector@5183131d{HTTP/1.1,[http/1.1]}{0.0.0.0:8082}
+[INFO] Closing Spring root WebApplicationContext
+[INFO] Stopped o.e.j.m.p.JettyWebAppContext@4012d5bc{/learner,file:///opt/epnoi/epnoi/learner/src/main/webapp/,UNAVAILABLE}{file:///opt/epnoi/epnoi/learner/src/main/webapp/}
+[INFO] Jetty server exiting.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:03 min
+[INFO] Finished at: 2015-11-26T19:46:29+01:00
+[INFO] Final Memory: 132M/5407M
+[INFO] ------------------------------------------------------------------------

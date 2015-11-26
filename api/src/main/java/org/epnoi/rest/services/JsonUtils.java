@@ -1,7 +1,7 @@
 package org.epnoi.rest.services;
 
 import org.codehaus.jackson.map.ObjectMapper;
-
+@Deprecated
 public class JsonUtils {
 
 	private static final ObjectMapper jsonMapper = new ObjectMapper();

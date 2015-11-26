@@ -1,10 +1,11 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.uia;
 
 
 import gate.Document;
 import io.swagger.annotations.*;
 import org.epnoi.model.Content;
 import org.epnoi.model.Selector;
+import org.epnoi.rest.services.UIAService;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import javax.annotation.PostConstruct;

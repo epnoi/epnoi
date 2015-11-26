@@ -1,4 +1,4 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.uia;
 
 
 import io.swagger.annotations.Api;
@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.epnoi.harvester.demo.DemoDataLoader;
 import org.epnoi.model.modules.InformationStore;
+import org.epnoi.rest.services.UIAService;
 import org.epnoi.rest.services.response.UIA;
 
 import javax.annotation.PostConstruct;

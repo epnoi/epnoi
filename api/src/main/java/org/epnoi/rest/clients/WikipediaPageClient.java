@@ -5,6 +5,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.epnoi.model.WikipediaPage;
+
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 

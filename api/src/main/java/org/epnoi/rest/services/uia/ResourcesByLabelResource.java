@@ -1,8 +1,9 @@
-package org.epnoi.rest.services;
+package org.epnoi.rest.services.uia;
 
 
 import io.swagger.annotations.*;
 import org.epnoi.model.Resource;
+import org.epnoi.rest.services.UIAService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
