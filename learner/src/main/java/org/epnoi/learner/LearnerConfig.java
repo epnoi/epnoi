@@ -4,8 +4,6 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.RelationHelper;
-import org.epnoi.model.modules.Core;
-import org.epnoi.uia.core.CoreUtility;
 import org.springframework.context.annotation.*;
 
 import java.util.logging.Logger;
@@ -25,9 +23,9 @@ public class LearnerConfig {
     public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
 
-    @Bean()
+    @Bean
     @Profile(DEVELOP_PROFILE)
-    public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParametersModel() {
+    public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
@@ -56,9 +54,9 @@ public class LearnerConfig {
         return parameters;
     }
 
-    @Bean()
+    @Bean
     @Profile(DEVELOP_PROFILE)
-    public RelationalPatternsModelCreationParameters lexicalRelationalPatternsModelCreationParametersModel() {
+    public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
@@ -87,9 +85,9 @@ public class LearnerConfig {
     }
 
 
-    @Bean()
+    @Bean
     @Profile(DEVELOP_PROFILE)
-    public RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusParameters() {
+    public RelationalSentencesCorpusCreationParameters relationalSentencesCorpusParameters() {
         logger.info("Starting the Relation Sentences Corpus Creator");
 
 
@@ -117,5 +115,40 @@ public class LearnerConfig {
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 
         return parameters;
+    }
+
+    @Bean
+    @Profile(DEVELOP_PROFILE)
+    public LearningParameters learningParameters() {
+        LearningParameters learningParameters = new LearningParameters();
+/*
+    learningParameters.setParameter(
+            LearningParameters.CONSIDERED_DOMAINS,
+            consideredDomains);
+
+    learningParameters.setParameter(
+            LearningParameters.TARGET_DOMAIN, targetDomain);
+    learningParameters
+            .setParameter(
+                    LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,
+                    hyperymExpansionMinimumThreshold);
+
+    learningParameters
+            .setParameter(
+                    LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD,
+                    hypernymExtractionMinimumThresohold);
+    learningParameters.setParameter(
+            LearningParameters.EXTRACT_TERMS, extractTerms);
+    learningParameters.setParameter(
+            LearningParameters.NUMBER_INITIAL_TERMS,
+            numberInitialTerms);
+
+    learningParameters.setParameter(
+            LearningParameters.HYPERNYM_MODEL_PATH,
+            hypernymsModelPath);
+            */
+    learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
+
+        return learningParameters;
     }
 }

@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.learner.terms.TermsTable;
@@ -113,7 +113,7 @@ public class DomainResource extends UIAService {
 
 			return Response.ok(domain, MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
 
@@ -147,7 +147,7 @@ public class DomainResource extends UIAService {
 			}
 
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
 
@@ -196,7 +196,7 @@ public class DomainResource extends UIAService {
 					RDFHelper.DOMAIN_CLASS);
 			return Response.ok().build();
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -303,7 +303,7 @@ public class DomainResource extends UIAService {
 					RDFHelper.RESEARCH_OBJECT_CLASS);
 			return Response.ok().build();
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -335,11 +335,12 @@ public class DomainResource extends UIAService {
 				return Response.ok().build();
 			} else {
 
-				return Response.status(Responses.NOT_FOUND).build();
+				return Response.status(Response.Status
+						.NOT_FOUND).build();
 			}
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 }

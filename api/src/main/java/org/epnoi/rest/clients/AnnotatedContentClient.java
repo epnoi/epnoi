@@ -1,5 +1,6 @@
 package org.epnoi.rest.clients;
 
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -7,6 +8,11 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
+
+
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class AnnotatedContentClient {
 
@@ -23,9 +29,13 @@ public class AnnotatedContentClient {
 		ClientConfig config = new DefaultClientConfig();
 
 		Client client = Client.create(config);
+		URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
+		WebResource service = client.resource(testServiceURI);
+
+
 		String knowledgeBasePath = "/uia/annotatedcontent";
 
-		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+
 
 			//		  http://en.wikipedia.org/wiki/Autism/first/object/gate
 		

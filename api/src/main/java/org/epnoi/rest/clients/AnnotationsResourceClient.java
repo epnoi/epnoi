@@ -1,10 +1,7 @@
 package org.epnoi.rest.clients;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
+
+
 import org.epnoi.model.Annotation;
 import org.epnoi.model.ResearchObject;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
@@ -14,6 +11,7 @@ import java.util.ArrayList;
 public class AnnotationsResourceClient {
 
 	public static void main(String[] args) {
+		/*
 		try {
 
 			ResearchObject researchObject = new ResearchObject();
@@ -150,17 +148,13 @@ public class AnnotationsResourceClient {
 			
 			
 			
-			/*
-			service.path("/uia/researchobjects/researchobject")
-					.queryParam("uri", researchObject.getURI())
-					.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();
-*/
+
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
-
+*/
 	}
 }

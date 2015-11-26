@@ -1,10 +1,7 @@
 package org.epnoi.rest.services;
 
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.model.parameterization.ParametersModelReader;
-import org.epnoi.uia.core.CoreImpl;
 import org.epnoi.uia.core.CoreUtility;
 
 import javax.servlet.ServletContext;

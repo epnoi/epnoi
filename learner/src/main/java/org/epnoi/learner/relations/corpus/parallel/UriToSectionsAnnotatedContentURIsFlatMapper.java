@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -7,7 +8,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.WikipediaPage;
-
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +64,8 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
 		ClientConfig config = new DefaultClientConfig();
 
 		Client client = Client.create(config);
-
-		WebResource service = client.resource((String)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH));
+		URI serviceURI = UriBuilder.fromUri((String) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH)).build();
+		WebResource service = client.resource(serviceURI);
 
 		WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);

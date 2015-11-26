@@ -5,6 +5,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.epnoi.model.WikipediaPage;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class WikipediaPageClient {
 	public static void main(String[] args) {
@@ -13,12 +15,12 @@ public class WikipediaPageClient {
 		
 		String domainsPath = "/uia/resources/bytype/wikipediapages/resource";
 		String wikipediaPageURI = "http://en.wikipedia.org/wiki/Autism";
-		
 		ClientConfig config = new DefaultClientConfig();
-	//config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		Client client = Client.create(config);
+		URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
+		WebResource service = client.resource(testServiceURI);
 
-		WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+
 
 		// -----------------------------------------------------------------------------
 		System.out.println("Then we retrieve it");

@@ -1,24 +1,13 @@
 package org.epnoi.rest.clients;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import org.apache.lucene.index.Terms;
-import org.epnoi.model.Domain;
-import org.epnoi.model.Relation;
-import org.epnoi.model.ResearchObject;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DemoClient {
 
 	public static void main(String[] args) {
-
+/*
 		String domainURI = "http://www.epnoi.org/CGTestCorpusDomain";
 		String domainType = "paper";
 		String domainsPath = "/uia/domains/domain";
@@ -30,19 +19,17 @@ public class DemoClient {
 		Domain domain = new Domain();
 
 		domain.setUri(domainURI);
+		ClientConfig config = new ClientConfig();
 
-		ClientConfig config = new DefaultClientConfig();
-		config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
-				Boolean.TRUE);
-		Client client = Client.create(config);
+		Client client = ClientBuilder.newClient(config);
 
-		WebResource service = client
-				.resource("http://localhost:8081/epnoi/rest");
 
+		URI testServiceURI = UriBuilder.fromUri("http://localhost:8081/epnoi/rest").build();
+		WebTarget service = client.target(testServiceURI);
 		System.out.println("We create a domain");
 		service.path(domainsPath).queryParam("uri", domainURI)
 				.queryParam("type", domainType)
-				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).put();
+				.request().accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).put();
 
 		// -----------------------------------------------------------------------------
 
@@ -109,6 +96,7 @@ public class DemoClient {
 		System.out.println("The list of relations is " + relationsResponse);
 
 		System.out.println("Lets delete the domain!");
+		*/
 		/*
 		 * service.path(domainsPath).queryParam("uri", domainURI)
 		 * .type(javax.ws.rs.core.MediaType.APPLICATION_JSON).delete();

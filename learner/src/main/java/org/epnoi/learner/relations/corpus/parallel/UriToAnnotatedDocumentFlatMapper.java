@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -8,6 +9,8 @@ import gate.Document;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +44,14 @@ public class UriToAnnotatedDocumentFlatMapper {
 
         Document document = null;
         try {
+
+            URI testServiceURI = UriBuilder.fromUri(this.uiaPath).build();
             WebResource service = client.resource(this.uiaPath);
 
             String content = service.path(knowledgeBasePath).queryParam("uri", uri)
                     .queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
                     .get(String.class);
+
 
             document = GateUtils.deserializeGATEDocument(content);
         } catch (Exception e) {

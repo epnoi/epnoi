@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.model.DublinCoreMetadataElementsSetHelper;
 import org.epnoi.model.ResearchObject;
@@ -108,7 +108,7 @@ public class ResearchObjectResource extends UIAService {
 			}
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 
@@ -133,7 +133,7 @@ public class ResearchObjectResource extends UIAService {
 			core.getInformationHandler().update(researchObject);
 			return Response.ok().build();
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -164,7 +164,7 @@ public class ResearchObjectResource extends UIAService {
 			}
 
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		return Response.ok().build();
@@ -202,7 +202,7 @@ public class ResearchObjectResource extends UIAService {
 					value);
 			core.getInformationHandler().update(researchObject);
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		return Response.ok().build();
@@ -231,7 +231,7 @@ public class ResearchObjectResource extends UIAService {
 					RDFHelper.RESEARCH_OBJECT_CLASS);
 			return Response.ok().build();
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -260,7 +260,7 @@ public class ResearchObjectResource extends UIAService {
 			return Response.ok().build();
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import gate.Document;
 import io.swagger.annotations.*;
 import org.epnoi.model.Content;
@@ -69,7 +69,7 @@ public class AnnotatedContentResource extends UIAService {
 			
 			return Response.ok(annotatedDocument.toXml()).build();
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	// --------------------------------------------------------------------------------
 	/*

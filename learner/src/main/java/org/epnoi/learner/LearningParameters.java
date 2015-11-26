@@ -1,11 +1,10 @@
 package org.epnoi.learner;
 
 import org.epnoi.model.commons.Parameters;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-public class OntologyLearningParameters extends Parameters<Serializable> implements Serializable {
+public class LearningParameters extends Parameters<Serializable> implements Serializable {
 
 	// Domain Definition
 	// Parameters--------------------------------------------------------------------------------

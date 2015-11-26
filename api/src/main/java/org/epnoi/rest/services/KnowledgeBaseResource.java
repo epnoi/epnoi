@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.spi.resource.Singleton;
+
 import io.swagger.annotations.*;
 import org.epnoi.learner.relations.RelationsHandler;
 import org.epnoi.model.RelationHelper;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @Path("/uia/knowledgebase")
 
 @Api(value = "/uia/knowledgebase", description = "Knowledge base related operations")
-@Singleton
+
 public class KnowledgeBaseResource extends UIAService {
     private static final String RELATIONS_HANDLER = "RELATIONS_HANDLER";
 

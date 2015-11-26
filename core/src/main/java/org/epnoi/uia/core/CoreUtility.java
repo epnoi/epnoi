@@ -7,7 +7,6 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 
-import java.net.URL;
 import java.util.logging.Logger;
 
 public class CoreUtility {

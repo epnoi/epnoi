@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
@@ -141,7 +141,7 @@ public class WikidataViewResource extends UIAService {
 			WikidataViewSummary wikidataViewSummary = _createWikidataViewSummary(wikidataView);
 			return Response.ok(wikidataViewSummary).build();
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 	// --------------------------------------------------------------------------------
@@ -189,7 +189,7 @@ public class WikidataViewResource extends UIAService {
 					RDFHelper.WIKIDATA_VIEW_CLASS);
 			return Response.ok().build();
 		} else {
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}

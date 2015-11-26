@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -71,7 +71,7 @@ public class UIAResource extends UIAService {
 		if (uia != null) {
 			return Response.ok(uia).build();
 		}
-		return Response.status(Responses.NOT_FOUND).build();
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 	// --------------------------------------------------------------------------------

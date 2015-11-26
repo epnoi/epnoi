@@ -1,6 +1,6 @@
 package org.epnoi.rest.services;
 
-import com.sun.jersey.api.Responses;
+
 import io.swagger.annotations.*;
 import org.epnoi.model.Annotation;
 import org.epnoi.model.Resource;
@@ -50,10 +50,10 @@ public class AnnotationsResource extends UIAService {
 			ArrayList<String> annotations = new ArrayList<String>(this.core
 					.getAnnotationHandler().getAnnotations(URI));
 
-			return Response.status(200).entity(annotations).build();
+			return Response.status(Response.Status.OK).entity(annotations).build();
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}
@@ -81,7 +81,7 @@ public class AnnotationsResource extends UIAService {
 
 		} else {
 
-			return Response.status(Responses.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 	}

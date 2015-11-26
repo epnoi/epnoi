@@ -14,8 +14,6 @@ import org.epnoi.uia.commons.GateUtils;
 import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.logging.Logger;

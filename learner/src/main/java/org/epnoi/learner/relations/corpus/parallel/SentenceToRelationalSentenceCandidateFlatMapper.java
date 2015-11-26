@@ -1,10 +1,11 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
+
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -12,6 +13,8 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.*;
 
 
@@ -89,11 +92,13 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
 
     private Map<String, List<String>> _retrieveHypernyms(Set<String> terms) {
         ClientConfig config = new DefaultClientConfig();
-        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+
         Client client = Client.create(config);
         String knowledgeBasePath = "/uia/knowledgebase";
 
-        WebResource service = client.resource("http://localhost:8080/epnoi/rest");
+        URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
+        WebResource service = client.resource(testServiceURI);
+
 
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         for (String term : terms) {
@@ -109,10 +114,12 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
 
     private Map<String, List<String>> _retrieveStems(Set<String> terms) {
         ClientConfig config = new DefaultClientConfig();
-        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+
         Client client = Client.create(config);
         String knowledgeBasePath = "/uia/knowledgebase";
 
+
+        URI testServiceURI = UriBuilder.fromUri("http://localhost:8080/epnoi/rest").build();
         WebResource service = client.resource("http://localhost:8080/epnoi/rest");
 
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();

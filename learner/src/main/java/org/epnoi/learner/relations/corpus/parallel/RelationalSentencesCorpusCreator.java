@@ -6,13 +6,14 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-
 import org.epnoi.learner.relations.extractor.parallel.RelationalSentenceCandidateToRelationalSentenceMapper;
-import org.epnoi.model.*;
+import org.epnoi.model.Context;
+import org.epnoi.model.RelationalSentence;
+import org.epnoi.model.RelationalSentencesCorpus;
+import org.epnoi.model.Selector;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
