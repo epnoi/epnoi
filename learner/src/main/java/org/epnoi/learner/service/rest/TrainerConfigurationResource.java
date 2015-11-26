@@ -43,10 +43,10 @@ public class TrainerConfigurationResource {
             @ApiResponse(code = 500, message = "Something went wrong in the learner")})
     @ApiOperation(value = "Returns the training configuration of the trainer module of the learner", notes = "", response = Map.class)
     public Response getConfiguration() {
-        Map<String, Parameters> trainerConfiguration = new HashMap<>();
-        trainerConfiguration.put("relationalPatternsModelCreationParameters", learner.getTrainer().getRelationalPatternsModelCreationParameters());
-        trainerConfiguration.put("relationalSentencesCorpusCreationParameters", learner.getTrainer().getRelationalSentencesCorpusCreationParameters());
-        GenericEntity<Map<String, Parameters>> entity = new GenericEntity<Map<String,Parameters>>(trainerConfiguration) {
+        Map<String, Map<String,String>> trainerConfiguration = new HashMap<>();
+        trainerConfiguration.put("relationalPatternsModelCreationParameters", learner.getTrainer().getRelationalPatternsModelCreationParameters().getParametersMap());
+        trainerConfiguration.put("relationalSentencesCorpusCreationParameters", learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParametersMap());
+        GenericEntity<Map<String, Map<String,String>>> entity = new GenericEntity<Map<String,Map<String,String>>>(trainerConfiguration) {
         };
 
 

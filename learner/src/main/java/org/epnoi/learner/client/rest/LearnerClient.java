@@ -7,16 +7,20 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import org.apache.jena.atlas.test.Gen;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.Relation;
 import org.epnoi.model.commons.Parameters;
+import sun.net.www.content.text.Generic;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by rgonzalez on 25/11/15.
@@ -24,7 +28,7 @@ import java.util.Map;
 public class LearnerClient {
     public static void main(String[] args) {
         ClientConfig clientConfig = new DefaultClientConfig();
-      //  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        //  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         clientConfig.getClasses().add(JacksonJsonProvider.class);
         Client client = Client.create(clientConfig);
 
@@ -32,7 +36,7 @@ public class LearnerClient {
         WebResource webResource = client.resource(serviceURI);
 
         _testRelations(webResource);
-       _testConfigurations(webResource);
+        _testConfigurations(webResource);
         _testTrainerConfigurations(webResource);
 
     }
@@ -52,18 +56,24 @@ public class LearnerClient {
         WebResource wr = webResource.path("/learner/configuration");
 
         ClientResponse clientResponse = wr.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        System.out.println(clientResponse.getEntity(Object.class));
-      //  Parameters map = (LearningParameters) clientResponse.getEntity(Object.class);
-     //   System.out.println("---> " + map);
-        System.out.println("SalE");
+     //   System.out.println(clientResponse.getEntity(Object.class));
+//       Map map = clientResponse.getEntity((new GenericType<Map<String, String>>(){}));
+       /*
+        Map<String, Map<String,String>> map = clientResponse.getEntity(new GenericType<Map<String, Map<String,String>>>() {
+        });
+        */
+
+        Map<String,String> map = clientResponse.getEntity(new GenericType<Map<String,String>>() {
+        });
+        System.out.println("---> " + map);
     }
 
     private static void _testTrainerConfigurations(WebResource webResource) {
         WebResource wr = webResource.path("/learner/trainer/configuration");
 
         ClientResponse clientResponse = wr.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-
-        Map<String, Parameters> map = clientResponse.getEntity(new GenericType<Map<String, Parameters>>() {
+        //System.out.println(clientResponse.getEntity(Object.class));
+        Map<String, Map<String,String>> map = clientResponse.getEntity(new GenericType<Map<String, Map<String,String>>>() {
         });
         System.out.println("---> " + map);
     }
