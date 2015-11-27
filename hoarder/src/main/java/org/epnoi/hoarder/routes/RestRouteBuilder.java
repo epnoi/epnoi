@@ -2,8 +2,6 @@ package org.epnoi.hoarder.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.epnoi.hoarder.data.Repository;
-import org.epnoi.hoarder.data.RepositoryId;
 import org.epnoi.model.Source;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +26,13 @@ public class RestRouteBuilder extends RouteBuilder {
         rest("/repositories").description("hoarder rest service for repository management")
                 //.consumes("application/json").produces("application/json")
 
-                .post().type(Repository.class).outType(RepositoryId.class).description("Create a new repository")
+                .post().type(Source.class).outType(Source.class).description("Create a new repository")
                 .to("bean:sourceService?method=newRepository")
 
-                .get("/").description("List all repositories").outTypeList(Repository.class)
+                .get("/").description("List all repositories").outTypeList(Source.class)
                 .to("bean:sourceService?method=listRepositories")
 
-                .get("/{id}").description("Find a repository by id").outType(Repository.class)
+                .get("/{id}").description("Find a repository by id").outType(Source.class)
                 //.param().name("id").type(path).description("The id of the user to get").dataType("int").endParam()
                 .to("bean:sourceService?method=getRepository(${header.id})");
 

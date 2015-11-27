@@ -4,7 +4,6 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
-import org.epnoi.model.State;
 import org.epnoi.model.modules.BindingKey;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.EventBusSubscriber;
@@ -45,7 +44,7 @@ public class GuavaEventBusTest {
 
         final AtomicInteger counter = new AtomicInteger(0);
 
-        eventBus.post(Event.from("nobody should be listening"), RoutingKey.of(Resource.Type.ITEM, State.NEW));
+        eventBus.post(Event.from("nobody should be listening"), RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW));
 
         eventBus.subscribe(new EventBusSubscriber() {
 
@@ -56,9 +55,9 @@ public class GuavaEventBusTest {
                 LOG.info("Reacting to the event ! " + event.to(String.class));
                 counter.incrementAndGet();
             }
-        }, BindingKey.of(RoutingKey.of(Resource.Type.ITEM, State.NEW),"test"));
+        }, BindingKey.of(RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW),"test"));
 
-        eventBus.post(Event.from((new Date()).toString()), RoutingKey.of(Resource.Type.ITEM, State.NEW));
+        eventBus.post(Event.from((new Date()).toString()), RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW));
 
         Thread.sleep(100);
 

@@ -29,4 +29,20 @@ public interface Resource extends Serializable {
 
 	}
 
+	enum State {
+		NEW("new"),
+		OPENED("opened"),
+		CLOSED("closed"),
+		MARKED("marked"),
+		ANALYZED("analyzed"),
+		DELETED("deleted"),
+		ANY("*");
+
+		String keyValue;
+
+		State(String key){ keyValue = key;}
+
+		public String key(){ return keyValue;}
+	}
+
 }
