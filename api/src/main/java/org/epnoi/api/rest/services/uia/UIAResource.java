@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.epnoi.api.rest.services.response.KnowledgeBase;
 import org.epnoi.api.rest.services.response.UIA;
-import org.epnoi.harvester.demo.DemoDataLoader;
+//import org.epnoi.harvester.demo.DemoDataLoader;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,11 +105,11 @@ public class UIAResource {
         logger.info("POST");
 
         logger.info("Inserting demo data");
-
+/*
         DemoDataLoader demoDataLoader = new DemoDataLoader();
         demoDataLoader.init(core);
         demoDataLoader.load();
-
+*/
 
         logger.info("Retrieving the knowledge base");
 

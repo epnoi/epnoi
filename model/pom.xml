@@ -23,10 +23,12 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>uk.ac.gate</groupId>
 			<artifactId>gate-core</artifactId>
 		</dependency>
+
 	</dependencies>
 </project>
 

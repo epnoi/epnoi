@@ -1,36 +1,44 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.epnoi</groupId>
-		<artifactId>epnoi</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.epnoi</groupId>
+        <artifactId>epnoi</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>epnoi-harvester</artifactId>
-	<packaging>jar</packaging>
-	<name>epnoi harvester</name>
-	<description>epnoi harvester</description>
+    <artifactId>epnoi-harvester</artifactId>
+    <packaging>jar</packaging>
+    <name>epnoi harvester</name>
+    <description>epnoi harvester</description>
 
-	<dependencies>
+    <dependencies>
 
-		<!-- Internal Dependencies -->
-		<dependency>
-			<groupId>org.epnoi</groupId>
-			<artifactId>epnoi-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <!-- Internal Dependencies -->
+        <dependency>
+            <groupId>org.epnoi</groupId>
+            <artifactId>epnoi-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<!-- External Dependencies -->
-		<dependency>
-			<groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-			<artifactId>de.tudarmstadt.ukp.wikipedia.api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-			<artifactId>de.tudarmstadt.ukp.wikipedia.parser</artifactId>
-		</dependency>
-	</dependencies>
+        <!-- External Dependencies -->
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+            <artifactId>de.tudarmstadt.ukp.wikipedia.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+            <artifactId>de.tudarmstadt.ukp.wikipedia.parser</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers</artifactId>
+        </dependency>
+    </dependencies>
 </project>
 
