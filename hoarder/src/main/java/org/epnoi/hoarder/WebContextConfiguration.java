@@ -7,20 +7,31 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import java.util.List;
 
 @Configuration
-@ComponentScan
+@ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.hoarder"})
 public class WebContextConfiguration {
 
 
     @Autowired
-    RouteBuilder routeBuilder;
+    List<RouteBuilder> builders;
 
     @Bean
     public SpringCamelContext camelContext(ApplicationContext applicationContext) throws Exception {
         SpringCamelContext camelContext = new SpringCamelContext(applicationContext);
-        camelContext.addRoutes(routeBuilder);
+        for(RouteBuilder builder : builders){
+            camelContext.addRoutes(builder);
+        }
         return camelContext;
+    }
+
+    //To resolve ${} in @Value
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 }

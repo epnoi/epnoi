@@ -1,9 +1,9 @@
-package org.epnoi.hoarder.processor;
+package org.epnoi.hoarder.routes.processors;
 
 import com.google.common.base.Joiner;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.epnoi.hoarder.AbstractRouteBuilder;
+import org.epnoi.hoarder.routes.SourceProperty;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,14 +32,14 @@ public class TimeGenerator implements Processor{
 
         // Add current time
         long current = DateTime.now(timezone).getMillis();
-        addProperty(exchange, AbstractRouteBuilder.TIME,dateTimeFormatter.print(current));
+        addProperty(exchange, SourceProperty.TIME,dateTimeFormatter.print(current));
 
 
         // Read published date
-        String time = exchange.getProperty(AbstractRouteBuilder.PUBLICATION_PUBLISHED, String.class);
+        String time = exchange.getProperty(SourceProperty.PUBLICATION_PUBLISHED, String.class);
 
         if ((time == null) || (time.trim().equals(""))){
-            LOG.warn("no published date info for: {}! Collector timestamp used", AbstractRouteBuilder.PUBLICATION_URI);
+            LOG.warn("no published date info for: {}! Collector timestamp used", SourceProperty.PUBLICATION_URI);
             time = dateTimeFormatter.print(current);
         }
 
@@ -47,10 +47,10 @@ public class TimeGenerator implements Processor{
         DateTime dateTime = dateTimeFormatter.parseDateTime(time);
 
         // Add date in format: yyyy-mm-dd
-        addProperty(exchange, AbstractRouteBuilder.PUBLICATION_PUBLISHED_DATE, Joiner.on("-").join(dateTime.getYear(),decimalFormat.format(dateTime.getMonthOfYear()),decimalFormat.format(dateTime.getDayOfMonth())));
+        addProperty(exchange, SourceProperty.PUBLICATION_PUBLISHED_DATE, Joiner.on("-").join(dateTime.getYear(),decimalFormat.format(dateTime.getMonthOfYear()),decimalFormat.format(dateTime.getDayOfMonth())));
 
         // Add time in format: millis
-        addProperty(exchange, AbstractRouteBuilder.PUBLICATION_PUBLISHED_MILLIS,dateTime.getMillis());
+        addProperty(exchange, SourceProperty.PUBLICATION_PUBLISHED_MILLIS,dateTime.getMillis());
 
     }
 

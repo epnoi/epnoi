@@ -1,8 +1,13 @@
 package org.epnoi.hoarder.services;
 
+import org.apache.camel.model.RouteDefinition;
+import org.apache.camel.spring.SpringCamelContext;
+import org.epnoi.hoarder.routes.Router;
+import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,15 +21,32 @@ public class SourceService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SourceService.class);
 
+    @Autowired
+    SpringCamelContext camelContext;
+
+    @Autowired
+    Router router;
+
     public SourceService(){
 
     }
 
-    public List<Source> newSource(Source source){
-        LOG.debug("listing Sources ..");
-        List<Source> sourcesList = new ArrayList<>();
+    public Resource newSource(Source source) throws Exception {
+        LOG.info("adding source: " + source);
 
-        return sourcesList;
+        // Check if exist in database
+
+        // Create a new route for this url
+        RouteDefinition route = router.newSource(source.getUrl());
+
+        // Add route to ddbb and notify to event.bus to rest of cluster
+        // TODO Handle cluster actions
+
+        // Add route to camel-context
+        LOG.info("adding route to hoarding: " + route);
+        camelContext.addRouteDefinition(route);
+
+        return source;
     }
 
 

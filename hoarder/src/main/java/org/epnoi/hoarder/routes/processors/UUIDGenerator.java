@@ -1,8 +1,8 @@
-package org.epnoi.hoarder.processor;
+package org.epnoi.hoarder.routes.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.epnoi.hoarder.AbstractRouteBuilder;
+import org.epnoi.hoarder.routes.SourceProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -14,6 +14,6 @@ public class UUIDGenerator implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String uuid = UUID.randomUUID().toString();
-        exchange.setProperty(AbstractRouteBuilder.PUBLICATION_UUID,uuid);
+        exchange.setProperty(SourceProperty.PUBLICATION_UUID,uuid);
     }
 }

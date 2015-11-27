@@ -1,4 +1,4 @@
-package org.epnoi.hoarder.routes;
+package org.epnoi.hoarder.routes.rest;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;

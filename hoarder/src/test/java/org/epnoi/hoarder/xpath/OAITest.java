@@ -7,7 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
-import org.epnoi.hoarder.AbstractRouteBuilder;
+import org.epnoi.hoarder.routes.SourceProperty;
 import org.junit.Test;
 
 
@@ -67,15 +67,15 @@ public class OAITest extends CamelTestSupport {
 
 
         resultEndpoint.expectedMessageCount(1);
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_TITLE,"Radiation tolerant isolation amplifiers for temperature measurement");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_DESCRIPTION,"This paper concentrates on the selection of ");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_PUBLISHED,"2015-03-03T09:30:04Z");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_URI,"http://eprints.ucm.es/28868/1/Zong2006_Eprint.pdf");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_URL,"http://eprints.ucm.es/28868/1/Zong2006_Eprint.pdf");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_LANGUAGE,"en");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_RIGHTS,"info:eu-repo/semantics/openAccess");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_CREATORS,"Zong, Yi;Franco Peláez, Francisco Javier;Agapito Serrano, Juan Andrés;Fernandes, Ana C.;Marques, José G.");
-        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_FORMAT,"pdf");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_TITLE,"Radiation tolerant isolation amplifiers for temperature measurement");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_DESCRIPTION,"This paper concentrates on the selection of ");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_PUBLISHED,"2015-03-03T09:30:04Z");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_URI,"http://eprints.ucm.es/28868/1/Zong2006_Eprint.pdf");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_URL,"http://eprints.ucm.es/28868/1/Zong2006_Eprint.pdf");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_LANGUAGE,"en");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_RIGHTS,"info:eu-repo/semantics/openAccess");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_CREATORS,"Zong, Yi;Franco Peláez, Francisco Javier;Agapito Serrano, Juan Andrés;Fernandes, Ana C.;Marques, José G.");
+        resultEndpoint.expectedHeaderReceived(SourceProperty.PUBLICATION_FORMAT,"pdf");
 
         template.sendBody(xml);
         resultEndpoint.assertIsSatisfied();
@@ -92,20 +92,20 @@ public class OAITest extends CamelTestSupport {
                 ns.add("oai_dc","http://www.openarchives.org/OAI/2.0/oai_dc/");
 
                 from("direct:start").
-                        setHeader(AbstractRouteBuilder.SOURCE_NAME,                   constant("ucm")).
-                        setHeader(AbstractRouteBuilder.SOURCE_URI, constant("http://www.epnoi.org/oai-providers/ucm")).
-                        setHeader(AbstractRouteBuilder.SOURCE_URL, constant("http://eprints.ucm.es/cgi/oai2")).
-                        setHeader(AbstractRouteBuilder.SOURCE_PROTOCOL,               constant("oaipmh")).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_TITLE,             xpath("//oai:metadata/oai:dc/dc:title/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_DESCRIPTION,       xpath("//oai:metadata/oai:dc/dc:description/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_PUBLISHED,         xpath("//oai:header/oai:datestamp/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_URI,               xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_URL,        xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_LANGUAGE,          xpath("//oai:metadata/oai:dc/dc:language/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_RIGHTS,            xpath("//oai:metadata/oai:dc/dc:rights/text()", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_CREATORS,          xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_FORMAT,            xpath("substring-after(//oai:metadata/oai:dc/dc:format[1]/text(),\"/\")", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_METADATA_FORMAT, constant("xml")).
+                        setHeader(SourceProperty.SOURCE_NAME,                   constant("ucm")).
+                        setHeader(SourceProperty.SOURCE_URI, constant("http://www.epnoi.org/oai-providers/ucm")).
+                        setHeader(SourceProperty.SOURCE_URL, constant("http://eprints.ucm.es/cgi/oai2")).
+                        setHeader(SourceProperty.SOURCE_PROTOCOL,               constant("oaipmh")).
+                        setHeader(SourceProperty.PUBLICATION_TITLE,             xpath("//oai:metadata/oai:dc/dc:title/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_DESCRIPTION,       xpath("//oai:metadata/oai:dc/dc:description/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_PUBLISHED,         xpath("//oai:header/oai:datestamp/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_URI,               xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_URL,        xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_LANGUAGE,          xpath("//oai:metadata/oai:dc/dc:language/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_RIGHTS,            xpath("//oai:metadata/oai:dc/dc:rights/text()", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_CREATORS,          xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_FORMAT,            xpath("substring-after(//oai:metadata/oai:dc/dc:format[1]/text(),\"/\")", String.class).namespaces(ns)).
+                        setHeader(SourceProperty.PUBLICATION_METADATA_FORMAT, constant("xml")).
                         to("log:es.upm.oeg.epnoi.hoarder?level=INFO").
                         to("mock:result");
             }

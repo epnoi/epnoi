@@ -1,4 +1,4 @@
-package org.epnoi.hoarder.processor;
+package org.epnoi.hoarder.routes.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
