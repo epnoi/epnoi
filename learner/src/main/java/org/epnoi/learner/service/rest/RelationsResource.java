@@ -39,7 +39,7 @@ public class RelationsResource {
 
     @PostConstruct
     public void init() {
-        logger.info("Initializing " + getClass());
+        logger.info("===========================================================>Initializing " + getClass());
 
 
         //this.relationsHandler = _buildRelationHandler();

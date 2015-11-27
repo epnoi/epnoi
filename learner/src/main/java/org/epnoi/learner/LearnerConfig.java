@@ -1,5 +1,8 @@
 package org.epnoi.learner;
 
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
@@ -121,6 +124,7 @@ public class LearnerConfig {
     @Profile(DEVELOP_PROFILE)
     public LearningParameters learningParameters() {
         LearningParameters learningParameters = new LearningParameters();
+        System.out.println("=======================================================================================> bean");
 /*
     learningParameters.setParameter(
             LearningParameters.CONSIDERED_DOMAINS,
@@ -151,4 +155,33 @@ public class LearnerConfig {
 
         return learningParameters;
     }
+
+    @Profile("develop")
+    @Bean
+    @Scope("singleton")
+    public ApiListingResource apiListingResource() {
+        return new ApiListingResource();
+    }
+    @Profile("develop")
+    @Bean
+    @Scope("singleton")
+    public SwaggerSerializers swaggerSerializer() {
+        return new SwaggerSerializers();
+    }
+    @Profile("develop")
+    @Bean()
+    @Scope("singleton")
+    public BeanConfig beanConfig() {
+        System.out.println("=======================================================================================> bean");
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.2");
+        beanConfig.setSchemes(new String[]{"http"});
+        beanConfig.setHost("http://localhost:8082/learner");
+        beanConfig.setBasePath("/");
+        beanConfig.setResourcePackage("org.epnoi.learner.service.rest");
+        beanConfig.setScan(true);
+        return beanConfig;
+    }
+
+
 }

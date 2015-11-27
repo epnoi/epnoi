@@ -1,9 +1,6 @@
 package org.epnoi.learner.service.rest;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.learner.modules.Learner;
@@ -33,6 +30,7 @@ import java.util.logging.Logger;
 
 @Component
 @Path("/domain")
+@Api(value = "/domain", description = "Operations for retrieving the learned relations from a domain")
 public class LearnerResource {
     private static final Logger logger = Logger.getLogger(LearnerResource.class
             .getName());
