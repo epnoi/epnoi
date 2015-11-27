@@ -10,10 +10,7 @@ public class Event {
 
     private byte[] bytes;
 
-	private Event() {
-	}
-
-    private Event(byte[] bytes){
+	private Event(byte[] bytes){
         this.bytes = bytes;
     }
 

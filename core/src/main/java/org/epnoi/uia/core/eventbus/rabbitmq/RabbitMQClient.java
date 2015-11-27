@@ -3,6 +3,8 @@ package org.epnoi.uia.core.eventbus.rabbitmq;
 import com.rabbitmq.client.*;
 import org.epnoi.model.Event;
 import org.epnoi.model.modules.EventBusSubscriber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,25 +14,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 
 /**
  * Created by cbadenes on 09/10/15.
  */
 public class RabbitMQClient {
 
-    private static final Logger logger = Logger.getLogger(RabbitMQClient.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(RabbitMQClient.class);
 
     private static String EXCHANGE_TYPE = "topic";
 
     private Connection connection;
 
-    private List<Channel> channels;
+    private Map<String,Channel> channels;
 
 
     public RabbitMQClient(){
-        this.channels = new ArrayList<>();
+        this.channels = new ConcurrentHashMap<>();
     }
 
     /**
@@ -46,14 +48,14 @@ public class RabbitMQClient {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUri(uri);
 
-        logger.info("trying to connect to: " + uri);
+        LOG.info("trying to connect to: " + uri);
         this.connection = factory.newConnection();
-        logger.info("connected to: " + uri);
+        LOG.info("connected to: " + uri);
     }
 
     public void disconnect() throws IOException, TimeoutException {
         if (!channels.isEmpty()){
-            for (Channel channel: channels){
+            for (Channel channel: channels.values()){
                 if (channel.isOpen()) channel.close();
             }
         }
@@ -66,7 +68,13 @@ public class RabbitMQClient {
      * @return
      */
     public Channel newChannel(String exchange) throws IOException {
-        logger.finest("creating new channel for exchange: " + exchange);
+
+        if (channels.containsKey(exchange)){
+            LOG.debug("reusing already created channel for exchange: " + exchange);
+            return channels.get(exchange);
+        }
+
+        LOG.debug("creating a new channel for exchange: " + exchange);
 
         Channel channel = connection.createChannel();
 
@@ -82,14 +90,15 @@ public class RabbitMQClient {
                                      String routingKey,
                                      AMQP.BasicProperties basicProperties,
                                      byte[] bytes) throws IOException {
+                LOG.warn("Unexpected Message from routing-key: " + routingKey + " in exchange: " + exchange + " [" + bytes + "]");
 
             }
         });
 
 
-        channels.add(channel);
+        channels.put(exchange,channel);
 
-        logger.fine("new channel created for exchange: " + exchange);
+        LOG.debug("new channel created for exchange: " + exchange);
         return channel;
     }
 
@@ -103,7 +112,7 @@ public class RabbitMQClient {
      */
     public void publish(Channel channel, String exchange, String routingKey, byte[] message) throws IOException {
 
-        //TODO externalize by publisher
+        //maybe better externalize by publisher
         AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
                 .contentType("text/plain")
                 .deliveryMode(2) // persistent
@@ -112,7 +121,7 @@ public class RabbitMQClient {
 
         channel.basicPublish(exchange, routingKey, properties, message);
 
-        logger.fine(" Message: [" + message + "] sent to exchange: '" + exchange + "' with routingKey: '" + routingKey +"'");
+        LOG.debug(" Message: [" + message + "] sent to exchange: '" + exchange + "' with routingKey: '" + routingKey + "'");
     }
 
 
@@ -120,7 +129,7 @@ public class RabbitMQClient {
 
         Channel channel = newChannel(exchange);
 
-        //TODO externalize to config file
+        //maybe better externalize to config file
         //a non-durable, non-exclusive, autodelete queue with a well-known name and a maximum length of 1000 messages
         Map<String, Object> args = new HashMap<>();
         args.put("x-max-length", 1000); // x-max-length-bytes
@@ -142,16 +151,26 @@ public class RabbitMQClient {
                 String contentType  = properties.getContentType();
                 long deliveryTag    = envelope.getDeliveryTag();
 
-                logger.fine(" Received message: [" + body + "] in routingKey: '" + routingKey +"'");
+                LOG.debug(" Received message: [" + body + "] in routingKey: '" + routingKey + "'");
 
-                subscriber.onEvent(Event.from(body));
+                subscriber.handle(Event.from(body));
 
-                //TODO Avoid Auto ACK. Handle manual ACK
+                //maybe better Avoid Auto ACK. Handle manual ACK
                 //channel.basicAck(deliveryTag, false);
             }
         });
 
-        channels.add(channel);
+        channels.put(String.valueOf(subscriber.hashCode()), channel);
+    }
+
+
+    public void clean(EventBusSubscriber subscriber) throws IOException, TimeoutException {
+        String key = String.valueOf(subscriber.hashCode());
+        if (channels.containsKey(key)){
+            Channel channel = channels.get(key);
+            channel.close();
+            channels.remove(key);
+        }
     }
 
 }

@@ -2,6 +2,8 @@ package org.epnoi.hoarder.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
+import org.epnoi.hoarder.data.Repository;
+import org.epnoi.hoarder.data.RepositoryId;
 import org.epnoi.model.Source;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
  * Created by cbadenes on 21/10/15.
  */
 @Component
-public class WSRouteBuilder extends RouteBuilder {
+public class RestRouteBuilder extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
@@ -23,15 +25,18 @@ public class WSRouteBuilder extends RouteBuilder {
                 .contextPath("hoarder/rest")
                 .port(8080);
 
-        rest("/sources").description("hoarder rest service")
+        rest("/repositories").description("hoarder rest service for repository management")
                 //.consumes("application/json").produces("application/json")
 
-                .get("/").description("List all sources").outTypeList(Source.class)
-                .to("bean:sourcesService?method=listSources")
+                .post().type(Repository.class).outType(RepositoryId.class).description("Create a new repository")
+                .to("bean:sourceService?method=newRepository")
 
-                .get("/{id}").description("Find a source by id").outType(Source.class)
+                .get("/").description("List all repositories").outTypeList(Repository.class)
+                .to("bean:sourceService?method=listRepositories")
+
+                .get("/{id}").description("Find a repository by id").outType(Repository.class)
                 //.param().name("id").type(path).description("The id of the user to get").dataType("int").endParam()
-                .to("bean:sourcesService?method=getSource(${header.id})");
+                .to("bean:sourceService?method=getRepository(${header.id})");
 
 
 

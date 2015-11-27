@@ -29,11 +29,6 @@ public interface Core {
 	AnnotationHandler getAnnotationHandler();
 	@Deprecated
 	void setAnnotationHandler(AnnotationHandler annotationHandler);
-	
-	@Deprecated
-	EventBus getEventBus();
-	@Deprecated
-	void setEventBus(EventBus eventBus);
 
 	DomainsHandler getDomainsHandler();
 	@Deprecated

@@ -3,7 +3,6 @@ package org.epnoi.uia.core;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.*;
 import org.epnoi.model.parameterization.ParametersModel;
-import org.epnoi.uia.core.eventbus.EventBusFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,11 +43,6 @@ public class CoreImpl implements Core {
     private HarvestersHandler harvestersHandler;
 
 
-
-
-    private EventBus eventBus = null;
-
-
     public CoreImpl() {
     }
 
@@ -59,9 +53,6 @@ public class CoreImpl implements Core {
                 "\n =================================================================================================== \n starting epnoi! \n ===================================================================================================");
         logger.info("Initializing the epnoi uia core with the following parameters ");
         logger.info(parametersModel.toString());
-
-
-        this._initEventBus();
 
 
         logger.info("");
@@ -88,13 +79,6 @@ public class CoreImpl implements Core {
 
     // ---------------------------------------------------------------------------------------------------------
 
-
-    private void _initEventBus() {
-
-        logger.info("Initializing the Event Bus");
-        this.eventBus = EventBusFactory.newInstance(parametersModel);
-        this.eventBus.init();
-    }
 
     // ----------------------------------------------------------------------------------------------------------
 
@@ -160,20 +144,6 @@ public class CoreImpl implements Core {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-
-
-    @Override
-    public EventBus getEventBus() {
-        return eventBus;
-    }
-
-    // ----------------------------------------------------------------------------------------------------------
-
-
-    @Override
-    public void setEventBus(EventBus eventBus) {
-        this.eventBus = eventBus;
-    }
 
 
     @Override
