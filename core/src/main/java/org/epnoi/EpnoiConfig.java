@@ -1,6 +1,7 @@
 package org.epnoi;
 
 import org.epnoi.knowledgebase.KnolwedgeBaseImpl;
+import org.epnoi.model.modules.Profiles;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
 import org.epnoi.uia.annotation.AnnotationHandlerImpl;
@@ -24,8 +25,7 @@ import java.util.logging.Logger;
 public class EpnoiConfig {
     private static final Logger logger = Logger.getLogger(EpnoiConfig.class
             .getName());
-    public static final String DEPLOY_PROFILE = "deploy";
-    public static final String DEVELOP_PROFILE = "develop";
+
     public static final String EPNOI_PROPERTIES = "epnoi.configurable.properties";
     public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
@@ -44,7 +44,7 @@ public class EpnoiConfig {
 
 
     @Bean
-    @Profile(DEVELOP_PROFILE)
+    @Profile(Profiles.DEVELOP)
     public ParametersModel developParametersModel() {
         logger.info("Creating the parameters model");
         ParametersModel parametersModel = null;
@@ -69,7 +69,7 @@ public class EpnoiConfig {
 }
 /* LEFT FOR FUTURE USE
     @Bean
-    @Profile(DEPLOY_PROFILE)
+    @Profiles(DEPLOY_PROFILE)
     public ParametersModel deployParametersModel() {
         System.out.println("->" + configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH));
         String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);

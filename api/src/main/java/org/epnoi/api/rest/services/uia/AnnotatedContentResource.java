@@ -91,7 +91,7 @@ public class AnnotatedContentResource {
 	 * 
 	 * @ApiResponse(code = 404, message =
 	 * "A wikidata view with such URI could not be found") }) public Response
-	 * removeResearchObject(
+	 * removeWikidataView(
 	 * 
 	 * @ApiParam(value = "Wikidata view uri", required = true, allowMultiple =
 	 * false) @QueryParam("uri") String URI) { logger.info("DELETE > " + URI);
@@ -124,7 +124,7 @@ public class AnnotatedContentResource {
 	 * 
 	 * @ApiResponse(code = 404, message =
 	 * "A wikidata view with such URI could not be found") }) public Response
-	 * removeResearchObject(
+	 * removeWikidataView(
 	 * 
 	 * @ApiParam(value = "Wikidata view uri", required = true, allowMultiple =
 	 * false) @QueryParam("uri") String URI) { logger.info("DELETE > " + URI);

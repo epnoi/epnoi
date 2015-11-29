@@ -180,7 +180,7 @@ public class WikidataViewResource {
             @ApiResponse(code = 200, message = "The wikidata view with such URI has been deleted"),
             @ApiResponse(code = 500, message = "Something went wrong in the UIA"),
             @ApiResponse(code = 404, message = "A wikidata view with such URI could not be found")})
-    public Response removeResearchObject(
+    public Response removeWikidataView(
             @ApiParam(value = "Wikidata view uri", required = true, allowMultiple = false) @QueryParam("uri") String URI) {
         logger.info("DELETE > " + URI);
 

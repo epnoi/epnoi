@@ -32,18 +32,26 @@
 	<servlet>
 		<servlet-name>jersey-servlet</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>
+				io.swagger.jaxrs.json,
+				io.swagger.jaxrs.listing,
+				org.epnoi.api.rest.services.knowledgebase,
+				org.epnoi.api.rest.services.nlp,
+				org.epnoi.api.rest.services.search,
+				org.epnoi.api.rest.services.uia
+			</param-value>
 
-                <init-param>
-                    <param-name>com.sun.jersey.config.property.packages</param-name>
-                    <param-value>org.epnoi.api.rest.services.knowledgebase</param-value>
-                </init-param>
-
-<!--
-                   <init-param>
-                       <param-name>javax.ws.rs.Application</param-name>
-                         <param-value>org.epnoi.api.rest.services.ApiApplication</param-value>
-                   </init-param>
--->
+		</init-param>
+		<init-param>
+			<param-name>jersey.config.server.provider.classnames</param-name>
+			<param-value>
+				com.wordnik.swagger.jersey.listing.ApiListingResourceJSON,
+				com.wordnik.swagger.jersey.listing.JerseyApiDeclarationProvider,
+				com.wordnik.swagger.jersey.listing.JerseyResourceListingProvider
+			</param-value>
+		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
 			<param-value>true</param-value>

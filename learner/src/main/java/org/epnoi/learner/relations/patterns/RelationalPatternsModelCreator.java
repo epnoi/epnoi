@@ -7,6 +7,7 @@ import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.Profiles;
 import org.epnoi.model.rdf.RDFHelper;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -227,7 +228,7 @@ public class RelationalPatternsModelCreator {
 
 
 
-		applicationContext.getEnvironment().setActiveProfiles(EpnoiConfig.DEVELOP_PROFILE);
+		applicationContext.getEnvironment().setActiveProfiles(Profiles.DEVELOP);
 /*
 		MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 

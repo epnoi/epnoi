@@ -7,7 +7,10 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.RelationHelper;
+import org.epnoi.model.modules.*;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Profile;
 
 import java.util.logging.Logger;
 
@@ -20,14 +23,13 @@ import java.util.logging.Logger;
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class
             .getName());
-    public static final String DEPLOY_PROFILE = "deploy";
-    public static final String DEVELOP_PROFILE = "develop";
+
     public static final String EPNOI_PROPERTIES = "epnoi.configurable.properties";
     public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
 
     @Bean
-    @Profile(DEVELOP_PROFILE)
+    @Profile(Profiles.DEVELOP)
     public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
@@ -58,7 +60,7 @@ public class LearnerConfig {
     }
 
     @Bean
-    @Profile(DEVELOP_PROFILE)
+    @Profile(Profiles.DEVELOP)
     public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters() {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
@@ -89,7 +91,7 @@ public class LearnerConfig {
 
 
     @Bean
-    @Profile(DEVELOP_PROFILE)
+    @Profile(Profiles.DEVELOP)
     public RelationalSentencesCorpusCreationParameters relationalSentencesCorpusParameters() {
         logger.info("Starting the Relation Sentences Corpus Creator");
 
@@ -121,7 +123,7 @@ public class LearnerConfig {
     }
 
     @Bean
-    @Profile(DEVELOP_PROFILE)
+    @Profile(Profiles.DEVELOP)
     public LearningParameters learningParameters() {
         LearningParameters learningParameters = new LearningParameters();
         System.out.println("=======================================================================================> bean");
@@ -151,27 +153,30 @@ public class LearnerConfig {
             LearningParameters.HYPERNYM_MODEL_PATH,
             hypernymsModelPath);
             */
-    learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
+        learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
 
         return learningParameters;
     }
 
-    @Profile("develop")
+    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
     @Bean
-    @Scope("singleton")
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
     public ApiListingResource apiListingResource() {
         return new ApiListingResource();
     }
-    @Profile("develop")
+
+    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
     @Bean
-    @Scope("singleton")
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
     public SwaggerSerializers swaggerSerializer() {
         return new SwaggerSerializers();
     }
-    @Profile("develop")
+
+    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
     @Bean()
-    @Scope("singleton")
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
     public BeanConfig beanConfig() {
+
         System.out.println("=======================================================================================> bean");
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");

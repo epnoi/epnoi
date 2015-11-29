@@ -1,6 +1,5 @@
 package org.epnoi.api.rest.services;
 
-import io.swagger.jersey.listing.ApiListingResourceJSON;
 import org.epnoi.api.rest.services.knowledgebase.KnowledgeBaseResource;
 import org.springframework.web.filter.RequestContextFilter;
 
