@@ -23,13 +23,7 @@
             <artifactId>epnoi-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-       <!--
-        <dependency>
-            <groupId>org.epnoi</groupId>
-            <artifactId>epnoi-learner</artifactId>
-            <version>${project.version}</version>
-        </dependency>
--->
+
         <dependency>
             <groupId>org.epnoi</groupId>
             <artifactId>epnoi-knowledgebase</artifactId>
@@ -43,13 +37,7 @@
             <artifactId>spring-web</artifactId>
 
         </dependency>
-        <!--
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
--->
+
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-spring</artifactId>
@@ -97,25 +85,11 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey-jaxrs</artifactId>
-            <version>1.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-
         </dependency>
-<!--
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.10</artifactId>
-            <exclusions>
-            <exclusion>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-            </exclusion>
-            </exclusions>
-        </dependency>
--->
 
     </dependencies>
     <build>
