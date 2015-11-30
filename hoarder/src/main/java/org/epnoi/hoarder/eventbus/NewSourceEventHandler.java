@@ -33,6 +33,7 @@ public class NewSourceEventHandler extends HoarderEventHandler {
             sourceService.newSource(source);
         } catch (Exception e){
             // TODO Notify to event-bus source not added
+            LOG.error("Error adding new source: ", e);
         }
     }
 }

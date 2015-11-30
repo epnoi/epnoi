@@ -2,6 +2,7 @@ package org.epnoi.hoarder.routes;
 
 import org.apache.camel.Expression;
 import org.apache.camel.builder.ValueBuilder;
+import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.model.language.ConstantExpression;
 import org.apache.camel.model.language.HeaderExpression;
 import org.apache.camel.model.language.SimpleExpression;
@@ -17,6 +18,12 @@ public class Expressions {
     public static XPathExpression xpath(String expression, Map<String,String> namespaces){
         XPathExpression xPathExpression = new XPathExpression(expression);
         xPathExpression.setNamespaces(namespaces);
+        return xPathExpression;
+    }
+
+    public static XPathExpression xpath(String expression, Namespaces namespaces){
+        XPathExpression xPathExpression = new XPathExpression(expression);
+        xPathExpression.setNamespaces(namespaces.getNamespaces());
         return xPathExpression;
     }
 

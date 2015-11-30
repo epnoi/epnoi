@@ -14,23 +14,12 @@ import javax.annotation.PostConstruct;
  * Created by cbadenes on 27/11/15.
  */
 @Component
-public class RSSSourceRouteMaker implements RouteMaker {
+public class RssRouteMaker implements RouteMaker {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RSSSourceRouteMaker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RssRouteMaker.class);
 
     @Autowired
     SpringCamelContext camelContext;
-
-    @PostConstruct
-    public void init() throws Exception {
-        LOG.info("registering route with common expressions to retrieve meta-information from RSS repositories..");
-
-        // Common meta-information expressions from RSS
-        camelContext.addRouteDefinition(new RSSExtractionRoute().definition());
-
-        LOG.info("RSS Common Routes added");
-    }
-
 
     @Override
     public boolean accept(String protocol) {
@@ -40,6 +29,6 @@ public class RSSSourceRouteMaker implements RouteMaker {
     @Override
     public RouteDefinition build(String url) {
 
-        return null;
+        throw new RuntimeException("Method does not implemented yet!");
     }
 }

@@ -2,7 +2,7 @@ package org.epnoi.hoarder.services;
 
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
-import org.epnoi.hoarder.routes.Router;
+import org.epnoi.hoarder.routes.RouteDefinitionFactory;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class SourceService {
     SpringCamelContext camelContext;
 
     @Autowired
-    Router router;
+    RouteDefinitionFactory routeDefinitionFactory;
 
     public SourceService(){
 
@@ -37,7 +37,7 @@ public class SourceService {
         // Check if exist in database
 
         // Create a new route for this url
-        RouteDefinition route = router.newSource(source.getUrl());
+        RouteDefinition route = routeDefinitionFactory.newRoute(source);
 
         // Add route to ddbb and notify to event.bus to rest of cluster
         // TODO Handle cluster actions
