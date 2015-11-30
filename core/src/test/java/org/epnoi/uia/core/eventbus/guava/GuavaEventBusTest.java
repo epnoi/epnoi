@@ -1,7 +1,5 @@
 package org.epnoi.uia.core.eventbus.guava;
 
-import com.google.common.eventbus.AllowConcurrentEvents;
-import com.google.common.eventbus.Subscribe;
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
 import org.epnoi.model.modules.BindingKey;
@@ -48,8 +46,6 @@ public class GuavaEventBusTest {
 
         eventBus.subscribe(new EventBusSubscriber() {
 
-            @AllowConcurrentEvents
-            @Subscribe
             @Override
             public void handle(Event event) {
                 LOG.info("Reacting to the event ! " + event.to(String.class));
