@@ -26,84 +26,70 @@
 
         <dependency>
             <groupId>org.epnoi</groupId>
-            <artifactId>epnoi-learner</artifactId>
-            <version>${project.version}</version>
-            <classifier>lib</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.epnoi</groupId>
-            <artifactId>epnoi-harvester</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.epnoi</groupId>
             <artifactId>epnoi-knowledgebase</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- External Dependencies -->
+
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+
         </dependency>
 
-
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-spring</artifactId>
+
             <exclusions>
                 <exclusion>
-                    <groupId>org.glassfish.jersey.core</groupId>
-                    <artifactId>jersey-server</artifactId>
-
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.glassfish.jersey.core</groupId>
-                    <artifactId>jersey-server</artifactId>
-
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.glassfish.jersey.containers</groupId>
-                    <artifactId>jersey-container-servlet-core</artifactId>
-
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlets</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-all</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-             if your container implements Servlet API older than 3.0, use "jersey-container-servlet-core"
-            <artifactId>jersey-container-servlet</artifactId>
-            <version>2.22.1</version>
-        </dependency>
-         Required only when you are using JAX-RS Client
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.22.1</version>
         </dependency>
 
--->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-bundle</artifactId>
+
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jersey-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
 
     </dependencies>
     <build>
@@ -115,20 +101,11 @@
                 <configuration>
                     <webApp>
                         <contextPath>/epnoi</contextPath>
-
                     </webApp>
-                    <!--
-                                        <connectors
-                                            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                                                <port>8080</port>
-
-                                            </connector>
-                                        </connectors>
-                                        -->
-                    <!-- <jettyXml>src/main/resources/jetty.xml</jettyXml> <scanIntervalSeconds>10</scanIntervalSeconds> -->
+                    <httpConnector>
+                        <port>8080</port>
+                    </httpConnector>
                 </configuration>
-
-
             </plugin>
         </plugins>
     </build>

@@ -1,0 +1,46 @@
+package org.epnoi.api;
+
+
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
+import org.epnoi.model.modules.Profiles;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.*;
+
+@Configuration
+@Import(org.epnoi.EpnoiConfig.class)
+@ComponentScan(basePackages = {"org.epnoi.api"})
+@PropertySource("classpath:/epnoi.properties")
+
+public class ApiConfig {
+    @Profile(Profiles.DEVELOP)
+    @Bean
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
+    public ApiListingResource apiListingResource() {
+        return new ApiListingResource();
+    }
+
+
+    @Profile(Profiles.DEVELOP)
+    @Bean
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
+    public SwaggerSerializers swaggerSerializer() {
+        return new SwaggerSerializers();
+    }
+
+    @Profile(Profiles.DEVELOP)
+    @Bean
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
+    public BeanConfig beanConfig() {
+        System.out.println("=======================================================================================> bean");
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.2");
+        beanConfig.setSchemes(new String[]{"http"});
+        beanConfig.setHost("localhost:8080/api");
+        beanConfig.setBasePath("/");
+        beanConfig.setResourcePackage("org.epnoi.api.rest.services.knowledgebase,org.epnoi.api.rest.services.nlp, org.epnoi.api.rest.services.search,org.epnoi.api.rest.services.uia");
+        beanConfig.setScan(true);
+        return beanConfig;
+    }
+}

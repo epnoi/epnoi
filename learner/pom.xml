@@ -15,8 +15,13 @@
 
     <dependencies>
 
-
         <!-- Internal Dependencies -->
+        <dependency>
+            <groupId>org.epnoi</groupId>
+            <artifactId>epnoi-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
@@ -25,51 +30,35 @@
         <dependency>
             <groupId>org.apache.mahout</groupId>
             <artifactId>mahout-core</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.epnoi</groupId>
-            <artifactId>epnoi-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-
         </dependency>
-
-
 
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
 
         </dependency>
+
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-bundle</artifactId>
-
         </dependency>
-      <!--
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-all</artifactId>
 
-        </dependency>
--->
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-spring</artifactId>
@@ -100,24 +89,8 @@
 
         <dependency>
             <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish.jersey.core</groupId>
-                    <artifactId>jersey-server</artifactId>
-
-                </exclusion>
-                <exclusion>
-                    <groupId>org.glassfish.jersey.core</groupId>
-                    <artifactId>jersey-server</artifactId>
-
-                </exclusion>
-                <exclusion>
-                    <groupId>org.glassfish.jersey.containers</groupId>
-                    <artifactId>jersey-container-servlet-core</artifactId>
-
-                </exclusion>
-            </exclusions>
+            <artifactId>swagger-jersey-jaxrs</artifactId>
+            <version>1.5.0</version>
         </dependency>
 
 <!--LEFT FOR JERSEY 2
@@ -165,36 +138,11 @@
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
         </dependency>
-<!--
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlets</artifactId>
-        </dependency>
-        -->
+
     </dependencies>
     <build>
         <plugins>
-        <!-- Attached JAR -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>${maven.jar.plugin.version}</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
-                    <configuration>
-                        <classifier>lib</classifier>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+
 
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>

@@ -1,57 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4"
-		 xmlns="http://java.sun.com/xml/ns/j2ee"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Learner</display-name>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+    <display-name>Learner</display-name>
+    <!-- prepare Spring Annotation Configuration-->
 
-	<!-- prepare Spring Annotation Configuration-->
-	<context-param>
-		<param-name>contextClass</param-name>
-		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-	</context-param>
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </context-param>
 
-	<!-- location of Spring Configuration Class-->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>org.epnoi.learner.LearnerConfig</param-value>
-	</context-param>
-	<context-param>
-		<param-name>spring.profiles.default</param-name>
-		<param-value>develop</param-value>
-	</context-param>
+    <!-- location of Spring Configuration Class-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>org.epnoi.learner.LearnerConfig</param-value>
+    </context-param>
+    <context-param>
+        <param-name>spring.profiles.default</param-name>
+        <param-value>develop</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
 
-	<servlet>
-		<servlet-name>jersey-servlet</servlet-name>
-		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-<!--
-		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.epnoi.learner.service.rest</param-value>
-		</init-param>
+
+    <servlet>
+        <servlet-name>jersey-servlet</servlet-name>
+        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>
+                io.swagger.jaxrs.json,
+                io.swagger.jaxrs.listing,
+                org.epnoi.learner.service.rest
+            </param-value>
+
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>
+                com.wordnik.swagger.jersey.listing.ApiListingResourceJSON,
+                com.wordnik.swagger.jersey.listing.JerseyApiDeclarationProvider,
+                com.wordnik.swagger.jersey.listing.JerseyResourceListingProvider
+            </param-value>
+        </init-param>
+        <!--
+                           <init-param>
+                               <param-name>javax.ws.rs.Application</param-name>
+                                 <param-value>org.epnoi.learner.service.rest.LearnerApplication</param-value>
+                           </init-param>
+        -->
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jersey-servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <!--
+    <servlet>
+        <servlet-name>Jersey2Config</servlet-name>
+        <servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
+        <init-param>
+            <param-name>api.version</param-name>
+            <param-value>1.0.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>swagger.api.basepath</param-name>
+            <param-value>http://localhost:8082/learner</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
 -->
-		<!--
-                   <init-param>
-                       <param-name>javax.ws.rs.Application</param-name>
-                         <param-value>org.epnoi.learner.service.rest.LearnerApplication</param-value>
-                   </init-param>
-    -->
-		<init-param>
-			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-			<param-value>true</param-value>
-		</init-param>
-
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>jersey-servlet</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
-
-
 </web-app>

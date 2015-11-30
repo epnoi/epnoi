@@ -2,6 +2,7 @@ package org.epnoi.uia.core;
 
 import org.epnoi.EpnoiConfig;
 import org.epnoi.model.modules.Core;
+import org.epnoi.model.modules.Profiles;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
@@ -23,7 +24,7 @@ public class CoreSpringUtility {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 
 
-        applicationContext.getEnvironment().setActiveProfiles(EpnoiConfig.DEVELOP_PROFILE);
+        applicationContext.getEnvironment().setActiveProfiles(Profiles.DEVELOP);
         MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 
         Map epnoiProperties = new HashMap();

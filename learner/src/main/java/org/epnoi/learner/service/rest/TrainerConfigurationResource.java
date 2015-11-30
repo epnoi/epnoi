@@ -1,5 +1,6 @@
 package org.epnoi.learner.service.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -23,6 +24,8 @@ import java.util.logging.Logger;
 
 @Component
 @Path("/trainer/configuration")
+@Api(value = "/trainer/configuration", description = "Operations for handling the trainer configuration")
+
 public class TrainerConfigurationResource {
     private static final Logger logger = Logger.getLogger(TrainerConfigurationResource.class
             .getName());
