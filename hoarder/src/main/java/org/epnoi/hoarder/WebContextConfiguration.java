@@ -7,12 +7,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.List;
 
 @Configuration
 @ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.hoarder"})
+//@ComponentScan( basePackages = "org.epnoi" )
+@PropertySource("classpath:epnoi.properties")
 public class WebContextConfiguration {
 
 
@@ -30,7 +33,7 @@ public class WebContextConfiguration {
 
     //To resolve ${} in @Value
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+    public static PropertySourcesPlaceholderConfigurer properties() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 

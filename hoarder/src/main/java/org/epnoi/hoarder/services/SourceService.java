@@ -3,8 +3,10 @@ package org.epnoi.hoarder.services;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.epnoi.hoarder.routes.RouteDefinitionFactory;
+import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
+import org.epnoi.model.modules.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,36 +33,42 @@ public class SourceService {
 
     }
 
-    public Resource newSource(Source source) throws Exception {
+    public Source create(Source source) throws Exception {
         LOG.info("adding source: " + source);
 
-        // Check if exist in database
+        // TODO if exist in database return
 
-        // Create a new route for this url
+        // Create a new route for this source
         RouteDefinition route = routeDefinitionFactory.newRoute(source);
 
-        // Add route to ddbb and notify to event.bus to rest of cluster
-        // TODO Handle cluster actions
+        // TODO Save route in ddbb
 
         // Add route to camel-context
         LOG.info("adding route to hoarding: " + route);
         camelContext.addRouteDefinition(route);
 
+        // TODO Notify the creation of a new hoarder route (to handle cluster recovery)
+        //eventBus.post(Event.from());
+
         return source;
     }
 
-
-    public List<Source> listSources(){
-        LOG.debug("listing Sources ..");
-        List<Source> sourcesList = new ArrayList<>();
-
-        return sourcesList;
+    public Source update(String uri,Source source){
+        throw new RuntimeException("Method does not implemented yet");
     }
 
 
-    public Source getSource(String id){
-        LOG.debug("getting Source '" + id + "'");
-        return null;
+    public Source remove(String uri){
+        throw new RuntimeException("Method does not implemented yet");
+    }
+
+    public List<Source> list(){
+        throw new RuntimeException("Method does not implemented yet");
+    }
+
+
+    public Source get(String id){
+        throw new RuntimeException("Method does not implemented yet");
     }
 
 

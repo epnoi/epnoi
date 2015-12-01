@@ -39,7 +39,7 @@ public class CommonRouteBuilder extends RouteBuilder{
     @Autowired
     protected UUIDGenerator uuidGenerator;
 
-    @Value("${storage.path}")
+    @Value("${epnoi.hoarder.storage.path}")
     protected String basedir;
 
     @Override

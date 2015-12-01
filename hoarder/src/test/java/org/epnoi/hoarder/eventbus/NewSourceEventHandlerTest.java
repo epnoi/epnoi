@@ -28,7 +28,7 @@ import java.util.List;
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebContextConfiguration.class)
-@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "storage.path = target/storage" })
+@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = target/storage" })
 public class NewSourceEventHandlerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(NewSourceEventHandlerTest.class);
@@ -40,7 +40,7 @@ public class NewSourceEventHandlerTest {
     CamelContext camelContext;
 
     @Test
-    public void newSource() throws InterruptedException {
+    public void newSource() throws Exception {
 
         List<Route> initialRoutes = camelContext.getRoutes();
 
@@ -62,6 +62,8 @@ public class NewSourceEventHandlerTest {
         long newroute = modifiedRoutes.stream().filter(route -> route.getConsumer().getEndpoint().getEndpointUri().contains(source.getUrl())).count();
 
         Assert.assertEquals("New Route",1L,newroute);
+
+        camelContext.stop();
 
 
     }
