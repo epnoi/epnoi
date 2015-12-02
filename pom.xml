@@ -110,6 +110,7 @@
         <testutils.version>1.0.0</testutils.version>
         <tomcat.version>8.0.21</tomcat.version>
         <tomcat.jasper.version>7.0.8</tomcat.jasper.version>
+        <thrift.version>0.9.2</thrift.version>
         <tika.version>1.7</tika.version>
         <tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
         <virtuoso.jena.version>1.0</virtuoso.jena.version>
@@ -410,6 +411,11 @@
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-jaxb</artifactId>
                 <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.thrift</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>${thrift.version}</version>
             </dependency>
 
             <!-- NLP Libraries -->

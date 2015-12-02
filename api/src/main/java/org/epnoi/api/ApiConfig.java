@@ -10,6 +10,7 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 @Import(org.epnoi.EpnoiConfig.class)
+//@Import(org.epnoi.api.ThriftConfig.class)
 @ComponentScan(basePackages = {"org.epnoi.api"})
 @PropertySource("classpath:/epnoi.properties")
 
@@ -33,11 +34,11 @@ public class ApiConfig {
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public BeanConfig beanConfig() {
-        System.out.println("=======================================================================================> bean");
+
         BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0.2");
+        beanConfig.setVersion("0.0.1");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("localhost:8080/api");
+        beanConfig.setHost("localhost:8080/epnoi/rest");
         beanConfig.setBasePath("/");
         beanConfig.setResourcePackage("org.epnoi.api.rest.services.knowledgebase,org.epnoi.api.rest.services.nlp, org.epnoi.api.rest.services.search,org.epnoi.api.rest.services.uia");
         beanConfig.setScan(true);
