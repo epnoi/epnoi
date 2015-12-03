@@ -1,5 +1,6 @@
 package org.epnoi.model.modules;
 
+import gate.Document;
 import org.epnoi.model.Content;
 import org.epnoi.model.Context;
 import org.epnoi.model.Resource;

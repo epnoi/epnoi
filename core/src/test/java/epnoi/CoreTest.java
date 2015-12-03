@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Created by rgonzalez on 3/12/15.
  */
-@Category(IntegrationTest.class)
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = org.epnoi.EpnoiConfig.class)
 @ActiveProfiles("develop")
