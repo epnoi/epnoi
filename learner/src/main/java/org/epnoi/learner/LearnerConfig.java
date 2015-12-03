@@ -126,7 +126,7 @@ public class LearnerConfig {
     @Profile(Profiles.DEVELOP)
     public LearningParameters learningParameters() {
         LearningParameters learningParameters = new LearningParameters();
-        System.out.println("=======================================================================================> bean");
+    //    System.out.println("=======================================================================================> bean");
 /*
     learningParameters.setParameter(
             LearningParameters.CONSIDERED_DOMAINS,
@@ -177,7 +177,7 @@ public class LearnerConfig {
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public BeanConfig beanConfig() {
 
-        System.out.println("=======================================================================================> bean");
+
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});

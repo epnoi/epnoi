@@ -21,7 +21,8 @@ import java.util.logging.Logger;
 
 @Configuration
 @ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class, SearchHandlerImpl.class, AnnotationHandlerImpl.class, InformationHandlerImpl.class, DomainsHandlerImpl.class, KnolwedgeBaseImpl.class, HarvestersHandlerImpl.class})
-@PropertySource("classpath:/epnoi.properties")
+
+@PropertySource(value={"classpath:/epnoi.properties"})
 public class EpnoiConfig {
     private static final Logger logger = Logger.getLogger(EpnoiConfig.class
             .getName());
@@ -29,27 +30,29 @@ public class EpnoiConfig {
     public static final String EPNOI_PROPERTIES = "epnoi.configurable.properties";
     public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
+    @Value("${epnoi.config.path}")
+    String configurationFilePath;
 
     @Autowired
     ConfigurableEnvironment configurableEnvironment;
 
     @Bean
-    public
-    static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
+    public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        System.out.println("===================================================================================================BEAN "+configurationFilePath);
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Value("${epnoi.config.path}")
-    String configurationFilePath;
 
 
     @Bean
     @Profile(Profiles.DEVELOP)
     public ParametersModel developParametersModel() {
-        logger.info("Creating the parameters model");
+        logger.info("Creating the parameters model -----------------------------------------"+configurationFilePath);
+        System.out.println("Creating the parameters model -----------------------------------------"+configurationFilePath);
         ParametersModel parametersModel = null;
         org.springframework.core.env.PropertySource<?> epnoiPropertySources =configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES);
-
+        System.out.println("=============================================================================================================_____=== "+epnoiPropertySources);
         if (epnoiPropertySources!=null && (epnoiPropertySources.getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH) != null))
         {
             String deployPath = (String) configurableEnvironment.getPropertySources().get(EpnoiConfig.EPNOI_PROPERTIES).getProperty(EpnoiConfig.EPNOI_PROPERTIES_PATH);
@@ -66,6 +69,8 @@ public class EpnoiConfig {
 
 
     }
+
+
 }
 /* LEFT FOR FUTURE USE
     @Bean

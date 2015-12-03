@@ -15,7 +15,10 @@
 	<!-- location of Spring Configuration Class-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.epnoi.api.ApiConfig</param-value>
+		<param-value>
+			org.epnoi.api.ApiConfig
+			org.epnoi.EpnoiConfig
+		</param-value>
 	</context-param>
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
@@ -28,7 +31,7 @@
 	</listener>
 
 
-
+<!--
 	<servlet>
 		<servlet-name>jersey-servlet</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
@@ -64,5 +67,5 @@
 		<servlet-name>jersey-servlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
+-->
 </web-app>

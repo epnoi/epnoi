@@ -18,14 +18,14 @@ public class ThriftServer {
     private static final Logger logger = Logger.getLogger(ThriftServer.class
             .getName());
 
-    @Value("${epnoi.api.thrift.port}")
-    int port;
+   // @Value("${epnoi.api.thrift.port}")
+    int port =5959;
 
-    @Value("${epnoi.api.thrift.workers}")
-    int workers;
+   // @Value("${epnoi.api.thrift.workers}")
+    int workers=12;
 
-    @Value("${epnoi.api.thrift.selector}")
-    int selectors;
+    //@Value("${epnoi.api.thrift.selector}")
+    int selectors=6;
 
     TServer server;
 
