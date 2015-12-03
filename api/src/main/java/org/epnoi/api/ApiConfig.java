@@ -9,12 +9,16 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
 
 @Configuration
+//@ComponentScan("org.epnoi.api")
 @Import(org.epnoi.EpnoiConfig.class)
-//@Import(org.epnoi.api.ThriftConfig.class)
-@ComponentScan(basePackages = {"org.epnoi.api"})
-//@PropertySource("classpath:/epnoi.properties")
+
+@ComponentScan(basePackages = {"org.epnoi.api.thrift","org.epnoi.api.rest"})
+@PropertySource("classpath:epnoi.properties")
 
 public class ApiConfig {
+
+//Swagger related beans
+
     @Profile(Profiles.DEVELOP)
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
@@ -34,7 +38,6 @@ public class ApiConfig {
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public BeanConfig beanConfig() {
-
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("0.0.1");
         beanConfig.setSchemes(new String[]{"http"});
@@ -44,4 +47,5 @@ public class ApiConfig {
         beanConfig.setScan(true);
         return beanConfig;
     }
+
 }

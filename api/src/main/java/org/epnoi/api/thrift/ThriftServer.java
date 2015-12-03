@@ -5,38 +5,42 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.epnoi.api.thrift.services.ThriftServiceHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.List;
 import java.util.logging.Logger;
-
 
 @Component
 public class ThriftServer {
     private static final Logger logger = Logger.getLogger(ThriftServer.class
             .getName());
 
-   // @Value("${epnoi.api.thrift.port}")
-    int port =5959;
+    @Autowired
+    List<ThriftServiceHandler> serviceHandlers;
 
-   // @Value("${epnoi.api.thrift.workers}")
-    int workers=12;
+    @Value("${epnoi.api.thrift.port}")
+    int port;
 
-    //@Value("${epnoi.api.thrift.selector}")
-    int selectors=6;
+    @Value("${epnoi.api.thrift.port}")
+    int workers;
+
+    @Value("${epnoi.api.thrift.port}")
+    int selectors;
 
     TServer server;
 
     Thread serverThread;
 
-    public ThriftServer(){
-    }
 
     @PostConstruct
-    public void start() {
-        logger.info("Starting the thrift server " + port);
+    public void start(){
+
+        logger.info("Starting the thrift server " + port + " with the following service handlers " + serviceHandlers);
         try {
 
             TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(8585);
@@ -81,6 +85,7 @@ public class ThriftServer {
 
     class RunnableServer implements Runnable {
         private TServer server;
+
         public RunnableServer(TServer server) {
             this.server = server;
         }

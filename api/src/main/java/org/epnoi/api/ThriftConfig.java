@@ -11,7 +11,7 @@ import java.util.Map;
 @Import(org.epnoi.EpnoiConfig.class)
 //@Import(org.epnoi.api.ThriftConfig.class)
 @ComponentScan(basePackages = {"org.epnoi.api"})
-@PropertySource("classpath:/epnoi.properties")
+@PropertySource("classpath:epnoi.properties")
 
 public class ThriftConfig {
   //  @Profile(Profiles.DEVELOP)

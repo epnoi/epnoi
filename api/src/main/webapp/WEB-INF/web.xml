@@ -17,7 +17,6 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			org.epnoi.api.ApiConfig
-			org.epnoi.EpnoiConfig
 		</param-value>
 	</context-param>
 	<context-param>
