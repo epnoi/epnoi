@@ -1,6 +1,5 @@
 package org.epnoi.api.thrift.services;
 
-import gate.Document;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.thrift.TException;
 import org.epnoi.model.Content;
@@ -20,13 +19,13 @@ import java.nio.ByteBuffer;
  */
 @Component
 public class AnnotatedContentServiceHandler extends ThriftServiceHandler implements AnnotatedContentService.Iface {
-    private static final String name = "AnnotatedContentServiceHandler";
+    public static final String service = "AnnotatedContentServiceHandler";
     @Autowired
     Core core;
 
     @Override
     public String getService() {
-        return name;
+        return service;
     }
 
     public AnnotatedContentServiceHandler() {
