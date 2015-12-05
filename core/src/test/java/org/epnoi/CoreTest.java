@@ -1,4 +1,4 @@
-package epnoi;
+package org.epnoi;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.junit.Test;
@@ -6,6 +6,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = org.epnoi.EpnoiConfig.class)
 @ActiveProfiles("develop")
-//@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "storage.path = target/storage" })
+@TestPropertySource(properties = { "epnoi.config.path = testUIA.xml" })
 public class CoreTest {
 
 
