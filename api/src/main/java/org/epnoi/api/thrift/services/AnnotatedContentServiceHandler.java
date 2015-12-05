@@ -34,22 +34,27 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
 
     @Override
     public AnnotatedDocument getAnnotatedContent(String uri, String type) throws TException {
+        System.out.println("________________________> "+uri +"|> "+type);
         AnnotatedDocument annotatedDocument = new AnnotatedDocument();
         try {
             Selector selector = new Selector();
             selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, uri);
             selector.setProperty(SelectorHelper.TYPE, type);
             Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
-            content.getContent();
-            byte[] serializedDocument = null;
-            try {
-                serializedDocument = SerializationUtils.serialize((Serializable) content.getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
+            System.out.println("content> "+content);
+            if(content!=null) {
+                content.getContent();
+                byte[] serializedDocument = null;
+                try {
+                    serializedDocument = SerializationUtils.serialize((Serializable) content.getContent());
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-            }
+                }
+
             annotatedDocument.setDoc(ByteBuffer.wrap(serializedDocument));
             annotatedDocument.setContentType(content.getType());
+            }
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

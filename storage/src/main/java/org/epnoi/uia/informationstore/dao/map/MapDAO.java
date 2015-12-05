@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 public abstract class MapDAO implements DAO {
-	protected static DB database;
+	public static DB database;
 	private static File databaseFile;
 	private static boolean initialized = false;
 	private static final String ANNOTATED_CONTENT_COLLECTION = "ANNOTATED_CONTENT_COLLECTION";
