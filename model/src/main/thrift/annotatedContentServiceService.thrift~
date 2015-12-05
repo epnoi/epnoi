@@ -1,0 +1,10 @@
+namespace java org.epnoi.model.services.thrift.services  // defines the namespace
+
+struct AnnotatedDocument {
+  1: string contentType,
+  2: binary doc,
+}
+
+service AnnotatedContentService {  // defines the service to retrieve an annotated document
+       AnnotatedDocument getAnnotatedContent(1:string uri), //defines a method
+}

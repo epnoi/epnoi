@@ -15,7 +15,9 @@
 	<!-- location of Spring Configuration Class-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.epnoi.api.ApiConfig</param-value>
+		<param-value>
+			org.epnoi.api.ApiConfig
+		</param-value>
 	</context-param>
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
@@ -64,27 +66,5 @@
 		<servlet-name>jersey-servlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
-<!--
-
-	<servlet>
-		<servlet-name>Jersey2Config</servlet-name>
-		<servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
-		<init-param>
-			<param-name>api.version</param-name>
-			<param-value>1.0.0</param-value>
-		</init-param>
-		<init-param>
-			<param-name>swagger.api.basepath</param-name>
-		 	
-		<param-value>http://localhost:8080/epnoi/rest</param-value>
-		-->
-	 	<!-- 	 <param-value>http://zavijava.dia.fi.upm.es:8080/epnoi/rest</param-value>    -->
-	<!--	</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-
--->
-
 
 </web-app>
