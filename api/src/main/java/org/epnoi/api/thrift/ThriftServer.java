@@ -7,7 +7,6 @@ import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.epnoi.api.thrift.services.AnnotatedContentServiceHandler;
 import org.epnoi.api.thrift.services.ThriftServiceHandler;
-import org.epnoi.api.thrift.services.UIAService;
 import org.epnoi.model.services.thrift.AnnotatedContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
