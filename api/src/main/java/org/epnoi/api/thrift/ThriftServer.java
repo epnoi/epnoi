@@ -5,7 +5,9 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.epnoi.api.thrift.services.AnnotatedContentServiceHandler;
 import org.epnoi.api.thrift.services.ThriftServiceHandler;
+import org.epnoi.model.services.thrift.AnnotatedContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,7 @@ public class ThriftServer {
     @Autowired
     List<ThriftServiceHandler> serviceHandlers;
 
+
     @Value("${epnoi.api.thrift.port}")
     int port;
 
@@ -36,24 +39,21 @@ public class ThriftServer {
 
     Thread serverThread;
 
+    @Autowired
+    AnnotatedContentServiceHandler annotatedContentServiceHandler;
+
 
     @PostConstruct
-    public void start(){
+    public void start() {
 
         logger.info("Starting the thrift server " + port + " with the following service handlers " + serviceHandlers);
         try {
 
-            TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(8585);
+            TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(port);
 
             TMultiplexedProcessor proc = new TMultiplexedProcessor();
-           /*REGISTER
-            proc.registerProcessor(ParametersServiceHandler.service,
-                    new ParametersService.Processor<>(parametersServiceHandler));
+            _initServiceHandlers(proc);
 
-            proc.registerProcessor(HelloWorldServiceHandler.service,
-
-                    new HelloWorldService.Processor<>(new HelloWorldServiceHandler()));
-*/
             this.server = new TThreadedSelectorServer(
                     new TThreadedSelectorServer.Args(serverTransport).processor(proc)
                             .protocolFactory(new TBinaryProtocol.Factory())
@@ -69,6 +69,12 @@ public class ThriftServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void _initServiceHandlers(TMultiplexedProcessor proc) {
+        proc.registerProcessor(AnnotatedContentServiceHandler.service, new AnnotatedContentService.Processor<>(annotatedContentServiceHandler));
+
+
     }
 
     @PreDestroy
