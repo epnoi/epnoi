@@ -4,6 +4,7 @@ import org.apache.commons.lang.SerializationUtils;
 import org.apache.thrift.TException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.services.thrift.Resource;
+import org.epnoi.model.services.thrift.Services;
 import org.epnoi.model.services.thrift.UIAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,13 +16,13 @@ import java.nio.ByteBuffer;
  */
 @Component
 public class UIAServiceHandler extends ThriftServiceHandler implements UIAService.Iface {
-    public static final String service = "UIAServiceHandler";
+
     @Autowired
     Core core;
 
     @Override
     public String getService() {
-        return service;
+        return Services.UIA.name();
     }
 
     public UIAServiceHandler() {

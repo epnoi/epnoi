@@ -75,8 +75,8 @@ public class ThriftServer {
     }
 
     private void _initServiceHandlers(TMultiplexedProcessor proc) {
-        proc.registerProcessor(AnnotatedContentServiceHandler.service, new AnnotatedContentService.Processor<>(annotatedContentServiceHandler));
-        proc.registerProcessor(UIAServiceHandler.service, new UIAService.Processor<>(uiaServiceHandler));
+        proc.registerProcessor(annotatedContentServiceHandler.getService(), new AnnotatedContentService.Processor<>(annotatedContentServiceHandler));
+        proc.registerProcessor(uiaServiceHandler.getService(), new UIAService.Processor<>(uiaServiceHandler));
 
 
     }
