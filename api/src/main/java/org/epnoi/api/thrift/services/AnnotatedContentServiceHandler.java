@@ -7,6 +7,7 @@ import org.epnoi.model.Selector;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.services.thrift.AnnotatedContentService;
 import org.epnoi.model.services.thrift.AnnotatedDocument;
+import org.epnoi.model.services.thrift.Services;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,13 +20,13 @@ import java.nio.ByteBuffer;
  */
 @Component
 public class AnnotatedContentServiceHandler extends ThriftServiceHandler implements AnnotatedContentService.Iface {
-    public static final String service = "AnnotatedContentServiceHandler";
+
     @Autowired
     Core core;
 
     @Override
     public String getService() {
-        return service;
+        return Services.ANNOTATEDCONTENT.name();
     }
 
     public AnnotatedContentServiceHandler() {

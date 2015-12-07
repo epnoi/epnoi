@@ -32,17 +32,17 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnotatedContentService {
+public class UIAService {
 
   public interface Iface {
 
-    public AnnotatedDocument getAnnotatedContent(String uri, String type) throws org.apache.thrift.TException;
+    public Resource getResource(String uri, String type) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getAnnotatedContent(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void getResource(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -66,28 +66,28 @@ public class AnnotatedContentService {
       super(iprot, oprot);
     }
 
-    public AnnotatedDocument getAnnotatedContent(String uri, String type) throws org.apache.thrift.TException
+    public Resource getResource(String uri, String type) throws org.apache.thrift.TException
     {
-      send_getAnnotatedContent(uri, type);
-      return recv_getAnnotatedContent();
+      send_getResource(uri, type);
+      return recv_getResource();
     }
 
-    public void send_getAnnotatedContent(String uri, String type) throws org.apache.thrift.TException
+    public void send_getResource(String uri, String type) throws org.apache.thrift.TException
     {
-      getAnnotatedContent_args args = new getAnnotatedContent_args();
+      getResource_args args = new getResource_args();
       args.setUri(uri);
       args.setType(type);
-      sendBase("getAnnotatedContent", args);
+      sendBase("getResource", args);
     }
 
-    public AnnotatedDocument recv_getAnnotatedContent() throws org.apache.thrift.TException
+    public Resource recv_getResource() throws org.apache.thrift.TException
     {
-      getAnnotatedContent_result result = new getAnnotatedContent_result();
-      receiveBase(result, "getAnnotatedContent");
+      getResource_result result = new getResource_result();
+      receiveBase(result, "getResource");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getAnnotatedContent failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getResource failed: unknown result");
     }
 
   }
@@ -108,38 +108,38 @@ public class AnnotatedContentService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getAnnotatedContent(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void getResource(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getAnnotatedContent_call method_call = new getAnnotatedContent_call(uri, type, resultHandler, this, ___protocolFactory, ___transport);
+      getResource_call method_call = new getResource_call(uri, type, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getAnnotatedContent_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class getResource_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String uri;
       private String type;
-      public getAnnotatedContent_call(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public getResource_call(String uri, String type, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.uri = uri;
         this.type = type;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getAnnotatedContent", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getAnnotatedContent_args args = new getAnnotatedContent_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getResource", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getResource_args args = new getResource_args();
         args.setUri(uri);
         args.setType(type);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public AnnotatedDocument getResult() throws org.apache.thrift.TException {
+      public Resource getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getAnnotatedContent();
+        return (new Client(prot)).recv_getResource();
       }
     }
 
@@ -156,26 +156,26 @@ public class AnnotatedContentService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getAnnotatedContent", new getAnnotatedContent());
+      processMap.put("getResource", new getResource());
       return processMap;
     }
 
-    public static class getAnnotatedContent<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getAnnotatedContent_args> {
-      public getAnnotatedContent() {
-        super("getAnnotatedContent");
+    public static class getResource<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getResource_args> {
+      public getResource() {
+        super("getResource");
       }
 
-      public getAnnotatedContent_args getEmptyArgsInstance() {
-        return new getAnnotatedContent_args();
+      public getResource_args getEmptyArgsInstance() {
+        return new getResource_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public getAnnotatedContent_result getResult(I iface, getAnnotatedContent_args args) throws org.apache.thrift.TException {
-        getAnnotatedContent_result result = new getAnnotatedContent_result();
-        result.success = iface.getAnnotatedContent(args.uri, args.type);
+      public getResource_result getResult(I iface, getResource_args args) throws org.apache.thrift.TException {
+        getResource_result result = new getResource_result();
+        result.success = iface.getResource(args.uri, args.type);
         return result;
       }
     }
@@ -193,24 +193,24 @@ public class AnnotatedContentService {
     }
 
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
-      processMap.put("getAnnotatedContent", new getAnnotatedContent());
+      processMap.put("getResource", new getResource());
       return processMap;
     }
 
-    public static class getAnnotatedContent<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getAnnotatedContent_args, AnnotatedDocument> {
-      public getAnnotatedContent() {
-        super("getAnnotatedContent");
+    public static class getResource<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getResource_args, Resource> {
+      public getResource() {
+        super("getResource");
       }
 
-      public getAnnotatedContent_args getEmptyArgsInstance() {
-        return new getAnnotatedContent_args();
+      public getResource_args getEmptyArgsInstance() {
+        return new getResource_args();
       }
 
-      public AsyncMethodCallback<AnnotatedDocument> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<Resource> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<AnnotatedDocument>() { 
-          public void onComplete(AnnotatedDocument o) {
-            getAnnotatedContent_result result = new getAnnotatedContent_result();
+        return new AsyncMethodCallback<Resource>() { 
+          public void onComplete(Resource o) {
+            getResource_result result = new getResource_result();
             result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -223,7 +223,7 @@ public class AnnotatedContentService {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            getAnnotatedContent_result result = new getAnnotatedContent_result();
+            getResource_result result = new getResource_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -243,23 +243,23 @@ public class AnnotatedContentService {
         return false;
       }
 
-      public void start(I iface, getAnnotatedContent_args args, org.apache.thrift.async.AsyncMethodCallback<AnnotatedDocument> resultHandler) throws TException {
-        iface.getAnnotatedContent(args.uri, args.type,resultHandler);
+      public void start(I iface, getResource_args args, org.apache.thrift.async.AsyncMethodCallback<Resource> resultHandler) throws TException {
+        iface.getResource(args.uri, args.type,resultHandler);
       }
     }
 
   }
 
-  public static class getAnnotatedContent_args implements org.apache.thrift.TBase<getAnnotatedContent_args, getAnnotatedContent_args._Fields>, java.io.Serializable, Cloneable, Comparable<getAnnotatedContent_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAnnotatedContent_args");
+  public static class getResource_args implements org.apache.thrift.TBase<getResource_args, getResource_args._Fields>, java.io.Serializable, Cloneable, Comparable<getResource_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getResource_args");
 
     private static final org.apache.thrift.protocol.TField URI_FIELD_DESC = new org.apache.thrift.protocol.TField("uri", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new getAnnotatedContent_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getAnnotatedContent_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getResource_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getResource_argsTupleSchemeFactory());
     }
 
     public String uri; // required
@@ -335,13 +335,13 @@ public class AnnotatedContentService {
       tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAnnotatedContent_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getResource_args.class, metaDataMap);
     }
 
-    public getAnnotatedContent_args() {
+    public getResource_args() {
     }
 
-    public getAnnotatedContent_args(
+    public getResource_args(
       String uri,
       String type)
     {
@@ -353,7 +353,7 @@ public class AnnotatedContentService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getAnnotatedContent_args(getAnnotatedContent_args other) {
+    public getResource_args(getResource_args other) {
       if (other.isSetUri()) {
         this.uri = other.uri;
       }
@@ -362,8 +362,8 @@ public class AnnotatedContentService {
       }
     }
 
-    public getAnnotatedContent_args deepCopy() {
-      return new getAnnotatedContent_args(this);
+    public getResource_args deepCopy() {
+      return new getResource_args(this);
     }
 
     @Override
@@ -376,7 +376,7 @@ public class AnnotatedContentService {
       return this.uri;
     }
 
-    public getAnnotatedContent_args setUri(String uri) {
+    public getResource_args setUri(String uri) {
       this.uri = uri;
       return this;
     }
@@ -400,7 +400,7 @@ public class AnnotatedContentService {
       return this.type;
     }
 
-    public getAnnotatedContent_args setType(String type) {
+    public getResource_args setType(String type) {
       this.type = type;
       return this;
     }
@@ -472,12 +472,12 @@ public class AnnotatedContentService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getAnnotatedContent_args)
-        return this.equals((getAnnotatedContent_args)that);
+      if (that instanceof getResource_args)
+        return this.equals((getResource_args)that);
       return false;
     }
 
-    public boolean equals(getAnnotatedContent_args that) {
+    public boolean equals(getResource_args that) {
       if (that == null)
         return false;
 
@@ -508,7 +508,7 @@ public class AnnotatedContentService {
     }
 
     @Override
-    public int compareTo(getAnnotatedContent_args other) {
+    public int compareTo(getResource_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -552,7 +552,7 @@ public class AnnotatedContentService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getAnnotatedContent_args(");
+      StringBuilder sb = new StringBuilder("getResource_args(");
       boolean first = true;
 
       sb.append("uri:");
@@ -595,15 +595,15 @@ public class AnnotatedContentService {
       }
     }
 
-    private static class getAnnotatedContent_argsStandardSchemeFactory implements SchemeFactory {
-      public getAnnotatedContent_argsStandardScheme getScheme() {
-        return new getAnnotatedContent_argsStandardScheme();
+    private static class getResource_argsStandardSchemeFactory implements SchemeFactory {
+      public getResource_argsStandardScheme getScheme() {
+        return new getResource_argsStandardScheme();
       }
     }
 
-    private static class getAnnotatedContent_argsStandardScheme extends StandardScheme<getAnnotatedContent_args> {
+    private static class getResource_argsStandardScheme extends StandardScheme<getResource_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getAnnotatedContent_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getResource_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -640,7 +640,7 @@ public class AnnotatedContentService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getAnnotatedContent_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getResource_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -660,16 +660,16 @@ public class AnnotatedContentService {
 
     }
 
-    private static class getAnnotatedContent_argsTupleSchemeFactory implements SchemeFactory {
-      public getAnnotatedContent_argsTupleScheme getScheme() {
-        return new getAnnotatedContent_argsTupleScheme();
+    private static class getResource_argsTupleSchemeFactory implements SchemeFactory {
+      public getResource_argsTupleScheme getScheme() {
+        return new getResource_argsTupleScheme();
       }
     }
 
-    private static class getAnnotatedContent_argsTupleScheme extends TupleScheme<getAnnotatedContent_args> {
+    private static class getResource_argsTupleScheme extends TupleScheme<getResource_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getAnnotatedContent_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getResource_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetUri()) {
@@ -688,7 +688,7 @@ public class AnnotatedContentService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getAnnotatedContent_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getResource_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
@@ -704,18 +704,18 @@ public class AnnotatedContentService {
 
   }
 
-  public static class getAnnotatedContent_result implements org.apache.thrift.TBase<getAnnotatedContent_result, getAnnotatedContent_result._Fields>, java.io.Serializable, Cloneable, Comparable<getAnnotatedContent_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAnnotatedContent_result");
+  public static class getResource_result implements org.apache.thrift.TBase<getResource_result, getResource_result._Fields>, java.io.Serializable, Cloneable, Comparable<getResource_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getResource_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new getAnnotatedContent_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getAnnotatedContent_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getResource_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getResource_resultTupleSchemeFactory());
     }
 
-    public AnnotatedDocument success; // required
+    public Resource success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -780,16 +780,16 @@ public class AnnotatedContentService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, AnnotatedDocument.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Resource.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAnnotatedContent_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getResource_result.class, metaDataMap);
     }
 
-    public getAnnotatedContent_result() {
+    public getResource_result() {
     }
 
-    public getAnnotatedContent_result(
-      AnnotatedDocument success)
+    public getResource_result(
+      Resource success)
     {
       this();
       this.success = success;
@@ -798,14 +798,14 @@ public class AnnotatedContentService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getAnnotatedContent_result(getAnnotatedContent_result other) {
+    public getResource_result(getResource_result other) {
       if (other.isSetSuccess()) {
-        this.success = new AnnotatedDocument(other.success);
+        this.success = new Resource(other.success);
       }
     }
 
-    public getAnnotatedContent_result deepCopy() {
-      return new getAnnotatedContent_result(this);
+    public getResource_result deepCopy() {
+      return new getResource_result(this);
     }
 
     @Override
@@ -813,11 +813,11 @@ public class AnnotatedContentService {
       this.success = null;
     }
 
-    public AnnotatedDocument getSuccess() {
+    public Resource getSuccess() {
       return this.success;
     }
 
-    public getAnnotatedContent_result setSuccess(AnnotatedDocument success) {
+    public getResource_result setSuccess(Resource success) {
       this.success = success;
       return this;
     }
@@ -843,7 +843,7 @@ public class AnnotatedContentService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((AnnotatedDocument)value);
+          setSuccess((Resource)value);
         }
         break;
 
@@ -876,12 +876,12 @@ public class AnnotatedContentService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getAnnotatedContent_result)
-        return this.equals((getAnnotatedContent_result)that);
+      if (that instanceof getResource_result)
+        return this.equals((getResource_result)that);
       return false;
     }
 
-    public boolean equals(getAnnotatedContent_result that) {
+    public boolean equals(getResource_result that) {
       if (that == null)
         return false;
 
@@ -903,7 +903,7 @@ public class AnnotatedContentService {
     }
 
     @Override
-    public int compareTo(getAnnotatedContent_result other) {
+    public int compareTo(getResource_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -937,7 +937,7 @@ public class AnnotatedContentService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getAnnotatedContent_result(");
+      StringBuilder sb = new StringBuilder("getResource_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -975,15 +975,15 @@ public class AnnotatedContentService {
       }
     }
 
-    private static class getAnnotatedContent_resultStandardSchemeFactory implements SchemeFactory {
-      public getAnnotatedContent_resultStandardScheme getScheme() {
-        return new getAnnotatedContent_resultStandardScheme();
+    private static class getResource_resultStandardSchemeFactory implements SchemeFactory {
+      public getResource_resultStandardScheme getScheme() {
+        return new getResource_resultStandardScheme();
       }
     }
 
-    private static class getAnnotatedContent_resultStandardScheme extends StandardScheme<getAnnotatedContent_result> {
+    private static class getResource_resultStandardScheme extends StandardScheme<getResource_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getAnnotatedContent_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getResource_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -995,7 +995,7 @@ public class AnnotatedContentService {
           switch (schemeField.id) {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new AnnotatedDocument();
+                struct.success = new Resource();
                 struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
@@ -1013,7 +1013,7 @@ public class AnnotatedContentService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getAnnotatedContent_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getResource_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1028,16 +1028,16 @@ public class AnnotatedContentService {
 
     }
 
-    private static class getAnnotatedContent_resultTupleSchemeFactory implements SchemeFactory {
-      public getAnnotatedContent_resultTupleScheme getScheme() {
-        return new getAnnotatedContent_resultTupleScheme();
+    private static class getResource_resultTupleSchemeFactory implements SchemeFactory {
+      public getResource_resultTupleScheme getScheme() {
+        return new getResource_resultTupleScheme();
       }
     }
 
-    private static class getAnnotatedContent_resultTupleScheme extends TupleScheme<getAnnotatedContent_result> {
+    private static class getResource_resultTupleScheme extends TupleScheme<getResource_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getAnnotatedContent_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getResource_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -1050,11 +1050,11 @@ public class AnnotatedContentService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getAnnotatedContent_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getResource_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.success = new AnnotatedDocument();
+          struct.success = new Resource();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }

@@ -32,25 +32,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocument, AnnotatedDocument._Fields>, java.io.Serializable, Cloneable, Comparable<AnnotatedDocument> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AnnotatedDocument");
+public class Resource implements org.apache.thrift.TBase<Resource, Resource._Fields>, java.io.Serializable, Cloneable, Comparable<Resource> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Resource");
 
-  private static final org.apache.thrift.protocol.TField CONTENT_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("contentType", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField DOC_FIELD_DESC = new org.apache.thrift.protocol.TField("doc", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField RESOURCE_FIELD_DESC = new org.apache.thrift.protocol.TField("resource", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new AnnotatedDocumentStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new AnnotatedDocumentTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new ResourceStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new ResourceTupleSchemeFactory());
   }
 
-  public String contentType; // required
-  public ByteBuffer doc; // required
+  public String type; // required
+  public ByteBuffer resource; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    CONTENT_TYPE((short)1, "contentType"),
-    DOC((short)2, "doc");
+    TYPE((short)1, "type"),
+    RESOURCE((short)2, "resource");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,10 +65,10 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // CONTENT_TYPE
-          return CONTENT_TYPE;
-        case 2: // DOC
-          return DOC;
+        case 1: // TYPE
+          return TYPE;
+        case 2: // RESOURCE
+          return RESOURCE;
         default:
           return null;
       }
@@ -112,122 +112,122 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.CONTENT_TYPE, new org.apache.thrift.meta_data.FieldMetaData("contentType", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.DOC, new org.apache.thrift.meta_data.FieldMetaData("doc", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.RESOURCE, new org.apache.thrift.meta_data.FieldMetaData("resource", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING        , true)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AnnotatedDocument.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Resource.class, metaDataMap);
   }
 
-  public AnnotatedDocument() {
+  public Resource() {
   }
 
-  public AnnotatedDocument(
-    String contentType,
-    ByteBuffer doc)
+  public Resource(
+    String type,
+    ByteBuffer resource)
   {
     this();
-    this.contentType = contentType;
-    this.doc = doc;
+    this.type = type;
+    this.resource = resource;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public AnnotatedDocument(AnnotatedDocument other) {
-    if (other.isSetContentType()) {
-      this.contentType = other.contentType;
+  public Resource(Resource other) {
+    if (other.isSetType()) {
+      this.type = other.type;
     }
-    if (other.isSetDoc()) {
-      this.doc = org.apache.thrift.TBaseHelper.copyBinary(other.doc);
+    if (other.isSetResource()) {
+      this.resource = org.apache.thrift.TBaseHelper.copyBinary(other.resource);
 ;
     }
   }
 
-  public AnnotatedDocument deepCopy() {
-    return new AnnotatedDocument(this);
+  public Resource deepCopy() {
+    return new Resource(this);
   }
 
   @Override
   public void clear() {
-    this.contentType = null;
-    this.doc = null;
+    this.type = null;
+    this.resource = null;
   }
 
-  public String getContentType() {
-    return this.contentType;
+  public String getType() {
+    return this.type;
   }
 
-  public AnnotatedDocument setContentType(String contentType) {
-    this.contentType = contentType;
+  public Resource setType(String type) {
+    this.type = type;
     return this;
   }
 
-  public void unsetContentType() {
-    this.contentType = null;
+  public void unsetType() {
+    this.type = null;
   }
 
-  /** Returns true if field contentType is set (has been assigned a value) and false otherwise */
-  public boolean isSetContentType() {
-    return this.contentType != null;
+  /** Returns true if field type is set (has been assigned a value) and false otherwise */
+  public boolean isSetType() {
+    return this.type != null;
   }
 
-  public void setContentTypeIsSet(boolean value) {
+  public void setTypeIsSet(boolean value) {
     if (!value) {
-      this.contentType = null;
+      this.type = null;
     }
   }
 
-  public byte[] getDoc() {
-    setDoc(org.apache.thrift.TBaseHelper.rightSize(doc));
-    return doc == null ? null : doc.array();
+  public byte[] getResource() {
+    setResource(org.apache.thrift.TBaseHelper.rightSize(resource));
+    return resource == null ? null : resource.array();
   }
 
-  public ByteBuffer bufferForDoc() {
-    return doc;
+  public ByteBuffer bufferForResource() {
+    return resource;
   }
 
-  public AnnotatedDocument setDoc(byte[] doc) {
-    setDoc(doc == null ? (ByteBuffer)null : ByteBuffer.wrap(doc));
+  public Resource setResource(byte[] resource) {
+    setResource(resource == null ? (ByteBuffer)null : ByteBuffer.wrap(resource));
     return this;
   }
 
-  public AnnotatedDocument setDoc(ByteBuffer doc) {
-    this.doc = doc;
+  public Resource setResource(ByteBuffer resource) {
+    this.resource = resource;
     return this;
   }
 
-  public void unsetDoc() {
-    this.doc = null;
+  public void unsetResource() {
+    this.resource = null;
   }
 
-  /** Returns true if field doc is set (has been assigned a value) and false otherwise */
-  public boolean isSetDoc() {
-    return this.doc != null;
+  /** Returns true if field resource is set (has been assigned a value) and false otherwise */
+  public boolean isSetResource() {
+    return this.resource != null;
   }
 
-  public void setDocIsSet(boolean value) {
+  public void setResourceIsSet(boolean value) {
     if (!value) {
-      this.doc = null;
+      this.resource = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case CONTENT_TYPE:
+    case TYPE:
       if (value == null) {
-        unsetContentType();
+        unsetType();
       } else {
-        setContentType((String)value);
+        setType((String)value);
       }
       break;
 
-    case DOC:
+    case RESOURCE:
       if (value == null) {
-        unsetDoc();
+        unsetResource();
       } else {
-        setDoc((ByteBuffer)value);
+        setResource((ByteBuffer)value);
       }
       break;
 
@@ -236,11 +236,11 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case CONTENT_TYPE:
-      return getContentType();
+    case TYPE:
+      return getType();
 
-    case DOC:
-      return getDoc();
+    case RESOURCE:
+      return getResource();
 
     }
     throw new IllegalStateException();
@@ -253,10 +253,10 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
     }
 
     switch (field) {
-    case CONTENT_TYPE:
-      return isSetContentType();
-    case DOC:
-      return isSetDoc();
+    case TYPE:
+      return isSetType();
+    case RESOURCE:
+      return isSetResource();
     }
     throw new IllegalStateException();
   }
@@ -265,30 +265,30 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof AnnotatedDocument)
-      return this.equals((AnnotatedDocument)that);
+    if (that instanceof Resource)
+      return this.equals((Resource)that);
     return false;
   }
 
-  public boolean equals(AnnotatedDocument that) {
+  public boolean equals(Resource that) {
     if (that == null)
       return false;
 
-    boolean this_present_contentType = true && this.isSetContentType();
-    boolean that_present_contentType = true && that.isSetContentType();
-    if (this_present_contentType || that_present_contentType) {
-      if (!(this_present_contentType && that_present_contentType))
+    boolean this_present_type = true && this.isSetType();
+    boolean that_present_type = true && that.isSetType();
+    if (this_present_type || that_present_type) {
+      if (!(this_present_type && that_present_type))
         return false;
-      if (!this.contentType.equals(that.contentType))
+      if (!this.type.equals(that.type))
         return false;
     }
 
-    boolean this_present_doc = true && this.isSetDoc();
-    boolean that_present_doc = true && that.isSetDoc();
-    if (this_present_doc || that_present_doc) {
-      if (!(this_present_doc && that_present_doc))
+    boolean this_present_resource = true && this.isSetResource();
+    boolean that_present_resource = true && that.isSetResource();
+    if (this_present_resource || that_present_resource) {
+      if (!(this_present_resource && that_present_resource))
         return false;
-      if (!this.doc.equals(that.doc))
+      if (!this.resource.equals(that.resource))
         return false;
     }
 
@@ -301,29 +301,29 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
   }
 
   @Override
-  public int compareTo(AnnotatedDocument other) {
+  public int compareTo(Resource other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetContentType()).compareTo(other.isSetContentType());
+    lastComparison = Boolean.valueOf(isSetType()).compareTo(other.isSetType());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetContentType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.contentType, other.contentType);
+    if (isSetType()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.type, other.type);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetDoc()).compareTo(other.isSetDoc());
+    lastComparison = Boolean.valueOf(isSetResource()).compareTo(other.isSetResource());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetDoc()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.doc, other.doc);
+    if (isSetResource()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.resource, other.resource);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -345,22 +345,22 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("AnnotatedDocument(");
+    StringBuilder sb = new StringBuilder("Resource(");
     boolean first = true;
 
-    sb.append("contentType:");
-    if (this.contentType == null) {
+    sb.append("type:");
+    if (this.type == null) {
       sb.append("null");
     } else {
-      sb.append(this.contentType);
+      sb.append(this.type);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("doc:");
-    if (this.doc == null) {
+    sb.append("resource:");
+    if (this.resource == null) {
       sb.append("null");
     } else {
-      org.apache.thrift.TBaseHelper.toString(this.doc, sb);
+      org.apache.thrift.TBaseHelper.toString(this.resource, sb);
     }
     first = false;
     sb.append(")");
@@ -388,15 +388,15 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
     }
   }
 
-  private static class AnnotatedDocumentStandardSchemeFactory implements SchemeFactory {
-    public AnnotatedDocumentStandardScheme getScheme() {
-      return new AnnotatedDocumentStandardScheme();
+  private static class ResourceStandardSchemeFactory implements SchemeFactory {
+    public ResourceStandardScheme getScheme() {
+      return new ResourceStandardScheme();
     }
   }
 
-  private static class AnnotatedDocumentStandardScheme extends StandardScheme<AnnotatedDocument> {
+  private static class ResourceStandardScheme extends StandardScheme<Resource> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, AnnotatedDocument struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Resource struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -406,18 +406,18 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
           break;
         }
         switch (schemeField.id) {
-          case 1: // CONTENT_TYPE
+          case 1: // TYPE
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.contentType = iprot.readString();
-              struct.setContentTypeIsSet(true);
+              struct.type = iprot.readString();
+              struct.setTypeIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // DOC
+          case 2: // RESOURCE
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.doc = iprot.readBinary();
-              struct.setDocIsSet(true);
+              struct.resource = iprot.readBinary();
+              struct.setResourceIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -433,18 +433,18 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, AnnotatedDocument struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Resource struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.contentType != null) {
-        oprot.writeFieldBegin(CONTENT_TYPE_FIELD_DESC);
-        oprot.writeString(struct.contentType);
+      if (struct.type != null) {
+        oprot.writeFieldBegin(TYPE_FIELD_DESC);
+        oprot.writeString(struct.type);
         oprot.writeFieldEnd();
       }
-      if (struct.doc != null) {
-        oprot.writeFieldBegin(DOC_FIELD_DESC);
-        oprot.writeBinary(struct.doc);
+      if (struct.resource != null) {
+        oprot.writeFieldBegin(RESOURCE_FIELD_DESC);
+        oprot.writeBinary(struct.resource);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -453,44 +453,44 @@ public class AnnotatedDocument implements org.apache.thrift.TBase<AnnotatedDocum
 
   }
 
-  private static class AnnotatedDocumentTupleSchemeFactory implements SchemeFactory {
-    public AnnotatedDocumentTupleScheme getScheme() {
-      return new AnnotatedDocumentTupleScheme();
+  private static class ResourceTupleSchemeFactory implements SchemeFactory {
+    public ResourceTupleScheme getScheme() {
+      return new ResourceTupleScheme();
     }
   }
 
-  private static class AnnotatedDocumentTupleScheme extends TupleScheme<AnnotatedDocument> {
+  private static class ResourceTupleScheme extends TupleScheme<Resource> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, AnnotatedDocument struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Resource struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetContentType()) {
+      if (struct.isSetType()) {
         optionals.set(0);
       }
-      if (struct.isSetDoc()) {
+      if (struct.isSetResource()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetContentType()) {
-        oprot.writeString(struct.contentType);
+      if (struct.isSetType()) {
+        oprot.writeString(struct.type);
       }
-      if (struct.isSetDoc()) {
-        oprot.writeBinary(struct.doc);
+      if (struct.isSetResource()) {
+        oprot.writeBinary(struct.resource);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, AnnotatedDocument struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Resource struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.contentType = iprot.readString();
-        struct.setContentTypeIsSet(true);
+        struct.type = iprot.readString();
+        struct.setTypeIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.doc = iprot.readBinary();
-        struct.setDocIsSet(true);
+        struct.resource = iprot.readBinary();
+        struct.setResourceIsSet(true);
       }
     }
   }
