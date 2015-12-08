@@ -42,7 +42,7 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
             selector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI, uri);
             selector.setProperty(SelectorHelper.TYPE, type);
             Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
-            System.out.println("content> "+content);
+
             if(content!=null) {
                 content.getContent();
                 byte[] serializedDocument = null;
