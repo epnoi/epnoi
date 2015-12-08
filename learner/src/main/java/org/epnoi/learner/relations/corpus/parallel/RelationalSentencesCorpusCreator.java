@@ -92,7 +92,7 @@ public class RelationalSentencesCorpusCreator {
     private List<RelationalSentence> _findRelationalSentences(List<String> URIs) {
 
 
-        SparkConf sparkConf = new SparkConf().setMaster("local[36]").setAppName(JOB_NAME);
+        SparkConf sparkConf = new SparkConf().setMaster("local[12]").setAppName(JOB_NAME);
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 

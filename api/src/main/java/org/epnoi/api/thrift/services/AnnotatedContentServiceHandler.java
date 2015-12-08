@@ -35,7 +35,7 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
 
     @Override
     public AnnotatedDocument getAnnotatedContent(String uri, String type) throws TException {
-        System.out.println("________________________> "+uri +"|> "+type);
+
         AnnotatedDocument annotatedDocument = new AnnotatedDocument();
         try {
             Selector selector = new Selector();
