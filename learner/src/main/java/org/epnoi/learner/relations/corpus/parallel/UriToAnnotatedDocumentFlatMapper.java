@@ -6,6 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
+import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 
@@ -37,7 +38,7 @@ public class UriToAnnotatedDocumentFlatMapper {
     // --------------------------------------------------------------------------------------------------------------------
 
     private Document _obtainAnnotatedContent(String uri) {
-
+/*
         ClientConfig config = new DefaultClientConfig();
 
         Client client = Client.create(config);
@@ -59,10 +60,75 @@ public class UriToAnnotatedDocumentFlatMapper {
 
 
         }
+        */
+        AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
+        org.epnoi.model.Content<Object> resource = null;
+        try {
+            uiaService.init("localhost", 8585);
 
-        return document;
+            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+/*
+        System.out.println("(RESOURCE)====> " + resource);
+        System.out.println("<--");
+*/
+        return (Document)resource.getContent();
     }
 
     // --------------------------------------------------------------------------------------------------------------------
+    public static void main(String[] args) {
+
+        String uri ="http://en.wikipedia.org/wiki/Autism/first/object/gate";
+        Long start = System.currentTimeMillis();
+
+        AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
+        org.epnoi.model.Content<Object> resource = null;
+        try {
+            uiaService.init("localhost", 8585);
+
+            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+     //   System.out.println("000> "+resource);
+        Long end = System.currentTimeMillis();
+        System.out.println("It took "+(start-end)+" the thrift service invocation ");
+
+        start = System.currentTimeMillis();
+        ClientConfig config = new DefaultClientConfig();
+
+
+        Client client = Client.create(config);
+       String uiaPath= "http://localhost:8080/epnoi/rest";
+        final String knowledgeBasePath = "/uia/annotatedcontent";
+        Document document = null;
+        try {
+
+            URI testServiceURI = UriBuilder.fromUri(uiaPath).build();
+            WebResource service = client.resource(uiaPath);
+
+            String content = service.path(knowledgeBasePath).queryParam("uri", uri)
+                    .queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
+                    .get(String.class);
+
+
+            document = GateUtils.deserializeGATEDocument(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+      //  System.out.println("000> "+document);
+        end = System.currentTimeMillis();
+        System.out.println("It took "+(start-end)+" the rest service invocation ");
+
+
+    }
+
 
 }

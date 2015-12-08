@@ -50,7 +50,7 @@ public class AnnotatedContentServiceClient {
             AnnotatedContentService.Client client = new AnnotatedContentService.Client(this.multiplexedProtocol);
 
             AnnotatedDocument content = client.getAnnotatedContent(uri, type);
-            System.out.println("This is the result > " + content);
+           // System.out.println("This is the result > " + content);
             Document doc = (Document) SerializationUtils.deserialize(content.getDoc());
             Content<Object> annotatedDocument = new Content<>(doc, content.getContentType());
             return annotatedDocument;

@@ -181,7 +181,7 @@ public class LearnerConfig {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("http://localhost:8082/learner");
+        beanConfig.setHost("localhost:8082/learner/rest");
         beanConfig.setBasePath("/");
         beanConfig.setResourcePackage("org.epnoi.learner.service.rest");
         beanConfig.setScan(true);

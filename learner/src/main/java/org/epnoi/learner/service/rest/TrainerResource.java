@@ -1,9 +1,6 @@
 package org.epnoi.learner.service.rest;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.Domain;
@@ -24,6 +21,8 @@ import java.util.logging.Logger;
 
 @Component
 @Path("/trainer")
+@Api(value = "/trainer", description = "Operations for handling the learner trainer")
+
 public class TrainerResource {
     private static final Logger logger = Logger.getLogger(TrainerResource.class
             .getName());
@@ -68,7 +67,7 @@ public class TrainerResource {
     // -----------------------------------------------------------------------------------------
 
     @POST
-    @Path("")
+    @Path("/patterns/lexical")
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Creates a relational patterns model", notes = "")
     @ApiResponses(value = {
