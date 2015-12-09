@@ -18,5 +18,8 @@ public class RelationalSentencesCorpusCreationParameters extends Parameters<Seri
 	public static final String UIA_PATH = "UIA_PATH";
 	public static final String SPARK_PATH = "SPARK_PATH";
 
+	public static final String THRIFT_PORT = "THRIFT_PORT";
+
+	public static final String REST_PORT = "REST_PORT";
 
 }

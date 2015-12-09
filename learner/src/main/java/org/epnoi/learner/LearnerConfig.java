@@ -119,6 +119,8 @@ public class LearnerConfig {
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
 
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.THRIFT_PORT, 8585);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.REST_PORT, 8082);
         return parameters;
     }
 
