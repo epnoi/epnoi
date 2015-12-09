@@ -8,6 +8,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 
@@ -20,9 +21,9 @@ public class UriToAnnotatedDocumentFlatMapper {
 
     private String uiaPath;
     private final String knowledgeBasePath = "/uia/annotatedcontent";
-    private RelationalSentencesCorpusCreationParameters parameters;
+    private Parameters parameters;
 
-    public UriToAnnotatedDocumentFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
+    public UriToAnnotatedDocumentFlatMapper(Parameters parameters) {
         this.parameters=parameters;
     }
 
@@ -40,29 +41,6 @@ public class UriToAnnotatedDocumentFlatMapper {
     // --------------------------------------------------------------------------------------------------------------------
 
     private Document _obtainAnnotatedContent(String uri) {
-/*
-        ClientConfig config = new DefaultClientConfig();
-
-        Client client = Client.create(config);
-
-        Document document = null;
-        try {
-
-            URI testServiceURI = UriBuilder.fromUri(this.uiaPath).build();
-            WebResource service = client.resource(this.uiaPath);
-
-            String content = service.path(knowledgeBasePath).queryParam("uri", uri)
-                    .queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
-                    .get(String.class);
-
-
-            document = GateUtils.deserializeGATEDocument(content);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-
-        }
-        */
         Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
         org.epnoi.model.Content<Object> resource = null;

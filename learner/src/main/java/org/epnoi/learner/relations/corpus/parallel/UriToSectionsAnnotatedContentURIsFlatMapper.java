@@ -9,6 +9,7 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.clients.thrift.UIAServiceClient;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 
 import javax.ws.rs.core.UriBuilder;
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class UriToSectionsAnnotatedContentURIsFlatMapper {
 
-    private RelationalSentencesCorpusCreationParameters parameters;
+    private Parameters parameters;
 
-    public UriToSectionsAnnotatedContentURIsFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
+    public UriToSectionsAnnotatedContentURIsFlatMapper(Parameters parameters) {
         this.parameters = parameters;
     }
 
