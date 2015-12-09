@@ -5,6 +5,7 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.learner.relations.corpus.parallel.RelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class TrainerImpl implements Trainer {
     @Autowired
     RelationalSentencesCorpusCreationParameters relationalSentencesCorpusCreatorParameters;
 
+
+    Parameters<Object> runtimeParameters;
+
     @Autowired
     @Qualifier("lexicalPatternsModelCreationParameters")
     RelationalPatternsModelCreationParameters lexicalPatternsModelParameters;
@@ -42,10 +46,10 @@ public class TrainerImpl implements Trainer {
     }
 
     @Override
-    public void createRelationalSentencesCorpus() {
+    public void createRelationalSentencesCorpus(Parameters<Object> runtimeParameters) {
         logger.info("Creating the relational sentences corpus");
         try {
-            this.relationalSentencesCorpusCreator.createCorpus();
+            this.relationalSentencesCorpusCreator.createCorpus(runtimeParameters);
         } catch (Exception e) {
             logger.severe("There was a problem creating the relational sentences corpus");
             e.printStackTrace();
@@ -64,12 +68,20 @@ public class TrainerImpl implements Trainer {
 
         }
     }
-@Override
+
+    @Override
     public RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParameters() {
         return this.relationalSentencesCorpusCreatorParameters;
     }
 
+    @Override
     public RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters() {
         return this.lexicalPatternsModelParameters;
     }
+
+    @Override
+    public Parameters<Object> getRuntimeParameters(){
+        return this.runtimeParameters;
+    }
+
 }

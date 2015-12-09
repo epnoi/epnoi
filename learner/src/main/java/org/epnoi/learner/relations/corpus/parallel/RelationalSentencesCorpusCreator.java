@@ -11,6 +11,7 @@ import org.epnoi.model.Context;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Selector;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
@@ -30,6 +31,8 @@ public class RelationalSentencesCorpusCreator {
     private Core core;
     @Autowired
     private RelationalSentencesCorpusCreationParameters parameters;
+
+    private Parameters<Object> runtimeParameters;
 
     private RelationalSentencesCorpus corpus;
 
@@ -62,8 +65,8 @@ public class RelationalSentencesCorpusCreator {
 
     // ----------------------------------------------------------------------------------------------------------------------
 
-    public void createCorpus() {
-
+    public void createCorpus(Parameters<Object> runtimeParameters) {
+        this.runtimeParameters = runtimeParameters;
         logger.info("Creating a relational sencences corpus with the following parameters:");
         logger.info(this.parameters.toString());
         // This should be done in parallel!!
@@ -135,7 +138,7 @@ public class RelationalSentencesCorpusCreator {
 
         //relationalSentencesCandidates.collect();
         /*
-		  JavaRDD<RelationalSentence> relationalSentences =
+          JavaRDD<RelationalSentence> relationalSentences =
 		  relationalSentencesCandidates.map(new
 		  RelationalSentenceMapFunction());
 */
@@ -237,6 +240,6 @@ public class RelationalSentencesCorpusCreator {
 		System.out.println("The readed relational sentences corpus " + relationalSentenceCorpus);
 		logger.info("Stopping the Relation Sentences Corpus Creator");
 	*/
- //   }
+    //   }
 
 }
