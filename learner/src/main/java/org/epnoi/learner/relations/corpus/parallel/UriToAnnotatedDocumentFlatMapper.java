@@ -6,6 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
@@ -19,9 +20,10 @@ public class UriToAnnotatedDocumentFlatMapper {
 
     private String uiaPath;
     private final String knowledgeBasePath = "/uia/annotatedcontent";
+    private RelationalSentencesCorpusCreationParameters parameters;
 
-    public UriToAnnotatedDocumentFlatMapper(String uiaPath) {
-        this.uiaPath = uiaPath;
+    public UriToAnnotatedDocumentFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
+        this.parameters=parameters;
     }
 
     public Iterable<Document> call(String uri) throws Exception {
@@ -61,10 +63,11 @@ public class UriToAnnotatedDocumentFlatMapper {
 
         }
         */
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
         org.epnoi.model.Content<Object> resource = null;
         try {
-            uiaService.init("localhost", 8585);
+            uiaService.init("localhost", thriftPort);
 
             resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
         } catch (Exception e) {

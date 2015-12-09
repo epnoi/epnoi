@@ -115,8 +115,7 @@ public class RelationalSentencesCorpusCreator {
         System.out.println("..> " + annotatedContentURIs.collect());
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
-            String uiaPath = (String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
-            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
+            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(parametersBroadcast.getValue());
             return flatMapper.call(uri);
         });
 

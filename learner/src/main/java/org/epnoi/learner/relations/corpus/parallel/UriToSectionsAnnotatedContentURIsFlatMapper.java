@@ -73,10 +73,11 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
         WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
 		*/
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         UIAServiceClient uiaService = new UIAServiceClient();
         org.epnoi.model.WikipediaPage wikipediaPage = null;
         try {
-            uiaService.init("localhost", 8585);
+            uiaService.init("localhost", thriftPort);
             //System.out.println("It has been properly initialized!");
             wikipediaPage = (WikipediaPage) uiaService.getResource(wikipediaPageURI, RDFHelper.WIKIPEDIA_PAGE_CLASS);
         } catch (Exception e) {
