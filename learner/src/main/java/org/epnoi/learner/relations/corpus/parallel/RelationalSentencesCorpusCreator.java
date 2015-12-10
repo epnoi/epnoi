@@ -73,8 +73,15 @@ public class RelationalSentencesCorpusCreator {
         // This should be done in parallel!!
         List<String> URIs = _collectCorpusURIs();
 
-        corpus.setUri((String) this.parameters.getParameterValue(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+        if(runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)!=null){
+            corpus.setUri((String) this.runtimeParameters.getParameterValue(
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+        }else {
+            corpus.setUri((String) this.parameters.getParameterValue(
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+
+        }
+
         corpus.setDescription((String) this.parameters.getParameterValue(
                 RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
         corpus.setType((String) this.parameters.getParameterValue(
