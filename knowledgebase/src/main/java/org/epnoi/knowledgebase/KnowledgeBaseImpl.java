@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class KnolwedgeBaseImpl implements KnowledgeBase {
+public class KnowledgeBaseImpl implements KnowledgeBase {
 
 	WordNetHandler wordNetHandler;
 
@@ -22,7 +22,7 @@ public class KnolwedgeBaseImpl implements KnowledgeBase {
 
 	// -----------------------------------------------------------------------------------------------
 
-	public KnolwedgeBaseImpl(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
+	public KnowledgeBaseImpl(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
 
 		this.wordNetHandler = wordNetHandler;
 		this.wikidataHandler = wikidataHandler;

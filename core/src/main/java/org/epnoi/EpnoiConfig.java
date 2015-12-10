@@ -1,6 +1,6 @@
 package org.epnoi;
 
-import org.epnoi.knowledgebase.KnolwedgeBaseImpl;
+import org.epnoi.knowledgebase.KnowledgeBaseImpl;
 import org.epnoi.model.modules.Profiles;
 import org.epnoi.model.parameterization.ParametersModel;
 import org.epnoi.model.parameterization.ParametersModelReader;
@@ -20,7 +20,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.util.logging.Logger;
 
 @Configuration
-@ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class, SearchHandlerImpl.class, AnnotationHandlerImpl.class, InformationHandlerImpl.class, DomainsHandlerImpl.class, KnolwedgeBaseImpl.class, HarvestersHandlerImpl.class})
+@ComponentScan(basePackageClasses = {CoreImpl.class, NLPHandlerImpl.class, SearchHandlerImpl.class, AnnotationHandlerImpl.class, InformationHandlerImpl.class, DomainsHandlerImpl.class, KnowledgeBaseImpl.class, HarvestersHandlerImpl.class})
 
 @PropertySource("classpath:epnoi.properties")
 public class EpnoiConfig {

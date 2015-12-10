@@ -31,12 +31,12 @@ public class UIAServiceHandler extends ThriftServiceHandler implements UIAServic
 
     @Override
     public Resource getResource(String uri, String type) throws TException {
-        System.out.println("________________________> " + uri + "|> " + type);
+       // System.out.println("________________________> " + uri + "|> " + type);
         Resource resource = new Resource();
         try {
 
             org.epnoi.model.Resource content = this.core.getInformationHandler().get(uri, type);
-            System.out.println("content> " + content);
+
             if (content != null) {
 
                 byte[] serializedDocument = null;

@@ -70,6 +70,8 @@ public class RelationalSentencesCorpusCreator {
         this.runtimeParameters = runtimeParameters;
         logger.info("Creating a relational sencences corpus with the following parameters:");
         logger.info(this.parameters.toString());
+        logger.info("Creating a relational sencences corpus with the following runtime parameters:");
+        logger.info(this.runtimeParameters.toString());
         // This should be done in parallel!!
         List<String> URIs = _collectCorpusURIs();
 

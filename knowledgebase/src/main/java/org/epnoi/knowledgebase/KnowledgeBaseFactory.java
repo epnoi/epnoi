@@ -60,7 +60,7 @@ public class KnowledgeBaseFactory {
 		if (this.considerWikidata){
 		this.wikidataHandler = wikidataHandlerBuilder.build();
 		}
-		KnowledgeBase knowledgeBase = new KnolwedgeBaseImpl(this.wordnetHandler,
+		KnowledgeBase knowledgeBase = new KnowledgeBaseImpl(this.wordnetHandler,
 				this.wikidataHandler);
 		knowledgeBase.init(this.parameters);
 

@@ -138,7 +138,7 @@ public class CassandraWikidataView {
 	 * @return
 	 */
 	public Set<String> getIRIRelatedIRIs(String type, String sourceIRI) {
-		
+
 		return cassandraInformationStore.getQueryResolver().getValues(this.relationsURI+"/"+type,sourceIRI,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 	}

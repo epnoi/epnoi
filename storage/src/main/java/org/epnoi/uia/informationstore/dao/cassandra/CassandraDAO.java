@@ -298,6 +298,7 @@ public abstract class CassandraDAO {
 			}
 
 		} catch (HectorException e) {
+			logger.severe("The source of the exception was the call readColumn("+key+","+name+","+columnFamilyName+")");
 			e.printStackTrace();
 		}
 		return null;
