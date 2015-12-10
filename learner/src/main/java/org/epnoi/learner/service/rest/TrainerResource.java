@@ -5,6 +5,7 @@ import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.model.commons.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,13 +57,37 @@ public class TrainerResource {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "The relational sentences corpus has been created"),
             @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
-    public Response createRelationalSentenceCorpus() {
-        learner.getTrainer().createRelationalSentencesCorpus();
+    public Response createRelationalSentenceCorpus(
+            @ApiParam(value = "Maximum number of items in the textual corpus", required = false, allowMultiple = false) @QueryParam("textCorpusMaxSize") int textCorpusMaxSize,
+            @ApiParam(value = "URI of the generated relational corpus", required = false, allowMultiple = false) @QueryParam("uri") String uri)
 
-        URI uri =
-                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
-        return Response.created(uri).build();
+    {
+
+
+
+        Parameters<Object> runtimeParameters = new Parameters<Object>();
+
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER, uri);
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
+
+
+        learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
+        URI createdResourceUri = null;
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER) != null) {
+
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+        } else {
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+
+        }
+        return Response.created(createdResourceUri).build();
     }
+
+
 
     // -----------------------------------------------------------------------------------------
 

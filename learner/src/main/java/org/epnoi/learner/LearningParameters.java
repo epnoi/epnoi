@@ -50,4 +50,9 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 
 	public static final String UIA_PATH = "UIA_PATH";
 
+
+	public static final String THRIFT_PORT = "THRIFT_PORT";
+
+	public static final String REST_PORT = "REST_PORT";
+
 }

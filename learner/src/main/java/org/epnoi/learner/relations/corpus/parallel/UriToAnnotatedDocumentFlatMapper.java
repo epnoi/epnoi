@@ -6,7 +6,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
 
@@ -17,11 +19,12 @@ import java.util.List;
 
 public class UriToAnnotatedDocumentFlatMapper {
 
-   private String uiaPath;
+    private String uiaPath;
     private final String knowledgeBasePath = "/uia/annotatedcontent";
+    private Parameters parameters;
 
-    public UriToAnnotatedDocumentFlatMapper(String uiaPath) {
-        this.uiaPath=uiaPath;
+    public UriToAnnotatedDocumentFlatMapper(Parameters parameters) {
+        this.parameters=parameters;
     }
 
     public Iterable<Document> call(String uri) throws Exception {
@@ -38,33 +41,11 @@ public class UriToAnnotatedDocumentFlatMapper {
     // --------------------------------------------------------------------------------------------------------------------
 
     private Document _obtainAnnotatedContent(String uri) {
-/*
-        ClientConfig config = new DefaultClientConfig();
-
-        Client client = Client.create(config);
-
-        Document document = null;
-        try {
-
-            URI testServiceURI = UriBuilder.fromUri(this.uiaPath).build();
-            WebResource service = client.resource(this.uiaPath);
-
-            String content = service.path(knowledgeBasePath).queryParam("uri", uri)
-                    .queryParam("type", RDFHelper.WIKIPEDIA_PAGE_CLASS).type(javax.ws.rs.core.MediaType.APPLICATION_XML)
-                    .get(String.class);
-
-
-            document = GateUtils.deserializeGATEDocument(content);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-
-        }
-        */
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
         org.epnoi.model.Content<Object> resource = null;
         try {
-            uiaService.init("localhost", 8585);
+            uiaService.init("localhost", thriftPort);
 
             resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
         } catch (Exception e) {
@@ -76,35 +57,20 @@ public class UriToAnnotatedDocumentFlatMapper {
         System.out.println("(RESOURCE)====> " + resource);
         System.out.println("<--");
 */
-        return (Document)resource.getContent();
+        return (Document) resource.getContent();
     }
 
     // --------------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
 
-        String uri ="http://en.wikipedia.org/wiki/Autism/first/object/gate";
+        String uri = "http://en.wikipedia.org/wiki/Autism/first/object/gate";
         Long start = System.currentTimeMillis();
 
-        AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
-        org.epnoi.model.Content<Object> resource = null;
-        try {
-            uiaService.init("localhost", 8585);
-
-            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-     //   System.out.println("000> "+resource);
-        Long end = System.currentTimeMillis();
-        System.out.println("It took "+(start-end)+" the thrift service invocation ");
-
-        start = System.currentTimeMillis();
         ClientConfig config = new DefaultClientConfig();
 
 
         Client client = Client.create(config);
-       String uiaPath= "http://localhost:8080/epnoi/rest";
+        String uiaPath = "http://localhost:8080/epnoi/rest";
         final String knowledgeBasePath = "/uia/annotatedcontent";
         Document document = null;
         try {
@@ -123,9 +89,25 @@ public class UriToAnnotatedDocumentFlatMapper {
 
 
         }
-      //  System.out.println("000> "+document);
+        //   System.out.println("000> "+resource);
+        Long end = System.currentTimeMillis();
+        System.out.println("It took " + (start - end) + " the rest service invocation ");
+
+        start = System.currentTimeMillis();
+        AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
+        org.epnoi.model.Content<Object> resource = null;
+        try {
+            uiaService.init("localhost", 8585);
+
+            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        //  System.out.println("000> "+document);
         end = System.currentTimeMillis();
-        System.out.println("It took "+(start-end)+" the rest service invocation ");
+        System.out.println("It took " + (start - end) + " the thrift service invocation ");
 
 
     }

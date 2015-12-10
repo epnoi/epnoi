@@ -114,8 +114,8 @@ public class ParallelRelationsExtractor {
         //We retrieve for each document its annotated document
         JavaRDD<Document> corpusAnnotatedDocuments;
         corpusAnnotatedDocuments = corpusURIs.flatMap(uri -> {
-                    String uiaPath = (String) parametersBroadcast.value().getParameterValue(LearningParameters.UIA_PATH);
-                    UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
+                    Parameters parameters = (Parameters) parametersBroadcast.value();
+                    UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(parameters);
                     return flatMapper.call(uri);
                 }
         );

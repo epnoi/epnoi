@@ -11,9 +11,11 @@ import org.epnoi.model.Context;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
 import org.epnoi.model.Selector;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,8 @@ public class RelationalSentencesCorpusCreator {
     private Core core;
     @Autowired
     private RelationalSentencesCorpusCreationParameters parameters;
+
+    private Parameters<Object> runtimeParameters;
 
     private RelationalSentencesCorpus corpus;
 
@@ -62,15 +66,22 @@ public class RelationalSentencesCorpusCreator {
 
     // ----------------------------------------------------------------------------------------------------------------------
 
-    public void createCorpus() {
-
+    public void createCorpus(Parameters<Object> runtimeParameters) {
+        this.runtimeParameters = runtimeParameters;
         logger.info("Creating a relational sencences corpus with the following parameters:");
         logger.info(this.parameters.toString());
         // This should be done in parallel!!
         List<String> URIs = _collectCorpusURIs();
 
-        corpus.setUri((String) this.parameters.getParameterValue(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+        if(runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)!=null){
+            corpus.setUri((String) this.runtimeParameters.getParameterValue(
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+        }else {
+            corpus.setUri((String) this.parameters.getParameterValue(
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+
+        }
+
         corpus.setDescription((String) this.parameters.getParameterValue(
                 RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
         corpus.setType((String) this.parameters.getParameterValue(
@@ -115,8 +126,7 @@ public class RelationalSentencesCorpusCreator {
         System.out.println("..> " + annotatedContentURIs.collect());
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
-            String uiaPath = (String) parametersBroadcast.value().getParameterValue(RelationalSentencesCorpusCreationParameters.UIA_PATH);
-            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(uiaPath);
+            UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(parametersBroadcast.getValue());
             return flatMapper.call(uri);
         });
 
@@ -136,7 +146,7 @@ public class RelationalSentencesCorpusCreator {
 
         //relationalSentencesCandidates.collect();
         /*
-		  JavaRDD<RelationalSentence> relationalSentences =
+          JavaRDD<RelationalSentence> relationalSentences =
 		  relationalSentencesCandidates.map(new
 		  RelationalSentenceMapFunction());
 */
@@ -163,12 +173,15 @@ public class RelationalSentencesCorpusCreator {
         // String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 
         // logger.info("Retrieving the URIs of the Wikipedia articles ");
-/*WHAT SHOULD BE
+
         List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
 
+
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE) != null) {
+            logger.info("A maximum for the number of text items has been set for the test corpus: " + (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
+            return wikipediaPages.subList(0, (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
+        }
         return wikipediaPages;
-*/
-        return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
@@ -214,7 +227,7 @@ public class RelationalSentencesCorpusCreator {
             System.exit(-1);
         }
         */
-		/*
+        /*
 		 * RelationalSentencesCorpus testRelationalSentenceCorpus =
 		 * relationSentencesCorpusCreator .createTestCorpus();
 		 * 
@@ -238,6 +251,6 @@ public class RelationalSentencesCorpusCreator {
 		System.out.println("The readed relational sentences corpus " + relationalSentenceCorpus);
 		logger.info("Stopping the Relation Sentences Corpus Creator");
 	*/
- //   }
+    //   }
 
 }

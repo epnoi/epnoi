@@ -9,6 +9,7 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.clients.thrift.UIAServiceClient;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 
 import javax.ws.rs.core.UriBuilder;
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class UriToSectionsAnnotatedContentURIsFlatMapper {
 
-    private RelationalSentencesCorpusCreationParameters parameters;
+    private Parameters parameters;
 
-    public UriToSectionsAnnotatedContentURIsFlatMapper(RelationalSentencesCorpusCreationParameters parameters) {
+    public UriToSectionsAnnotatedContentURIsFlatMapper(Parameters parameters) {
         this.parameters = parameters;
     }
 
@@ -73,10 +74,11 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
         WikipediaPage retrievedWikipediaPage = service.path(wikipediaPagePath).queryParam("uri", wikipediaPageURI)
 				.type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(WikipediaPage.class);
 		*/
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         UIAServiceClient uiaService = new UIAServiceClient();
         org.epnoi.model.WikipediaPage wikipediaPage = null;
         try {
-            uiaService.init("localhost", 8585);
+            uiaService.init("localhost", thriftPort);
             //System.out.println("It has been properly initialized!");
             wikipediaPage = (WikipediaPage) uiaService.getResource(wikipediaPageURI, RDFHelper.WIKIPEDIA_PAGE_CLASS);
         } catch (Exception e) {
