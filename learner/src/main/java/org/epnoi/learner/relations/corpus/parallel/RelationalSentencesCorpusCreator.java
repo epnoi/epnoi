@@ -15,6 +15,7 @@ import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.commons.WikipediaPagesRetriever;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -165,12 +166,15 @@ public class RelationalSentencesCorpusCreator {
         // String uri = "http://en.wikipedia.org/wiki/AccessibleComputing";
 
         // logger.info("Retrieving the URIs of the Wikipedia articles ");
-/*WHAT SHOULD BE
+
         List<String> wikipediaPages = WikipediaPagesRetriever.getWikipediaArticles(core);
 
+
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE) != null) {
+            logger.info("A maximum for the number of text items has been set for the test corpus: " + (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
+            return wikipediaPages.subList(0, (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
+        }
         return wikipediaPages;
-*/
-        return Arrays.asList("http://en.wikipedia.org/wiki/Autism");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
@@ -216,7 +220,7 @@ public class RelationalSentencesCorpusCreator {
             System.exit(-1);
         }
         */
-		/*
+        /*
 		 * RelationalSentencesCorpus testRelationalSentenceCorpus =
 		 * relationSentencesCorpusCreator .createTestCorpus();
 		 * 

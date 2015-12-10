@@ -59,13 +59,16 @@ public class TrainerResource {
             @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
     public Response createRelationalSentenceCorpus(
             @ApiParam(value = "Maximum number of items in the textual corpus", required = false, allowMultiple = false) @QueryParam("textCorpusMaxSize") int textCorpusMaxSize,
-            @ApiParam(value = "Maximum number of items in the generated relational corpus", required = false, allowMultiple = false) @QueryParam("textCorpusMaxSize") int corpusMaxSize,
-            @ApiParam(value = "Maximum number of items in the generated relational corpus", required = false, allowMultiple = false) @QueryParam("uri") String uri)
+            @ApiParam(value = "URI of the generated relational corpus", required = false, allowMultiple = false) @QueryParam("uri") String uri)
 
     {
 
 
+
         Parameters<Object> runtimeParameters = new Parameters<Object>();
+
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER, uri);
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
 
 
         learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
@@ -83,6 +86,9 @@ public class TrainerResource {
         }
         return Response.created(createdResourceUri).build();
     }
+
+
+
     // -----------------------------------------------------------------------------------------
 
     @POST
