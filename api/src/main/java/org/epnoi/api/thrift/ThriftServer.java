@@ -6,9 +6,11 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.epnoi.api.thrift.services.AnnotatedContentServiceHandler;
+import org.epnoi.api.thrift.services.KnowledgeBaseServiceHandler;
 import org.epnoi.api.thrift.services.ThriftServiceHandler;
 import org.epnoi.api.thrift.services.UIAServiceHandler;
 import org.epnoi.model.services.thrift.AnnotatedContentService;
+import org.epnoi.model.services.thrift.KnowledgeBaseService;
 import org.epnoi.model.services.thrift.UIAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +49,9 @@ public class ThriftServer {
     @Autowired
     UIAServiceHandler uiaServiceHandler;
 
+    @Autowired
+    KnowledgeBaseServiceHandler knowledgeBaseServiceHandler;
+
     @PostConstruct
     public void start() {
 
@@ -77,7 +82,7 @@ public class ThriftServer {
     private void _initServiceHandlers(TMultiplexedProcessor proc) {
         proc.registerProcessor(annotatedContentServiceHandler.getService(), new AnnotatedContentService.Processor<>(annotatedContentServiceHandler));
         proc.registerProcessor(uiaServiceHandler.getService(), new UIAService.Processor<>(uiaServiceHandler));
-
+        proc.registerProcessor(knowledgeBaseServiceHandler.getService(), new KnowledgeBaseService.Processor<>(knowledgeBaseServiceHandler));
 
     }
 

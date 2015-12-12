@@ -24,14 +24,17 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
     @Autowired
     Core core;
 
+
+    public AnnotatedContentServiceHandler() {
+
+    }
+
+
     @Override
     public String getService() {
         return Services.ANNOTATEDCONTENT.name();
     }
 
-    public AnnotatedContentServiceHandler() {
-
-    }
 
     @Override
     public AnnotatedDocument getAnnotatedContent(String uri, String type) throws TException {
@@ -57,7 +60,6 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
             annotatedDocument.setContentType(content.getType());
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
