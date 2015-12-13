@@ -1,10 +1,6 @@
 package org.epnoi.learner.relations.corpus.parallel;
 
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.AnnotatedContentHelper;
 import org.epnoi.model.WikipediaPage;
@@ -12,8 +8,6 @@ import org.epnoi.model.clients.thrift.UIAServiceClient;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 
-import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +78,8 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }finally {
+            uiaService.close();
         }
 
         return wikipediaPage;
@@ -99,6 +95,8 @@ public class UriToSectionsAnnotatedContentURIsFlatMapper {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }finally {
+            uiaService.close();
         }
 
         System.out.println("->> "+wikipediaPage);

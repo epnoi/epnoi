@@ -17,27 +17,11 @@ import org.epnoi.model.services.thrift.UIAService;
 /**
  * Created by rgonza on 5/12/15.
  */
-public class UIAServiceClient {
-    TTransport transport;
-    TProtocol protocol;
-    TMultiplexedProtocol multiplexedProtocol;
+public class UIAServiceClient extends ThriftClient {
 
-
-    private void _init(String host, int port) throws TException {
-        transport = new TFramedTransport(new TSocket(host, port));
-        this.protocol = new TBinaryProtocol(transport);
-
-        this.multiplexedProtocol = new TMultiplexedProtocol(protocol, Services.UIA.name());
-        transport.open();
-    }
-
-    public void init(String host, Integer port) throws EpnoiInitializationException {
-        try {
-            _init(host, port);
-        } catch (Exception e) {
-
-            throw new EpnoiInitializationException("There was a problem while initializing the thrift client: " + e.getMessage(), e);
-        }
+    @Override
+    protected TMultiplexedProtocol _initMultiplexerMultiplexedProtocol(TProtocol protocol){
+        return new TMultiplexedProtocol(protocol, Services.UIA.name());
     }
 
 
@@ -52,8 +36,6 @@ public class UIAServiceClient {
             return ((org.epnoi.model.Resource) SerializationUtils.deserialize(content.getResource()));
         } catch (TException e) {
             e.printStackTrace();
-        } finally {
-            transport.close();
         }
         return null;
     }
@@ -70,6 +52,8 @@ public class UIAServiceClient {
         } catch (Exception e) {
             e.printStackTrace();
 
+        } finally {
+            uiaService.close();
         }
 
 

@@ -27,7 +27,7 @@ public class UriToAnnotatedDocumentFlatMapper {
     private Parameters parameters;
 
     public UriToAnnotatedDocumentFlatMapper(Parameters parameters) {
-        this.parameters=parameters;
+        this.parameters = parameters;
     }
 
     public Iterable<Document> call(String uri) throws Exception {
@@ -44,7 +44,7 @@ public class UriToAnnotatedDocumentFlatMapper {
     // --------------------------------------------------------------------------------------------------------------------
 
     private Document _obtainAnnotatedContent(String uri) {
-        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
+        Integer thriftPort = (Integer) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
         org.epnoi.model.Content<Object> resource = null;
         try {
@@ -54,12 +54,10 @@ public class UriToAnnotatedDocumentFlatMapper {
         } catch (Exception e) {
             e.printStackTrace();
 
+        } finally {
+            uiaService.close();
         }
 
-/*
-        System.out.println("(RESOURCE)====> " + resource);
-        System.out.println("<--");
-*/
         return (Document) resource.getContent();
     }
 
@@ -106,6 +104,8 @@ public class UriToAnnotatedDocumentFlatMapper {
         } catch (Exception e) {
             e.printStackTrace();
 
+        } finally {
+            uiaService.close();
         }
 
         //  System.out.println("000> "+document);
@@ -120,26 +120,27 @@ public class UriToAnnotatedDocumentFlatMapper {
             System.out.println("It has been properly initialized!");
             System.out.println("Related--------------------------------------");
             List<String> sources = Arrays.asList("cat", "house", "dogs");
-            System.out.println("This are the related "+knowledgeBaseServiceClient.getRelated(sources, "hypernymy"));
-           // System.out.println("Stem--------------------------------------");
-          //  System.out.println("These are  the stemmed "+knowledgeBaseServiceClient.getRelated(sources, RelationHelper.HYPERNYM));
+            System.out.println("This are the related " + knowledgeBaseServiceClient.getRelated(sources, "hypernymy"));
+            // System.out.println("Stem--------------------------------------");
+            //  System.out.println("These are  the stemmed "+knowledgeBaseServiceClient.getRelated(sources, RelationHelper.HYPERNYM));
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-   // knowledgeBaseServiceClient = new KnowledgeBaseServiceClient();
+        // knowledgeBaseServiceClient = new KnowledgeBaseServiceClient();
         try {
-            knowledgeBaseServiceClient.init("localhost", 8585);
+            //  knowledgeBaseServiceClient.init("localhost", 8585);
             System.out.println("It has been properly initialized!");
             System.out.println("Stem--------------------------------------");
             List<String> sources = Arrays.asList("cat", "houses", "dogs");
-           System.out.println("This are the related "+knowledgeBaseServiceClient.stem(sources));
+            System.out.println("This are the related " + knowledgeBaseServiceClient.stem(sources));
 
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
+        knowledgeBaseServiceClient.close();
     }
 
 
