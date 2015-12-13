@@ -7,7 +7,9 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.model.RelationHelper;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
+import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.commons.GateUtils;
@@ -15,6 +17,7 @@ import org.epnoi.uia.commons.GateUtils;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UriToAnnotatedDocumentFlatMapper {
@@ -110,6 +113,33 @@ public class UriToAnnotatedDocumentFlatMapper {
         System.out.println("It took " + (start - end) + " the thrift service invocation ");
 
 
+        KnowledgeBaseServiceClient knowledgeBaseServiceClient = new KnowledgeBaseServiceClient();
+
+        try {
+            knowledgeBaseServiceClient.init("localhost", 8585);
+            System.out.println("It has been properly initialized!");
+            System.out.println("Related--------------------------------------");
+            List<String> sources = Arrays.asList("cat", "house", "dogs");
+            System.out.println("This are the related "+knowledgeBaseServiceClient.getRelated(sources, "hypernymy"));
+           // System.out.println("Stem--------------------------------------");
+          //  System.out.println("These are  the stemmed "+knowledgeBaseServiceClient.getRelated(sources, RelationHelper.HYPERNYM));
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+   // knowledgeBaseServiceClient = new KnowledgeBaseServiceClient();
+        try {
+            knowledgeBaseServiceClient.init("localhost", 8585);
+            System.out.println("It has been properly initialized!");
+            System.out.println("Stem--------------------------------------");
+            List<String> sources = Arrays.asList("cat", "houses", "dogs");
+           System.out.println("This are the related "+knowledgeBaseServiceClient.stem(sources));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
 
