@@ -2,6 +2,7 @@ package org.epnoi.learner.relations.corpus.parallel;
 
 import gate.Document;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
@@ -31,6 +32,11 @@ public class RelationalSentencesCorpusCreator {
     private Core core;
     @Autowired
     private RelationalSentencesCorpusCreationParameters parameters;
+    @Autowired
+    private SparkConf sparkConf;
+
+    @Autowired
+    private JavaSparkContext sparkContext;
 
     private Parameters<Object> runtimeParameters;
 
@@ -42,7 +48,6 @@ public class RelationalSentencesCorpusCreator {
     private int MAX_SENTENCE_LENGTH;
 
 
-    private static final String JOB_NAME = "RELATIONAL_SENTENCES_CORPUS_CREATION";
 
     // ----------------------------------------------------------------------------------------------------------------------
 
@@ -104,9 +109,7 @@ public class RelationalSentencesCorpusCreator {
     private List<RelationalSentence> _findRelationalSentences(List<String> URIs) {
 
 
-        SparkConf sparkConf = new SparkConf().setMaster("local[12]").setAppName(JOB_NAME);
-
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+      //
 
 
         Broadcast<RelationalSentencesCorpusCreationParameters> parametersBroadcast = sparkContext.broadcast((RelationalSentencesCorpusCreationParameters) this.parameters);

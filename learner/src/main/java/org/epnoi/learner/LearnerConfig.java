@@ -3,11 +3,16 @@ package org.epnoi.learner;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.modules.Profiles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
 
@@ -127,7 +132,7 @@ public class LearnerConfig {
     @Profile(Profiles.DEVELOP)
     public LearningParameters learningParameters() {
         LearningParameters learningParameters = new LearningParameters();
-    //    System.out.println("=======================================================================================> bean");
+        //    System.out.println("=======================================================================================> bean");
 /*
     learningParameters.setParameter(
             LearningParameters.CONSIDERED_DOMAINS,
@@ -159,21 +164,21 @@ public class LearnerConfig {
         return learningParameters;
     }
 
-    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
+
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public ApiListingResource apiListingResource() {
         return new ApiListingResource();
     }
 
-    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
+
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public SwaggerSerializers swaggerSerializer() {
         return new SwaggerSerializers();
     }
 
-    @Profile({Profiles.DEVELOP, Profiles.DEPLOYMENT})
+
     @Bean()
     @Scope(BeanDefinition.SCOPE_SINGLETON)
     public BeanConfig beanConfig() {
@@ -189,5 +194,19 @@ public class LearnerConfig {
         return beanConfig;
     }
 
+    @Bean()
+    public SparkConf sparkConfig(@Value("${epnoi.learner.spark.master}") String master, @Value("${epnoi.learner.spark.app}") String appName) {
 
+        SparkConf sparkConf = new SparkConf().setMaster(master).setAppName(appName);
+        logger.info("Creating the following spark configuration " + sparkConf.getAll());
+
+        return sparkConf;
+    }
+
+
+    @Bean()
+    public JavaSparkContext sparkContext(SparkConf sparkConf) {
+        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+        return sparkContext;
+    }
 }
