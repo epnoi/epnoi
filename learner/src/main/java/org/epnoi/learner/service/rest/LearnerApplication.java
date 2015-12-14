@@ -1,6 +1,5 @@
 package org.epnoi.learner.service.rest;
 
-import com.sun.jersey.api.core.ResourceConfig;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.springframework.web.filter.RequestContextFilter;
 

@@ -7,7 +7,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.model.RelationHelper;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
 import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
 import org.epnoi.model.commons.Parameters;

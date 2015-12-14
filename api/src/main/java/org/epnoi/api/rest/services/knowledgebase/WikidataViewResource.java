@@ -2,6 +2,7 @@ package org.epnoi.api.rest.services.knowledgebase;
 
 
 import io.swagger.annotations.*;
+import org.epnoi.api.rest.services.response.WikidataViewSummary;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters;
 import org.epnoi.knowledgebase.wikidata.WikidataHandlerParameters.DumpProcessingMode;
 import org.epnoi.knowledgebase.wikidata.WikidataViewCreator;
@@ -10,7 +11,6 @@ import org.epnoi.model.WikidataView;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.api.rest.services.response.WikidataViewSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

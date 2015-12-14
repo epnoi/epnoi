@@ -7,7 +7,6 @@ import org.epnoi.learner.relations.RelationsRetriever;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.Domain;
-import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
@@ -16,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**

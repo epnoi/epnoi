@@ -1,7 +1,6 @@
 package org.epnoi.learner.modules;
 
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.corpus.parallel.RelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.commons.Parameters;
 

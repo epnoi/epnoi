@@ -1,11 +1,10 @@
 package org.epnoi.api;
 
 
-import org.epnoi.model.modules.Profiles;
-import org.springframework.context.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @Import(org.epnoi.EpnoiConfig.class)

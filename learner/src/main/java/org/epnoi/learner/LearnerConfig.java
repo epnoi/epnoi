@@ -7,10 +7,9 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.RelationHelper;
-import org.epnoi.model.modules.*;
+import org.epnoi.model.modules.Profiles;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
-import org.springframework.context.annotation.Profile;
 
 import java.util.logging.Logger;
 

@@ -6,21 +6,14 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import org.apache.jena.atlas.test.Gen;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.Relation;
-import org.epnoi.model.commons.Parameters;
-import sun.net.www.content.text.Generic;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by rgonzalez on 25/11/15.

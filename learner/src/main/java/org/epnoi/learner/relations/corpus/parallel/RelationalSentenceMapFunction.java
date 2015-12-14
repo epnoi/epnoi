@@ -11,7 +11,6 @@ import org.apache.spark.api.java.function.Function;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
 
-import javax.jws.WebService;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 

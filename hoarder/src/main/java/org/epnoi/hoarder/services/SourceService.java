@@ -3,16 +3,12 @@ package org.epnoi.hoarder.services;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.epnoi.hoarder.routes.RouteDefinitionFactory;
-import org.epnoi.model.Event;
-import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
-import org.epnoi.model.modules.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

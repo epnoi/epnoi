@@ -1,6 +1,5 @@
 package org.epnoi.uia.informationstore.dao.map;
 
-import gate.util.compilers.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
 import org.epnoi.model.Content;
 import org.epnoi.model.Selector;
 import org.epnoi.model.parameterization.MapInformationStoreParameters;

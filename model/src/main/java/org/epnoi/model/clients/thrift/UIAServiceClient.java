@@ -2,13 +2,8 @@ package org.epnoi.model.clients.thrift;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.model.services.thrift.Resource;
 import org.epnoi.model.services.thrift.Services;

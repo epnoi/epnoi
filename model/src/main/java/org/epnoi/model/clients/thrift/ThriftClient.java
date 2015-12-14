@@ -8,7 +8,6 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.services.thrift.Services;
 
 /**
  * Created by rgonza on 13/12/15.

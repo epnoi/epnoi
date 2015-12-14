@@ -1,6 +1,5 @@
 package org.epnoi.learner.relations.patterns;
 
-import org.epnoi.EpnoiConfig;
 import org.epnoi.learner.relations.corpus.MockUpRelationalSentencesCorpusCreator;
 import org.epnoi.learner.relations.patterns.syntactic.SyntacticRelationalModelCreationParameters;
 import org.epnoi.model.RelationalSentencesCorpus;

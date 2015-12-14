@@ -1,6 +1,5 @@
 package org.epnoi.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.epnoi.model.commons.StringUtils;
 
 import java.util.Collection;

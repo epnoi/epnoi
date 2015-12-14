@@ -1,12 +1,9 @@
 package org.epnoi.learner.service.rest;
 
 import io.swagger.annotations.*;
-import org.epnoi.learner.LearningParameters;
-import org.epnoi.learner.OntologyLearningTask;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Relation;
-import org.epnoi.model.RelationsTable;
 import org.epnoi.model.Term;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
@@ -23,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 

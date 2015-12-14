@@ -3,7 +3,6 @@ package org.epnoi.model;
 import lombok.Data;
 
 import java.io.*;
-import java.net.URI;
 
 @Data
 public class Event {

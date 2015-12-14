@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.epnoi.api.rest.services.response.KnowledgeBase;
 import org.epnoi.api.rest.services.response.UIA;
-//import org.epnoi.harvester.demo.DemoDataLoader;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.InformationStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
+
+//import org.epnoi.harvester.demo.DemoDataLoader;
 
 @Path("/uia")
 @Api(value = "/uia", description = "UIA status and management")
