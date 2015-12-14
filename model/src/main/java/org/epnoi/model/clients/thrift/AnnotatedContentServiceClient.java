@@ -20,29 +20,12 @@ import org.epnoi.model.services.thrift.Services;
 /**
  * Created by rgonza on 5/12/15.
  */
-public class AnnotatedContentServiceClient {
-    TTransport transport;
-    TProtocol protocol;
-    TMultiplexedProtocol multiplexedProtocol;
+public class AnnotatedContentServiceClient extends ThriftClient{
 
-
-    private void _init(String host, int port) throws TException {
-        transport = new TFramedTransport(new TSocket(host, port));
-        this.protocol = new TBinaryProtocol(transport);
-
-        this.multiplexedProtocol = new TMultiplexedProtocol(protocol, Services.ANNOTATEDCONTENT.name());
-        transport.open();
+    @Override
+    protected TMultiplexedProtocol _initMultiplexerMultiplexedProtocol(TProtocol protocol) {
+       return new TMultiplexedProtocol(protocol, Services.ANNOTATEDCONTENT.name());
     }
-
-    public void init(String host, Integer port) throws EpnoiInitializationException {
-        try {
-            _init(host, port);
-        } catch (Exception e) {
-
-            throw new EpnoiInitializationException("There was a problem while initializing the thrift client: " + e.getMessage(), e);
-        }
-    }
-
 
     public org.epnoi.model.Content<Object> getAnnotatedDocument(String uri, String type) {
         try {
@@ -57,8 +40,6 @@ public class AnnotatedContentServiceClient {
 
         } catch (TException e) {
             e.printStackTrace();
-        } finally {
-            transport.close();
         }
         return null;
     }
@@ -75,6 +56,8 @@ public class AnnotatedContentServiceClient {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }finally {
+            uiaService.close();
         }
 
 

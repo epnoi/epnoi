@@ -94,25 +94,28 @@ public class KnowledgeBaseResource {
             @ApiParam(value = "Surface form of the source term of the relation", required = true, allowMultiple = true) @QueryParam("source") List<String> sources,
             @ApiParam(value = "Relation type", required = true, allowMultiple = false, allowableValues = "hypernymy,mereology") @PathParam("RELATION_TYPE") String type) {
         Map<String, List<String>> sourcesTargets = new HashMap<>();
+        if (sources != null) {
 
-        if ((sources != null) && validRelationTypes.contains(type)) {
+            if (validRelationTypes.contains(type)) {
 
-            type = resourceTypesTable.get(type);
-            try {
+                type = resourceTypesTable.get(type);
+
                 for (String source : sources) {
-                    List<String> targets = new ArrayList<>(core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source));
-                    sourcesTargets.put(source, targets);
+                    try {
+                        List<String> targets = new ArrayList<>(core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source));
+                        sourcesTargets.put(source, targets);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        logger.severe(exception.getMessage());
+                        sourcesTargets.put(source, new ArrayList<>());
+                    }
                 }
                 return Response.ok().entity(sourcesTargets).build();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                logger.severe(exception.getMessage());
-                return Response.serverError().build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
-
-        } else {
-            return Response.status(400).build();
         }
+        return Response.ok().entity(sourcesTargets).build();
     }
 
     // --------------------------------------------------------------------------------
@@ -127,28 +130,24 @@ public class KnowledgeBaseResource {
     @ApiOperation(value = "Returns the resource with the provided URI", notes = "", response = Resource.class)
     public Response getResource(
             @ApiParam(value = "Surface form of the term to be stemmed", required = true, allowMultiple = true) @QueryParam("term") List<String> terms) {
-
+        Map<String, List<String>> termsStems = new HashMap<>();
         logger.info("stem GET:> source=" + terms);
         if (terms != null) {
-            Map<String, List<String>> termsStems = new HashMap<>();
-
-            try {
-                logger.info("As the parameters seemed ok");
-
-                for (String term : terms) {
+            for (String term : terms) {
+                try {
                     List<String> stemmedTerms = new ArrayList(core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term));
                     termsStems.put(term, stemmedTerms);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    logger.severe(exception.getMessage());
+                    termsStems.put(term, new ArrayList<>());
                 }
-                return Response.ok().entity(termsStems).build();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                logger.severe(exception.getMessage());
-                return Response.serverError().build();
             }
+            return Response.ok().entity(termsStems).build();
 
-        } else {
-            return Response.status(400).build();
+
         }
+        return Response.ok().entity(termsStems).build();
     }
 
     // --------------------------------------------------------------------------------
