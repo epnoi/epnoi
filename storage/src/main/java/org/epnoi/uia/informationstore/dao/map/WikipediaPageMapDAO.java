@@ -14,7 +14,6 @@ public class WikipediaPageMapDAO extends MapDAO {
 
         Content<Object> annotatedContent = (Content<Object>) map.get(selector
                 .getProperty(SelectorHelper.ANNOTATED_CONTENT_URI));
-        //System.out.println("mapCOntent> "+annotatedContent);
         return annotatedContent;
     }
 
@@ -24,11 +23,8 @@ public class WikipediaPageMapDAO extends MapDAO {
     public void setAnnotatedContent(Selector selector,
                                     Content<Object> annotatedContent) {
 
-
-        //System.out.println(selector+" >> "+annotatedContent);
         map.put(selector.getProperty(SelectorHelper.ANNOTATED_CONTENT_URI),
                 annotatedContent);
-        // System.out.println(">> "+map.keySet());
         database.commit();
 
     }

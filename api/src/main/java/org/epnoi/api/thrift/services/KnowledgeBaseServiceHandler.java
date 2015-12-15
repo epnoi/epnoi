@@ -77,6 +77,7 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
                 for (String term : terms) {
                     try {
                         List<String> stemmedTerms = new ArrayList(core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term));
+                        System.out.println("(stem)---> "+termsStems);
                         termsStems.put(term, stemmedTerms);
                     } catch (Exception e) {
                         e.printStackTrace();

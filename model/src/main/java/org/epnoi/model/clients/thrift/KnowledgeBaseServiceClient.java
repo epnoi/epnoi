@@ -25,7 +25,6 @@ public class KnowledgeBaseServiceClient extends ThriftClient{
         try {
             KnowledgeBaseService.Client client = new KnowledgeBaseService.Client(this.multiplexedProtocol);
 
-            //  Resource content = client.getResource("http://en.wikipedia.org/wiki/Ammon", RDFHelper.WIKIPEDIA_PAGE_CLASS);
             Map<String, List<String>> targets = client.getRelated(sources, type);
             return targets;
         } catch (TException e) {

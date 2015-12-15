@@ -48,7 +48,6 @@ public class RelationalSentencesCorpusCreator {
     private int MAX_SENTENCE_LENGTH;
 
 
-
     // ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -79,10 +78,10 @@ public class RelationalSentencesCorpusCreator {
         // This should be done in parallel!!
         List<String> URIs = _collectCorpusURIs();
 
-        if(runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)!=null){
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER) != null) {
             corpus.setUri((String) this.runtimeParameters.getParameterValue(
                     RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
-        }else {
+        } else {
             corpus.setUri((String) this.parameters.getParameterValue(
                     RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
 
@@ -109,7 +108,7 @@ public class RelationalSentencesCorpusCreator {
     private List<RelationalSentence> _findRelationalSentences(List<String> URIs) {
 
 
-      //
+        //
 
 
         Broadcast<RelationalSentencesCorpusCreationParameters> parametersBroadcast = sparkContext.broadcast((RelationalSentencesCorpusCreationParameters) this.parameters);
@@ -119,15 +118,15 @@ public class RelationalSentencesCorpusCreator {
         JavaRDD<String> corpusURIs = sparkContext.parallelize(URIs);
 
         System.out.println("init!!!!!");
-        // THen we obtain the URIs of the annotated content documents that are
-        // stored at the UIA
+        // THen we obtain the uris of the annotated content documents that are
+        // stored at the UIA. The uris are those of the sections of the documents
 
         JavaRDD<String> annotatedContentURIs = corpusURIs.flatMap(uri -> {
             UriToSectionsAnnotatedContentURIsFlatMapper mapper = new UriToSectionsAnnotatedContentURIsFlatMapper(parametersBroadcast.getValue());
             return mapper.call(uri);
         });
 
-        System.out.println("..> " + annotatedContentURIs.collect());
+       //From
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
             UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(parametersBroadcast.getValue());
@@ -137,29 +136,19 @@ public class RelationalSentencesCorpusCreator {
 
         JavaRDD<Sentence> annotatedDocumentsSentences = annotatedDocuments
                 .flatMap(new DocumentToSentencesFlatMapper());
-    /*
-        for (Sentence sentence : annotatedDocumentsSentences.collect()) {
-			System.out.println("-------> " + sentence);
-		}
-*/
+
 
         JavaRDD<RelationalSentenceCandidate> relationalSentencesCandidates =
-                annotatedDocumentsSentences.flatMap(new
-                        SentenceToRelationalSentenceCandidateFlatMapper());
+                annotatedDocumentsSentences.flatMap(relationalSentence -> {
+                    SentenceToRelationalSentenceCandidateFlatMapper sentenceMapper = new
+                            SentenceToRelationalSentenceCandidateFlatMapper(parametersBroadcast.getValue());
+                    return sentenceMapper.call(relationalSentence);
+                });
 
-
-        //relationalSentencesCandidates.collect();
-        /*
-          JavaRDD<RelationalSentence> relationalSentences =
-		  relationalSentencesCandidates.map(new
-		  RelationalSentenceMapFunction());
-*/
         JavaRDD<RelationalSentence> relationalSentences =
                 relationalSentencesCandidates.map(new
                         RelationalSentenceCandidateToRelationalSentenceMapper());
 
-
-        //System.out.println("------>"+relationalSentences.collect());
 
         return relationalSentences.collect();
     }
@@ -232,7 +221,7 @@ public class RelationalSentencesCorpusCreator {
         }
         */
         /*
-		 * RelationalSentencesCorpus testRelationalSentenceCorpus =
+         * RelationalSentencesCorpus testRelationalSentenceCorpus =
 		 * relationSentencesCorpusCreator .createTestCorpus();
 		 * 
 		 * System.out.println("testCorpus>" + testRelationalSentenceCorpus);

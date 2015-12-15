@@ -10,6 +10,13 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import gate.Annotation;
 import gate.AnnotationSet;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.model.RelationHelper;
+import org.epnoi.model.WikipediaPage;
+import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
+import org.epnoi.model.clients.thrift.UIAServiceClient;
+import org.epnoi.model.commons.Parameters;
+import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -21,9 +28,16 @@ import java.util.*;
 public class SentenceToRelationalSentenceCandidateFlatMapper
         implements FlatMapFunction<Sentence, RelationalSentenceCandidate> {
 
+    private Parameters parameters;
+
     private final int MIN_TERM_LENGTH = 2;
     private Map<String, List<String>> stemmingTable = new HashMap<>();
     private Map<String, List<String>> hypernymsTable = new HashMap<>();
+
+
+    SentenceToRelationalSentenceCandidateFlatMapper(Parameters parameters){
+        this.parameters=parameters;
+    }
 
     @Override
     public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
@@ -91,6 +105,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveHypernyms(Set<String> terms) {
+      /*
         ClientConfig config = new DefaultClientConfig();
 
         Client client = Client.create(config);
@@ -107,12 +122,31 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
 
         Map<String, List<String>> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
                 .queryParams(queryParams).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
-        return hypernyms;
+
+        */
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
+        KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
+        Map<String, List<String>> stemmedForms=new HashMap<>();
+
+        try {
+            uiaService.init("localhost", thriftPort);
+            //System.out.println("It has been properly initialized!");
+            stemmedForms =  uiaService.getRelated(new ArrayList<>(terms), RelationHelper.HYPERNYM);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            uiaService.close();
+        }
+
+
+        return stemmedForms;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveStems(Set<String> terms) {
+        /*
         ClientConfig config = new DefaultClientConfig();
 
         Client client = Client.create(config);
@@ -131,6 +165,22 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
         Map<String, List<String>> stemmedForms = service.path(knowledgeBasePath + "/stem").queryParams(queryParams)
                 .type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
         Map<String, Set<String>> stemsMap = new HashMap<>();
+*/
+
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
+        KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
+       Map<String, List<String>> stemmedForms=new HashMap<>();
+
+        try {
+            uiaService.init("localhost", thriftPort);
+            //System.out.println("It has been properly initialized!");
+            stemmedForms =  uiaService.stem(new ArrayList<>(terms));
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }finally {
+            uiaService.close();
+        }
 
         return stemmedForms;
     }
