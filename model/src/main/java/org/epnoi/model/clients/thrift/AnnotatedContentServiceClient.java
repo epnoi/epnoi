@@ -29,6 +29,7 @@ public class AnnotatedContentServiceClient extends ThriftClient{
 
             AnnotatedDocument content = client.getAnnotatedContent(uri, type);
 
+
             Document doc = (Document) SerializationUtils.deserialize(content.getDoc());
             Content<Object> annotatedDocument = new Content<>(doc, content.getContentType());
             return annotatedDocument;

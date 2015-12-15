@@ -1,5 +1,6 @@
 package org.epnoi.api.thrift.services;
 
+import gate.corpora.DocumentImpl;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.thrift.TException;
 import org.epnoi.model.Content;
@@ -46,9 +47,10 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
             selector.setProperty(SelectorHelper.TYPE, type);
             Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
 
-            if(content!=null) {
+            if (content != null) {
                 content.getContent();
                 byte[] serializedDocument = null;
+
                 try {
                     serializedDocument = SerializationUtils.serialize((Serializable) content.getContent());
                 } catch (Exception e) {
@@ -56,12 +58,19 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
 
                 }
 
-            annotatedDocument.setDoc(ByteBuffer.wrap(serializedDocument));
-            annotatedDocument.setContentType(content.getType());
+                annotatedDocument.setDoc(ByteBuffer.wrap(serializedDocument));
+                annotatedDocument.setContentType(content.getType());
+            } else {
+
+                annotatedDocument.setContentType(type);
+                byte[] serializedDocument = SerializationUtils.serialize(new DocumentImpl());
+                annotatedDocument.setDoc(serializedDocument);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         return annotatedDocument;
     }
