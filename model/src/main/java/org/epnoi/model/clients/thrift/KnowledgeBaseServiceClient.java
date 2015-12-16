@@ -52,7 +52,7 @@ public class KnowledgeBaseServiceClient extends ThriftClient{
                 uiaService.init("localhost", 8585);
                 System.out.println("It has been properly initialized!");
                 System.out.println("Related--------------------------------------");
-                List<String> sources = Arrays.asList("cat", "houses", "dogs");
+                List<String> sources = Arrays.asList("cat", "houses", "dogs", "term", "frame");
                 System.out.println("This are the related " + uiaService.getRelated(sources,"hypernymy"));
                 System.out.println("Stem--------------------------------------");
                 System.out.println("These are  the stemmed " + uiaService.stem(sources));

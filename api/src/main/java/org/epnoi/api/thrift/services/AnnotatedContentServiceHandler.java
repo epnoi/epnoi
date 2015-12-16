@@ -48,7 +48,7 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
             Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
 
             if (content != null) {
-                System.out.println("================= > uri "+uri+" was not null!!!!!!!!!");
+
                 content.getContent();
                 byte[] serializedDocument = null;
 

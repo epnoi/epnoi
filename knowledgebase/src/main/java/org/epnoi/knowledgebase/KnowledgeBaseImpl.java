@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 public class KnowledgeBaseImpl implements KnowledgeBase {
-
+private static Set<String> ambiguousTerms;
+    static{
+        ambiguousTerms= new HashSet<String>(Arrays.asList("film", "taxon", "band", "song", "album","episode","magazine","human"));
+    }
     WordNetHandler wordNetHandler;
 
     WikidataHandler wikidataHandler;
@@ -123,14 +126,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
         }
         if (this.considerWordNet) {
             String stemmedSource = this.wordNetHandler.stemNoun(source);
-            System.out.println("stemmedsource >" + stemmedSource);
+
             Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
             hypernyms.addAll(wordNetHypernyms);
         }
+        hypernyms.remove(source);
+        hypernyms.removeAll(ambiguousTerms);
         return hypernyms;
     }
-
-    // -----------------------------------------------------------------------------------------------
 
 
     @Override
@@ -184,7 +187,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
 	 * { this.wikidataHandler = wikidataHandler; }
 	 */
     // -----------------------------------------------------------------------------------------------
-	/*
+    /*
 	 * FOR_TEST public static void main(String[] args) {
 	 * 
 	 * Core core = CoreUtility.getUIACore();
@@ -226,7 +229,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
     // }
 
     private boolean _test(String term) {
-        if (term != null && term.length()>1) {
+        if (term != null && term.length() > 1) {
             String result = term.replaceAll("[^\\dA-Za-z ]", "").replaceAll("\\s+", "");
             return result.length() > 2;
         }
