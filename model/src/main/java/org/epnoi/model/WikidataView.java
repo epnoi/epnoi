@@ -84,10 +84,10 @@ public class WikidataView implements Resource {
 
 	public void count() {
 		System.out.println(
-				"Initially we had " + this.relations.get(RelationHelper.HYPERNYM).size() + " hypernymy relations");
+				"Initially we had " + this.relations.get(RelationHelper.HYPERNYMY).size() + " hypernymy relations");
 		int relationsCount = 0;
-		for (String originURI : this.relations.get(RelationHelper.HYPERNYM).keySet()) {
-			for (String destinationURI : this.relations.get(RelationHelper.HYPERNYM).get(originURI)) {
+		for (String originURI : this.relations.get(RelationHelper.HYPERNYMY).keySet()) {
+			for (String destinationURI : this.relations.get(RelationHelper.HYPERNYMY).get(originURI)) {
 				if (this.labelsReverseDictionary.containsKey(originURI)
 						&& this.labelsReverseDictionary.containsKey(destinationURI)) {
 

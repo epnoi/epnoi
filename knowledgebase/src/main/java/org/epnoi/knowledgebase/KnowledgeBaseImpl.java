@@ -13,144 +13,148 @@ import java.util.Set;
 
 public class KnowledgeBaseImpl implements KnowledgeBase {
 
-	WordNetHandler wordNetHandler;
+    WordNetHandler wordNetHandler;
 
-	WikidataHandler wikidataHandler;
-	private boolean considerWordNet = true;
-	private boolean considerWikidata = true;
-	KnowledgeBaseParameters parameters;
+    WikidataHandler wikidataHandler;
+    private boolean considerWordNet = true;
+    private boolean considerWikidata = true;
+    KnowledgeBaseParameters parameters;
 
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
 
-	public KnowledgeBaseImpl(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
+    public KnowledgeBaseImpl(WordNetHandler wordNetHandler, WikidataHandler wikidataHandler) {
 
-		this.wordNetHandler = wordNetHandler;
-		this.wikidataHandler = wikidataHandler;
-	}
+        this.wordNetHandler = wordNetHandler;
+        this.wikidataHandler = wikidataHandler;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-
-
-	@Override
-	public void init(KnowledgeBaseParameters parameters) {
-		this.parameters = parameters;
-		this.considerWikidata = (boolean) this.parameters.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
-		this.considerWordNet = (boolean) this.parameters.getParameterValue(KnowledgeBaseParameters.CONSIDER_WORDNET);
-	}
-
-	// -----------------------------------------------------------------------------------------------
-
-	/**
-	 *@see
-	 */
-
-	@Override
-	public boolean areRelated(String source, String target, String type) {
-		System.out.println("Wordnet "+this.considerWordNet +" Wikidata "+this.considerWikidata);
-		if (RelationHelper.HYPERNYM.equals(type) && (source.length() > 0) && (target.length() > 0)) {
-			boolean areRelatedInWikidata = false;
-			if (this.considerWikidata) {
-				areRelatedInWikidata = (areRelatedInWikidata(source, target));
-			}
-			boolean areRelatedInWordNet = false;
-			if (this.considerWordNet) {
-				areRelatedInWordNet = (areRelatedInWordNet(source, target));
-			}
-			return (areRelatedInWikidata || areRelatedInWordNet);
-		}
-		return false;
-	}
-
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
 
 
-	@Override
-	public boolean areRelatedInWordNet(String source, String target) {
+    @Override
+    public void init(KnowledgeBaseParameters parameters) {
+        this.parameters = parameters;
+        this.considerWikidata = (boolean) this.parameters.getParameterValue(KnowledgeBaseParameters.CONSIDER_WIKIDATA);
+        this.considerWordNet = (boolean) this.parameters.getParameterValue(KnowledgeBaseParameters.CONSIDER_WORDNET);
+    }
 
-		String stemmedSource = this.wordNetHandler.stemNoun(source);
-		stemmedSource = (stemmedSource == null) ? stemmedSource = source : stemmedSource;
-		String stemmedTarget = this.wordNetHandler.stemNoun(target);
-		stemmedTarget = (stemmedTarget == null) ? stemmedTarget = source : stemmedTarget;
-		System.out.println(">> stemmedSource " + stemmedSource);
-		Set<String> sourceHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
-		System.out.println(">> stemmedSourceHypernyms " + sourceHypernyms);
+    // -----------------------------------------------------------------------------------------------
 
-		return (sourceHypernyms != null && sourceHypernyms.contains(stemmedTarget));
+    /**
+     * @see
+     */
 
-	}
+    @Override
+    public boolean areRelated(String source, String target, String type) {
+        System.out.println("Wordnet " + this.considerWordNet + " Wikidata " + this.considerWikidata);
+        if (RelationHelper.HYPERNYMY.equals(type) && (source.length() > 0) && (target.length() > 0)) {
+            boolean areRelatedInWikidata = false;
+            if (this.considerWikidata) {
+                areRelatedInWikidata = (areRelatedInWikidata(source, target));
+            }
+            boolean areRelatedInWordNet = false;
+            if (this.considerWordNet) {
+                areRelatedInWordNet = (areRelatedInWordNet(source, target));
+            }
+            return (areRelatedInWikidata || areRelatedInWordNet);
+        }
+        return false;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-
-
-	@Override
-	public boolean areRelatedInWikidata(String source, String target) {
-		System.out.println("> " + source + " " + target);
-		source = source.toLowerCase();
-		target = target.toLowerCase();
-
-		String stemmedSource = this.wikidataHandler.stem(source);
-		System.out.println(">> stemmedSource " + stemmedSource);
-		String stemmedTarget = this.wikidataHandler.stem(target);
-		System.out.println(">> stemmedTarget " + stemmedTarget);
-		Set<String> stemmedSourceHypernyms = this.wikidataHandler.getRelated(stemmedSource, RelationHelper.HYPERNYM);
-		Set<String> sourceHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYM);
-		System.out.println(">> stemmedSourceHypernyms " + stemmedSourceHypernyms);
-
-		System.out.println(">> sourceHypernyms " + sourceHypernyms);
-
-		sourceHypernyms.addAll(stemmedSourceHypernyms);
-
-		return (sourceHypernyms != null
-				&& (sourceHypernyms.contains(stemmedTarget) || sourceHypernyms.contains(target)));
-
-	}
+    // -----------------------------------------------------------------------------------------------
 
 
-	@Override
-	public Set<String> getHypernyms(String source) {
+    @Override
+    public boolean areRelatedInWordNet(String source, String target) {
 
-		Set<String> hypernyms = new HashSet<String>();
-		if (this.considerWikidata) {
+        String stemmedSource = this.wordNetHandler.stemNoun(source);
+        stemmedSource = (stemmedSource == null) ? stemmedSource = source : stemmedSource;
+        String stemmedTarget = this.wordNetHandler.stemNoun(target);
+        stemmedTarget = (stemmedTarget == null) ? stemmedTarget = source : stemmedTarget;
+        System.out.println(">> stemmedSource " + stemmedSource);
+        Set<String> sourceHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
+        System.out.println(">> stemmedSourceHypernyms " + sourceHypernyms);
 
-			Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYM);
-			hypernyms.addAll(wikidataHypernyms);
+        return (sourceHypernyms != null && sourceHypernyms.contains(stemmedTarget));
 
-			String stemmedSource = this.wikidataHandler.stem(source);
-			wikidataHypernyms = this.wikidataHandler.getRelated(stemmedSource, RelationHelper.HYPERNYM);
+    }
 
-			hypernyms.addAll(wikidataHypernyms);
-
-			}
-		if (this.considerWordNet) {
-			String stemmedSource = this.wordNetHandler.stemNoun(source);
-			System.out.println("stemmedsource >"+stemmedSource);
-			Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
-			hypernyms.addAll(wordNetHypernyms);
-		}
-		return hypernyms;
-	}
-
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
 
 
-	@Override
-	public Set<String> stem(String term) {
+    @Override
+    public boolean areRelatedInWikidata(String source, String target) {
+        System.out.println("> " + source + " " + target);
+        source = source.toLowerCase();
+        target = target.toLowerCase();
 
-		Set<String> stemmedTerm = new HashSet<String>();
-		if (this.considerWordNet) {
-			String wordNetStemmedTerm = this.wordNetHandler.stemNoun(term);
-			if (wordNetStemmedTerm != null) {
-				stemmedTerm.add(wordNetStemmedTerm);
-			}
-		}
-		if (this.considerWikidata) {
-			stemmedTerm.add(this.wikidataHandler.stem(term));
-		}
-		return stemmedTerm;
-	}
+        String stemmedSource = this.wikidataHandler.stem(source);
+        System.out.println(">> stemmedSource " + stemmedSource);
+        String stemmedTarget = this.wikidataHandler.stem(target);
+        System.out.println(">> stemmedTarget " + stemmedTarget);
+        Set<String> stemmedSourceHypernyms = this.wikidataHandler.getRelated(stemmedSource, RelationHelper.HYPERNYMY);
+        Set<String> sourceHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYMY);
+        System.out.println(">> stemmedSourceHypernyms " + stemmedSourceHypernyms);
+
+        System.out.println(">> sourceHypernyms " + sourceHypernyms);
+
+        sourceHypernyms.addAll(stemmedSourceHypernyms);
+
+        return (sourceHypernyms != null
+                && (sourceHypernyms.contains(stemmedTarget) || sourceHypernyms.contains(target)));
+
+    }
+
+
+    @Override
+    public Set<String> getHypernyms(String source) {
+
+        Set<String> hypernyms = new HashSet<String>();
+        if (this.considerWikidata) {
+
+            Set<String> wikidataHypernyms = this.wikidataHandler.getRelated(source, RelationHelper.HYPERNYMY);
+            hypernyms.addAll(wikidataHypernyms);
+
+            String stemmedSource = this.wikidataHandler.stem(source);
+            wikidataHypernyms = this.wikidataHandler.getRelated(stemmedSource, RelationHelper.HYPERNYMY);
+
+            hypernyms.addAll(wikidataHypernyms);
+
+        }
+        if (this.considerWordNet) {
+            String stemmedSource = this.wordNetHandler.stemNoun(source);
+            System.out.println("stemmedsource >" + stemmedSource);
+            Set<String> wordNetHypernyms = this.wordNetHandler.getNounFirstMeaningHypernyms(stemmedSource);
+            hypernyms.addAll(wordNetHypernyms);
+        }
+        return hypernyms;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+
+
+    @Override
+    public Set<String> stem(String term) {
+
+
+        Set<String> stemmedTerm = new HashSet<String>();
+        if (this.considerWordNet) {
+            String wordNetStemmedTerm = this.wordNetHandler.stemNoun(term);
+            if (_test(wordNetStemmedTerm)) {
+                stemmedTerm.add(wordNetStemmedTerm);
+            }
+        }
+        if (this.considerWikidata) {
+            String wikidataStemmedTerm = this.wikidataHandler.stem(term);
+            if (_test(wikidataStemmedTerm)) {
+                stemmedTerm.add(wikidataStemmedTerm);
+            }
+        }
+        return stemmedTerm;
+    }
 
 	/*
-	 * 
+     *
 	 * //
 	 * -------------------------------------------------------------------------
 	 * ----------------------
@@ -179,7 +183,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
 	 * @Override public void setWikidataHandler(WikidataHandler wikidataHandler)
 	 * { this.wikidataHandler = wikidataHandler; }
 	 */
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
 	/*
 	 * FOR_TEST public static void main(String[] args) {
 	 * 
@@ -192,7 +196,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
 	 * 
 	 * System.out.println("100> " + knowledgeBase.getWikidataHandler()
 	 * .getRelated(knowledgeBase.getWikidataHandler().stem("madrid"),
-	 * RelationHelper.HYPERNYM));
+	 * RelationHelper.HYPERNYMY));
 	 * 
 	 * } catch (EpnoiInitializationException e) {
 	 * 
@@ -203,7 +207,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
 	 * CassandraInformationStore cis = ((CassandraInformationStore) core
 	 * .getInformationStoresByType(InformationStoreHelper.
 	 * CASSANDRA_INFORMATION_STORE).get(0)); cis.getQueryResolver().getWith(
-	 * "http://www.epnoi.org/wikidataView/relations/"+RelationHelper. HYPERNYM,
+	 * "http://www.epnoi.org/wikidataView/relations/"+RelationHelper. HYPERNYMY,
 	 * "WikidataViewCorpus", "Q2807");
 	 */
 	/*
@@ -212,26 +216,24 @@ public class KnowledgeBaseImpl implements KnowledgeBase {
 	 * CASSANDRA_INFORMATION_STORE).get(0));
 	 * 
 	 * System.out.println(cis.getQueryResolver().getValues(
-	 * "http://www.epnoi.org/wikidataView/relations/" + RelationHelper.HYPERNYM,
+	 * "http://www.epnoi.org/wikidataView/relations/" + RelationHelper.HYPERNYMY,
 	 * "Q2807", WikidataViewCassandraHelper.COLUMN_FAMILY));
 	 * System.out.println(cis.getQueryResolver().getValues(
 	 * "http://www.epnoi.org/wikidataView/reverseDictionary", "Q2807",
 	 * WikidataViewCassandraHelper.COLUMN_FAMILY));
 	 * 
 	 */
-	// }
-	
-	public static void main(String[] args) {
-		Set<String> aset = new HashSet<String>();
-		aset.add("algo");
-		System.out.println(aset);
-		aset.add("algo");
-		System.out.println(aset);
-		List<String> alist = Arrays.asList("algo","otro");
-		aset.addAll(alist);
-		
-		System.out.println(aset);
-		
-	}
+    // }
 
+    private boolean _test(String term) {
+        if (term != null && term.length()>1) {
+            String result = term.replaceAll("[^\\dA-Za-z ]", "").replaceAll("\\s+", "");
+            return result.length() > 2;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Valid? ");
+    }
 }

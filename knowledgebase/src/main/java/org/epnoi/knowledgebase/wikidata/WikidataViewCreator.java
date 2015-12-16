@@ -73,7 +73,7 @@ public class WikidataViewCreator {
 				+ parameters);
 		WikidataView wikidataView = null;
 
-		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
+		relationsTable.put(RelationHelper.HYPERNYMY, hypernymRelations);
 		this.wikidataDumpProcessor.processEntitiesFromWikidataDump();
 		wikidataView = new WikidataView(wikidataViewURI, labelsDictionary,
 				labelsReverseDictionary, relationsTable);

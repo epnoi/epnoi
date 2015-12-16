@@ -211,7 +211,7 @@ public class RelationsExtractor {
 
 
         if (this.considerKnowledgeBase && this.knowledgeBase.areRelated(sourceTermWord, targetTermWord,
-                RelationHelper.HYPERNYM)) {
+                RelationHelper.HYPERNYMY)) {
             _createRelation(sentenceContent, sourceTermWord, targetTermWord,
                     1.0);
         } else {
@@ -248,7 +248,7 @@ public class RelationsExtractor {
         if (sourceTerm != null && targetTerm != null) {
 
             this.relationsTable.introduceRelation(this.targetDomain,
-                    sourceTerm, targetTerm, RelationHelper.HYPERNYM,
+                    sourceTerm, targetTerm, RelationHelper.HYPERNYMY,
                     sentenceContent, relationProbability);
         } else {
             // System.out.println("S_word " + sourceTermWord +

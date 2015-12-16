@@ -12,11 +12,8 @@ import gate.AnnotationSet;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.RelationHelper;
-import org.epnoi.model.WikipediaPage;
 import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
-import org.epnoi.model.clients.thrift.UIAServiceClient;
 import org.epnoi.model.commons.Parameters;
-import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -105,7 +102,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveHypernyms(Set<String> terms) {
-      /*
+
         ClientConfig config = new DefaultClientConfig();
 
         Client client = Client.create(config);
@@ -123,7 +120,9 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
         Map<String, List<String>> hypernyms = service.path(knowledgeBasePath + "/relations/hypernymy/targets")
                 .queryParams(queryParams).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
 
-        */
+return  hypernyms;
+      //  System.out.println("terms> "+terms);
+        /*
         Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
         Map<String, List<String>> stemmedForms=new HashMap<>();
@@ -131,7 +130,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
         try {
             uiaService.init("localhost", thriftPort);
             //System.out.println("It has been properly initialized!");
-            stemmedForms =  uiaService.getRelated(new ArrayList<>(terms), RelationHelper.HYPERNYM);
+            stemmedForms =  uiaService.getRelated(new ArrayList<>(terms), RelationHelper.HYPERNYMY);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -141,6 +140,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
 
 
         return stemmedForms;
+    */
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
         Set<String> termCandidatesSurfaceAndStemmedForms = _addStemmsToSentenceTerms(termCandatesSurfaceForms);
 
 
-        return termCandatesSurfaceForms;
+        return termCandidatesSurfaceAndStemmedForms;
     }
 
     private Set<String> _addStemmsToSentenceTerms(Set<String> termCandatesSurfaceForms) {

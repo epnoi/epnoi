@@ -48,6 +48,7 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
             Content<Object> content = this.core.getInformationHandler().getAnnotatedContent(selector);
 
             if (content != null) {
+                System.out.println("================= > uri "+uri+" was not null!!!!!!!!!");
                 content.getContent();
                 byte[] serializedDocument = null;
 
@@ -61,7 +62,7 @@ public class AnnotatedContentServiceHandler extends ThriftServiceHandler impleme
                 annotatedDocument.setDoc(ByteBuffer.wrap(serializedDocument));
                 annotatedDocument.setContentType(content.getType());
             } else {
-
+                System.out.println("uri "+uri+" was null ");
                 annotatedDocument.setContentType(type);
                 byte[] serializedDocument = SerializationUtils.serialize(new DocumentImpl());
                 annotatedDocument.setDoc(serializedDocument);

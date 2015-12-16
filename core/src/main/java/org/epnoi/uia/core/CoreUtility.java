@@ -52,7 +52,7 @@ public class CoreUtility {
     public static void main(String[] args) {
         Core core = CoreUtility.getUIACore();
         try {
-            System.out.println("-> "+core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYM));
+            System.out.println("-> "+core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYMY));
         } catch (EpnoiInitializationException e) {
             e.printStackTrace();
         } catch (EpnoiResourceAccessException e) {

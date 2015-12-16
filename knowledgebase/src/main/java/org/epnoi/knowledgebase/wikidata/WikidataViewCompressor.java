@@ -45,7 +45,7 @@ public class WikidataViewCompressor {
 
 	private void _generateValidTargetIRIs() {
 		for (Set<String> targetIRIs : this.relations.get(
-				RelationHelper.HYPERNYM).values()) {
+				RelationHelper.HYPERNYMY).values()) {
 			for (String targetIRI : targetIRIs) {
 				this.validTargetIRIs.add(targetIRI);
 			}
@@ -74,7 +74,7 @@ public class WikidataViewCompressor {
 		// We consider valid only those IRIs that either the source or the
 		// target of some relation
 		return (this.validTargetIRIs.contains(IRI) || this.relations
-				.get(RelationHelper.HYPERNYM).keySet().contains(IRI));
+				.get(RelationHelper.HYPERNYMY).keySet().contains(IRI));
 	}
 
 	private void _addToDictionary(String key, String value,

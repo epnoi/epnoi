@@ -23,7 +23,7 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
     private static Set<String> validRelationTypes = new HashSet<String>();
 
     static {
-        resourceTypesTable.put("hypernymy", RelationHelper.HYPERNYM);
+        resourceTypesTable.put("hypernymy", RelationHelper.HYPERNYMY);
         resourceTypesTable.put("mereology", RelationHelper.MEREOLOGY);
         validRelationTypes.add("hypernymy");
         validRelationTypes.add("mereology");
@@ -49,15 +49,15 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
         logger.info("--------------------------------------------------------------_____> "+sources+" type> "+type);
         Map<String, List<String>> sourcesTargets = new HashMap<>();
 
-        if ((sources != null) && validRelationTypes.contains(type)) {
-
+        if (sources != null) {
+logger.info("The type is valid");
             type = resourceTypesTable.get(type);
-            System.out.println("type.> "+type);
+
             for (String source : sources) {
                 try {
                     List<String> targets = new ArrayList<>(core.getKnowledgeBaseHandler().getKnowledgeBase().getHypernyms(source));
                     sourcesTargets.put(source, targets);
-                    System.out.println("sout.> "+type);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -66,6 +66,7 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
                 }
             }
         }
+       logger.info("(hypernyms)---> "+sourcesTargets);
         return sourcesTargets;
     }
 
@@ -77,7 +78,7 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
                 for (String term : terms) {
                     try {
                         List<String> stemmedTerms = new ArrayList(core.getKnowledgeBaseHandler().getKnowledgeBase().stem(term));
-                        System.out.println("(stem)---> "+termsStems);
+
                         termsStems.put(term, stemmedTerms);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -86,7 +87,7 @@ public class KnowledgeBaseServiceHandler extends ThriftServiceHandler implements
                     }
                 }
             }
-
+            System.out.println("(stem)---> "+termsStems);
             return termsStems;
         }
     }

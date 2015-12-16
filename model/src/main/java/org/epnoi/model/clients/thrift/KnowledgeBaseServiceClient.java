@@ -46,23 +46,24 @@ public class KnowledgeBaseServiceClient extends ThriftClient{
 
     public static void main(String[] args) {
         System.out.println("-->");
-
         KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
+      //  for (int i = 0;  i < 10000; i++) {
+            try {
+                uiaService.init("localhost", 8585);
+                System.out.println("It has been properly initialized!");
+                System.out.println("Related--------------------------------------");
+                List<String> sources = Arrays.asList("cat", "houses", "dogs");
+                System.out.println("This are the related " + uiaService.getRelated(sources,"hypernymy"));
+                System.out.println("Stem--------------------------------------");
+                System.out.println("These are  the stemmed " + uiaService.stem(sources));
+                uiaService.close();
+            } catch (Exception e) {
+                e.printStackTrace();
 
-        try {
-            uiaService.init("localhost", 8585);
-            System.out.println("It has been properly initialized!");
-            System.out.println("Related--------------------------------------");
-            List<String> sources = Arrays.asList("cat", "houses", "dogs");
-            System.out.println("This are the related " + uiaService.getRelated(sources, RelationHelper.HYPERNYM));
-            System.out.println("Stem--------------------------------------");
-            System.out.println("These are  the stemmed " + uiaService.getRelated(sources, RelationHelper.HYPERNYM));
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
+            }
 
 
-        System.out.println("<--");
+            System.out.println("<--");
+       // }
     }
 }

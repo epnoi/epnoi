@@ -199,7 +199,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		relationA.setURI("http://relationA/source/target");
 		relationA.setSource("http://relationA/source");
 		relationA.setTarget("http://relationA/target");
-		relationA.setType(RelationHelper.HYPERNYM);
+		relationA.setType(RelationHelper.HYPERNYMY);
 		relationA.addProvenanceSentence("blablablaA", 0.5);
 		relationA.addProvenanceSentence("loqueseaA", 0.75);
 
@@ -209,7 +209,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 		relationB.setURI("http://relationB/source/target");
 		relationB.setSource("http://relationB/source");
 		relationB.setTarget("http://relationB/target");
-		relationB.setType(RelationHelper.HYPERNYM);
+		relationB.setType(RelationHelper.HYPERNYMY);
 		relationB.addProvenanceSentence("blablablaB", 0.5);
 		relationB.addProvenanceSentence("loqueseaB", 0.75);
 		relationB.addProvenanceSentence("pozipoziB", 0.75);

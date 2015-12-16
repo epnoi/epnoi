@@ -225,7 +225,7 @@ public class RelationalSentencesCorpusCassandraDAO extends CassandraDAO {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI(relationalSentenceURI);
-		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
+		relationalSentencesCorpus.setType(RelationHelper.HYPERNYMY);
 
 		Document annotatedContent=null;
 		try {

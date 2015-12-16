@@ -164,7 +164,7 @@ public class WikidataViewResource {
     private long _calculateHypernymsRelationsNumber(WikidataView wikidView) {
         long number = 0;
         for (Entry<String, Set<String>> entry : wikidView.getRelations()
-                .get(RelationHelper.HYPERNYM).entrySet()) {
+                .get(RelationHelper.HYPERNYMY).entrySet()) {
             number += entry.getValue().size();
         }
         return number;

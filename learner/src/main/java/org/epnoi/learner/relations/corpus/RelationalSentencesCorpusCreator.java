@@ -413,7 +413,7 @@ public class RelationalSentencesCorpusCreator {
 				relationalCorpusURI);
 
 		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
-				RelationHelper.HYPERNYM);
+				RelationHelper.HYPERNYMY);
 
 		parameters.setParameter(
 				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
@@ -467,7 +467,7 @@ public class RelationalSentencesCorpusCreator {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setUri(relationalSentenceURI);
-		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
+		// relationalSentencesCorpus.setType(RelationHelper.HYPERNYMY);
 
 		Document annotatedContentA = null;
 		try {

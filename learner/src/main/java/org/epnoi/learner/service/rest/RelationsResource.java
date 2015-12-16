@@ -29,7 +29,7 @@ public class RelationsResource {
     private static Set<String> validRelationTypes = new HashSet<String>();
 
     static {
-        resourceTypesTable.put("hypernymy", RelationHelper.HYPERNYM);
+        resourceTypesTable.put("hypernymy", RelationHelper.HYPERNYMY);
         resourceTypesTable.put("mereology", RelationHelper.MEREOLOGY);
         validRelationTypes.add("hypernymy");
         validRelationTypes.add("mereology");

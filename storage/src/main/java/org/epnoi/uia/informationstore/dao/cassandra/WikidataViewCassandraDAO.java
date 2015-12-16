@@ -31,7 +31,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 		super.deleteRow(this.reverseDictionaryURI,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
-		super.deleteRow(this.relationsURI + "/" + RelationHelper.HYPERNYM,
+		super.deleteRow(this.relationsURI + "/" + RelationHelper.HYPERNYMY,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 
 	}
@@ -60,7 +60,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 		super.createRow(this.reverseDictionaryURI,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
-		super.createRow(this.relationsURI + "/" + RelationHelper.HYPERNYM,
+		super.createRow(this.relationsURI + "/" + RelationHelper.HYPERNYMY,
 				WikidataViewCassandraHelper.COLUMN_FAMILY);
 	}
 
@@ -165,9 +165,9 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 			Map<String, Set<String>> labelsReverseDictionary = _retrieveMap(this.reverseDictionaryURI);
 
 			Map<String, Map<String, Set<String>>> relations = new HashMap<>();
-			Map<String, Set<String>> hypernymRelations = _retrieveMap(this.relationsURI+"/"+RelationHelper.HYPERNYM);
+			Map<String, Set<String>> hypernymRelations = _retrieveMap(this.relationsURI+"/"+RelationHelper.HYPERNYMY);
 			
-			relations.put(RelationHelper.HYPERNYM, hypernymRelations);
+			relations.put(RelationHelper.HYPERNYMY, hypernymRelations);
 
 			wikidataView = new WikidataView(URI, labelsDictionary,
 					labelsReverseDictionary, relations);
@@ -280,14 +280,14 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 
 		System.out.println("test label assoicated uris"
 				+ readedWikidataview
-						.getRelated("source label", RelationHelper.HYPERNYM));
+						.getRelated("source label", RelationHelper.HYPERNYMY));
 		
 		System.out.println("There are "+readedWikidataview
-						.getRelated("source label", RelationHelper.HYPERNYM).size() );
+						.getRelated("source label", RelationHelper.HYPERNYMY).size() );
 		
 		System.out.println("test label 3 assoicated uris"
 				+ readedWikidataview.getRelated("test label 3",
-						RelationHelper.HYPERNYM));
+						RelationHelper.HYPERNYMY));
 
 		System.out.println("Let's delete it !");
 		core.getInformationHandler().remove(wikidataView);
@@ -314,7 +314,7 @@ public class WikidataViewCassandraDAO extends CassandraDAO {
 		destionationSet.add("http://testTargetA");
 		destionationSet.add("http://testTargetB");
 		hypernymRelations.put("http://testSource", destionationSet);
-		relations.put(RelationHelper.HYPERNYM, hypernymRelations);
+		relations.put(RelationHelper.HYPERNYMY, hypernymRelations);
 
 		
 		

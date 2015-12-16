@@ -121,7 +121,7 @@ public class UriToAnnotatedDocumentFlatMapper {
             List<String> sources = Arrays.asList("cat", "house", "dogs");
             System.out.println("This are the related " + knowledgeBaseServiceClient.getRelated(sources, "hypernymy"));
             // System.out.println("Stem--------------------------------------");
-            //  System.out.println("These are  the stemmed "+knowledgeBaseServiceClient.getRelated(sources, RelationHelper.HYPERNYM));
+            //  System.out.println("These are  the stemmed "+knowledgeBaseServiceClient.getRelated(sources, RelationHelper.HYPERNYMY));
         } catch (Exception e) {
             e.printStackTrace();
 

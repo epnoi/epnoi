@@ -51,7 +51,7 @@ public class CassandraWikidataView {
 		if (sourceIRIs != null) {
 
 			for (String sourceIRI : sourceIRIs) {
-				// System.out.println("sourceIRI " + sourceIRI);
+				//System.out.println("sourceIRI " + sourceIRI);
 				Set<String> targetIRIs = this.getIRIRelatedIRIs(type, sourceIRI);
 				// System.out.println(" ("+sourceIRI+") targetIRIs " +
 				// targetIRIs);
@@ -120,13 +120,14 @@ public class CassandraWikidataView {
 	 * @return
 	 */
 	public Set<String> getIRIsOfLabel(String label) {
-		// TODO Auto-generated method stub
+		System.out.println("_---------------------------------------------------------------________>"+label+"<");
 		
 		//String labelIRI = this.URI + "/labels#" + label;
-		return cassandraInformationStore.getQueryResolver().getValues(this.dictionaryURI,label,
-				WikidataViewCassandraHelper.COLUMN_FAMILY);
-
-		// cassandraInformationStore.qu
+		if(label.length()>1) {
+			return cassandraInformationStore.getQueryResolver().getValues(this.dictionaryURI, label,
+					WikidataViewCassandraHelper.COLUMN_FAMILY);
+		}
+	return new HashSet<>();
 	}
 
 	// ------------------------------------------------------------------------------------------------------

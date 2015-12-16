@@ -76,7 +76,7 @@ public class CoreSpringUtility {
         Core core = applicationContext.getBean(Core.class);
 
         try {
-            System.out.println("--->" + core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYM));
+            System.out.println("--->" + core.getKnowledgeBaseHandler().getKnowledgeBase().areRelated("depeche mode", "band", RelationHelper.HYPERNYMY));
         } catch (EpnoiInitializationException e) {
             e.printStackTrace();
         } catch (EpnoiResourceAccessException e) {

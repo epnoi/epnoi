@@ -122,7 +122,7 @@ public class RelationsHandler {
 			relations
 					.add(Relation.buildKnowledgeBaseRelation(
 							sourceTermSurfaceForm, targetTerm,
-							RelationHelper.HYPERNYM));
+							RelationHelper.HYPERNYMY));
 		}
 		// If we have been able to retrieve the Terms/RelationsTable associated
 		// with the domain, we also return these relations
@@ -154,7 +154,7 @@ public class RelationsHandler {
 		 * this.knowledgeBase.getHypernyms(sourceTermURI)) {
 		 * 
 		 * relations.add(Relation.buildKnowledgeBaseRelation(sourceTermURI,
-		 * targetTerm, RelationHelper.HYPERNYM)); }
+		 * targetTerm, RelationHelper.HYPERNYMY)); }
 		 */
 		// If we have been able to retrieve the Terms/RelationsTable associated
 		// with the domain, we also return these relations
@@ -302,22 +302,22 @@ public class RelationsHandler {
 
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("dog", "canine",
-						RelationHelper.HYPERNYM, "http://whatever"));
+						RelationHelper.HYPERNYMY, "http://whatever"));
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("cats", "canine",
-						RelationHelper.HYPERNYM, "http://whatever"));
+						RelationHelper.HYPERNYMY, "http://whatever"));
 		System.out.println("The strange EEUU case");
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("EEUU", "country",
-						RelationHelper.HYPERNYM, "http://whatever"));
+						RelationHelper.HYPERNYMY, "http://whatever"));
 		System.out.println("The strange Spain case");
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("Spain", "country",
-						RelationHelper.HYPERNYM, "http://whatever"));
+						RelationHelper.HYPERNYMY, "http://whatever"));
 		System.out.println("Finally the dog and cat problem");
 		System.out.println("Are related? "
 				+ relationsHandler.areRelated("dog", "animal",
-						RelationHelper.HYPERNYM, "http://whatever"));
+						RelationHelper.HYPERNYMY, "http://whatever"));
 
 		System.out.println("Ending the RelationsHandler Process!");
 	}

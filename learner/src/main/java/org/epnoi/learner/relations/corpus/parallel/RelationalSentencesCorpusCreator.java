@@ -126,7 +126,7 @@ public class RelationalSentencesCorpusCreator {
             return mapper.call(uri);
         });
 
-       //From
+        //From
 
         JavaRDD<Document> annotatedDocuments = annotatedContentURIs.flatMap(uri -> {
             UriToAnnotatedDocumentFlatMapper flatMapper = new UriToAnnotatedDocumentFlatMapper(parametersBroadcast.getValue());
@@ -171,9 +171,13 @@ public class RelationalSentencesCorpusCreator {
 
 
         if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE) != null) {
-            logger.info("A maximum for the number of text items has been set for the test corpus: " + (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
-            return wikipediaPages.subList(0, (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE));
+            Integer corpusMaxSize = (Integer) runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE);
+            logger.info("A maximum for the number of text items has been set for the test corpus: " + corpusMaxSize);
+            Integer max = (corpusMaxSize > wikipediaPages.size()) ? wikipediaPages.size() : corpusMaxSize;
+            logger.info("Using as a maximum: " +max);
+            return wikipediaPages.subList(0, max);
         }
+
         return wikipediaPages;
     }
 
@@ -195,7 +199,7 @@ public class RelationalSentencesCorpusCreator {
                 relationalCorpusURI);
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
-                RelationHelper.HYPERNYM);
+                RelationHelper.HYPERNYMY);
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.UIA_PATH, "http://localhost:8080/epnoi/rest");
 
@@ -237,7 +241,7 @@ public class RelationalSentencesCorpusCreator {
 
 //        relationSentencesCorpusCreator.createCorpus();
 /*
-		System.out.println("Checking if the Relational Sentence Corpus can be retrieved");
+        System.out.println("Checking if the Relational Sentence Corpus can be retrieved");
 
 		RelationalSentencesCorpus relationalSentenceCorpus = (RelationalSentencesCorpus) core.getInformationHandler()
 				.get(relationalCorpusURI, RDFHelper.RELATIONAL_SENTECES_CORPUS_CLASS);

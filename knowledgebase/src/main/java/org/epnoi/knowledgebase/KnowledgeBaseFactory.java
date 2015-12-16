@@ -122,15 +122,15 @@ public class KnowledgeBaseFactory {
 		KnowledgeBase curatedRelationsTable = knowledgeBaseCreator.build();
 		System.out
 				.println("Testing for dog-canine-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dog", "canrine", RelationHelper.HYPERNYM));
+		System.out.println(curatedRelationsTable.areRelated("dog", "canrine", RelationHelper.HYPERNYMY));
 
 		System.out
 				.println("Testing for dogs-canine-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dogs", "canine",RelationHelper.HYPERNYM));
+		System.out.println(curatedRelationsTable.areRelated("dogs", "canine",RelationHelper.HYPERNYMY));
 
 		System.out
 				.println("Testing for dog-canines-------------------------------------------------------");
-		System.out.println(curatedRelationsTable.areRelated("dog", "canines ",RelationHelper.HYPERNYM));
+		System.out.println(curatedRelationsTable.areRelated("dog", "canines ",RelationHelper.HYPERNYMY));
 
 		System.out.println("Starting the CuratedRelationsTableCreator test!!");
 	}

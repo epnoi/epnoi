@@ -64,13 +64,13 @@ public class RelationalSentenceToRelationMapper {
         AnnotatedWord<TermMetadata> targetTerm = termCandidateBuilder.buildTermCandidate(relationalSentence.getTarget());
 
         String relationURI = Relation.buildURI(sourceTerm
-                .getWord(), targetTerm.getWord(), RelationHelper.HYPERNYM, domain);
+                .getWord(), targetTerm.getWord(), RelationHelper.HYPERNYMY, domain);
 
 
         relation.setUri(relationURI);
         relation.setSource(Term.buildURI(sourceTerm.getWord(), domain));
         relation.setTarget(Term.buildURI(targetTerm.getWord(), domain));
-        relation.setType(RelationHelper.HYPERNYM);
+        relation.setType(RelationHelper.HYPERNYMY);
         relation.addProvenanceSentence(relationalSentence.getSentence(), relationhood);
 
         return relation;

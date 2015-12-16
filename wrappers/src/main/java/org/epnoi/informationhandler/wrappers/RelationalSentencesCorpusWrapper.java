@@ -132,7 +132,7 @@ public class RelationalSentencesCorpusWrapper implements Wrapper {
 		RelationalSentencesCorpus relationalSentencesCorpus = new RelationalSentencesCorpus();
 		relationalSentencesCorpus.setDescription("The test corpus");
 		relationalSentencesCorpus.setURI("http://thetestcorpus/drinventor");
-		relationalSentencesCorpus.setType(RelationHelper.HYPERNYM);
+		relationalSentencesCorpus.setType(RelationHelper.HYPERNYMY);
 		RelationalSentence relationalSentence = new RelationalSentence(
 				new OffsetRangeSelector(0L, 5L), new OffsetRangeSelector(10L,
 						15L), "Bla bla bla this is a relational sentence",

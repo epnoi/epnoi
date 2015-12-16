@@ -78,7 +78,7 @@ public class WikidataHandlerBuilder {
 		
 		
 
-		relationsTable.put(RelationHelper.HYPERNYM, hypernymRelations);
+		relationsTable.put(RelationHelper.HYPERNYMY, hypernymRelations);
 		if (this.create) {
 			_createWikidataVIew();
 		}
@@ -152,7 +152,7 @@ public class WikidataHandlerBuilder {
 		destionationSet.add("http://testTargetA");
 		destionationSet.add("http://testTargetB");
 		hypernymRelations.put("http://testSource", destionationSet);
-		relations.put(RelationHelper.HYPERNYM, hypernymRelations);
+		relations.put(RelationHelper.HYPERNYMY, hypernymRelations);
 
 		
 		
