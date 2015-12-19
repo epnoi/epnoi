@@ -2,12 +2,11 @@ package org.epnoi.learner.relations.corpus.parallel;
 
 import gate.Document;
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.extractor.parallel.RelationalSentenceCandidateToRelationalSentenceMapper;
+import org.epnoi.learner.relations.extractor.parallel.RelationalSentenceCandidateToRelationalSentenceFlatMapper;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
@@ -146,8 +145,8 @@ public class RelationalSentencesCorpusCreator {
                 });
 
         JavaRDD<RelationalSentence> relationalSentences =
-                relationalSentencesCandidates.map(new
-                        RelationalSentenceCandidateToRelationalSentenceMapper());
+                relationalSentencesCandidates.flatMap(new
+                        RelationalSentenceCandidateToRelationalSentenceFlatMapper());
 
 
         return relationalSentences.collect();

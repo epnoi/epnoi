@@ -130,7 +130,7 @@ public class ParallelRelationsExtractor {
             return mapper.call(relationalSentenceCandidate);
         });
 
-        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.map(new RelationalSentenceCandidateToRelationalSentenceMapper());
+        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.flatMap(new RelationalSentenceCandidateToRelationalSentenceFlatMapper());
 
         JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());

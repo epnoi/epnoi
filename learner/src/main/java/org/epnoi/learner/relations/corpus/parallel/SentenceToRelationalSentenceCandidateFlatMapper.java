@@ -14,6 +14,7 @@ import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParam
 import org.epnoi.model.RelationHelper;
 import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
 import org.epnoi.model.commons.Parameters;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -30,6 +31,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     private final int MIN_TERM_LENGTH = 2;
     private Map<String, List<String>> stemmingTable = new HashMap<>();
     private Map<String, List<String>> hypernymsTable = new HashMap<>();
+    private KnowledgeBaseServiceClient knowledgeBaseServiceClient;
 
 
     SentenceToRelationalSentenceCandidateFlatMapper(Parameters parameters){
@@ -39,11 +41,28 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     @Override
     public Iterable<RelationalSentenceCandidate> call(Sentence currentSentence) throws Exception {
         if (_hasEnoughCandidates(currentSentence)) {
-            return _testSentence(currentSentence);
+_initKnowledgeBaseServiceClient();
+            Iterable<RelationalSentenceCandidate> relationalSentenceCandidates=_testSentence(currentSentence);
+            _closeKnowledgeBaseServiceClient();
+            return relationalSentenceCandidates;
         } else {
             return new ArrayList<>();
         }
 
+    }
+
+    private void _closeKnowledgeBaseServiceClient() {
+        knowledgeBaseServiceClient.close();
+    }
+
+    private void _initKnowledgeBaseServiceClient() {
+        knowledgeBaseServiceClient= new KnowledgeBaseServiceClient();
+        Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
+        try {
+            knowledgeBaseServiceClient.init("localhost", thriftPort);
+        } catch (EpnoiInitializationException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean _hasEnoughCandidates(Sentence sentence) {
@@ -102,7 +121,7 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
     // ----------------------------------------------------------------------------------------------------------------------
 
     private Map<String, List<String>> _retrieveHypernyms(Set<String> terms) {
-
+/*
         ClientConfig config = new DefaultClientConfig();
 
         Client client = Client.create(config);
@@ -121,26 +140,31 @@ public class SentenceToRelationalSentenceCandidateFlatMapper
                 .queryParams(queryParams).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(Map.class);
 
 return  hypernyms;
-      //  System.out.println("terms> "+terms);
-        /*
+
+
+
         Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
+*/
         Map<String, List<String>> stemmedForms=new HashMap<>();
 
         try {
-            uiaService.init("localhost", thriftPort);
+            //uiaService.init("localhost", thriftPort);
             //System.out.println("It has been properly initialized!");
-            stemmedForms =  uiaService.getRelated(new ArrayList<>(terms), RelationHelper.HYPERNYMY);
+            stemmedForms =  this.knowledgeBaseServiceClient.getRelated(new ArrayList<>(terms), RelationHelper.HYPERNYMY);
+            return stemmedForms;
         } catch (Exception e) {
             e.printStackTrace();
-
+            return new HashMap<>();
+        }
+/*
         }finally {
             uiaService.close();
         }
+*/
 
+     //   return stemmedForms;
 
-        return stemmedForms;
-    */
     }
 
     // ----------------------------------------------------------------------------------------------------------------------
@@ -167,21 +191,26 @@ return  hypernyms;
         Map<String, Set<String>> stemsMap = new HashMap<>();
 */
 
+        /*
         Integer thriftPort = (Integer)parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         KnowledgeBaseServiceClient uiaService = new KnowledgeBaseServiceClient();
+      */
        Map<String, List<String>> stemmedForms=new HashMap<>();
 
         try {
-            uiaService.init("localhost", thriftPort);
+        //    this.knowledgeBaseServiceClient.init("localhost", thriftPort);
             //System.out.println("It has been properly initialized!");
-            stemmedForms =  uiaService.stem(new ArrayList<>(terms));
+            stemmedForms =  knowledgeBaseServiceClient.stem(new ArrayList<>(terms));
         } catch (Exception e) {
             e.printStackTrace();
 
-        }finally {
-            uiaService.close();
-        }
 
+        }
+        /*
+        finally {
+            knowledgeBaseServiceClient.close();
+        }
+*/
         return stemmedForms;
     }
 
@@ -252,7 +281,7 @@ return  hypernyms;
         Set<String> termCandidatesSurfaceAndStemmedForms = _addStemmsToSentenceTerms(termCandatesSurfaceForms);
 
 
-        return termCandidatesSurfaceAndStemmedForms;
+        return termCandatesSurfaceForms;
     }
 
     private Set<String> _addStemmsToSentenceTerms(Set<String> termCandatesSurfaceForms) {
@@ -336,5 +365,19 @@ return  hypernyms;
         return relationalSentenceCandidates;
     }
     // ----------------------------------------------------------------------------------------------------------------------
+    public static void main(String[] args) {
+        Integer algo = 0;
+        String name = null;
+        try{
+            algo++;
+            name.charAt(0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            algo=0;
+        }
+        System.out.printf("algo> "+algo);
+    }
+
 
 }
