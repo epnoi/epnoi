@@ -62,7 +62,7 @@ public class RelationalSentencesCorpusCreator {
 
         this.verbose = (boolean) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
         this.MAX_SENTENCE_LENGTH = (int) parameters
-                .getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER);
+                .getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH);
 
     }
 
@@ -77,19 +77,19 @@ public class RelationalSentencesCorpusCreator {
         // This should be done in parallel!!
         List<String> URIs = _collectCorpusURIs();
 
-        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER) != null) {
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
             corpus.setUri((String) this.runtimeParameters.getParameterValue(
-                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI));
         } else {
             corpus.setUri((String) this.parameters.getParameterValue(
-                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+                    RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI));
 
         }
 
         corpus.setDescription((String) this.parameters.getParameterValue(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
+                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION));
         corpus.setType((String) this.parameters.getParameterValue(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER));
+                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE));
 
         corpus.setSentences(_findRelationalSentences(URIs));
 
@@ -194,22 +194,22 @@ public class RelationalSentencesCorpusCreator {
 
         String relationalCorpusURI = "http://epnoi.org/relationalSentencesCorpus";
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
                 relationalCorpusURI);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE,
                 RelationHelper.HYPERNYMY);
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.UIA_PATH, "http://localhost:8080/epnoi/rest");
 
         parameters.setParameter(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
+                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION,
                 "DrInventor first review relational sentences corpus");
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
                 relationalCorpusURI);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER, 80);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH, 80);
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, false);
 

@@ -8,7 +8,6 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
-import org.epnoi.model.RelationHelper;
 import org.epnoi.model.modules.Profiles;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -20,19 +19,21 @@ import java.util.logging.Logger;
 @Import(org.epnoi.EpnoiConfig.class)
 //@ComponentScan(basePackageClasses = {RelationalPatternsModelCreationParameters.class, LearnerImpl.class})
 @ComponentScan(basePackages = {"org.epnoi.learner"})
-@PropertySource("classpath:/epnoi.properties")
-
+//@PropertySource("classpath:/epnoi.properties")
+@PropertySources({
+        @PropertySource("classpath:/epnoi.properties"),
+        @PropertySource("classpath:/learner.properties")
+})
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class
             .getName());
 
-    public static final String EPNOI_PROPERTIES = "epnoi.configurable.properties";
-    public static final String EPNOI_PROPERTIES_PATH = "epnoi.configurable.properties.configurationFilePath";
 
 
     @Bean
     @Profile(Profiles.DEVELOP)
     public RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParameters() {
+
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
@@ -94,35 +95,43 @@ public class LearnerConfig {
 
     @Bean
     @Profile(Profiles.DEVELOP)
-    public RelationalSentencesCorpusCreationParameters relationalSentencesCorpusParameters() {
-        logger.info("Starting the Relation Sentences Corpus Creator");
+    public RelationalSentencesCorpusCreationParameters relationalSentencesCorpusParameters(
+            @Value("${learner.corpus.sentences.uri}") String uri,
+            @Value("${learner.corpus.sentences.description}") String description,
+            @Value("${learner.corpus.sentences.type}") String type,
+            @Value("${learner.corpus.sentences.maxlength}") Integer maxLength,
+            @Value("${learner.corpus.sentences.store}") Boolean store,
+            @Value("${learner.corpus.sentences.verbose}") Boolean verbose,
+            @Value("${learner.corpus.sentences.thrift.port}") Integer thriftPort) {
+
+
+
+        //logger.info("Starting the Relation Sentences Corpus Creator");
 
 
         RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
-        String relationalCorpusURI = "http://drInventor.eu/reviews/second/relationalSentencesCorpus";
+       // String relationalCorpusURI = "http://drInventor.eu/reviews/second/relationalSentencesCorpus";
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
-                relationalCorpusURI);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
+                uri);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
-                RelationHelper.HYPERNYMY);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE,
+                type);
 
         parameters.setParameter(
-                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
+                RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION,
                 "DrInventor second relational sentences corpus");
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
-                relationalCorpusURI);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER, 80);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH, maxLength);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, true);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, store);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, true);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.VERBOSE, verbose);
 
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.THRIFT_PORT, 8585);
-        parameters.setParameter(RelationalSentencesCorpusCreationParameters.REST_PORT, 8082);
+        parameters.setParameter(RelationalSentencesCorpusCreationParameters.THRIFT_PORT, thriftPort);
+        //parameters.setParameter(RelationalSentencesCorpusCreationParameters.REST_PORT, 8082);
         return parameters;
     }
 

@@ -51,7 +51,7 @@ public class RelationalSentencesCorpusCreator {
 
 		this.verbose = (boolean) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.VERBOSE);
 		this.MAX_SENTENCE_LENGTH = (int) parameters
-				.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER);
+				.getParameterValue(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH);
 
 	}
 
@@ -66,11 +66,11 @@ public class RelationalSentencesCorpusCreator {
 		_searchReutersCorpus();
 
 		corpus.setUri((String) this.parameters.getParameterValue(
-				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER));
+				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI));
 		corpus.setDescription((String) this.parameters.getParameterValue(
-				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER));
+				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION));
 		corpus.setType((String) this.parameters.getParameterValue(
-				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER));
+				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE));
 
 		if (this.verbose) {
 			_showRelationalSentenceCorpusInfo();
@@ -409,20 +409,20 @@ public class RelationalSentencesCorpusCreator {
 
 		String relationalCorpusURI = "http://drInventorFirstReview/relationalSentencesCorpus";
 
-		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
 				relationalCorpusURI);
 
-		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE_PARAMETER,
+		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_TYPE,
 				RelationHelper.HYPERNYMY);
 
 		parameters.setParameter(
-				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION_PARAMETER,
+				RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION,
 				"DrInventor first review relational sentences corpus");
 
-		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+		parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
 				relationalCorpusURI);
 
-		parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH_PARAMETER, 80);
+		parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH, 80);
 
 		parameters.setParameter(RelationalSentencesCorpusCreationParameters.STORE, true);
 

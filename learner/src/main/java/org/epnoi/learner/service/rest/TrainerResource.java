@@ -64,21 +64,21 @@ public class TrainerResource {
 
         Parameters<Object> runtimeParameters = new Parameters<Object>();
 
-        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER, uri);
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI, uri);
         runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
 
 
         learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
         URI createdResourceUri = null;
-        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER) != null) {
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
 
             createdResourceUri =
                     UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
-                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
         } else {
             createdResourceUri =
                     UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()
-                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
 
         }
         return Response.created(createdResourceUri).build();
@@ -99,7 +99,7 @@ public class TrainerResource {
         learner.getTrainer().createRelationalPatternsModel();
 
         URI uri =
-                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER)).build();
+                UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
         return Response.created(uri).build();
     }
 }
