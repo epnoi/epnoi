@@ -37,7 +37,7 @@ public class RelaxedBigramSoftPatternModel implements RelationalPatternsModel {
 			Map<String, Map<String, Double>> bigramProbability,
 			double interpolationConstant) {
 		// this.maxPatternLength = (Integer) this.parameters
-		// .getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+		// .getParameterValue(LexicalRelationalModelCreationParameters.MAX_PATTERN_LENGTH);
 
 		this.bigramProbability = bigramProbability;
 		this.unigramProbability = unigramProbability;

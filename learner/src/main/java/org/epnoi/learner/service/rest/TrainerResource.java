@@ -96,7 +96,8 @@ public class TrainerResource {
             @ApiResponse(code = 201, message = "The relational patterns model has been created"),
             @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
     public Response createRelationalPatternsModel() {
-        learner.getTrainer().createRelationalPatternsModel();
+        Parameters<Object> runtimeParameters = new Parameters<Object>();
+        learner.getTrainer().createRelationalPatternsModel(runtimeParameters);
 
         URI uri =
                 UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();

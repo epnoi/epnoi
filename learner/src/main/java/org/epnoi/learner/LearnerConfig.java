@@ -8,7 +8,11 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
+import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Profiles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
@@ -27,8 +31,13 @@ import java.util.logging.Logger;
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class
             .getName());
+    @Autowired
+    @Qualifier("lexicalPatternsModelCreationParameters")
+    private RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters;
 
-
+    @Autowired
+    @Qualifier("syntacticPatternsModelCreationParameters")
+    private RelationalPatternsModelCreationParameters syntacticPatternsModelCreationParameters;
 
     @Bean
     @Profile(Profiles.DEVELOP)
@@ -37,11 +46,11 @@ public class LearnerConfig {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
-                        RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+                        RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
                         "http://drInventor.eu/reviews/second/relationalSentencesCorpus");
         parameters
                 .setParameter(
-                        RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
+                        RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
                         20);
 
         parameters.setParameter(
@@ -64,32 +73,70 @@ public class LearnerConfig {
 
     @Bean
     @Profile(Profiles.DEVELOP)
-    public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters() {
+    public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters(
+            @Value("${learner.corpus.patterns.lexical.path}") String path,
+            @Value("${learner.corpus.patterns.lexical.path}") String value,
+            @Value("${learner.corpus.patterns.lexical.maxlength}") Integer maxLength,
+            @Value("${learner.corpus.patterns.lexical.store}") Boolean store,
+            @Value("${learner.corpus.patterns.lexical.verbose}") Boolean verbose,
+            @Value("${learner.corpus.patterns.lexical.test}") Boolean test
+
+    ) {
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
-                        RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+                        RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
                         "http://drInventor.eu/reviews/second/relationalSentencesCorpus");
         parameters
                 .setParameter(
-                        RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
-                        20);
+                        RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
+                        maxLength);
 
         parameters.setParameter(
-                RelationalPatternsModelCreationParameters.MODEL_PATH,
-                "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model.bin");
+                RelationalPatternsModelCreationParameters.MODEL_PATH, path);
         parameters.setParameter(RelationalPatternsModelCreationParameters.TYPE,
                 PatternsConstants.LEXICAL);
 
         parameters.setParameter(
-                RelationalPatternsModelCreationParameters.STORE, false);
+                RelationalPatternsModelCreationParameters.STORE, store);
 
         parameters.setParameter(
-                RelationalPatternsModelCreationParameters.VERBOSE, true);
+                RelationalPatternsModelCreationParameters.VERBOSE, verbose);
 
         parameters.setParameter(RelationalPatternsModelCreationParameters.TEST,
-                true);
+                test);
         return parameters;
+    }
+
+    @Bean
+    @Profile(Profiles.DEVELOP)
+    public RelationalPatternsModelCreator lexicalPatternsModelCreator() {
+
+
+        RelationalPatternsModelCreator relationalPatternsModelCreator = new RelationalPatternsModelCreator();
+
+
+        try {
+            relationalPatternsModelCreator.init(lexicalPatternsModelCreationParameters);
+        } catch (EpnoiInitializationException e) {
+            e.printStackTrace();
+        }
+
+        return relationalPatternsModelCreator;
+    }
+
+    @Bean
+    @Profile(Profiles.DEVELOP)
+    public RelationalPatternsModelCreator syntacticPatternsModelCreator() {
+        RelationalPatternsModelCreator relationalPatternsModelCreator = new RelationalPatternsModelCreator();
+
+        try {
+            relationalPatternsModelCreator.init(syntacticPatternsModelCreationParameters);
+        } catch (EpnoiInitializationException e) {
+            e.printStackTrace();
+        }
+
+        return relationalPatternsModelCreator;
     }
 
 
@@ -105,13 +152,12 @@ public class LearnerConfig {
             @Value("${learner.corpus.sentences.thrift.port}") Integer thriftPort) {
 
 
-
         //logger.info("Starting the Relation Sentences Corpus Creator");
 
 
         RelationalSentencesCorpusCreationParameters parameters = new RelationalSentencesCorpusCreationParameters();
 
-       // String relationalCorpusURI = "http://drInventor.eu/reviews/second/relationalSentencesCorpus";
+        // String relationalCorpusURI = "http://drInventor.eu/reviews/second/relationalSentencesCorpus";
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
                 uri);
@@ -202,7 +248,8 @@ public class LearnerConfig {
     }
 
     @Bean()
-    public SparkConf sparkConfig(@Value("${epnoi.learner.spark.master}") String master, @Value("${epnoi.learner.spark.app}") String appName) {
+    public SparkConf sparkConfig(@Value("${epnoi.learner.spark.master}") String master,
+                                 @Value("${epnoi.learner.spark.app}") String appName) {
 
         SparkConf sparkConf = new SparkConf().setMaster(master).setAppName(appName);
         logger.info("Creating the following spark configuration " + sparkConf.getAll());
