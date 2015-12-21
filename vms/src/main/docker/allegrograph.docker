@@ -1,0 +1,4 @@
+# After the above docker run command, to use AG WebView browse to http://localhost:10035.
+# The default user name and password is test and xyzzy. 
+#docker run -d -p 10000-10035:10000-10035 --name agraph franzinc/agraph
+docker run -it --rm -p 10000-10035:10000-10035 --name agraph franzinc/agraph

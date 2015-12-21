@@ -1,0 +1,2 @@
+# https://hub.docker.com/r/neo4j/neo4j/
+docker run -it --rm --name graph-db -p 5030:7474 --ulimit=nofile=40000:40000 --env=NEO4J_HEAP_MEMORY=8192 --env=NEO4J_CACHE_MEMORY=4G --env=NEO4J_AUTH=none neo4j/neo4j:2.3.1

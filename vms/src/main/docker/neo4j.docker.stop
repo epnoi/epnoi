@@ -1,0 +1,3 @@
+# https://hub.docker.com/r/neo4j/neo4j/
+docker stop graph-db
+docker rm graph-db

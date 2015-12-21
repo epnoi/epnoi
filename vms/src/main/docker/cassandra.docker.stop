@@ -1,0 +1,3 @@
+# https://hub.docker.com/_/cassandra/
+docker stop column-db
+docker rm column-db
