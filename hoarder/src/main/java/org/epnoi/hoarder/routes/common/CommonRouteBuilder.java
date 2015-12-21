@@ -3,10 +3,10 @@ package org.epnoi.hoarder.routes.common;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
-import org.epnoi.hoarder.routes.SourceProperty;
 import org.epnoi.hoarder.routes.processors.ErrorHandler;
 import org.epnoi.hoarder.routes.processors.TimeGenerator;
 import org.epnoi.hoarder.routes.processors.UUIDGenerator;
+import org.epnoi.model.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,30 +59,30 @@ public class CommonRouteBuilder extends RouteBuilder{
         from(URI_HTTP_DOWNLOAD_TO_FILE).
                 process(timeClock).
                 process(uuidGenerator).
-                setHeader(SourceProperty.ARGUMENT_NAME,        simple("${property."+SourceProperty.PUBLICATION_UUID+"}."+"${property."+SourceProperty.PUBLICATION_METADATA_FORMAT+"}")).
+                setHeader(Record.ARGUMENT_NAME,        simple("${property."+ Record.PUBLICATION_UUID+"}."+"${property."+ Record.PUBLICATION_METADATA_FORMAT+"}")).
                 to(URI_FILE_SAVE).
-                setHeader(SourceProperty.ARGUMENT_PATH,        simple("${property."+SourceProperty.PUBLICATION_URL+"}")).
+                setHeader(Record.ARGUMENT_PATH,        simple("${property."+ Record.PUBLICATION_URL+"}")).
                 to(URI_HTTP_DOWNLOAD).
-                setHeader(SourceProperty.ARGUMENT_NAME,        simple("${property."+SourceProperty.PUBLICATION_UUID+"}."+"${property."+SourceProperty.PUBLICATION_FORMAT+"}")).
+                setHeader(Record.ARGUMENT_NAME,        simple("${property."+ Record.PUBLICATION_UUID+"}."+"${property."+ Record.PUBLICATION_FORMAT+"}")).
                 to(URI_FILE_SAVE).
-                setProperty(SourceProperty.PUBLICATION_URL_LOCAL, simple("${header." + SourceProperty.ARGUMENT_PATH + "}"));
+                setProperty(Record.PUBLICATION_URL_LOCAL, simple("${header." + Record.ARGUMENT_PATH + "}"));
 
         /*********************************************************************************************************************************
          * -> Save File
          *********************************************************************************************************************************/
         from(URI_FILE_SAVE).
-                setHeader(SourceProperty.ARGUMENT_PATH, simple("${property." + SourceProperty.SOURCE_PROTOCOL + "}/${property." + SourceProperty.SOURCE_NAME + "}/${property" + SourceProperty.PUBLICATION_PUBLISHED_DATE + "}/${header." + SourceProperty.ARGUMENT_NAME + "}")).
-                log(LoggingLevel.INFO,LOG,"File Saved: '${header."+SourceProperty.ARGUMENT_PATH+"}'").
-                to("file:" + basedir + "/?fileName=${header." + SourceProperty.ARGUMENT_PATH + "}&doneFileName=${file:name}.done");
+                setHeader(Record.ARGUMENT_PATH, simple("${property." + Record.SOURCE_PROTOCOL + "}/${property." + Record.SOURCE_NAME + "}/${property" + Record.PUBLICATION_PUBLISHED_DATE + "}/${header." + Record.ARGUMENT_NAME + "}")).
+                log(LoggingLevel.INFO,LOG,"File Saved: '${header."+ Record.ARGUMENT_PATH+"}'").
+                to("file:" + basedir + "/?fileName=${header." + Record.ARGUMENT_PATH + "}&doneFileName=${file:name}.done");
 
         /*********************************************************************************************************************************
          * -> Download Resource by Http
          *********************************************************************************************************************************/
         from(URI_HTTP_DOWNLOAD).
                 // Filter resources with available url
-                filter(header(SourceProperty.ARGUMENT_PATH).isNotEqualTo("")).
+                filter(header(Record.ARGUMENT_PATH).isNotEqualTo("")).
                 setHeader(Exchange.HTTP_METHOD, constant("GET")).
-                setHeader(Exchange.HTTP_URI, simple("${header." + SourceProperty.ARGUMENT_PATH + "}")).
+                setHeader(Exchange.HTTP_URI, simple("${header." + Record.ARGUMENT_PATH + "}")).
                 to("http://dummyhost?throwExceptionOnFailure=false");
 
 

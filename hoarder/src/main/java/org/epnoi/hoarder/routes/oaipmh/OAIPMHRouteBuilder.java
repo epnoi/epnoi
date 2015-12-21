@@ -3,7 +3,7 @@ package org.epnoi.hoarder.routes.oaipmh;
 import lombok.Getter;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
-import org.epnoi.hoarder.routes.SourceProperty;
+import org.epnoi.model.Record;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,18 +30,18 @@ public class OAIPMHRouteBuilder extends RouteBuilder{
          * -> Set Common OAI-PMH Xpath Expressions
          *********************************************************************************************************************************/
         from(URI_RETRIEVE_METAINFORMATION).
-                setProperty(SourceProperty.SOURCE_PROTOCOL,                constant("oaipmh")).
-                setProperty(SourceProperty.SOURCE_URI,                     simple("http://www.epnoi.org/oaipmh/${property." + SourceProperty.SOURCE_NAME + "}")).
-                setProperty(SourceProperty.PUBLICATION_TITLE,              xpath("//oai:metadata/oai:dc/dc:title/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_DESCRIPTION,        xpath("//oai:metadata/oai:dc/dc:description/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_PUBLISHED,          xpath("//oai:header/oai:datestamp/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_URI,                xpath("//oai:header/oai:identifier/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_URL,                xpath("//oai:metadata/oai:dc/dc:identifier/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_LANGUAGE,           xpath("//oai:metadata/oai:dc/dc:language/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_RIGHTS,             xpath("//oai:metadata/oai:dc/dc:rights/text()",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_CREATORS,           xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")",String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_FORMAT,             xpath("substring-after(//oai:metadata/oai:dc/dc:format[1]/text(),\"/\")", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_METADATA_FORMAT,    constant("xml")).
+                setProperty(Record.SOURCE_PROTOCOL,                constant("oaipmh")).
+                setProperty(Record.SOURCE_URI,                     simple("http://www.epnoi.org/oaipmh/${property." + Record.SOURCE_NAME + "}")).
+                setProperty(Record.PUBLICATION_TITLE,              xpath("//oai:metadata/oai:dc/dc:title/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_DESCRIPTION,        xpath("//oai:metadata/oai:dc/dc:description/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_PUBLISHED,          xpath("//oai:header/oai:datestamp/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_URI,                xpath("//oai:header/oai:identifier/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_URL,                xpath("//oai:metadata/oai:dc/dc:identifier/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_LANGUAGE,           xpath("//oai:metadata/oai:dc/dc:language/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_RIGHTS,             xpath("//oai:metadata/oai:dc/dc:rights/text()",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_CREATORS,           xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")",String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_FORMAT,             xpath("substring-after(//oai:metadata/oai:dc/dc:format[1]/text(),\"/\")", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_METADATA_FORMAT,    constant("xml")).
                 to(URI_AVOID_DELETE);
 
 

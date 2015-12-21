@@ -8,9 +8,9 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
-import org.epnoi.hoarder.routes.SourceProperty;
 import org.epnoi.hoarder.routes.processors.TimeGenerator;
 import org.epnoi.hoarder.utils.FileServer;
+import org.epnoi.model.Record;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,20 +100,20 @@ public class HttpOAITest extends CamelTestSupport {
                         .add("rss", "http://purl.org/rss/1.0/");
 
                 from("direct:start").
-                        setProperty(SourceProperty.SOURCE_NAME, constant("ucm")).
-                        setProperty(SourceProperty.SOURCE_URI, constant("http://www.epnoi.org/oai-providers/ucm")).
-                        setProperty(SourceProperty.SOURCE_URL, constant("http://eprints.ucm.es/cgi/oai2")).
-                        setProperty(SourceProperty.SOURCE_PROTOCOL, constant("oaipmh")).
-                        setProperty(SourceProperty.PUBLICATION_TITLE, xpath("//oai:metadata/oai:dc/dc:title/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_DESCRIPTION, xpath("//oai:metadata/oai:dc/dc:description/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_PUBLISHED, xpath("//oai:header/oai:datestamp/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_URI, xpath("//oai:header/oai:identifier/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_URL, xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_LANGUAGE, xpath("//oai:metadata/oai:dc/dc:language/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_RIGHTS, xpath("//oai:metadata/oai:dc/dc:rights/text()", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_CREATORS, xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")", String.class).namespaces(ns)).
-                        setProperty(SourceProperty.PUBLICATION_FORMAT, constant("pdf")).
-                        setProperty(SourceProperty.PUBLICATION_METADATA_FORMAT, constant("xml")).
+                        setProperty(Record.SOURCE_NAME, constant("ucm")).
+                        setProperty(Record.SOURCE_URI, constant("http://www.epnoi.org/oai-providers/ucm")).
+                        setProperty(Record.SOURCE_URL, constant("http://eprints.ucm.es/cgi/oai2")).
+                        setProperty(Record.SOURCE_PROTOCOL, constant("oaipmh")).
+                        setProperty(Record.PUBLICATION_TITLE, xpath("//oai:metadata/oai:dc/dc:title/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_DESCRIPTION, xpath("//oai:metadata/oai:dc/dc:description/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_PUBLISHED, xpath("//oai:header/oai:datestamp/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_URI, xpath("//oai:header/oai:identifier/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_URL, xpath("//oai:metadata/oai:dc/dc:identifier/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_LANGUAGE, xpath("//oai:metadata/oai:dc/dc:language/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_RIGHTS, xpath("//oai:metadata/oai:dc/dc:rights/text()", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_CREATORS, xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_FORMAT, constant("pdf")).
+                        setProperty(Record.PUBLICATION_METADATA_FORMAT, constant("xml")).
                         to("seda:inbox");
 
 
@@ -124,21 +124,21 @@ public class HttpOAITest extends CamelTestSupport {
 
                 from("seda:inbox").
                         process(timeClock).
-                        setProperty(SourceProperty.PUBLICATION_REFERENCE_URL,
-                                simple("${property." + SourceProperty.SOURCE_PROTOCOL + "}/" +
-                                        "${property." + SourceProperty.SOURCE_NAME + "}/" +
-                                        "${property." + SourceProperty.PUBLICATION_PUBLISHED_DATE + "}/" +
-                                        "resource-${property." + SourceProperty.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + SourceProperty.PUBLICATION_METADATA_FORMAT + "}")).
-                        to("file:target/?fileName=${property." + SourceProperty.PUBLICATION_REFERENCE_URL + "}").
+                        setProperty(Record.PUBLICATION_REFERENCE_URL,
+                                simple("${property." + Record.SOURCE_PROTOCOL + "}/" +
+                                        "${property." + Record.SOURCE_NAME + "}/" +
+                                        "${property." + Record.PUBLICATION_PUBLISHED_DATE + "}/" +
+                                        "resource-${property." + Record.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + Record.PUBLICATION_METADATA_FORMAT + "}")).
+                        to("file:target/?fileName=${property." + Record.PUBLICATION_REFERENCE_URL + "}").
                         setHeader(Exchange.HTTP_METHOD, constant("GET")).
-                        setHeader(Exchange.HTTP_URI, simple("${property." + SourceProperty.PUBLICATION_URL + "}")).
+                        setHeader(Exchange.HTTP_URI, simple("${property." + Record.PUBLICATION_URL + "}")).
                         to("http://dummyhost?throwExceptionOnFailure=false").
-                        setProperty(SourceProperty.PUBLICATION_URL_LOCAL,
-                                simple("${property." + SourceProperty.SOURCE_PROTOCOL + "}/" +
-                                        "${property." + SourceProperty.SOURCE_NAME + "}/" +
-                                        "${property." + SourceProperty.PUBLICATION_PUBLISHED_DATE + "}/" +
-                                        "resource-${property." + SourceProperty.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + SourceProperty.PUBLICATION_FORMAT + "}")).
-                        to("file:target/?fileName=${property." + SourceProperty.PUBLICATION_URL_LOCAL + "}").
+                        setProperty(Record.PUBLICATION_URL_LOCAL,
+                                simple("${property." + Record.SOURCE_PROTOCOL + "}/" +
+                                        "${property." + Record.SOURCE_NAME + "}/" +
+                                        "${property." + Record.PUBLICATION_PUBLISHED_DATE + "}/" +
+                                        "resource-${property." + Record.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + Record.PUBLICATION_FORMAT + "}")).
+                        to("file:target/?fileName=${property." + Record.PUBLICATION_URL_LOCAL + "}").
                         to("mock:result");
             }
         };

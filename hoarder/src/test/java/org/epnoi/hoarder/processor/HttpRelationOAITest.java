@@ -8,9 +8,9 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
-import org.epnoi.hoarder.routes.SourceProperty;
 import org.epnoi.hoarder.routes.processors.TimeGenerator;
 import org.epnoi.hoarder.utils.FileServer;
+import org.epnoi.model.Record;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -103,7 +103,7 @@ public class HttpRelationOAITest extends CamelTestSupport {
                         .add("rss", "http://purl.org/rss/1.0/");
 
                 from("direct:start").
-                        setProperty(SourceProperty.PUBLICATION_URL, xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")", String.class).namespaces(ns)).
+                        setProperty(Record.PUBLICATION_URL, xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")", String.class).namespaces(ns)).
                         to("seda:inbox");
 
 
@@ -114,21 +114,21 @@ public class HttpRelationOAITest extends CamelTestSupport {
 
                 from("seda:inbox").
                         process(timeClock).
-                        setProperty(SourceProperty.PUBLICATION_REFERENCE_URL,
-                                simple("${property." + SourceProperty.SOURCE_PROTOCOL + "}/" +
-                                        "${property." + SourceProperty.SOURCE_NAME + "}/" +
-                                        "${property." + SourceProperty.PUBLICATION_PUBLISHED_DATE + "}/" +
-                                        "resource-${property." + SourceProperty.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + SourceProperty.PUBLICATION_METADATA_FORMAT + "}")).
-                        to("file:target/?fileName=${property." + SourceProperty.PUBLICATION_REFERENCE_URL + "}").
+                        setProperty(Record.PUBLICATION_REFERENCE_URL,
+                                simple("${property." + Record.SOURCE_PROTOCOL + "}/" +
+                                        "${property." + Record.SOURCE_NAME + "}/" +
+                                        "${property." + Record.PUBLICATION_PUBLISHED_DATE + "}/" +
+                                        "resource-${property." + Record.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + Record.PUBLICATION_METADATA_FORMAT + "}")).
+                        to("file:target/?fileName=${property." + Record.PUBLICATION_REFERENCE_URL + "}").
                         setHeader(Exchange.HTTP_METHOD, constant("GET")).
-                        setHeader(Exchange.HTTP_URI, simple("${property." + SourceProperty.PUBLICATION_URL + "}")).
+                        setHeader(Exchange.HTTP_URI, simple("${property." + Record.PUBLICATION_URL + "}")).
                         to("http://dummyhost?throwExceptionOnFailure=false").
-                        setProperty(SourceProperty.PUBLICATION_URL_LOCAL,
-                                simple("${property." + SourceProperty.SOURCE_PROTOCOL + "}/" +
-                                        "${property." + SourceProperty.SOURCE_NAME + "}/" +
-                                        "${property." + SourceProperty.PUBLICATION_PUBLISHED_DATE + "}/" +
-                                        "resource-${property." + SourceProperty.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + SourceProperty.PUBLICATION_FORMAT + "}")).
-                        to("file:target/?fileName=${property." + SourceProperty.PUBLICATION_URL_LOCAL + "}").
+                        setProperty(Record.PUBLICATION_URL_LOCAL,
+                                simple("${property." + Record.SOURCE_PROTOCOL + "}/" +
+                                        "${property." + Record.SOURCE_NAME + "}/" +
+                                        "${property." + Record.PUBLICATION_PUBLISHED_DATE + "}/" +
+                                        "resource-${property." + Record.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + Record.PUBLICATION_FORMAT + "}")).
+                        to("file:target/?fileName=${property." + Record.PUBLICATION_URL_LOCAL + "}").
                         to("mock:result");
             }
         };
