@@ -3,7 +3,7 @@ package org.epnoi.hoarder.routes.rss;
 import lombok.Getter;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
-import org.epnoi.hoarder.routes.SourceProperty;
+import org.epnoi.model.Record;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,18 +26,18 @@ public class RssRouteBuilder extends RouteBuilder{
          * -> Set Common Rss Xpath Expressions
          *********************************************************************************************************************************/
         from(URI_RETRIEVE_METAINFORMATION).
-                setProperty(SourceProperty.SOURCE_PROTOCOL,            constant("rss")).
-                setProperty(SourceProperty.SOURCE_URI,                 simple("http://www.epnoi.org/rss/${property."+SourceProperty.SOURCE_NAME+"}")).
-                setProperty(SourceProperty.PUBLICATION_TITLE,          xpath("//rss:item/rss:title/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_DESCRIPTION,    xpath("//rss:item/rss:description/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_PUBLISHED,      xpath("//rss:item/dc:date/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_URI,            xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_URL,            xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_LANGUAGE,       xpath("//rss:channel/dc:language/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_RIGHTS,         xpath("//rss:channel/dc:rights/text()", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_CREATORS,       xpath("string-join(//rss:channel/dc:creator/text(),\";\")", String.class).namespaces(ns)).
-                setProperty(SourceProperty.PUBLICATION_FORMAT,         constant("htm")).
-                setProperty(SourceProperty.PUBLICATION_METADATA_FORMAT,constant("xml"));
+                setProperty(Record.SOURCE_PROTOCOL,            constant("rss")).
+                setProperty(Record.SOURCE_URI,                 simple("http://www.epnoi.org/rss/${property."+ Record.SOURCE_NAME+"}")).
+                setProperty(Record.PUBLICATION_TITLE,          xpath("//rss:item/rss:title/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_DESCRIPTION,    xpath("//rss:item/rss:description/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_PUBLISHED,      xpath("//rss:item/dc:date/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_URI,            xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_URL,            xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_LANGUAGE,       xpath("//rss:channel/dc:language/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_RIGHTS,         xpath("//rss:channel/dc:rights/text()", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_CREATORS,       xpath("string-join(//rss:channel/dc:creator/text(),\";\")", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_FORMAT,         constant("htm")).
+                setProperty(Record.PUBLICATION_METADATA_FORMAT,constant("xml"));
 
 
 

@@ -4,9 +4,9 @@ import org.apache.camel.Expression;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.model.RouteDefinition;
 import org.epnoi.hoarder.routes.Expressions;
-import org.epnoi.hoarder.routes.SourceProperty;
 import org.epnoi.hoarder.routes.SourceRoute;
 import org.epnoi.hoarder.routes.common.CommonRouteBuilder;
+import org.epnoi.model.Record;
 
 /**
  * Created by cbadenes on 27/11/15.
@@ -46,10 +46,10 @@ public class OAIPMHRoute implements SourceRoute {
     public RouteDefinition definition() {
         return new RouteDefinition().
                 from(uri).
-                setProperty(SourceProperty.SOURCE_NAME, Expressions.constant(name)).
-                setProperty(SourceProperty.SOURCE_URL, Expressions.constant(url)).
+                setProperty(Record.SOURCE_NAME, Expressions.constant(name)).
+                setProperty(Record.SOURCE_URL, Expressions.constant(url)).
                 to(OAIPMHRouteBuilder.URI_RETRIEVE_METAINFORMATION).
-                setProperty(SourceProperty.PUBLICATION_URL, pubExpression).
+                setProperty(Record.PUBLICATION_URL, pubExpression).
                 to(CommonRouteBuilder.URI_HTTP_DOWNLOAD_TO_FILE);
     }
 }
