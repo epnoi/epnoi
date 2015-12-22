@@ -1,0 +1,24 @@
+# 1) Log into docker container
+# docker exec -it column-db /bin/bash
+# 2) Run CQL
+# $ cqlsh localhost
+
+create keyspace if not exists research with replication = {'class' : 'SimpleStrategy', 'replication_factor' : 3};
+
+create table if not exists research.sources(uri text, creationTime text, name text, description text, protocol text, url text, domain text, primary key (uri));
+
+create table if not exists research.domains(uri text, creationTime text, name text, description text, primary key (uri));
+
+create table if not exists research.documents(uri text, creationTime text, format text, language text, title text, subject text, description text, rights text, content text, tokens text, primary key (uri));
+
+create table if not exists research.items(uri text, creationTime text, format text, language text, title text, subject text, description text, url text, content text, tokens text, primary key (uri));
+
+create table if not exists research.parts(uri text, creationTime text, sense text, content text, tokens text, primary key (uri));
+
+create table if not exists research.words(uri text, creationTime text, content text, lemma text, stem text, pos text, type text, primary key (uri));
+
+create table if not exists research.topics(uri text, creationTime text, content text, analysis text, primary key (uri));
+
+create table if not exists research.relations(uri text, creationTime text, type text, describes text, content text, analysis text, primary key (uri));
+
+create table if not exists research.analyses(uri text, creationTime text, type text, description text, configuration text, domain text, report blob, primary key (uri));
