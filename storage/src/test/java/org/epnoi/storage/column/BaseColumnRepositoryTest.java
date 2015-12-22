@@ -1,14 +1,12 @@
 package org.epnoi.storage.column;
 
 import es.cbadenes.lab.test.IntegrationTest;
-import org.epnoi.storage.Config;
+import org.epnoi.storage.column.repository.BaseColumnRepository;
 import org.epnoi.storage.model.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.repository.MapId;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;

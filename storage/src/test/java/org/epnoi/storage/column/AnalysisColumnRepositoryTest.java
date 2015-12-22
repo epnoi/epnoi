@@ -1,6 +1,9 @@
 package org.epnoi.storage.column;
 
 import com.google.common.primitives.Doubles;
+import org.epnoi.storage.column.domain.AnalysisColumn;
+import org.epnoi.storage.column.repository.AnalysisColumnRepository;
+import org.epnoi.storage.column.repository.BaseColumnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;

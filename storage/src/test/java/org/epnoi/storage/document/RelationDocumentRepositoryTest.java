@@ -1,5 +1,8 @@
 package org.epnoi.storage.document;
 
+import org.epnoi.storage.document.domain.RelationDocument;
+import org.epnoi.storage.document.repository.BaseDocumentRepository;
+import org.epnoi.storage.document.repository.RelationDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -1,5 +1,8 @@
 package org.epnoi.storage.column;
 
+import org.epnoi.storage.column.domain.TopicColumn;
+import org.epnoi.storage.column.repository.BaseColumnRepository;
+import org.epnoi.storage.column.repository.TopicColumnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
