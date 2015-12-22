@@ -11,11 +11,11 @@ public interface Trainer {
 
     void createRelationalSentencesCorpus(Parameters<Object> runtimeParameters);
 
-    void createRelationalPatternsModel();
+    void createRelationalPatternsModel(Parameters<Object> runtimeParameters);
 
-   RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParameters() ;
+    RelationalSentencesCorpusCreationParameters getRelationalSentencesCorpusCreationParameters();
 
-   RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters();
+    RelationalPatternsModelCreationParameters getRelationalPatternsModelCreationParameters();
 
     Parameters<Object> getRuntimeParameters();
 }

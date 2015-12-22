@@ -29,6 +29,10 @@ public class TrainerImpl implements Trainer {
     RelationalSentencesCorpusCreationParameters relationalSentencesCorpusCreatorParameters;
 
 
+    @Autowired
+    @Qualifier("lexicalPatternsModelCreator")
+    RelationalPatternsModelCreator lexicalRelationalPatternsModelCreator;
+
     Parameters<Object> runtimeParameters;
 
     @Autowired
@@ -57,11 +61,9 @@ public class TrainerImpl implements Trainer {
     }
 
     @Override
-    public void createRelationalPatternsModel() {
-
-        RelationalPatternsModelCreator relationalPatternsModelCreator = new RelationalPatternsModelCreator();
+    public void createRelationalPatternsModel(Parameters<Object> runtimeParameters) {
         try {
-            relationalPatternsModelCreator.init(core, lexicalPatternsModelParameters);
+            this.lexicalRelationalPatternsModelCreator.create(runtimeParameters);
         } catch (Exception e) {
             logger.severe("There was a problem in the creation of the relational pattern model");
             e.printStackTrace();
@@ -80,7 +82,7 @@ public class TrainerImpl implements Trainer {
     }
 
     @Override
-    public Parameters<Object> getRuntimeParameters(){
+    public Parameters<Object> getRuntimeParameters() {
         return this.runtimeParameters;
     }
 

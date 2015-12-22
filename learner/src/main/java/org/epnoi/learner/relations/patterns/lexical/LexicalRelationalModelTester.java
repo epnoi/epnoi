@@ -37,7 +37,7 @@ public class LexicalRelationalModelTester {
 		this.parameters = parameters;
 
 		relationalSentencesCorpusURI = (String) this.parameters
-				.getParameterValue(RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER);
+				.getParameterValue(RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI);
 
 		this.path = (String)this.parameters
 				.getParameterValue(RelationalPatternsModelCreationParameters.MODEL_PATH);
@@ -120,11 +120,11 @@ public class LexicalRelationalModelTester {
 		RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
 		parameters
 				.setParameter(
-						RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI_PARAMETER,
+						RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
 						"http://drInventorFirstReview/relationalSentencesCorpus");
 		parameters
 				.setParameter(
-						RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER,
+						RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
 						20);
 
 		parameters

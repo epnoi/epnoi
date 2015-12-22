@@ -33,7 +33,7 @@ public class BigramSoftPatternModelBuilder implements
 		this.parameters = parameters;
 		this.nodesInformation = new HashMap<>();
 		maxPatternLenght = (Integer) this.parameters
-				.getParameterValue(RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH_PARAMETER);
+				.getParameterValue(RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH);
 		this.nodesPositionsCount = new Long[maxPatternLenght];
 		this.nodesCount = 0L;
 		for (int i = 0; i < nodesPositionsCount.length; i++) {
