@@ -11,6 +11,6 @@ public interface TopicGraphRepository extends BaseGraphRepository<TopicNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<TopicNode> findByUri(String uri);
+    TopicNode findOneByUri(String uri);
 
 }

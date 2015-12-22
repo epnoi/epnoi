@@ -11,6 +11,6 @@ public interface ItemGraphRepository extends BaseGraphRepository<ItemNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<ItemNode> findByUri(String uri);
+    ItemNode findOneByUri(String uri);
 
 }

@@ -10,6 +10,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface BaseGraphRepository<T extends Resource> extends GraphRepository<T>{
 
-    Iterable<T> findByUri(String uri);
+    T findOneByUri(String uri);
 
 }

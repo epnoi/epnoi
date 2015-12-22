@@ -11,6 +11,6 @@ public interface PartGraphRepository extends BaseGraphRepository<PartNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<PartNode> findByUri(String uri);
+    PartNode findOneByUri(String uri);
 
 }

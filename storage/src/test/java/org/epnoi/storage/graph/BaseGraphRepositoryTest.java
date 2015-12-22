@@ -46,15 +46,15 @@ public abstract class BaseGraphRepositoryTest<T extends Resource> {
     public void findOne(){
         T entity = getEntity();
 
-        Iterable<T> found = getRepository().findByUri(entity.getUri());
-        Assert.assertFalse(found.iterator().hasNext());
+        T found = getRepository().findOneByUri(entity.getUri());
+        Assert.assertNull(found);
 
         getRepository().save(entity);
 
-        found = getRepository().findByUri(entity.getUri());
-        Assert.assertTrue(found.iterator().hasNext());
+        found = getRepository().findOneByUri(entity.getUri());
+        Assert.assertNotNull(found);
 
-        getRepository().delete(found.iterator().next());
+        getRepository().delete(found);
     }
 
 

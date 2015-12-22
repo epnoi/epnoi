@@ -2,38 +2,70 @@ package org.epnoi.storage.graph.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.epnoi.storage.graph.domain.relationships.DealsPartTopic;
-import org.epnoi.storage.graph.domain.relationships.DescribesPartItem;
-import org.epnoi.storage.graph.domain.relationships.MentionsPartWord;
-import org.epnoi.storage.graph.domain.relationships.SimilarPart;
+import lombok.ToString;
+import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.model.Part;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
 @NodeEntity(label = "Part")
 @Data
-@EqualsAndHashCode(exclude={"id"})
+@EqualsAndHashCode(of={"uri"})
+@ToString(of={"uri"})
 public class PartNode extends Part {
 
     @GraphId
     private Long id;
 
-    @Index
+    @Index(unique = true)
     private String uri;
 
     // Undirected
-    private List<SimilarPart> similar;
+    private Set<SimilarPart> similars = new HashSet<>();
 
     // Outgoing
-    private List<DealsPartTopic> deals;
-    private List<DescribesPartItem> describes;
-    private List<MentionsPartWord> mentions;
+    private Set<DealsPartTopic> deals = new HashSet<>();
+    private Set<MentionsPartWord> mentions = new HashSet<>();
+    private Set<DescribesPartItem> describes = new HashSet<>();
 
+
+    public void addSimilarRelation(SimilarPart rel){
+        similars.add(rel);
+    }
+
+    public void removeSimilarRelation(SimilarPart rel){
+        similars.remove(rel);
+    }
+
+    public void addDealRelation(DealsPartTopic rel){
+        deals.add(rel);
+    }
+
+    public void removeDealRelation(DealsPartTopic rel){
+        deals.remove(rel);
+    }
+
+    public void addMentionRelation(MentionsPartWord rel){
+        mentions.add(rel);
+    }
+
+    public void removeMentionRelation(MentionsPartWord rel){
+        mentions.remove(rel);
+    }
+
+    public void addDescribeRelation(DescribesPartItem rel){
+        describes.add(rel);
+    }
+
+    public void removeDescribeRelation(DescribesPartItem rel){
+        describes.remove(rel);
+    }
 
 }

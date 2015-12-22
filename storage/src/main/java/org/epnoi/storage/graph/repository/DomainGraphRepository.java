@@ -11,5 +11,5 @@ public interface DomainGraphRepository extends BaseGraphRepository<DomainNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<DomainNode> findByUri(String uri);
+    DomainNode findOneByUri(String uri);
 }

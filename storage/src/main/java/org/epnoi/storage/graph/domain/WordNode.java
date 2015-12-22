@@ -2,6 +2,7 @@ package org.epnoi.storage.graph.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.epnoi.storage.graph.domain.relationships.MentionsItemWord;
 import org.epnoi.storage.graph.domain.relationships.MentionsPartWord;
 import org.epnoi.storage.graph.domain.relationships.MentionsTopicWord;
@@ -17,19 +18,14 @@ import java.util.List;
  */
 @NodeEntity(label = "Word")
 @Data
-@EqualsAndHashCode(exclude={"id"})
+@EqualsAndHashCode(of={"uri"})
+@ToString(of={"uri"})
 public class WordNode extends Word {
 
     @GraphId
     private Long id;
 
-    @Index
+    @Index(unique = true)
     private String uri;
-
-    // Incoming
-    private List<MentionsItemWord> mentionsFromItem;
-    private List<MentionsPartWord> mentionsFromPart;
-    private List<MentionsTopicWord> mentionsFromTopic;
-
 
 }

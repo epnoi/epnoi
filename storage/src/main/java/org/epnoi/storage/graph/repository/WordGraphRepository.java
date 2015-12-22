@@ -11,6 +11,6 @@ public interface WordGraphRepository extends BaseGraphRepository<WordNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<WordNode> findByUri(String uri);
+    WordNode findOneByUri(String uri);
 
 }

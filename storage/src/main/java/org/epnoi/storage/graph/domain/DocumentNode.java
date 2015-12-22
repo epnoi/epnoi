@@ -2,39 +2,62 @@ package org.epnoi.storage.graph.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.model.Document;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
 @NodeEntity(label = "Document")
 @Data
-@EqualsAndHashCode(exclude={"id"})
+@EqualsAndHashCode(of={"uri"})
+@ToString(of={"uri"})
 public class DocumentNode extends Document {
 
     @GraphId
     private Long id;
 
-    @Index
+    @Index(unique = true)
     private String uri;
 
     // -> Undirected
-    private List<SimilarDocument> similar;
+    private Set<SimilarDocument> similars = new HashSet<>();
 
     // -> Outgoing
-    private List<DealsDocumentTopic> deals;
+    private Set<DealsDocumentTopic> deals = new HashSet<>();
 
-    private List<BundleDocumentItem> bundle;
+    private Set<BundleDocumentItem> bundles = new HashSet<>();
 
-    // -> Incoming
-    private List<ProvidesSourceDocument> provides;
 
-    private List<ContainsDomainDocument> contains;
+    public void addSimilarRelation(SimilarDocument rel){
+        similars.add(rel);
+    }
+
+    public void removeSimilarRelation(SimilarDocument rel){
+        similars.remove(rel);
+    }
+
+    public void addDealRelation(DealsDocumentTopic rel){
+        deals.add(rel);
+    }
+
+    public void removeDealRelation(DealsDocumentTopic rel){
+        deals.remove(rel);
+    }
+
+    public void addBundleRelation(BundleDocumentItem rel){
+        bundles.add(rel);
+    }
+
+    public void removeBundleRelation(BundleDocumentItem rel){
+        bundles.remove(rel);
+    }
 
 }

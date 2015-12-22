@@ -11,6 +11,6 @@ public interface SourceGraphRepository extends BaseGraphRepository<SourceNode> {
 
     // To avoid a class type exception
     @Override
-    Iterable<SourceNode> findByUri(String uri);
+    SourceNode findOneByUri(String uri);
 
 }
