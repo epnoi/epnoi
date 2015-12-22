@@ -51,6 +51,12 @@
 			<groupId>virtuoso-jdbc4</groupId>
 			<artifactId>virtuoso-jdbc4</artifactId>
 		</dependency>
+
+		<!-- Spring Data Libraries -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-cassandra</artifactId>
+		</dependency>
 	</dependencies>
 </project>
 
