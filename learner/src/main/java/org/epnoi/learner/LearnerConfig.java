@@ -10,6 +10,7 @@ import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.Profiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +32,10 @@ import java.util.logging.Logger;
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class
             .getName());
+
+    @Autowired
+    private Core core;
+
     @Autowired
     @Qualifier("lexicalPatternsModelCreationParameters")
     private RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters;
@@ -75,7 +80,7 @@ public class LearnerConfig {
     @Profile(Profiles.DEVELOP)
     public RelationalPatternsModelCreationParameters lexicalPatternsModelCreationParameters(
             @Value("${learner.corpus.patterns.lexical.path}") String path,
-            @Value("${learner.corpus.patterns.lexical.path}") String value,
+            @Value("${learner.corpus.patterns.lexical.uri}") String uri,
             @Value("${learner.corpus.patterns.lexical.maxlength}") Integer maxLength,
             @Value("${learner.corpus.patterns.lexical.store}") Boolean store,
             @Value("${learner.corpus.patterns.lexical.verbose}") Boolean verbose,
@@ -86,7 +91,7 @@ public class LearnerConfig {
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
-                        "http://drInventor.eu/reviews/second/relationalSentencesCorpus");
+                       uri);
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
@@ -117,7 +122,7 @@ public class LearnerConfig {
 
 
         try {
-            relationalPatternsModelCreator.init(lexicalPatternsModelCreationParameters);
+            relationalPatternsModelCreator.init(core,lexicalPatternsModelCreationParameters);
         } catch (EpnoiInitializationException e) {
             e.printStackTrace();
         }
@@ -131,7 +136,7 @@ public class LearnerConfig {
         RelationalPatternsModelCreator relationalPatternsModelCreator = new RelationalPatternsModelCreator();
 
         try {
-            relationalPatternsModelCreator.init(syntacticPatternsModelCreationParameters);
+            relationalPatternsModelCreator.init(core, syntacticPatternsModelCreationParameters);
         } catch (EpnoiInitializationException e) {
             e.printStackTrace();
         }
