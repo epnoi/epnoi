@@ -1,6 +1,5 @@
 package org.epnoi.storage.column;
 
-import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import org.springframework.beans.factory.annotation.Autowired;
 

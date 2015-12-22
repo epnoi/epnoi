@@ -1,14 +1,13 @@
-package org.epnoi.storage.column;
+package org.epnoi.storage.document;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.storage.Config;
+import org.epnoi.storage.column.BaseColumnRepository;
 import org.epnoi.storage.model.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.repository.MapId;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -19,11 +18,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ColumnConfig.class)
-@TestPropertySource(properties = { "epnoi.cassandra.contactpoints = zavijava.dia.fi.upm.es", "epnoi.cassandra.port = 5011", "epnoi.cassandra.keyspace = research" })
-public abstract class BaseColumnRepositoryTest<T extends Resource> {
+@ContextConfiguration(classes = DocumentConfig.class)
+@TestPropertySource(properties = { "epnoi.elasticsearch.contactpoints = zavijava.dia.fi.upm.es", "epnoi.elasticsearch.port = 5021" })
+public abstract class BaseDocumentRepositoryTest<T extends Resource> {
 
-    public abstract BaseColumnRepository<T> getRepository();
+    public abstract BaseDocumentRepository<T> getRepository();
 
     public abstract T getEntity();
 
@@ -49,12 +48,12 @@ public abstract class BaseColumnRepositoryTest<T extends Resource> {
     public void findOne(){
         T entity = getEntity();
 
-        T found = getRepository().findOne(BasicMapId.id("uri",entity.getUri()));
+        T found = getRepository().findOne(entity.getUri());
         Assert.assertNull(found);
 
         getRepository().save(entity);
 
-        found = getRepository().findOne(BasicMapId.id("uri",entity.getUri()));
+        found = getRepository().findOne(entity.getUri());
         Assert.assertNotNull(found);
 
         getRepository().delete(found);
