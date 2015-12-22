@@ -3,6 +3,7 @@ package org.epnoi.learner.service.rest;
 import io.swagger.annotations.*;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
+import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.commons.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -95,8 +96,9 @@ public class TrainerResource {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "The relational patterns model has been created"),
             @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
-    public Response createRelationalPatternsModel() {
+    public Response createRelationalPatternsModel(@ApiParam(value = "", required = false, allowMultiple = false) @QueryParam("modelpath") String modelpath) {
         Parameters<Object> runtimeParameters = new Parameters<Object>();
+        runtimeParameters.setParameter(RelationalPatternsModelCreationParameters.MODEL_PATH, modelpath);
         learner.getTrainer().createRelationalPatternsModel(runtimeParameters);
 
         URI uri =

@@ -109,6 +109,8 @@ public class RelationalPatternsModelCreator {
     // ------------------------------------------------------------------------------------------------------------------------
 
     public void create(Parameters<Object> runtimeParameters) {
+        logger.info("Creating a relational patterns model with the following runtime parameters "+runtimeParameters);
+       /*
         _obtainCorpora();
         this.model = _createModel();
         if (this.verbose) {
@@ -117,6 +119,7 @@ public class RelationalPatternsModelCreator {
         if (this.store) {
             _storeModel();
         }
+        */
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
