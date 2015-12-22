@@ -1,6 +1,9 @@
 package org.epnoi.storage.document;
 
 import com.google.common.primitives.Doubles;
+import org.epnoi.storage.document.domain.AnalysisDocument;
+import org.epnoi.storage.document.repository.AnalysisDocumentRepository;
+import org.epnoi.storage.document.repository.BaseDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;

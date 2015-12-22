@@ -19,12 +19,14 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created by cbadenes on 21/12/15.
  */
 @Configuration
-@EnableElasticsearchRepositories(basePackages = {"org.epnoi.storage.document"})
+@EnableElasticsearchRepositories(basePackages = {"org.epnoi.storage.document.repository"})
+@EnableTransactionManagement
 public class DocumentConfig {
 
     @Autowired

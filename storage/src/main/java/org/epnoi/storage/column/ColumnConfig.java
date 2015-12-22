@@ -17,12 +17,14 @@ import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext;
 import org.springframework.data.cassandra.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created by cbadenes on 21/12/15.
  */
 @Configuration
-@EnableCassandraRepositories(basePackages = {"org.epnoi.storage.column"})
+@EnableCassandraRepositories(basePackages = {"org.epnoi.storage.column.repository"})
+@EnableTransactionManagement
 public class ColumnConfig extends AbstractCassandraConfiguration{
 
     @Autowired
