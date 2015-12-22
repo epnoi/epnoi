@@ -1,11 +1,8 @@
-package org.epnoi.harvester.legacy.demo;
+package  org.epnoi.harvester.filesystem;
 
-import org.epnoi.harvester.legacy.filesystem.FilesystemHarvester;
-import org.epnoi.harvester.legacy.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
@@ -27,14 +24,14 @@ public class DemoDataLoader {
     public void init(Core core) {
         this.core = core;
         FilesystemHarvesterParameters parameters = _generateHarvesterParameters();
-
+/*
         try {
             harvester.init(core, parameters);
         } catch (EpnoiInitializationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+*/
     }
 
     private FilesystemHarvesterParameters _generateHarvesterParameters() {

@@ -53,6 +53,7 @@
 		</dependency>
 
 		<!-- Spring Data Libraries -->
+
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-cassandra</artifactId>
@@ -69,6 +70,7 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
+
 	</dependencies>
 </project>
 

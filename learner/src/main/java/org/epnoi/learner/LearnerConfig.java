@@ -5,6 +5,7 @@ import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.epnoi.harvester.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
@@ -268,4 +269,24 @@ public class LearnerConfig {
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
         return sparkContext;
     }
+
+    @Bean
+    public FilesystemHarvesterParameters filesystemHarvesterParameters(){
+        FilesystemHarvesterParameters parameters = new FilesystemHarvesterParameters();
+
+        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_LABEL,
+                "CGTestCorpus");
+
+        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_URI,
+                "http://CGTestCorpus");
+        parameters.setParameter(FilesystemHarvesterParameters.VERBOSE, true);
+
+        parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, true);
+
+        parameters.setParameter(FilesystemHarvesterParameters.FILEPATH,
+                "/opt/epnoi/epnoideployment/firstReviewResources/CGCorpus");
+        return parameters;
+
+    }
+
 }

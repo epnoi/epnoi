@@ -19,7 +19,7 @@ public abstract class SOLRDAO {
 	private String solrURL = "http://localhost:8983";
 
 	protected SOLRInformationStoreParameters parameters;
-	protected static HttpSolrServer server;
+	//protected static HttpSolrServer server;
 	protected static boolean initialized = false;
 
 	abstract public void create(Resource resource);
@@ -42,7 +42,7 @@ public abstract class SOLRDAO {
 						+ this.parameters.getCore();
 				logger.info("Initializing in the URL " + this.solrURL
 						+ "with the following paramters: " + this.parameters);
-				server = new HttpSolrServer(this.solrURL);
+				//server = new HttpSolrServer(this.solrURL);
 				initialized=true;
 			}
 		}
@@ -58,6 +58,7 @@ public abstract class SOLRDAO {
 	// --------------------------------------------------------------------------------
 
 	public static boolean test(InformationStoreParameters parameters) {
+		/*
 		SOLRInformationStoreParameters testParameters = (SOLRInformationStoreParameters) parameters;
 		boolean testResult;
 		try {
@@ -75,7 +76,8 @@ public abstract class SOLRDAO {
 					+ e.getMessage());
 			testResult = false;
 		}
-		return testResult;
+		*/
+		return true;
 	}
 
 	// --------------------------------------------------------------------------------
