@@ -1,4 +1,4 @@
-package  org.epnoi.harvester.filesystem;
+package org.epnoi.learner.filesystem;
 
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;

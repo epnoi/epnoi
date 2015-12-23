@@ -49,7 +49,7 @@ public class TrainerResource {
     }
 
     @POST
-    @Path("relationalSentencesCorpus")
+    @Path("/relationalSentencesCorpus")
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Creates a relational sentences corpus", notes = "")
     @ApiResponses(value = {
@@ -104,5 +104,40 @@ public class TrainerResource {
         URI uri =
                 UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
         return Response.created(uri).build();
+    }
+
+    @POST
+    @Path("/demo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "The relational sentences corpus has been created"),
+            @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
+    public Response createDemoData() {
+
+/*
+
+        Parameters<Object> runtimeParameters = new Parameters<Object>();
+
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI, uri);
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
+
+
+        learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
+        URI createdResourceUri = null;
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
+
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+        } else {
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+
+        }
+        return Response.created(createdResourceUri).build();
+    */
+      return  Response.ok().build();
     }
 }

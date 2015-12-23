@@ -1,4 +1,4 @@
-package org.epnoi.harvester.filesystem;
+package org.epnoi.learner.filesystem;
 
 import gate.Document;
 import org.apache.tika.metadata.Metadata;
@@ -63,7 +63,7 @@ public class FilesystemHarvester {
     public void init()
             throws EpnoiInitializationException {
 
-        logger.info("Initializing the FilesystemHarvester!");
+        logger.info("Initializing the FilesystemHarvester with the following parameters "+this.parameters);
         this.path = (String) parameters
                 .getParameterValue(FilesystemHarvesterParameters.FILEPATH);
 
