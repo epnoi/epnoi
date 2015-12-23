@@ -3,60 +3,45 @@ package org.epnoi.learner.filesystem;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ucar.nc2.util.xml.RuntimeConfigParser;
 
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Component
 public class DemoDataLoader {
-    Core core;
-    public static final String DOMAIN_URI="http://www.epnoi.org/CGTestCorpusDomain";
+
+    @Autowired
+    private Core core;
+
+    @Autowired
+    private FilesystemHarvester filesystemHarvester;
+
+    public static final String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
     private static final Logger logger = Logger.getLogger(DemoDataLoader.class
             .getName());
-
-    FilesystemHarvester harvester = new FilesystemHarvester();
-
-    // --------------------------------------------------------------------------------------------
-
-    public void init(Core core) {
-        this.core = core;
-        FilesystemHarvesterParameters parameters = _generateHarvesterParameters();
-/*
-        try {
-            harvester.init(core, parameters);
-        } catch (EpnoiInitializationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-*/
-    }
-
-    private FilesystemHarvesterParameters _generateHarvesterParameters() {
-        FilesystemHarvesterParameters parameters = new FilesystemHarvesterParameters();
-
-        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_LABEL,
-                "CGTestCorpus");
-
-        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_URI,
-                "http://CGTestCorpus");
-        parameters.setParameter(FilesystemHarvesterParameters.VERBOSE, true);
-
-        parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, false);
-
-        parameters.setParameter(FilesystemHarvesterParameters.FILEPATH,
-                "/opt/epnoi/epnoideployment/firstReviewResources/CGCorpus");
-        return parameters;
-    }
 
     // --------------------------------------------------------------------------------------------
 
     public void load() {
-       List<Paper> papers= _loadComputerGraphicsCorpus();
+        List<Paper> papers = _loadComputerGraphicsCorpus();
         _createTheSimpleDomain(papers);
     }
+
+// --------------------------------------------------------------------------------------------
+
+    public void erase() {
+        _eraseDomainsAndResearchObjects();
+    }
+
+    // --------------------------------------------------------------------------------------------
 
     private void _createTheSimpleDomain(List<Paper> papers) {
         Domain domain = new Domain();
@@ -64,10 +49,10 @@ public class DemoDataLoader {
         domain.setExpression("sparqlexpression");
         domain.setLabel("simple demo domain");
         domain.setType(RDFHelper.PAPER_CLASS);
-        domain.setResources(DOMAIN_URI+"/resources");
-      //  _eraseDomainsAndResearchObjects();
+        domain.setResources(DOMAIN_URI + "/resources");
+        //  _eraseDomainsAndResearchObjects();
         ResearchObject resources = new ResearchObject();
-        resources.setUri(DOMAIN_URI+"/resources");
+        resources.setUri(DOMAIN_URI + "/resources");
 
         resources.setAggregatedResources(papers.stream().map(element -> element.getUri()).collect(Collectors.toList()));
 
@@ -79,12 +64,13 @@ public class DemoDataLoader {
                 org.epnoi.model.Context.getEmptyContext());
 
 
-
         System.out.println("The retrieved uris of the domain are ");
         List<String> uris = core.getDomainsHandler().gather(domain);
         System.out.println(uris);
-        System.out.println("There are "+uris.size());
+        System.out.println("There are " + uris.size());
     }
+
+    // --------------------------------------------------------------------------------------------
 
     private void _eraseDomainsAndResearchObjects() {
         List<String> domainURIs = this.core.getInformationHandler().getAll(
@@ -102,7 +88,7 @@ public class DemoDataLoader {
     private List<Paper> _loadComputerGraphicsCorpus() {
         logger.info("Loading the computer graphics corpus");
     /*
-		List<String> paperURIs = this.core.getInformationHandler().getAll(
+        List<String> paperURIs = this.core.getInformationHandler().getAll(
 				RDFHelper.PAPER_CLASS);
 		for (String paperURI : paperURIs) {
 			this.core.getInformationHandler().remove(paperURI,
@@ -112,14 +98,31 @@ public class DemoDataLoader {
 		*/
 
 
-        return this.harvester.run();
+        return this.filesystemHarvester.run();
+    }
+
+    private void _removeComputerGraphicsCorpus() {
+        logger.info("Removing the computer graphics corpus");
+    /*
+        List<String> paperURIs = this.core.getInformationHandler().getAll(
+				RDFHelper.PAPER_CLASS);
+		for (String paperURI : paperURIs) {
+			this.core.getInformationHandler().remove(paperURI,
+					RDFHelper.PAPER_CLASS);
+			r
+		}
+		*/
+
+
+
     }
 
     public static void main(String[] args) {
+       /*
         Core core = CoreUtility.getUIACore();
         DemoDataLoader demoDataLoader = new DemoDataLoader();
         demoDataLoader.init(core);
         demoDataLoader.load();
-
+*/
     }
 }

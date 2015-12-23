@@ -7,6 +7,7 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.epnoi.model.*;
+import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
@@ -63,7 +64,7 @@ public class FilesystemHarvester {
     public void init()
             throws EpnoiInitializationException {
 
-        logger.info("Initializing the FilesystemHarvester with the following parameters "+this.parameters);
+        logger.info("Initializing the FilesystemHarvester with the following parameters " + this.parameters);
         this.path = (String) parameters
                 .getParameterValue(FilesystemHarvesterParameters.FILEPATH);
 
@@ -119,9 +120,27 @@ public class FilesystemHarvester {
     // ----------------------------------------------------------------------------------------
 
     public List<Paper> run() {
-
         return harvest(this.path);
     }
+
+    // ----------------------------------------------------------------------------------------
+
+    public List<Paper> run(Parameters<Object> runtimeParameters) {
+        return harvest(this.path);
+    }
+
+
+    // ----------------------------------------------------------------------------------------
+
+    public List<Paper> harvest() {
+        String directoryToHarvest = (String) this.parameters.getParameterValue(FilesystemHarvesterParameters.FILEPATH);
+        List<Paper> harvestedPapers = new ArrayList<>();
+        if (directoryToHarvest != null) {
+            this.harvest(directoryToHarvest);
+        }
+        return harvestedPapers;
+    }
+
 
     // ----------------------------------------------------------------------------------------
 

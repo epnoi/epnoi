@@ -9,7 +9,7 @@ public class FilesystemHarvesterParameters extends Parameters<Object> {
 	public static final String FILEPATH = "FILEPATH"; //Filepath were the files to be harvested are deployed
 	public static final String OVERWRITE = "OVERWRITE";
 	public static final String CORPUS_URI = "CORPUS_URI";
-
+	public static final String DOMAIN_URI = "DOMAIN_URI";
 	//---------------------------------------------------------------------------------------------------------------------
 
 	@Override
