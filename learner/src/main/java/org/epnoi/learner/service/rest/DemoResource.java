@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 
 @Component
-@Path("/learner")
+@Path("/learner/demo")
 @Api(value = "/learner/demo", description = "Operations for retrieving the learned relations from a domain")
 public class DemoResource {
     private static final Logger logger = Logger.getLogger(DemoResource.class

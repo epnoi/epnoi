@@ -109,7 +109,7 @@ public class DemoDataLoader {
 		for (String paperURI : paperURIs) {
 			this.core.getInformationHandler().remove(paperURI,
 					RDFHelper.PAPER_CLASS);
-			r
+			r]}}]\\]]]}}6*&&]]}}
 		}
 		*/
 
