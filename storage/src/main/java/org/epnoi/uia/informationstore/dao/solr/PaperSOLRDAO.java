@@ -28,7 +28,7 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
+/*
 		SolrInputDocument document = _indexPaper(paper, context);
 
 		try {
@@ -36,23 +36,23 @@ public class PaperSOLRDAO extends SOLRDAO {
 				this.server.add(document);
 			
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 		try {
 			this.server.commit();
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	// --------------------------------------------------------------------------------
@@ -138,17 +138,18 @@ public class PaperSOLRDAO extends SOLRDAO {
 
 	@Override
 	public void remove(String URI) {
+		/*
 		try {
 			this.server.deleteById(URI);
 			this.server.commit();
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 }

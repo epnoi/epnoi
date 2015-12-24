@@ -1,6 +1,7 @@
 package org.epnoi.learner.service.rest;
 
 import io.swagger.annotations.*;
+import org.epnoi.learner.filesystem.FilesystemHarvester;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Relation;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,8 +23,8 @@ import java.util.logging.Logger;
 
 
 @Component
-@Path("/domain")
-@Api(value = "/domain", description = "Operations for retrieving the learned relations from a domain")
+@Path("/learner")
+@Api(value = "/learner", description = "Operations for retrieving the learned relations from a domain")
 public class LearnerResource {
     private static final Logger logger = Logger.getLogger(LearnerResource.class
             .getName());
@@ -35,6 +33,9 @@ public class LearnerResource {
 
     @Autowired
     private Core core;
+
+    @Autowired
+    private FilesystemHarvester harvester;
 
 
     @PostConstruct
@@ -55,9 +56,9 @@ public class LearnerResource {
             @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
 
 
-      //if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
-            //List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
-        if(true){
+        //if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
+        //List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
+        if (true) {
             Relation relation = new Relation();
             relation.setUri("http://whateverrelation");
             relation.setSource("source");
@@ -97,5 +98,39 @@ public class LearnerResource {
 
     }
 
+    @POST
+    @Path("/demo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "The relational sentences corpus has been created"),
+            @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
+    public Response createDemoData() {
+//harvester.harvest("")
+/*
+
+        Parameters<Object> runtimeParameters = new Parameters<Object>();
+
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI, uri);
+        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
+
+
+        learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
+        URI createdResourceUri = null;
+        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
+
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+        } else {
+            createdResourceUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()
+                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+
+        }
+        return Response.created(createdResourceUri).build();
+    */
+        return Response.ok().build();
+    }
 
 }

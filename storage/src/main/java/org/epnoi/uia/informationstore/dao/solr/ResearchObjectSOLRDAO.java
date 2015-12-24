@@ -32,7 +32,7 @@ public class ResearchObjectSOLRDAO extends SOLRDAO {
 				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
 		SolrInputDocument document = _indexPaper(paper, context);
-
+/*
 		try {
 			this.server.add(document);
 		} catch (SolrServerException e) {
@@ -52,7 +52,7 @@ public class ResearchObjectSOLRDAO extends SOLRDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	// --------------------------------------------------------------------------------
@@ -135,17 +135,13 @@ public class ResearchObjectSOLRDAO extends SOLRDAO {
 
 	@Override
 	public void remove(String URI) {
-		
+/*
 		try {
-		//	String query ="uri:"+URI;
+
 			this.server.deleteById(URI);
 			this.server.commit();
-			/*
-			UpdateRequest req = new UpdateRequest();
-			  req.setAction( org.apache.solr.client.solrj.request.UpdateRequest.ACTION.COMMIT, false, false );
-			 
-			  UpdateResponse rsp = req.process( server );
-			  */
+
+
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,7 +149,7 @@ public class ResearchObjectSOLRDAO extends SOLRDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	// ---------------------------------------------------------------------------------------------------

@@ -22,7 +22,7 @@ public class SOLRDAOQueryResolver {
 	private String solrURL = "http://localhost:8983";
 
 	protected SOLRInformationStoreParameters parameters;
-	protected HttpSolrServer server;
+//	protected HttpSolrServer server;
 
 	// ------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ public class SOLRDAOQueryResolver {
 					+ this.parameters.getPath() + "/"
 					+ this.parameters.getCore();
 			logger.info("Initializing in the URL " + this.solrURL);
-			this.server = new HttpSolrServer(this.solrURL);
+		//	this.server = new HttpSolrServer(this.solrURL);
 
 		}
 	}
@@ -65,7 +65,7 @@ public class SOLRDAOQueryResolver {
 			solrQuery.addFilterQuery(filterQuery);
 
 		}
-
+/*
 		try {
 			QueryResponse queryResponse = this.server.query(solrQuery);
 
@@ -83,8 +83,7 @@ public class SOLRDAOQueryResolver {
 				searchSelectResult.getResources().add(selectionResultTuple);
 			}
 
-			// System.out.println("-----------> " +
-			// queryResponse.getExplainMap());
+
 
 			List<FacetField> facetFields = queryResponse.getFacetFields();
 			if (facetFields != null) {
@@ -102,11 +101,7 @@ public class SOLRDAOQueryResolver {
 						selectionFacetValue.setValue(facetInstance.getName());
 						selectionFacetValue.setCount(facetInstance.getCount());
 						selectionFacet.getValues().add(selectionFacetValue);
-						/*
-						 * System.out.println(facetInstance.getName() + " : " +
-						 * facetInstance.getCount() + " [drilldown qry:" +
-						 * facetInstance.getAsFilterQuery());
-						 */
+
 					}
 					searchSelectResult.getFacets().add(selectionFacet);
 				}
@@ -114,11 +109,11 @@ public class SOLRDAOQueryResolver {
 			}
 
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		// System.out.println("The result ---------> " + searchSelectResult);
-		return searchSelectResult;
+	*/
+			return searchSelectResult;
 	}
 
 	// ------------------------------------------------------------------------------
@@ -133,10 +128,10 @@ public class SOLRDAOQueryResolver {
 		solrQuery.addField(SOLRDAOHelper.TYPE_PROPERTY);
 
 		try {
-			QueryResponse queryResponse = this.server.query(solrQuery);
+		/*	QueryResponse queryResponse = this.server.query(solrQuery);
 			
 			return queryResponse.getResults().size() > 0;
-
+*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

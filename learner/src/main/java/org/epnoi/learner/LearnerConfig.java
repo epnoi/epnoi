@@ -5,6 +5,7 @@ import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.epnoi.learner.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.PatternsConstants;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
 @Configuration
 @Import(org.epnoi.EpnoiConfig.class)
 //@ComponentScan(basePackageClasses = {RelationalPatternsModelCreationParameters.class, LearnerImpl.class})
-@ComponentScan(basePackages = {"org.epnoi.learner"})
+@ComponentScan(basePackages = {"org.epnoi.learner",})
 //@PropertySource("classpath:/epnoi.properties")
 @PropertySources({
         @PropertySource("classpath:/epnoi.properties"),
@@ -91,7 +92,7 @@ public class LearnerConfig {
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
-                       uri);
+                        uri);
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
@@ -122,7 +123,7 @@ public class LearnerConfig {
 
 
         try {
-            relationalPatternsModelCreator.init(core,lexicalPatternsModelCreationParameters);
+            relationalPatternsModelCreator.init(core, lexicalPatternsModelCreationParameters);
         } catch (EpnoiInitializationException e) {
             e.printStackTrace();
         }
@@ -172,7 +173,7 @@ public class LearnerConfig {
 
         parameters.setParameter(
                 RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_DESCRIPTION,
-                "DrInventor second relational sentences corpus");
+                description);
 
 
         parameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_SENTENCE_LENGTH, maxLength);
@@ -268,4 +269,27 @@ public class LearnerConfig {
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
         return sparkContext;
     }
+
+    @Bean
+    public FilesystemHarvesterParameters filesystemHarvesterParameters(
+            @Value("${learner.demo.harvester.uri}") String uri,
+            @Value("${learner.demo.harvester.label}") String label,
+            @Value("${learner.demo.harvester.overwrite}") Boolean overwrite,
+            @Value("${learner.demo.harvester.verbose}") Boolean verbose,
+            @Value("${learner.demo.harvester.path}") String path
+    ) {
+        FilesystemHarvesterParameters parameters = new FilesystemHarvesterParameters();
+
+        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_LABEL, label);
+
+        parameters.setParameter(FilesystemHarvesterParameters.CORPUS_URI, uri);
+        parameters.setParameter(FilesystemHarvesterParameters.VERBOSE, verbose);
+
+        parameters.setParameter(FilesystemHarvesterParameters.OVERWRITE, overwrite);
+
+        parameters.setParameter(FilesystemHarvesterParameters.FILEPATH, path);
+        return parameters;
+
+    }
+
 }
