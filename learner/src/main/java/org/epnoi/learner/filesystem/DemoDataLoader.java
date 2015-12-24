@@ -24,6 +24,9 @@ public class DemoDataLoader {
     @Autowired
     private FilesystemHarvester filesystemHarvester;
 
+    @Autowired
+    private FilesystemHarvesterParameters filesystemHarvesterParameters;
+
     public static final String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
     private static final Logger logger = Logger.getLogger(DemoDataLoader.class
             .getName());
@@ -39,6 +42,7 @@ public class DemoDataLoader {
 
     public void erase() {
         _eraseDomainsAndResearchObjects();
+        _removeComputerGraphicsCorpus();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -87,35 +91,22 @@ public class DemoDataLoader {
 
     private List<Paper> _loadComputerGraphicsCorpus() {
         logger.info("Loading the computer graphics corpus");
-    /*
-        List<String> paperURIs = this.core.getInformationHandler().getAll(
-				RDFHelper.PAPER_CLASS);
-		for (String paperURI : paperURIs) {
-			this.core.getInformationHandler().remove(paperURI,
-					RDFHelper.PAPER_CLASS);
-			r
-		}
-		*/
-
-
         return this.filesystemHarvester.run();
     }
 
     private void _removeComputerGraphicsCorpus() {
         logger.info("Removing the computer graphics corpus");
-    /*
-        List<String> paperURIs = this.core.getInformationHandler().getAll(
-				RDFHelper.PAPER_CLASS);
-		for (String paperURI : paperURIs) {
-			this.core.getInformationHandler().remove(paperURI,
-					RDFHelper.PAPER_CLASS);
-			r]}}]\\]]]}}6*&&]]}}
-		}
-		*/
-
-
-
+        String corpusLabel = (String)this.filesystemHarvesterParameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
+        System.out.println("this is the label "+corpusLabel);
+        List<String> paperURIs = this.core.getAnnotationHandler().getLabeledAs(
+                corpusLabel);
+        for (String paperURI : paperURIs) {
+            this.core.getAnnotationHandler().removeAnnotation(paperURI,corpusLabel);
+            this.core.getInformationHandler().remove(paperURI,
+                    RDFHelper.PAPER_CLASS);
+        }
     }
+
 
     public static void main(String[] args) {
        /*
