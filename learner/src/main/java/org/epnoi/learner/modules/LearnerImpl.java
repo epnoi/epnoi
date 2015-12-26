@@ -58,9 +58,12 @@ public class LearnerImpl implements Learner {
 
             if (domain != null) {
                 OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
+
                 ontologyLearningTask.perform(core, domain);
 
 
+            }else{
+                logger.severe("The retrieved domain was null!!!!");
             }
         } catch (Exception e) {
             logger.info("Something went wrong when learning about the domain " + domainUri);

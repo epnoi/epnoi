@@ -2,7 +2,7 @@ package org.epnoi.learner.terms;
 
 import gate.Annotation;
 import gate.Document;
-import org.epnoi.learner.DomainsGatherer;
+import org.epnoi.learner.DomainsTableCreator;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.*;
@@ -541,10 +541,10 @@ public class TermsExtractor {
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();
-		DomainsGatherer domainGatherer = new DomainsGatherer();
+		DomainsTableCreator domainGatherer = new DomainsTableCreator();
 		domainGatherer.init(core, learningParameters);
 
-		DomainsTable domainsTable = domainGatherer.gather();
+		DomainsTable domainsTable = domainGatherer.create();
 
 		termExtractor.init(core, domainsTable, learningParameters);
 		// termExtractor.removeTerms();

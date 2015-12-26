@@ -6,8 +6,8 @@ import org.epnoi.model.modules.Core;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class DomainsGatherer {
-	private static final Logger logger = Logger.getLogger(DomainsGatherer.class
+public class DomainsTableCreator {
+	private static final Logger logger = Logger.getLogger(DomainsTableCreator.class
 			.getName());
 	private Core core;
 	private List<Domain> consideredDomains;
@@ -19,7 +19,7 @@ public class DomainsGatherer {
 	// -----------------------------------------------------------------------------------
 
 	public void init(Core core, LearningParameters parameters) {
-		logger.info("Initializing the DomainsGatherer with the following parameters: ");
+		logger.info("Initializing the DomainsTableCreator with the following parameters: ");
 		logger.info(parameters.toString());
 		this.core = core;
 		this.parameters = parameters;
@@ -34,11 +34,11 @@ public class DomainsGatherer {
 
 	// -----------------------------------------------------------------------------------
 
-	public DomainsTable gather() {
-		logger.info("Gathering the DomainsTable");
+	public DomainsTable create() {
+		logger.info("Creating the DomainsTable");
 		for (Domain domain : this.consideredDomains) {
 			this.domainsTable.addDomain(domain);
-			logger.info("Gathering the domain " + domain);
+			logger.info("Creating the domain " + domain);
 
 			List<String> foundURIs = core.getDomainsHandler().gather(domain);
 			logger.info("Found initially " + foundURIs.size()
@@ -53,10 +53,10 @@ public class DomainsGatherer {
 	
 	// -----------------------------------------------------------------------------------
 
-	public DomainsTable gather(Domain domain) {
-		logger.info("Gathering the DomainsTable");
+	public DomainsTable create(Domain domain) {
+		logger.info("Creating the DomainsTable");
 		this.domainsTable.addDomain(domain);
-		logger.info("Gathering the domain " + domain);
+		logger.info("Creating the domain " + domain);
 
 		List<String> foundURIs = core.getDomainsHandler().gather(domain);
 		logger.info("Found initially " + foundURIs.size()

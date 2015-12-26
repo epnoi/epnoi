@@ -1,6 +1,6 @@
 package org.epnoi.learner.terms;
 
-import org.epnoi.learner.DomainsGatherer;
+import org.epnoi.learner.DomainsTableCreator;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.Context;
@@ -132,10 +132,10 @@ public class TermsRetriever {
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();
-		DomainsGatherer domainGatherer = new DomainsGatherer();
+		DomainsTableCreator domainGatherer = new DomainsTableCreator();
 		domainGatherer.init(core, learningParameters);
 
-		DomainsTable domainsTable = domainGatherer.gather();
+		DomainsTable domainsTable = domainGatherer.create();
 
 		termExtractor.init(core, domainsTable, learningParameters);
 		// termExtractor.removeTerms();

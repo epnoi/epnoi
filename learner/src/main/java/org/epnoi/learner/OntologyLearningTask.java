@@ -29,7 +29,7 @@ public class OntologyLearningTask {
 	private RelationsExtractor relationsTableExtractor;
 	private RelationsRetriever relationsTableRetriever;
 
-	private DomainsGatherer domainsGatherer;
+	private DomainsTableCreator domainsTableCreator;
 	private DomainsTable domainsTable;
 
 	Domain domain;
@@ -55,9 +55,9 @@ public class OntologyLearningTask {
 
 		this.learningParameters = learningParameters;
 
-		this.domainsGatherer = new DomainsGatherer();
-		this.domainsGatherer.init(core, learningParameters);
-		this.domainsTable = this.domainsGatherer.gather(domain);
+		this.domainsTableCreator = new DomainsTableCreator();
+		this.domainsTableCreator.init(core, learningParameters);
+		this.domainsTable = this.domainsTableCreator.create(domain);
 
 		this.termExtractor = new TermsExtractor();
 		this.termExtractor.init(core, this.domainsTable,
@@ -88,14 +88,14 @@ public class OntologyLearningTask {
 		}
 
 		// termsTable.show(30);
-
+/*
 		System.out.println("Extracting relations table");
 
 		this.relationsTable = this.relationsTableExtractor
 				.extract(this.termsTable);
 
 		System.out.println("Relations Table> " + this.relationsTable);
-
+*/
 		System.out.println("end");
 
 	}
@@ -107,6 +107,8 @@ public class OntologyLearningTask {
 		this.domain = domain;
 		ArrayList<Domain> consideredDomains = new ArrayList(Arrays.asList(domain));
 
+
+/*
 		LearningParameters learningParameters = new LearningParameters();
 		learningParameters.setParameter(
 				LearningParameters.CONSIDERED_DOMAINS,
@@ -134,14 +136,15 @@ public class OntologyLearningTask {
 						LearningParameters.HYPERNYM_MODEL_PATH,
 						"/opt/epnoi/epnoideployment/firstReviewResources/lexicalModel/model.bin");
 		learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, true);
-		
-
+*/
+/*
 		try {
 			init(core, learningParameters);
 		} catch (EpnoiInitializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		execute();
 		System.out.println("Ending the Ontology Learning Process!");
 	}
