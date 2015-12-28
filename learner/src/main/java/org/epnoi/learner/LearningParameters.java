@@ -61,4 +61,8 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 
 	public static final String REST_PORT = "REST_PORT";
 
+	public static final String  STORE_TERMS = "STORE_TERMS";
+
+	public static final String STORE_RELATIONS = "STORE_RELATIONS";
+
 }

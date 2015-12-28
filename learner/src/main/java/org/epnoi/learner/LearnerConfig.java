@@ -238,7 +238,7 @@ public class LearnerConfig {
                 hypernymsLexicalModelPath);
 
         learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
-logger.info("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 > A learner configuration with the following parameters was created > "+learningParameters);
+
         return learningParameters;
     }
 

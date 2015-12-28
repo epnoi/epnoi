@@ -64,8 +64,6 @@ public class OntologyLearningWorkflow {
 		this.domainsTable = this.domainsTableCreator.create();
 
 		this.termExtractor = new TermsExtractor();
-		this.termExtractor.init(core, this.domainsTable,
-				learningParameters);
 
 		
 		this.termsRetriever = new TermsRetriever(core);

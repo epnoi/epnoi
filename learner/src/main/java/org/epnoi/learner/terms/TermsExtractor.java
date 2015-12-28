@@ -69,7 +69,9 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void indexResources() {
-		logger.info("Indexing the textual resources to extract the terminology");
+
+		System.out.println("--------> "+domainsTable);
+		logger.info("Indexing the textual resources to extract the terminology ");
 		for (String domain : this.domainsTable.getConsideredDomains()) {
 			logger.info("Indexing the domain: " + domain);
 			this._indexDomainResoures(domain);
@@ -80,6 +82,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexDomainResoures(String domain) {
+
 		List<String> resourcesURIs = this.domainsTable.getDomainResources()
 				.get(domain);
 		System.out.println(" resourceURIS" + resourcesURIs);
@@ -159,6 +162,7 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public void extractTerms() {
+
 		this.indexResources();
 		if (!this.domainsTable.getDomainResources().get(this.targetDomain)
 				.isEmpty()) {
@@ -470,13 +474,14 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	public TermsTable extract() {
+		logger.info("Extracting terms with the following parameters "+parameters);
 		this.extractTerms();
 		TermsTable termsTable = new TermsTable();
 	
 		for (AnnotatedWord<TermMetadata> term : this.termsIndex
 				.getTerms(this.targetDomain)) {
 
-			// System.out.println("term(" + term.getWord() + ")> " + term);
+			System.out.println("term(" + term.getWord() + ")> " + term);
 
 			Term newTerm = new Term();
 			// The term URI is obtained using an auxiliary function

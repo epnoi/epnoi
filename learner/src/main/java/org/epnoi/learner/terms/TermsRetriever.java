@@ -104,6 +104,7 @@ public class TermsRetriever {
 	// -----------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
+		/*
 		TermsExtractor termExtractor = new TermsExtractor();
 
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
@@ -141,7 +142,7 @@ public class TermsRetriever {
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);
-
+*/
 	}
 
 }
