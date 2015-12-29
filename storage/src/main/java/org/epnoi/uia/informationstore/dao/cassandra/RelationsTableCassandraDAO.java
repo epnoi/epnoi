@@ -17,7 +17,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public void create(Resource resource, Context context) {
-		
+		System.out.println("create 00000> "+resource);
 		RelationsTable relationsTable = (RelationsTable) resource;
 		super.createRow(relationsTable.getUri(),
 				RelationsTableCassandraHelper.COLUMN_FAMILY);
@@ -26,11 +26,6 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 
 			_createRelation(relationsTable.getUri(), relation);
 		}
-
-		
-		ColumnSliceIterator<String, String, String> columnsIterator = super
-				.getAllCollumns(relationsTable.getUri(),
-						RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 
 	}
@@ -44,16 +39,19 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 	// --------------------------------------------------------------------------------
 
 	public Resource read(String URI) {
+		RelationsTable relationsTable = new RelationsTable();
+		relationsTable.setUri(URI);
+		System.out.println(">>>" + super.readRow(URI,
+				RelationsTableCassandraHelper.COLUMN_FAMILY).hasResults());
 
 		ColumnSliceIterator<String, String, String> columnsIterator = super
 				.getAllCollumns(URI,
 						RelationsTableCassandraHelper.COLUMN_FAMILY);
 
 	
-		if (columnsIterator.hasNext()) {
 
-			RelationsTable relationsTable = new RelationsTable();
-			relationsTable.setUri(URI);
+
+
 			while (columnsIterator.hasNext()) {
 
 				HColumn<String, String> column = columnsIterator.next();
@@ -66,9 +64,7 @@ public class RelationsTableCassandraDAO extends CassandraDAO {
 			}
 
 			return relationsTable;
-		}
 
-		return null;
 	}
 
 	// --------------------------------------------------------------------------------
