@@ -1,6 +1,7 @@
 package org.epnoi.learner.relations.patterns;
 
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModelBuilder;
+import org.epnoi.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModelBuilder;
 import org.epnoi.learner.relations.patterns.syntactic.SyntacticRelationalPatternsModelBuilder;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 
@@ -15,7 +16,7 @@ public class RelationalPatternsModelBuilderFactory {
 				.getParameterValue(RelationalPatternsModelCreationParameters.TYPE);
 		switch (type) {
 		case PatternsConstants.LEXICAL:
-			relationalPatternsGenerator = new BigramSoftPatternModelBuilder(
+			relationalPatternsGenerator = new RelaxedBigramSoftPatternModelBuilder(
 					parameters);
 			break;
 		case PatternsConstants.SYNTACTIC:

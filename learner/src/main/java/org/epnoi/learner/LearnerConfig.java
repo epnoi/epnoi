@@ -83,6 +83,7 @@ public class LearnerConfig {
             @Value("${learner.corpus.patterns.lexical.path}") String path,
             @Value("${learner.corpus.patterns.lexical.uri}") String uri,
             @Value("${learner.corpus.patterns.lexical.maxlength}") Integer maxLength,
+            @Value("${learner.corpus.patterns.lexical.interpolation}") Double interpolationConstant,
             @Value("${learner.corpus.patterns.lexical.store}") Boolean store,
             @Value("${learner.corpus.patterns.lexical.verbose}") Boolean verbose,
             @Value("${learner.corpus.patterns.lexical.test}") Boolean test
@@ -97,6 +98,9 @@ public class LearnerConfig {
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
                         maxLength);
+
+
+        parameters.setParameter(RelationalPatternsModelCreationParameters.INTERPOLATION_CONSTANT, interpolationConstant);
 
         parameters.setParameter(
                 RelationalPatternsModelCreationParameters.MODEL_PATH, path);
