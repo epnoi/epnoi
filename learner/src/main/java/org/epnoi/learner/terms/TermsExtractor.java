@@ -70,7 +70,7 @@ public class TermsExtractor {
 
 	public void indexResources() {
 
-		System.out.println("--------> "+domainsTable);
+
 		logger.info("Indexing the textual resources to extract the terminology ");
 		for (String domain : this.domainsTable.getConsideredDomains()) {
 			logger.info("Indexing the domain: " + domain);
@@ -85,7 +85,7 @@ public class TermsExtractor {
 
 		List<String> resourcesURIs = this.domainsTable.getDomainResources()
 				.get(domain);
-		System.out.println(" resourceURIS" + resourcesURIs);
+		//System.out.println(" resourceURIS" + resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
@@ -267,7 +267,7 @@ public class TermsExtractor {
 	}
 
 	// -----------------------------------------------------------------------------------
-
+/*
 	private void storeResult() {
 		System.out.println("Storing the Term Extraction result");
 
@@ -282,7 +282,7 @@ public class TermsExtractor {
 			for (AnnotatedWord<TermMetadata> term : this.termsIndex
 					.getTerms(aDomain.getWord())) {
 
-				// System.out.println("term(" + term.getWord() + ")> " + term);
+
 
 				Term newTerm = new Term();
 				// The term URI is obtained using an auxiliary function
@@ -291,19 +291,7 @@ public class TermsExtractor {
 
 				core.getInformationHandler().put(newTerm,
 						Context.getEmptyContext());
-				/*
-				 * System.out .println("Labeling " + newTerm.getURI() + " as " +
-				 * this.parameters
-				 * .getParameterValue(LearningParameters.
-				 * TARGET_DOMAIN));
-				 */
 
-				/*
-				 * core.getAnnotationHandler() .label(newTerm.getURI(), (String)
-				 * this.parameters
-				 * .getParameterValue(LearningParameters.
-				 * TARGET_DOMAIN));
-				 */
 				core.getAnnotationHandler().label(newTerm.getUri(),
 						aDomain.getWord());
 			}
@@ -312,7 +300,7 @@ public class TermsExtractor {
 		}
 	}
 
-	// -----------------------------------------------------------------------------------
+
 
 	public void storeTable(TermsTable termsTable) {
 		System.out.println("Storing a Terms Table");
@@ -326,8 +314,8 @@ public class TermsExtractor {
 		System.out
 				.println("=========================================================================================================================");
 	}
+*/
 
-	// -----------------------------------------------------------------------------------
 
 	private void calculateCValues() {
 
@@ -481,7 +469,7 @@ public class TermsExtractor {
 		for (AnnotatedWord<TermMetadata> term : this.termsIndex
 				.getTerms(this.targetDomain)) {
 
-			System.out.println("term(" + term.getWord() + ")> " + term);
+			//System.out.println("term(" + term.getWord() + ")> " + term);
 
 			Term newTerm = new Term();
 			// The term URI is obtained using an auxiliary function
@@ -521,7 +509,7 @@ public class TermsExtractor {
 		 */
 
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
-
+/*
 		ArrayList<String> consideredDomains = new ArrayList(Arrays.asList("CGTestCorpus"));
 		String targetDomain = "CGTestCorpus";
 		Double hyperymMinimumThreshold = 0.7;
@@ -555,7 +543,7 @@ public class TermsExtractor {
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);
-
+*/
 	}
 
 }

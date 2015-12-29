@@ -93,7 +93,7 @@ public class OntologyLearningTask {
                 this.termsTable = this.termsRetriever.retrieve(targetDomain);
             }
         }
-        termsTable.show(30);
+  //      termsTable.show(30);
 /*
         System.out.println("Extracting relations table");
 

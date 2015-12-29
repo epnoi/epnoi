@@ -192,13 +192,16 @@ public class LearnerConfig {
     public LearningParameters learningParameters(
             @Value("${learner.task.terms}") Boolean obtainTerms,
             @Value("${learner.task.terms.extract}") Boolean extractTerms,
+            @Value("${learner.task.terms.store}") Boolean storeTerms,
             @Value("${learner.task.terms.initialterms}") Integer numberInitialTerms,
             @Value("${learner.task.relations}") Boolean obtainRelations,
             @Value("${learner.task.relations.extract}") Boolean extractRelations,
+            @Value("${learner.task.relations.store}") Boolean storeRelations,
             @Value("${learner.task.relations.hypernyms.lexical.path}") String hypernymsLexicalModelPath,
 
             @Value("${learner.task.relations.hypernyms.threshold.expansion}") Double hyperymExpansionMinimumThreshold,
-            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold) {
+            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold
+            ) {
         LearningParameters learningParameters = new LearningParameters();
         //    System.out.println("=======================================================================================> bean");
 /*
@@ -215,13 +218,15 @@ public class LearnerConfig {
         learningParameters.setParameter(
                 LearningParameters.EXTRACT_TERMS, extractTerms);
         learningParameters.setParameter(
+                LearningParameters.STORE_TERMS, storeTerms);
+        learningParameters.setParameter(
                 LearningParameters.NUMBER_INITIAL_TERMS,
                 numberInitialTerms);
 
         //Relation related parameters
         learningParameters.setParameter(LearningParameters.OBTAIN_RELATIONS, obtainRelations);
         learningParameters.setParameter(LearningParameters.EXTRACT_RELATIONS, extractRelations);
-
+        learningParameters.setParameter(LearningParameters.STORE_RELATIONS, storeRelations);
         learningParameters
                 .setParameter(
                         LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -82,7 +83,9 @@ public class DomainsHandlerImpl implements DomainsHandler {
             if (foundURIs != null) {
                 logger.info("Initially " + foundURIs.size()
                         + " are defined as belonging to the domain " + domain.getUri());
-                return foundURIs;
+
+                // HERE WAS return foundURIs;
+                return Arrays.asList(foundURIs.get(0));
             }
         }
         return new ArrayList<String>();

@@ -84,11 +84,13 @@ public class LearnerImpl implements Learner {
     }
 
     private void _storeLearningResults(OntologyLearningTask ontologyLearningTask, Domain domain) {
-        if ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_TERMS)) {
+        if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_TERMS))
+                && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_TERMS))) {
             this.termsRetriever.store(domain, ontologyLearningTask.getTermsTable());
         }
 
-        if ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_RELATIONS)) {
+        if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_RELATIONS)
+                && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_RELATIONS)))) {
             this.relationsRetriever.store(ontologyLearningTask.getRelationsTable());
         }
     }
