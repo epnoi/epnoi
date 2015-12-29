@@ -3,6 +3,7 @@ package org.epnoi.learner.service.rest;
 import io.swagger.annotations.*;
 import org.epnoi.learner.filesystem.FilesystemHarvester;
 import org.epnoi.learner.modules.Learner;
+import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Relation;
 import org.epnoi.model.Term;
@@ -16,6 +17,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +40,7 @@ public class LearnerResource {
     @Autowired
     private FilesystemHarvester harvester;
 
+    
 
     @PostConstruct
     public void init() {
@@ -86,8 +90,11 @@ public class LearnerResource {
     @ApiOperation(value = "Returns the domain with the provided URI", notes = "", response = Domain.class)
     public Response getDomainTerminology(
             @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
-
+        logger.info("Extracting the terminology for the domain " + uri);
         if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
+            logger.info("Retrieving the terms since the domain is in stored in the uia");
+
+
             List<Term> terms = new ArrayList<>(learner.retrieveTerminology(uri).getTerms());
 
             return Response.status(Response.Status.OK).entity(terms).build();
@@ -99,37 +106,24 @@ public class LearnerResource {
     }
 
     @POST
-    @Path("/demo")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "The relational sentences corpus has been created"),
             @ApiResponse(code = 500, message = "Something went wrong in the trainer module of the learner")})
-    public Response createDemoData() {
-//harvester.harvest("")
-/*
+    public Response learnDomain(
+            @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
+        try {
+            learner.learn(uri);
+            URI domainUri =
+                    UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters().getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+            return Response.created(domainUri).build();
 
-        Parameters<Object> runtimeParameters = new Parameters<Object>();
-
-        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI, uri);
-        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, textCorpusMaxSize);
-
-
-        learner.getTrainer().createRelationalSentencesCorpus(runtimeParameters);
-        URI createdResourceUri = null;
-        if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
-
-            createdResourceUri =
-                    UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
-                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
-        } else {
-            createdResourceUri =
-                    UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()
-                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+        } catch (Exception e) {
+            e.printStackTrace();
 
         }
-        return Response.created(createdResourceUri).build();
-    */
         return Response.ok().build();
     }
 

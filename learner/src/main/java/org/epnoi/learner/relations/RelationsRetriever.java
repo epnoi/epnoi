@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations;
 
+import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.RelationsTable;
 import org.epnoi.model.modules.Core;
@@ -31,6 +32,10 @@ public class RelationsRetriever {
 		String uri = domainUri+"/relations";
 		return (RelationsTable) this.core.getInformationHandler().get(uri,
 				RDFHelper.RELATIONS_TABLE_CLASS);
+	}
+
+	public void store(RelationsTable relationsTable){
+		this.core.getInformationHandler().put(relationsTable, Context.getEmptyContext());
 	}
 
 

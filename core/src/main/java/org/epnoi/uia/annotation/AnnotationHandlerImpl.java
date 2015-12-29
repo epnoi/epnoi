@@ -143,7 +143,7 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		annotation.setLabel(label);
 		annotation.setUri(URI + "label" + label.hashCode());
 		core.getInformationHandler().put(annotation, new Context());
-		System.out.println("annotation " + annotation);
+		//System.out.println("annotation " + annotation);
 		return annotation;
 	}
 

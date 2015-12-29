@@ -32,7 +32,11 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 	// Minimum probability for a detected hypernym relation to be consider for
 	// being expanded in the ontology learning process
 
+
+
 	public static final String EXTRACT_TERMS = "EXTRACT_TERMS";
+
+	public static final String OBTAIN_TERMS = "OBTAIN_TERMS";
 
 	public static final String HYPERNYM_MODEL_PATH = "HYPERNYM_MODEL_PATH";
 
@@ -44,8 +48,10 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 	// being extracted in the relation extractor phase in the ontology learning
 	// process
 
-	public static final String RELATIONS_HANDLER_PARAMETERS = "RELATIONS_HANDLER_PARAMETER";
-	
+	public static final String OBTAIN_RELATIONS = "OBTAIN_RELATIONS";
+
+	public static final String EXTRACT_RELATIONS = "EXTRACT_RELATIONS";
+
 	public static final String CONSIDER_KNOWLEDGE_BASE= "CONSIDER_KNOWLDEDGE_BASE";
 
 	public static final String UIA_PATH = "UIA_PATH";
@@ -54,5 +60,9 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 	public static final String THRIFT_PORT = "THRIFT_PORT";
 
 	public static final String REST_PORT = "REST_PORT";
+
+	public static final String  STORE_TERMS = "STORE_TERMS";
+
+	public static final String STORE_RELATIONS = "STORE_RELATIONS";
 
 }

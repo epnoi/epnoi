@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class DomainsHandlerImpl implements DomainsHandler {
         // First we calculate those defined extensionally (i.e. resources that
         // have been explicitly stated as belonging to the domain)
         List<String> foundURIs = _extractExtensionallySpecifiedResources(domain);
-
+/*
 
         for (String uri : _extractIntensionallySpecifiedResources(domain)) {
             if (!foundURIs.contains(uri)) {
@@ -51,11 +52,15 @@ public class DomainsHandlerImpl implements DomainsHandler {
 
         List<String> cleanedURI = _cleanMissingAndRepeatedResources(foundURIs, domain);
         return cleanedURI;
+*/
+        return  foundURIs;
     }
 
     // -----------------------------------------------------------------------------------
 
     private List<String> _extractIntensionallySpecifiedResources(Domain domain) {
+        logger.info("Domain type "+domain.getType()+" and domain label "+domain.getLabel());
+        logger.info("DOMAIN "+domain);
         List<String> foundURIs = core.getAnnotationHandler().getLabeledAs(
                 domain.getUri(), domain.getType());
 
@@ -78,7 +83,9 @@ public class DomainsHandlerImpl implements DomainsHandler {
             if (foundURIs != null) {
                 logger.info("Initially " + foundURIs.size()
                         + " are defined as belonging to the domain " + domain.getUri());
-                return foundURIs;
+
+                // HERE WAS return foundURIs;
+                return Arrays.asList(foundURIs.get(0));
             }
         }
         return new ArrayList<String>();

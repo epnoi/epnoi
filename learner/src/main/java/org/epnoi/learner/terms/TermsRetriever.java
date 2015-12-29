@@ -1,6 +1,6 @@
 package org.epnoi.learner.terms;
 
-import org.epnoi.learner.DomainsGatherer;
+import org.epnoi.learner.DomainsTableCreator;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.Context;
@@ -17,93 +17,92 @@ import java.util.logging.Logger;
 
 public class TermsRetriever {
 
-	private static final Logger logger = Logger.getLogger(TermsRetriever.class
-			.getName());
+    private static final Logger logger = Logger.getLogger(TermsRetriever.class
+            .getName());
 
-	private Core core;
-	// private List<String> consideredDomains;
-	private String targetDomain;
+    private Core core;
 
-	// -----------------------------------------------------------------------------------
 
-	public TermsRetriever(Core core) {
-		this.core = core;
-	}
 
-	// -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------
 
-	public void store(Domain domain, TermsTable termsTable) {
-		logger.info("Storing the Terms Table for domain " + domain.getUri());
+    public TermsRetriever(Core core) {
+        this.core = core;
+    }
 
-		for (Term term : termsTable.getTerms()) {
-			System.out.println("Storing " + term);
-			core.getInformationHandler().put(term, Context.getEmptyContext());
+    // -----------------------------------------------------------------------------------
 
-			core.getAnnotationHandler().label(term.getUri(), this.targetDomain);
-		}
-		System.out
-				.println("=========================================================================================================================");
-	}
+    public void store(Domain domain, TermsTable termsTable) {
+        logger.info("Storing the Terms Table for domain " + domain);
 
-	// -----------------------------------------------------------------------------------
+        for (Term term : termsTable.getTerms()) {
+            core.getInformationHandler().put(term, Context.getEmptyContext());
+            core.getAnnotationHandler().label(term.getUri(), domain.getLabel());
+        }
+        System.out
+                .println("=========================================================================================================================");
+    }
 
-	// -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------
 
-	public TermsTable retrieve(Domain domain) {
-		String domainLabel = domain.getLabel();
+    // -----------------------------------------------------------------------------------
 
-		TermsTable termsTable = getTermsTable(domainLabel);
-		return termsTable;
-	}
+    public TermsTable retrieve(Domain domain) {
+        String domainLabel = domain.getLabel();
 
-	// -----------------------------------------------------------------------------------
+        TermsTable termsTable = getTermsTable(domainLabel);
+        return termsTable;
+    }
 
-	public TermsTable retrieve(String domainUri) {
-		Domain domain = (Domain) core.getInformationHandler().get(domainUri,
-				RDFHelper.DOMAIN_CLASS);
+    // -----------------------------------------------------------------------------------
 
-		if (domain != null) {
+    public TermsTable retrieve(String domainUri) {
+        Domain domain = (Domain) core.getInformationHandler().get(domainUri,
+                RDFHelper.DOMAIN_CLASS);
 
-			TermsTable termsTable = getTermsTable(domain.getLabel());
-			return termsTable;
-		}
-		return new TermsTable();
-	}
+        if (domain != null) {
 
-	// -----------------------------------------------------------------------------------
+            TermsTable termsTable = getTermsTable(domain.getLabel());
+            return termsTable;
+        }
+        return new TermsTable();
+    }
 
-	private TermsTable getTermsTable(String domainLabel) {
-		TermsTable termsTable = new TermsTable();
+    // -----------------------------------------------------------------------------------
 
-		// First we retrieve the URIs of the resources associated with the
-		// considered domain
-		List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
-				domainLabel, RDFHelper.TERM_CLASS);
-		// The terms are then retrieved and added to the Terms Table
-		for (String termURI : foundURIs) {
-			Term term = (Term) this.core.getInformationHandler().get(termURI,
-					RDFHelper.TERM_CLASS);
-			termsTable.addTerm(term);
-		}
-		return termsTable;
-	}
+    private TermsTable getTermsTable(String domainLabel) {
+        TermsTable termsTable = new TermsTable();
 
-	// -----------------------------------------------------------------------------------
+        // First we retrieve the URIs of the resources associated with the
+        // considered domain
+        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
+                domainLabel, RDFHelper.TERM_CLASS);
+        // The terms are then retrieved and added to the Terms Table
+        for (String termURI : foundURIs) {
+            Term term = (Term) this.core.getInformationHandler().get(termURI,
+                    RDFHelper.TERM_CLASS);
+            termsTable.addTerm(term);
+        }
+        return termsTable;
+    }
 
-	private void remove(Domain domain) {
-		List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
-				domain.getLabel(), RDFHelper.TERM_CLASS);
+    // -----------------------------------------------------------------------------------
 
-		for (String termURI : foundURIs) {
-			System.out.println("Removing the term " + termURI);
-			this.core.getInformationHandler().remove(termURI,
-					RDFHelper.TERM_CLASS);
-		}
-	}
+    private void remove(Domain domain) {
+        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
+                domain.getLabel(), RDFHelper.TERM_CLASS);
 
-	// -----------------------------------------------------------------------------------
+        for (String termURI : foundURIs) {
+            System.out.println("Removing the term " + termURI);
+            this.core.getInformationHandler().remove(termURI,
+                    RDFHelper.TERM_CLASS);
+        }
+    }
 
-	public static void main(String[] args) {
+    // -----------------------------------------------------------------------------------
+
+    public static void main(String[] args) {
+        /*
 		TermsExtractor termExtractor = new TermsExtractor();
 
 		// List<String> consideredDomains = Arrays.asList("cs", "math");
@@ -132,16 +131,16 @@ public class TermsRetriever {
 				numberInitialTerms);
 
 		Core core = CoreUtility.getUIACore();
-		DomainsGatherer domainGatherer = new DomainsGatherer();
+		DomainsTableCreator domainGatherer = new DomainsTableCreator();
 		domainGatherer.init(core, learningParameters);
 
-		DomainsTable domainsTable = domainGatherer.gather();
+		DomainsTable domainsTable = domainGatherer.create();
 
 		termExtractor.init(core, domainsTable, learningParameters);
 		// termExtractor.removeTerms();
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);
-
-	}
+*/
+    }
 
 }

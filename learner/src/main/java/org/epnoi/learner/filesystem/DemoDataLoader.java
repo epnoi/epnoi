@@ -3,13 +3,10 @@ package org.epnoi.learner.filesystem;
 import org.epnoi.model.Domain;
 import org.epnoi.model.Paper;
 import org.epnoi.model.ResearchObject;
-import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
-import org.epnoi.uia.core.CoreUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ucar.nc2.util.xml.RuntimeConfigParser;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,9 +22,9 @@ public class DemoDataLoader {
     private FilesystemHarvester filesystemHarvester;
 
     @Autowired
-    private FilesystemHarvesterParameters filesystemHarvesterParameters;
+    private FilesystemHarvesterParameters parameters;
 
-    public static final String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
+
     private static final Logger logger = Logger.getLogger(DemoDataLoader.class
             .getName());
 
@@ -48,15 +45,17 @@ public class DemoDataLoader {
     // --------------------------------------------------------------------------------------------
 
     private void _createTheSimpleDomain(List<Paper> papers) {
+        String domainUri = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI);
+        String domainLabel = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
         Domain domain = new Domain();
-        domain.setUri(DOMAIN_URI);
+        domain.setUri(domainUri);
         domain.setExpression("sparqlexpression");
-        domain.setLabel("simple demo domain");
+        domain.setLabel(domainLabel);
         domain.setType(RDFHelper.PAPER_CLASS);
-        domain.setResources(DOMAIN_URI + "/resources");
+        domain.setResources(domainUri + "/resources");
         //  _eraseDomainsAndResearchObjects();
         ResearchObject resources = new ResearchObject();
-        resources.setUri(DOMAIN_URI + "/resources");
+        resources.setUri(domainUri + "/resources");
 
         resources.setAggregatedResources(papers.stream().map(element -> element.getUri()).collect(Collectors.toList()));
 
@@ -96,7 +95,7 @@ public class DemoDataLoader {
 
     private void _removeComputerGraphicsCorpus() {
         logger.info("Removing the computer graphics corpus");
-        String corpusLabel = (String)this.filesystemHarvesterParameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
+        String corpusLabel = (String)this.parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
         System.out.println("this is the label "+corpusLabel);
         List<String> paperURIs = this.core.getAnnotationHandler().getLabeledAs(
                 corpusLabel);

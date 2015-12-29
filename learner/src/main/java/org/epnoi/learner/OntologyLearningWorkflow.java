@@ -35,7 +35,7 @@ public class OntologyLearningWorkflow {
 	private RelationsExtractor relationsTableExtractor;
 	private RelationsRetriever relationsTableRetriever;
 
-	private DomainsGatherer domainsGatherer;
+	private DomainsTableCreator domainsTableCreator;
 	private DomainsTable domainsTable;
 
 	private double hypernymRelationsThreshold;
@@ -59,13 +59,11 @@ public class OntologyLearningWorkflow {
 
 		this.learningParameters = learningParameters;
 
-		this.domainsGatherer = new DomainsGatherer();
-		this.domainsGatherer.init(core, learningParameters);
-		this.domainsTable = this.domainsGatherer.gather();
+		this.domainsTableCreator = new DomainsTableCreator();
+		this.domainsTableCreator.init(core, learningParameters);
+		this.domainsTable = this.domainsTableCreator.create();
 
 		this.termExtractor = new TermsExtractor();
-		this.termExtractor.init(core, this.domainsTable,
-				learningParameters);
 
 		
 		this.termsRetriever = new TermsRetriever(core);

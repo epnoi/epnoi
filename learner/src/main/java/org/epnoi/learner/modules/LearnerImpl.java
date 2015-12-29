@@ -34,9 +34,15 @@ public class LearnerImpl implements Learner {
     @Autowired
     LearningParameters learningParameters;
 
+    private TermsRetriever termsRetriever;
+
+    RelationsRetriever relationsRetriever = new RelationsRetriever(core);
+
     @PostConstruct
     public void init() throws EpnoiInitializationException {
         logger.info("Initializing the Learner");
+        this.termsRetriever = new TermsRetriever(core);
+        this.relationsRetriever = new RelationsRetriever(core);
     }
 
     @Override
@@ -58,9 +64,17 @@ public class LearnerImpl implements Learner {
 
             if (domain != null) {
                 OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
-                ontologyLearningTask.perform(core, domain);
+                try {
+                    ontologyLearningTask.perform(core, learningParameters, domain);
+                    _storeLearningResults(ontologyLearningTask, domain);
+                } catch (Exception e) {
+                    logger.severe("There was a problem while learning the domain " + domain.getUri());
+                    e.printStackTrace();
+                }
 
 
+            } else {
+                logger.severe("The retrieved domain was null!!!!");
             }
         } catch (Exception e) {
             logger.info("Something went wrong when learning about the domain " + domainUri);
@@ -69,16 +83,28 @@ public class LearnerImpl implements Learner {
 
     }
 
+    private void _storeLearningResults(OntologyLearningTask ontologyLearningTask, Domain domain) {
+        if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_TERMS))
+                && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_TERMS))) {
+            this.termsRetriever.store(domain, ontologyLearningTask.getTermsTable());
+        }
+
+        if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_RELATIONS)
+                && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_RELATIONS)))) {
+            this.relationsRetriever.store(ontologyLearningTask.getRelationsTable());
+        }
+    }
+
     @Override
     public RelationsTable retrieveRelations(String domainUri) {
-        RelationsRetriever relationsRetriever = new RelationsRetriever(core);
+
         return relationsRetriever.retrieve(domainUri);
     }
 
     @Override
     public TermsTable retrieveTerminology(String domainUri) {
 
-        TermsRetriever termsRetriever = new TermsRetriever(core);
+
         return termsRetriever.retrieve(domainUri);
     }
 }
