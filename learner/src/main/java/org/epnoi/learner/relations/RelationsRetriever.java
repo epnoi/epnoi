@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations;
 
+import gate.util.compilers.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
 import org.epnoi.model.Context;
 import org.epnoi.model.Domain;
 import org.epnoi.model.RelationsTable;
@@ -30,13 +31,20 @@ public class RelationsRetriever {
 
 	public RelationsTable retrieve(String domainUri) {
 		String uri = domainUri+"/relations";
-		return (RelationsTable) this.core.getInformationHandler().get(uri,
+
+		System.out.println("Retrieving "+ uri);
+
+		RelationsTable relationsTable = 	 (RelationsTable) this.core.getInformationHandler().get(uri,
 				RDFHelper.RELATIONS_TABLE_CLASS);
+		System.out.println("The relation table > "+relationsTable);
+		return relationsTable;
 	}
 
 	public void store(RelationsTable relationsTable){
-		this.core.getInformationHandler().put(relationsTable, Context.getEmptyContext());
-	}
+		System.out.println("ESTORING > "+relationsTable);
+			this.core.getInformationHandler().put(relationsTable, Context.getEmptyContext());
+
+		}
 
 
 }

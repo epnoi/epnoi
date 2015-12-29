@@ -90,8 +90,10 @@ public class RelationsExtractor {
 
     public RelationsTable extract(TermsTable termsTable) {
         logger.info("Extracting the Relations Table");
+        String relationsTableUri= this.domainsTable.getTargetDomain().getUri()+"/relations";
         this.termsTable = termsTable;
         this.relationsTable = new RelationsTable();
+        this.relationsTable.setUri(relationsTableUri);
         // The relations finding task is only performed in the target domain,
         // these are the resources that we should consider
 

@@ -62,6 +62,9 @@ public class OntologyLearningTask {
                 .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
         this.extractTerms = (boolean) this.learningParameters
                 .getParameterValue(LearningParameters.EXTRACT_TERMS);
+
+        this.extractRelations = (boolean) this.learningParameters
+                .getParameterValue(LearningParameters.EXTRACT_RELATIONS);
         this.domainsTableCreator = new DomainsTableCreator();
         this.domainsTableCreator.init(core, learningParameters);
         this.domainsTable = this.domainsTableCreator.create(domain);
@@ -101,19 +104,16 @@ public class OntologyLearningTask {
   //      termsTable.show(30);
 
 
-        if (obtainRelations && obtainTerms) {
+        if (obtainRelations) { System.out.println("ENTRA----------------------------------------------------!"+extractRelations);
             if (extractRelations) {
 
                 this.relationsTable = this.relationsTableExtractor.extract(this.termsTable);
             } else {
+
                 this.relationsTable = this.relationsTableRetriever.retrieve(targetDomain);
             }
-        }else{
-            if (!obtainTerms){
 
-            }
         }
-
 		System.out.println("Relations Table> " + this.relationsTable);
 
         System.out.println("end");

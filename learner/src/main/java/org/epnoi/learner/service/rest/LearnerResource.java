@@ -40,7 +40,6 @@ public class LearnerResource {
     @Autowired
     private FilesystemHarvester harvester;
 
-    
 
     @PostConstruct
     public void init() {
@@ -60,19 +59,11 @@ public class LearnerResource {
             @ApiParam(value = "Domain URI", required = true, allowMultiple = false) @QueryParam("uri") String uri) {
 
 
-        //if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
-        //List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
-        if (true) {
-            Relation relation = new Relation();
-            relation.setUri("http://whateverrelation");
-            relation.setSource("source");
-            relation.setTarget("target");
-            relation.addProvenanceSentence("esta es la frase", 0.2);
+        if (this.core.getInformationHandler().contains(uri, RDFHelper.DOMAIN_CLASS)) {
+            List<Relation> relations = new ArrayList<>(learner.retrieveRelations(uri).getRelations());
 
-            List<Relation> relations = Arrays.asList(relation);
-            GenericEntity<List<Relation>> entity = new GenericEntity<List<Relation>>(relations) {
-            };
-            return Response.status(Response.Status.OK).entity(entity).build();
+            // GenericEntity<List<Relation>> entity = new GenericEntity<List<Relation>>(relations);
+            return Response.status(Response.Status.OK).entity(relations).build();
         }
 
 

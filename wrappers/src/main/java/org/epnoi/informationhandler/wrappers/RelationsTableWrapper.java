@@ -34,7 +34,7 @@ public class RelationsTableWrapper implements Wrapper {
 	// -------------------------------------------------------------------------------------------------------------
 
 	public Resource get(String URI) {
-
+		System.out.println("table uri "+URI);
 		Selector selector = new Selector();
 		selector.setProperty(SelectorHelper.TYPE, RDFHelper.RELATIONS_TABLE_CLASS);
 		selector.setProperty(SelectorHelper.URI, URI);
@@ -44,7 +44,9 @@ public class RelationsTableWrapper implements Wrapper {
 						InformationStoreHelper.CASSANDRA_INFORMATION_STORE)
 				.get(0);
 
-		return informationStore.get(selector);
+		Resource resource =informationStore.get(selector);
+		System.out.println("the resource was "+selector+ " and returned "+ resource);
+	return resource;
 	}
 
 	// -------------------------------------------------------------------------------------
