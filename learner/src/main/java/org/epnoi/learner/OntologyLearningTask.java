@@ -53,6 +53,11 @@ public class OntologyLearningTask {
         this.obtainRelations = (boolean) learningParameters
                 .getParameterValue(LearningParameters.OBTAIN_RELATIONS);
 
+        if (obtainRelations && !obtainTerms){
+            throw new EpnoiInitializationException("In order to learn the relations of a given domains is necessary to learn its terminology");
+        }
+
+
         this.hypernymRelationsThreshold = (double) this.learningParameters
                 .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
         this.extractTerms = (boolean) this.learningParameters
@@ -94,14 +99,23 @@ public class OntologyLearningTask {
             }
         }
   //      termsTable.show(30);
-/*
-        System.out.println("Extracting relations table");
 
-		this.relationsTable = this.relationsTableExtractor
-				.extract(this.termsTable);
+
+        if (obtainRelations && obtainTerms) {
+            if (extractRelations) {
+
+                this.relationsTable = this.relationsTableExtractor.extract(this.termsTable);
+            } else {
+                this.relationsTable = this.relationsTableRetriever.retrieve(targetDomain);
+            }
+        }else{
+            if (!obtainTerms){
+
+            }
+        }
 
 		System.out.println("Relations Table> " + this.relationsTable);
-*/
+
         System.out.println("end");
 
     }
