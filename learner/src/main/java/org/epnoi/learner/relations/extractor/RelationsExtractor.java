@@ -77,13 +77,9 @@ public class RelationsExtractor {
             }
         }
 
-        try {
+        this.softPatternModel = (RelationalPatternsModel)parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
 
-            this.softPatternModel = RelationalPatternsModelSerializer
-                    .deserialize(hypernymModelPath);
-        } catch (EpnoiResourceAccessException e) {
-            throw new EpnoiInitializationException(e.getMessage());
-        }
+
     }
 
     // ---------------------------------------------------------------------------------------

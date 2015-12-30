@@ -7,10 +7,9 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.patterns.PatternsConstants;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
+import org.epnoi.learner.relations.patterns.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.Profiles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,6 +244,17 @@ public class LearnerConfig {
         learningParameters.setParameter(
                 LearningParameters.HYPERNYM_MODEL_PATH,
                 hypernymsLexicalModelPath);
+
+        try {
+
+
+            RelationalPatternsModel softPatternModel = RelationalPatternsModelSerializer
+                    .deserialize(hypernymsLexicalModelPath);
+            learningParameters.setParameter(LearningParameters.HYPERNYM_MODEL, softPatternModel);
+
+        } catch (EpnoiResourceAccessException e) {
+            logger.severe(e.getMessage());
+        }
 
         learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
 

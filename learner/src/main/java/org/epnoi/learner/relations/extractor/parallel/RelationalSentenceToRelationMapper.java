@@ -5,6 +5,7 @@ import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
+import org.epnoi.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModel;
 import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.model.*;
 import org.epnoi.uia.commons.GateUtils;
@@ -14,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class RelationalSentenceToRelationMapper {
-    private BigramSoftPatternModel softPatternModel;
+    private RelaxedBigramSoftPatternModel softPatternModel;
     private double THRESHOLD;
     private String domain;
 
@@ -23,7 +24,7 @@ public class RelationalSentenceToRelationMapper {
 
 
     public RelationalSentenceToRelationMapper(LearningParameters parameters) {
-        this.softPatternModel = (BigramSoftPatternModel) parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
+        this.softPatternModel = (RelaxedBigramSoftPatternModel) parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
         this.THRESHOLD = (double) parameters.getParameterValue(LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
         this.domain = (String) parameters.getParameterValue(LearningParameters.TARGET_DOMAIN);
     }
