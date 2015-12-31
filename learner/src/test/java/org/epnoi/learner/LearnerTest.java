@@ -1,6 +1,7 @@
 package org.epnoi.learner;
 
 import org.epnoi.learner.modules.Learner;
+import org.epnoi.learner.relations.extractor.parallel.ParallelRelationsExtractor;
 import org.epnoi.model.Relation;
 import org.epnoi.model.Term;
 import org.junit.Test;
@@ -35,21 +36,29 @@ public class LearnerTest {
     String domainUri;
 
 
+
     @Test
     public void startContext() {
         System.out.println("Starting an ontology learning task for " + domainUri);
         System.out.println("Using the following parameters "+learnerProperties);
 
+
         learner.learn(domainUri);
+        /*
         System.out.println("Terminology test===========================================================");
         for (Term term : learner.retrieveTerminology(domainUri).getMostProbable(5)) {
             System.out.println("term> " + term);
         }
+        */
 
         System.out.println("Relations test===========================================================");
+        System.out.println("There were "+learner.retrieveRelations(domainUri).getRelations().size()+" relations in the domain");
         for (Relation relation: learner.retrieveRelations(domainUri).getMostProbable(5)){
             System.out.println("relation> " + relation);
         }
+
+
+       // parallelRelationsExtractor.extract(domainUri);
 
         assert (true);
 

@@ -8,7 +8,6 @@ import gate.util.InvalidOffsetException;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermCandidateBuilder;
@@ -46,8 +45,7 @@ public class RelationsExtractor {
 
     // --------------------------------------------------------------------------------------
 
-    public void init(Core core, DomainsTable domainsTable, Parameters parameters)
-            throws EpnoiInitializationException {
+    public void init(Core core, DomainsTable domainsTable, Parameters parameters) {
         logger.info("Initializing the Relations Extractor with the following parameters");
         logger.info(parameters.toString());
 
@@ -58,7 +56,7 @@ public class RelationsExtractor {
         this.hypernymExtractionThreshold = (double) parameters
                 .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
         this.targetDomain = (String) parameters
-                .getParameterValue(LearningParameters.TARGET_DOMAIN);
+                .getParameterValue(LearningParameters.TARGET_DOMAIN_URI);
 
         this.considerKnowledgeBase = (boolean) parameters
                 .getParameterValue(LearningParameters.CONSIDER_KNOWLEDGE_BASE);
@@ -67,6 +65,7 @@ public class RelationsExtractor {
         this.relationsTable = new RelationsTable();
         // We retrieve the knowledge base just in case that it must be
         // considered when searching for relations
+       /*
         if (considerKnowledgeBase) {
             try {
                 this.knowledgeBase = core.getKnowledgeBaseHandler()
@@ -76,7 +75,7 @@ public class RelationsExtractor {
                 throw new EpnoiInitializationException(e.getMessage());
             }
         }
-
+*/
         this.softPatternModel = (RelationalPatternsModel)parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
 
 

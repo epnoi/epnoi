@@ -13,7 +13,7 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 	// The domains considered in the ontology learning process. It includes the
 	// target domain plus the ones used as a reference.
 
-	public static final String TARGET_DOMAIN = "TARGET_DOMAIN";//String (URI of the target domain that must be among the CONSIDERED_DOMAINS
+	public static final String TARGET_DOMAIN_URI = "TARGET_DOMAIN_URI";//String (URI of the target domain that must be among the CONSIDERED_DOMAINS
 	// Domain that is the target of the ontology learning process, the learned
 	// ontology represents this domain.
 
@@ -65,4 +65,5 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 
 	public static final String STORE_RELATIONS = "STORE_RELATIONS";
 
+	public static final String EXTRACT_RELATIONS_PARALLEL = "EXTRACT_RELATIONS_PARALLEL";
 }

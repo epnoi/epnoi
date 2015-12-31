@@ -69,7 +69,6 @@ public class RelationsTable implements Resource {
 	// --------------------------------------------------------------------
 
 	public List<Relation> getMostProbable(int initialNumberOfRelations) {
-		System.out.println("size> " + this.orderedRelations.size());
 		List<Relation> mostProblableRelations = new ArrayList<Relation>();
 		Iterator<Relation> relationsIt = this.orderedRelations.keySet()
 				.iterator();

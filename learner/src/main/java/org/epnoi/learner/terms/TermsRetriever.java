@@ -119,7 +119,7 @@ public class TermsRetriever {
 				LearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		learningParameters.setParameter(
-				LearningParameters.TARGET_DOMAIN, targetDomain);
+				LearningParameters.TARGET_DOMAIN_URI, targetDomain);
 		learningParameters
 				.setParameter(
 						LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,

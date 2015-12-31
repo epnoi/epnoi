@@ -33,44 +33,36 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Component
+
 public class ParallelRelationsExtractor {
     private static final Logger logger = Logger
             .getLogger(ParallelRelationsExtractor.class.getName());
     private static final long MAX_DISTANCE = 20;
 
-    @Autowired
     private Core core;
 
-    @Autowired
     LearningParameters parameters;
 
-    @Autowired
     JavaSparkContext sparkContext;
 
-    private RelationalPatternsModel softPatternModel;
-
-
     private DomainsTable domainsTable;
-    private TermsTable termsTable;
-    //  private LexicalRelationalPatternGenerator patternsGenerator;
-    private RelationsTable relationsTable;
 
-    //private KnowledgeBase knowledgeBase;
 
     private static final String JOB_NAME = "RELATIONS_EXTRACTION";
     // --------------------------------------------------------------------------------------
 
-    public void init(DomainsTable domainsTable)
-            throws EpnoiInitializationException {
+    public void init(LearningParameters parameters, DomainsTable domainsTable, Core core, JavaSparkContext sparkContext) {
         logger.info("Initializing the Relations Extractor with the following parameters");
         logger.info(parameters.toString());
+        this.parameters = parameters;
+        this.core = core;
+        this.sparkContext = sparkContext;
         this.domainsTable = domainsTable;
 
 
         //  this.patternsGenerator = new LexicalRelationalPatternGenerator();
 
-        this.relationsTable = new RelationsTable();
+
         // We retrieve the knowledge base just in case that it must be
         // considered when searching for relations
         /*
@@ -89,13 +81,14 @@ public class ParallelRelationsExtractor {
 
     // ---------------------------------------------------------------------------------------
 
-    public RelationsTable extract(String targetDomainUri) {
+    public RelationsTable extract(DomainsTable domainsTable) {
         logger.info("Extracting the Relations Table");
-        //this.termsTable = termsTable;
-        this.relationsTable = new RelationsTable();
+        RelationsTable relationsTable = new RelationsTable();
+
         // The relations finding task is only performed in the target domain,
         // these are the resources that we should consider
 
+        String targetDomainUri = domainsTable.getTargetDomain().getUri();
         List<String> domainResourceUris = domainsTable.getDomainResources().get(
                 targetDomainUri);
 

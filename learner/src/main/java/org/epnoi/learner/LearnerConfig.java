@@ -200,8 +200,8 @@ public class LearnerConfig {
             @Value("${learner.task.relations}") Boolean obtainRelations,
             @Value("${learner.task.relations.extract}") Boolean extractRelations,
             @Value("${learner.task.relations.store}") Boolean storeRelations,
+            @Value("${learner.task.relations.parallel}") Boolean parallelRelations,
             @Value("${learner.task.relations.hypernyms.lexical.path}") String hypernymsLexicalModelPath,
-
             @Value("${learner.task.relations.hypernyms.threshold.expansion}") Double hyperymExpansionMinimumThreshold,
             @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold
             ) {
@@ -213,7 +213,7 @@ public class LearnerConfig {
             consideredDomains);
 
     learningParameters.setParameter(
-            LearningParameters.TARGET_DOMAIN, targetDomain);
+            LearningParameters.TARGET_DOMAIN_URI, targetDomain);
             */
 
 //Term related parameters
@@ -229,6 +229,7 @@ public class LearnerConfig {
         //Relation related parameters
         learningParameters.setParameter(LearningParameters.OBTAIN_RELATIONS, obtainRelations);
         learningParameters.setParameter(LearningParameters.EXTRACT_RELATIONS, extractRelations);
+        learningParameters.setParameter(LearningParameters.EXTRACT_RELATIONS_PARALLEL, parallelRelations);
         learningParameters.setParameter(LearningParameters.STORE_RELATIONS, storeRelations);
         learningParameters
                 .setParameter(

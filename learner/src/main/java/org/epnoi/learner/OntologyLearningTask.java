@@ -1,8 +1,10 @@
 package org.epnoi.learner;
 
-import org.epnoi.learner.relations.RelationsHandler;
+import com.rits.cloning.Cloner;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.relations.RelationsRetriever;
 import org.epnoi.learner.relations.extractor.RelationsExtractor;
+import org.epnoi.learner.relations.extractor.parallel.ParallelRelationsExtractor;
 import org.epnoi.learner.terms.TermsExtractor;
 import org.epnoi.learner.terms.TermsRetriever;
 import org.epnoi.learner.terms.TermsTable;
@@ -23,8 +25,9 @@ public class OntologyLearningTask {
     private TermsRetriever termsRetriever;
     private TermsTable termsTable;
     private RelationsTable relationsTable;
-    private RelationsHandler relationsHandler;
+
     private RelationsExtractor relationsTableExtractor;
+    private ParallelRelationsExtractor parallelRelationsExtractor;
     private RelationsRetriever relationsTableRetriever;
 
 
@@ -35,29 +38,34 @@ public class OntologyLearningTask {
     private double hypernymRelationsThreshold;
     private boolean obtainTerms;
     private boolean obtainRelations;
+    private boolean parallelRelationsExtraction;
     private boolean extractTerms;
     private boolean extractRelations;
-    public static String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
+    private Cloner cloner = new Cloner();
+
+    private JavaSparkContext sparkContext;
+
+    //
+    public void init(Core core, LearningParameters parameters, JavaSparkContext sparkContext) throws EpnoiInitializationException{
+        this.core = core;
+        this.learningParameters = cloner.deepClone(parameters);
+        this.sparkContext = sparkContext;
+    }
     // ---------------------------------------------------------------------------------------------------------
 
-    public void init(Core core,
-                     LearningParameters learningParameters)
-            throws EpnoiInitializationException {
+
+    private void _init(Core core,
+                       LearningParameters learningParameters){
+
 
         logger.info("Initializing the OntologyLearningTask with the following parameters: ");
         logger.info(learningParameters.toString());
 
-        this.learningParameters = learningParameters;
+        learningParameters = cloner.deepClone(learningParameters);
         this.obtainTerms = (boolean) learningParameters
                 .getParameterValue(LearningParameters.OBTAIN_TERMS);
         this.obtainRelations = (boolean) learningParameters
                 .getParameterValue(LearningParameters.OBTAIN_RELATIONS);
-
-        if (obtainRelations && !obtainTerms){
-            throw new EpnoiInitializationException("In order to learn the relations of a given domains is necessary to learn its terminology");
-        }
-
-
         this.hypernymRelationsThreshold = (double) this.learningParameters
                 .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD);
         this.extractTerms = (boolean) this.learningParameters
@@ -65,6 +73,9 @@ public class OntologyLearningTask {
 
         this.extractRelations = (boolean) this.learningParameters
                 .getParameterValue(LearningParameters.EXTRACT_RELATIONS);
+
+        this.parallelRelationsExtraction = (boolean)this.learningParameters.getParameterValue(LearningParameters.EXTRACT_RELATIONS_PARALLEL);
+
         this.domainsTableCreator = new DomainsTableCreator();
         this.domainsTableCreator.init(core, learningParameters);
         this.domainsTable = this.domainsTableCreator.create(domain);
@@ -76,20 +87,26 @@ public class OntologyLearningTask {
             this.termExtractor.init(core, this.domainsTable,
                     learningParameters);
 
+
             this.termsRetriever = new TermsRetriever(core);
         }
         if (obtainRelations) {
-            this.relationsTableExtractor = new RelationsExtractor();
-            this.relationsTableExtractor.init(core, this.domainsTable,
-                    learningParameters);
+            if(parallelRelationsExtraction){
+                this.parallelRelationsExtractor = new ParallelRelationsExtractor();
+                this.parallelRelationsExtractor.init(learningParameters,domainsTable, core,sparkContext);
 
+            }else {
+                this.relationsTableExtractor = new RelationsExtractor();
+                this.relationsTableExtractor.init(core, this.domainsTable,
+                        learningParameters);
+            }
             this.relationsTableRetriever = new RelationsRetriever(core);
         }
     }
 
     // ---------------------------------------------------------------------------------------------------------
 
-    public void execute() {
+    public void _execute() {
         logger.info("Starting the execution of a Ontology Learning Task");
 
         Domain targetDomain = this.domainsTable.getTargetDomain();
@@ -101,12 +118,15 @@ public class OntologyLearningTask {
                 this.termsTable = this.termsRetriever.retrieve(targetDomain);
             }
         }
-  //      termsTable.show(30);
+        //      termsTable.show(30);
 
 
-        if (obtainRelations) { System.out.println("ENTRA----------------------------------------------------!"+extractRelations);
+        if (obtainRelations) {
             if (extractRelations) {
 
+                if(parallelRelationsExtraction){
+                    this.relationsTable= this.parallelRelationsExtractor.extract(this.domainsTable);
+                }
                 this.relationsTable = this.relationsTableExtractor.extract(this.termsTable);
             } else {
 
@@ -114,7 +134,7 @@ public class OntologyLearningTask {
             }
 
         }
-		System.out.println("Relations Table> " + this.relationsTable);
+        System.out.println("Relations Table> " + this.relationsTable);
 
         System.out.println("end");
 
@@ -122,30 +142,26 @@ public class OntologyLearningTask {
 
     // ---------------------------------------------------------------------------------------------------------
 
-    public void perform(Core core, LearningParameters parameters, Domain domain) {
-        this.learningParameters = parameters;
-        System.out.println("Starting the Ontology Learning Task");
+    public void perform(Domain domain) {
+
+        logger.info("Starting the Ontology Learning Task");
         ArrayList<Domain> consideredDomains = new ArrayList(Arrays.asList(domain));
         this.learningParameters.setParameter(
                 LearningParameters.CONSIDERED_DOMAINS,
                 consideredDomains);
 
         this.learningParameters.setParameter(
-                LearningParameters.TARGET_DOMAIN,
+                LearningParameters.TARGET_DOMAIN_URI,
                 domain.getUri());
 
 
         this.domain = domain;
         // this.domainsTable = this.domainsTableCreator.create(domain);
 
-        try {
-            init(core, learningParameters);
-        } catch (EpnoiInitializationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        execute();
+            _init(core, learningParameters);
+        
+        _execute();
         System.out.println("Ending the Ontology Learning Process!");
     }
 

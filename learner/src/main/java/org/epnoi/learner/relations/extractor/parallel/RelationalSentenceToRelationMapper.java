@@ -3,7 +3,6 @@ package org.epnoi.learner.relations.extractor.parallel;
 import gate.Document;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
-import org.epnoi.learner.relations.patterns.lexical.BigramSoftPatternModel;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.relations.patterns.lexical.RelaxedBigramSoftPatternModel;
 import org.epnoi.learner.terms.TermCandidateBuilder;
@@ -26,7 +25,7 @@ public class RelationalSentenceToRelationMapper {
     public RelationalSentenceToRelationMapper(LearningParameters parameters) {
         this.softPatternModel = (RelaxedBigramSoftPatternModel) parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
         this.THRESHOLD = (double) parameters.getParameterValue(LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
-        this.domain = (String) parameters.getParameterValue(LearningParameters.TARGET_DOMAIN);
+        this.domain = (String) parameters.getParameterValue(LearningParameters.TARGET_DOMAIN_URI);
     }
     //------------------------------------------------------------------------------------------------------------------
 
