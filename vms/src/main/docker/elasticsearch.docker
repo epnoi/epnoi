@@ -1,2 +1,3 @@
 # https://hub.docker.com/_/elasticsearch/
-docker run -it --rm --name document-db --env ES_HEAP_SIZE=1g -p 5020:9200 -p 5021:9300 elasticsearch:1.3.9
+# SpringData supports for Elasticsearch 2.x: https://jira.spring.io/browse/DATAES-211
+docker run -it --rm --name document-db --env ES_HEAP_SIZE=1g -p 5020:9200 -p 5021:9300 elasticsearch:1.7.4
