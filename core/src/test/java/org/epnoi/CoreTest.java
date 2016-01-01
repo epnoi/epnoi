@@ -1,5 +1,6 @@
 package org.epnoi;
 
+import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.model.Context;
 import org.epnoi.model.Relation;
 import org.epnoi.model.RelationsTable;
@@ -7,6 +8,7 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Created by rgonzalez on 3/12/15.
  */
-
+@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = org.epnoi.EpnoiConfig.class)
 @ActiveProfiles("develop")
