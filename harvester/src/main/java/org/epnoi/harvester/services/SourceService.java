@@ -43,7 +43,7 @@ public class SourceService {
         LOG.info("adding route to harvest: " + route);
         camelContext.addRouteDefinition(route);
 
-        // TODO Notify the creation of a new hoarder route (to handle cluster recovery)
+        // TODO Notify the creation of a new harvester route (to handle cluster recovery)
         //eventBus.post(Event.from());
 
         return source;

@@ -1,2 +1,2 @@
 # https://hub.docker.com/_/elasticsearch/
-docker run -d --restart=always --name document-db --env ES_HEAP_SIZE=1g -p 5020:9200 -p 5021:9300 -v /opt/docker/elasticsearch/storage:/usr/share/elasticsearch/data elasticsearch:1.3.9
+docker run -d --restart=always --name document-db --env ES_HEAP_SIZE=1g -p 5020:9200 -p 5021:9300 -v /opt/docker/elasticsearch/storage:/usr/share/elasticsearch/data elasticsearch:1.7.4
