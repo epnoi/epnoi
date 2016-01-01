@@ -30,4 +30,5 @@ public class WordColumnRepositoryTest extends BaseColumnRepositoryTest<WordColum
         column.setType("term");
         return column;
     }
+
 }

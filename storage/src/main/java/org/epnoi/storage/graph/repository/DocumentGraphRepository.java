@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface DocumentGraphRepository extends BaseGraphRepository<DocumentNode> {
 
     // To avoid a class type exception
-    DocumentNode findOneByUri(String uri, int depth);
+    @Override
+    DocumentNode findOneByUri(String uri);
 
 
     @Query("match (item)<-[:BUNDLES]-(document{uri:{0}}) return item")
