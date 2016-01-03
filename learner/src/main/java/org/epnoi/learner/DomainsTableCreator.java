@@ -29,7 +29,7 @@ public class DomainsTableCreator {
 
 		this.domainsTable = new DomainsTable();
 		this.targetDomain = (String) this.parameters
-				.getParameterValue(LearningParameters.TARGET_DOMAIN);
+				.getParameterValue(LearningParameters.TARGET_DOMAIN_URI);
 	}
 
 	// -----------------------------------------------------------------------------------

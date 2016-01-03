@@ -7,10 +7,9 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.filesystem.FilesystemHarvesterParameters;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.patterns.PatternsConstants;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreator;
+import org.epnoi.learner.relations.patterns.*;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
+import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.modules.Profiles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,10 +200,12 @@ public class LearnerConfig {
             @Value("${learner.task.relations}") Boolean obtainRelations,
             @Value("${learner.task.relations.extract}") Boolean extractRelations,
             @Value("${learner.task.relations.store}") Boolean storeRelations,
+            @Value("${learner.task.relations.parallel}") Boolean parallelRelations,
+            @Value("${learner.task.relations.maxdistance}") Integer maxSourceTargetDistance,
             @Value("${learner.task.relations.hypernyms.lexical.path}") String hypernymsLexicalModelPath,
-
             @Value("${learner.task.relations.hypernyms.threshold.expansion}") Double hyperymExpansionMinimumThreshold,
-            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold
+            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold,
+            @Value("${learner.task.relations.thrift.port}") Integer thriftPort
             ) {
         LearningParameters learningParameters = new LearningParameters();
         //    System.out.println("=======================================================================================> bean");
@@ -214,7 +215,7 @@ public class LearnerConfig {
             consideredDomains);
 
     learningParameters.setParameter(
-            LearningParameters.TARGET_DOMAIN, targetDomain);
+            LearningParameters.TARGET_DOMAIN_URI, targetDomain);
             */
 
 //Term related parameters
@@ -230,6 +231,7 @@ public class LearnerConfig {
         //Relation related parameters
         learningParameters.setParameter(LearningParameters.OBTAIN_RELATIONS, obtainRelations);
         learningParameters.setParameter(LearningParameters.EXTRACT_RELATIONS, extractRelations);
+        learningParameters.setParameter(LearningParameters.EXTRACT_RELATIONS_PARALLEL, parallelRelations);
         learningParameters.setParameter(LearningParameters.STORE_RELATIONS, storeRelations);
         learningParameters
                 .setParameter(
@@ -246,8 +248,22 @@ public class LearnerConfig {
                 LearningParameters.HYPERNYM_MODEL_PATH,
                 hypernymsLexicalModelPath);
 
-        learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
 
+        learningParameters.setParameter(LearningParameters.MAX_SOURCE_TARGET_DISTANCE, maxSourceTargetDistance);
+
+        try {
+
+
+            RelationalPatternsModel softPatternModel = RelationalPatternsModelSerializer
+                    .deserialize(hypernymsLexicalModelPath);
+            learningParameters.setParameter(LearningParameters.HYPERNYM_MODEL, softPatternModel);
+
+        } catch (EpnoiResourceAccessException e) {
+            logger.severe(e.getMessage());
+        }
+
+        learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
+        learningParameters.setParameter(RelationalSentencesCorpusCreationParameters.THRIFT_PORT, thriftPort);
         return learningParameters;
     }
 

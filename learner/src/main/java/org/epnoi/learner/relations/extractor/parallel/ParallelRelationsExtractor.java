@@ -2,6 +2,7 @@ package org.epnoi.learner.relations.extractor.parallel;
 
 import gate.Document;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -16,60 +17,52 @@ import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermsTable;
-import org.epnoi.model.KnowledgeBase;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationsTable;
+import org.epnoi.model.*;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import scala.Tuple2;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 public class ParallelRelationsExtractor {
     private static final Logger logger = Logger
             .getLogger(ParallelRelationsExtractor.class.getName());
     private static final long MAX_DISTANCE = 20;
+
     private Core core;
-    private RelationalPatternsModel softPatternModel;
-    private Parameters parameters;
+
+    LearningParameters parameters;
+
+    JavaSparkContext sparkContext;
+
     private DomainsTable domainsTable;
-    private TermsTable termsTable;
-    private LexicalRelationalPatternGenerator patternsGenerator;
-    private RelationsTable relationsTable;
-    private double hypernymExtractionThreshold;
-    private String targetDomain;
-    private boolean considerKnowledgeBase = false;
-    private KnowledgeBase knowledgeBase;
+
 
     private static final String JOB_NAME = "RELATIONS_EXTRACTION";
     // --------------------------------------------------------------------------------------
 
-    public void init(Core core, DomainsTable domainsTable, Parameters parameters)
-            throws EpnoiInitializationException {
+    public void init(LearningParameters parameters, DomainsTable domainsTable, Core core, JavaSparkContext sparkContext) {
         logger.info("Initializing the Relations Extractor with the following parameters");
         logger.info(parameters.toString());
-
-        this.core = core;
         this.parameters = parameters;
-        String hypernymModelPath = (String) parameters
-                .getParameterValue(LearningParameters.HYPERNYM_MODEL_PATH);
-        this.hypernymExtractionThreshold = (double) parameters
-                .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
-        this.targetDomain = (String) parameters
-                .getParameterValue(LearningParameters.TARGET_DOMAIN);
-
-        this.considerKnowledgeBase = (boolean) parameters
-                .getParameterValue(LearningParameters.CONSIDER_KNOWLEDGE_BASE);
-        this.patternsGenerator = new LexicalRelationalPatternGenerator();
+        this.core = core;
+        this.sparkContext = sparkContext;
         this.domainsTable = domainsTable;
-        this.relationsTable = new RelationsTable();
+
+
+        //  this.patternsGenerator = new LexicalRelationalPatternGenerator();
+
+
         // We retrieve the knowledge base just in case that it must be
         // considered when searching for relations
+        /*
         if (considerKnowledgeBase) {
             try {
                 this.knowledgeBase = core.getKnowledgeBaseHandler()
@@ -79,31 +72,25 @@ public class ParallelRelationsExtractor {
                 throw new EpnoiInitializationException(e.getMessage());
             }
         }
+*/
 
-        try {
-
-            this.softPatternModel = RelationalPatternsModelSerializer
-                    .deserialize(hypernymModelPath);
-            parameters.setParameter(LearningParameters.HYPERNYM_MODEL, softPatternModel);
-        } catch (EpnoiResourceAccessException e) {
-            throw new EpnoiInitializationException(e.getMessage());
-        }
     }
 
     // ---------------------------------------------------------------------------------------
 
-    public RelationsTable extract(TermsTable termsTable) {
+    public RelationsTable extract(DomainsTable domainsTable) {
         logger.info("Extracting the Relations Table");
-        this.termsTable = termsTable;
-        this.relationsTable = new RelationsTable();
+        RelationsTable relationsTable = new RelationsTable();
+        String relationsTableUri = domainsTable.getTargetDomain().getUri()+"/relations";
+        relationsTable.setUri(relationsTableUri);
+
         // The relations finding task is only performed in the target domain,
         // these are the resources that we should consider
 
+        String targetDomainUri = domainsTable.getTargetDomain().getUri();
         List<String> domainResourceUris = domainsTable.getDomainResources().get(
-                domainsTable.getTargetDomain().getUri());
-        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
+                targetDomainUri);
 
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         Broadcast<LearningParameters> parametersBroadcast = sparkContext.broadcast((LearningParameters) this.parameters);
 
@@ -130,13 +117,14 @@ public class ParallelRelationsExtractor {
             return mapper.call(relationalSentenceCandidate);
         });
 
-        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.flatMap(new RelationalSentenceCandidateToRelationalSentenceFlatMapper());
+        JavaRDD<DeserializedRelationalSentence> relationalSentences = relationsCandidates.flatMap(new RelationalSentenceCandidateToRelationalSentenceFlatMapper());
 
         JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
             return mapper.call(relationalSentence);
         });
-
+        probableRelations.collect();
+/*
 
         //Now we aggregate those relations that are repeated in to a single relation that aggregates them
 
@@ -150,28 +138,10 @@ public class ParallelRelationsExtractor {
         for (Tuple2<String, Relation> tuple : aggregatedProbableRelationsByUri.collect()) {
             relationsTable.addRelation(tuple._2());
         }
+        */
 
         return relationsTable;
     }
 
 
-    public static void main(String[] args) {
-        System.out.println("starting");
-
-        SparkConf sparkConf = new SparkConf().setMaster("local[8]").setAppName(JOB_NAME);
-
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
-
-        final Broadcast<String> separator = sparkContext.broadcast("/");
-
-        JavaRDD<String> corpusURIs = sparkContext.parallelize(Arrays.asList("world", "boadilla", "madrid"));
-
-        JavaRDD<String> greetingsRDD = corpusURIs.map(s -> {
-            SimpleTestFunction simpleTestFunction = new SimpleTestFunction(separator.getValue());
-            return simpleTestFunction.test(s);
-        });
-        System.out.println(greetingsRDD.collect());
-
-        System.out.println("stoping");
-    }
 }

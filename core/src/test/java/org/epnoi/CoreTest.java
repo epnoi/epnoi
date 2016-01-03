@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("develop")
 
 
+
 public class CoreTest {
     @Autowired
     Core core;

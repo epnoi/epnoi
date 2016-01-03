@@ -15,9 +15,8 @@ public class SentenceToRelationCandidateFunction {
     private int MAX_DISTANCE;
 
 
-
-    SentenceToRelationCandidateFunction(LearningParameters parameters){
-        this.MAX_DISTANCE = (Integer) parameters.getParameterValue(LearningParameters.MAX_RELATIONAL_SENTENCE_LENGTH);
+    SentenceToRelationCandidateFunction(LearningParameters parameters) {
+        this.MAX_DISTANCE = (Integer) parameters.getParameterValue(LearningParameters.MAX_SOURCE_TARGET_DISTANCE);
     }
 
     public Iterable<RelationalSentenceCandidate> call(Sentence sentence) throws Exception {
@@ -35,28 +34,29 @@ public class SentenceToRelationCandidateFunction {
             for (int j = i + 1; j < termAnnotations.size(); j++) {
                 Annotation source = termAnnotations.get(i);
                 Annotation target = termAnnotations.get(j);
-
-                _addRelationalSentenceCandidates(sentence, generatedRelationalSentenceCandidates, source, target);
+                if (_areValid(source, target) && !_areFar(source, target))
+                    _addRelationalSentenceCandidates(sentence, generatedRelationalSentenceCandidates, source, target);
             }
         }
         return generatedRelationalSentenceCandidates;
 
     }
 
+    private boolean _areValid(Annotation source, Annotation target) {
+        return ((source.getEndNode().getOffset() - source.getStartNode().getOffset() > 2) && (target.getEndNode().getOffset() - target.getStartNode().getOffset() > 2));
+    }
+
     private void _addRelationalSentenceCandidates(Sentence sentence, List<RelationalSentenceCandidate> generatedRelationalSentenceCandidates, Annotation source, Annotation target) {
         //In case that the source and target are not too far away we generate the relational sentence candidates associated with this sentence
-        if (!_areFar(source, target)) {
-            // For each pair of terms we check both as target and as
-            // source
-            generateRelationalSentenceCandidates(sentence, generatedRelationalSentenceCandidates, source, target);
+        // if (!_areFar(source, target)) {
+        // For each pair of terms we check both as target and as
+        // source
+        generateRelationalSentenceCandidates(sentence, generatedRelationalSentenceCandidates, source, target);
 
-        } else {
-            System.out.println("Are far:" + source + " > " + target);
-        }
+
     }
 
     private void generateRelationalSentenceCandidates(Sentence sentence, List<RelationalSentenceCandidate> generatedRelationalSentenceCandidates, Annotation source, Annotation target) {
-       //We mus add the two possibilities, since we don't know which is the source and which is the target
 
         RelationalSentenceCandidate relationalSentenceCandidate = new RelationalSentenceCandidate(sentence, source, target);
 

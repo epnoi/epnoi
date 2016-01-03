@@ -1,13 +1,10 @@
-package org.epnoi.learner.relations.extractor.parallel;
+package org.epnoi.learner.relations.corpus.parallel;
 
 import com.rits.cloning.Cloner;
 import gate.Document;
 import gate.corpora.DocumentContentImpl;
 import gate.util.InvalidOffsetException;
 import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function;
-import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidate;
-import org.epnoi.learner.relations.corpus.parallel.Sentence;
 import org.epnoi.model.DeserializedRelationalSentence;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
@@ -16,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class RelationalSentenceCandidateToRelationalSentenceFlatMapper implements FlatMapFunction<RelationalSentenceCandidate, DeserializedRelationalSentence> {
+public class RelationalSentenceCandidateToRelationalSentenceFlatMapper implements FlatMapFunction<RelationalSentenceCandidate, RelationalSentence> {
 
     @Override
-    public Iterable<DeserializedRelationalSentence> call(RelationalSentenceCandidate currentRelationalSentenceCandidate) throws Exception {
+    public Iterable<RelationalSentence> call(RelationalSentenceCandidate currentRelationalSentenceCandidate) throws Exception {
         Cloner cloner = new Cloner();
         Long sentenceStartOffset = currentRelationalSentenceCandidate.getSentence().getAnnotation().getStartNode().getOffset();
 
@@ -31,14 +28,15 @@ public class RelationalSentenceCandidateToRelationalSentenceFlatMapper implement
             Long targetStartOffset = currentRelationalSentenceCandidate.getTarget().getStartNode().getOffset();
             Long targetEndOffset = currentRelationalSentenceCandidate.getTarget().getEndNode().getOffset();
 
-            Document relationDocument = cloner.deepClone(currentRelationalSentenceCandidate.getSentence().getContainedAnnotations().getDocument());
+          //  Document relationDocument = cloner.deepClone(currentRelationalSentenceCandidate.getSentence().getContainedAnnotations().getDocument());
+            Document relationDocument = currentRelationalSentenceCandidate.getSentence().getContainedAnnotations().getDocument();
             _shrinkDocument(currentRelationalSentenceCandidate.getSentence(), relationDocument);
 
 
             OffsetRangeSelector source = new OffsetRangeSelector(sourceStartOffset-sentenceStartOffset, sourceEndOffset-sentenceStartOffset);
             OffsetRangeSelector target = new OffsetRangeSelector(targetStartOffset-sentenceStartOffset, targetEndOffset-sentenceStartOffset);
 
-            DeserializedRelationalSentence relationalSentence = new DeserializedRelationalSentence(source, target, relationDocument.getContent().toString(), relationDocument);
+            RelationalSentence relationalSentence = new RelationalSentence(source, target, relationDocument.getContent().toString(), relationDocument.toXml());
             return Arrays.asList(relationalSentence);
         } catch (Exception e) {
             System.out.println("ESTA FALLO:> " + currentRelationalSentenceCandidate);

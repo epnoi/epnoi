@@ -1,5 +1,6 @@
 package org.epnoi.learner.modules;
 
+import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.LearnerConfig;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.learner.OntologyLearningTask;
@@ -34,6 +35,9 @@ public class LearnerImpl implements Learner {
     @Autowired
     LearningParameters learningParameters;
 
+    @Autowired
+    JavaSparkContext sparkContext;
+
     private TermsRetriever termsRetriever;
 
     RelationsRetriever relationsRetriever = new RelationsRetriever(core);
@@ -64,14 +68,14 @@ public class LearnerImpl implements Learner {
 
             if (domain != null) {
                 OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
+                ontologyLearningTask.init(this.core, this.learningParameters, this.sparkContext);
                 try {
-                    ontologyLearningTask.perform(core, learningParameters, domain);
+                    ontologyLearningTask.perform(domain);
                     _storeLearningResults(ontologyLearningTask, domain);
                 } catch (Exception e) {
                     logger.severe("There was a problem while learning the domain " + domain.getUri());
                     e.printStackTrace();
                 }
-
 
             } else {
                 logger.severe("The retrieved domain was null!!!!");

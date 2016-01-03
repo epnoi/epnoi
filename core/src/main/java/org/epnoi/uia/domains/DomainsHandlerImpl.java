@@ -84,8 +84,8 @@ public class DomainsHandlerImpl implements DomainsHandler {
                 logger.info("Initially " + foundURIs.size()
                         + " are defined as belonging to the domain " + domain.getUri());
 
-                // HERE WAS return foundURIs;
-                return Arrays.asList(foundURIs.get(0));
+                return foundURIs;
+
             }
         }
         return new ArrayList<String>();

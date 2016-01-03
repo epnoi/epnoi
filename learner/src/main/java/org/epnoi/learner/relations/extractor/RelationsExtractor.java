@@ -7,16 +7,13 @@ import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
+import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
-import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.*;
 import org.epnoi.model.commons.Parameters;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
@@ -46,8 +43,7 @@ public class RelationsExtractor {
 
     // --------------------------------------------------------------------------------------
 
-    public void init(Core core, DomainsTable domainsTable, Parameters parameters)
-            throws EpnoiInitializationException {
+    public void init(Core core, DomainsTable domainsTable, Parameters parameters) {
         logger.info("Initializing the Relations Extractor with the following parameters");
         logger.info(parameters.toString());
 
@@ -58,7 +54,7 @@ public class RelationsExtractor {
         this.hypernymExtractionThreshold = (double) parameters
                 .getParameterValue(LearningParameters.HYPERNYM_RELATION_EXTRACTION_THRESHOLD);
         this.targetDomain = (String) parameters
-                .getParameterValue(LearningParameters.TARGET_DOMAIN);
+                .getParameterValue(LearningParameters.TARGET_DOMAIN_URI);
 
         this.considerKnowledgeBase = (boolean) parameters
                 .getParameterValue(LearningParameters.CONSIDER_KNOWLEDGE_BASE);
@@ -67,6 +63,7 @@ public class RelationsExtractor {
         this.relationsTable = new RelationsTable();
         // We retrieve the knowledge base just in case that it must be
         // considered when searching for relations
+       /*
         if (considerKnowledgeBase) {
             try {
                 this.knowledgeBase = core.getKnowledgeBaseHandler()
@@ -76,14 +73,10 @@ public class RelationsExtractor {
                 throw new EpnoiInitializationException(e.getMessage());
             }
         }
+*/
+        this.softPatternModel = (RelationalPatternsModel)parameters.getParameterValue(LearningParameters.HYPERNYM_MODEL);
 
-        try {
 
-            this.softPatternModel = RelationalPatternsModelSerializer
-                    .deserialize(hypernymModelPath);
-        } catch (EpnoiResourceAccessException e) {
-            throw new EpnoiInitializationException(e.getMessage());
-        }
     }
 
     // ---------------------------------------------------------------------------------------
@@ -218,9 +211,9 @@ public class RelationsExtractor {
                     1.0);
         } else {
 
-            List<LexicalRelationalPattern> generatedPatterns = this.patternsGenerator
+            List<RelationalPattern> generatedPatterns = this.patternsGenerator
                     .generate(source, target, annotatedResource);
-            for (LexicalRelationalPattern pattern : generatedPatterns) {
+            for (RelationalPattern pattern : generatedPatterns) {
                 double relationProbability = this.softPatternModel
                         .calculatePatternProbability(pattern);
 

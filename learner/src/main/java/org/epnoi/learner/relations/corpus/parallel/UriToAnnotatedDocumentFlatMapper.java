@@ -6,6 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gate.Document;
+import gate.corpora.DocumentImpl;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.model.clients.thrift.AnnotatedContentServiceClient;
 import org.epnoi.model.clients.thrift.KnowledgeBaseServiceClient;
@@ -43,13 +44,15 @@ public class UriToAnnotatedDocumentFlatMapper {
     // --------------------------------------------------------------------------------------------------------------------
 
     private Document _obtainAnnotatedContent(String uri) {
+        System.out.println("uri >"+uri);
         Integer thriftPort = (Integer) parameters.getParameterValue(RelationalSentencesCorpusCreationParameters.THRIFT_PORT);
         AnnotatedContentServiceClient uiaService = new AnnotatedContentServiceClient();
         org.epnoi.model.Content<Object> resource = null;
         try {
             uiaService.init("localhost", thriftPort);
 
-            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.WIKIPEDIA_PAGE_CLASS);
+            resource = uiaService.getAnnotatedDocument(uri+"/object/gate", RDFHelper.WIKIPEDIA_PAGE_CLASS);
+           // System.out.println("resource > "+((DocumentImpl)resource.getContent()).getContent());
         } catch (Exception e) {
             e.printStackTrace();
 

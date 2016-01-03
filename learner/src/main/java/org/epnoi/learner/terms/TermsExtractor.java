@@ -2,14 +2,12 @@ package org.epnoi.learner.terms;
 
 import gate.Annotation;
 import gate.Document;
-import org.epnoi.learner.DomainsTableCreator;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
 import org.epnoi.model.*;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
-import org.epnoi.uia.core.CoreUtility;
 import org.epnoi.uia.informationstore.SelectorHelper;
 
 import java.util.ArrayList;
@@ -57,7 +55,7 @@ public class TermsExtractor {
 		this.domainsTable = domainsTable;
 
 		this.targetDomain = (String) parameters
-				.getParameterValue(LearningParameters.TARGET_DOMAIN);
+				.getParameterValue(LearningParameters.TARGET_DOMAIN_URI);
 		this.termsIndex = new TermsIndex();
 		this.termsIndex.init();
 		this.resourcesIndex = new ResourcesIndex();
@@ -522,7 +520,7 @@ public class TermsExtractor {
 				LearningParameters.CONSIDERED_DOMAINS,
 				consideredDomains);
 		learningParameters.setParameter(
-				LearningParameters.TARGET_DOMAIN, targetDomain);
+				LearningParameters.TARGET_DOMAIN_URI, targetDomain);
 		learningParameters
 				.setParameter(
 						LearningParameters.HYPERNYM_RELATION_EXPANSION_THRESHOLD,

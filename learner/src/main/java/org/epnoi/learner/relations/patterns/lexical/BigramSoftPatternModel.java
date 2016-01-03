@@ -1,5 +1,6 @@
 package org.epnoi.learner.relations.patterns.lexical;
 
+import gate.util.compilers.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
@@ -80,6 +81,7 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 
 	@Override
 	public double calculatePatternProbability(RelationalPattern pattern) {
+		long currentTime = System.currentTimeMillis();
 		LexicalRelationalPattern relationalPattern = (LexicalRelationalPattern) pattern;
 		// System.out.println(relationalPattern);
 		if ((relationalPattern.getLength() < 2)
@@ -109,6 +111,7 @@ public class BigramSoftPatternModel implements RelationalPatternsModel {
 
 			// And finally brought back to the [0,1] range
 			// System.out.println(Math.exp(probability));
+			System.out.println("Total time "+(System.currentTimeMillis()-currentTime));
 			return probability;
 		}
 	}

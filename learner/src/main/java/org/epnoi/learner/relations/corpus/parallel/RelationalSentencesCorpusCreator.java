@@ -6,7 +6,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
-import org.epnoi.learner.relations.extractor.parallel.RelationalSentenceCandidateToRelationalSentenceFlatMapper;
+import org.epnoi.learner.relations.corpus.parallel.RelationalSentenceCandidateToRelationalSentenceFlatMapper;
 import org.epnoi.model.Context;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.model.RelationalSentencesCorpus;
