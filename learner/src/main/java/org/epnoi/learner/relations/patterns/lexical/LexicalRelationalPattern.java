@@ -39,7 +39,7 @@ public class LexicalRelationalPattern implements RelationalPattern {
 		String nodesRepresentation = "";
 		for (LexicalRelationalPatternNode node : nodes) {
 			nodesRepresentation = nodesRepresentation + "|"
-					+ node.getGeneratedToken();
+					+ "<"+node.getGeneratedToken()+","+node.getOriginialToken()+">";
 		}
 		return "LexicalRelationalPattern [" + nodesRepresentation + "]";
 

@@ -2,8 +2,10 @@ package org.epnoi.learner.relations.patterns.lexical;
 
 import gate.Annotation;
 import gate.Document;
+import gate.util.InvalidOffsetException;
 import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternGenerator;
+import org.epnoi.model.DeserializedRelationalSentence;
 import org.epnoi.model.OffsetRangeSelector;
 import org.epnoi.model.RelationalSentence;
 import org.epnoi.nlp.gate.AnnotationsComparator;
@@ -15,212 +17,174 @@ import java.util.Collections;
 import java.util.List;
 
 
+public class LexicalRelationalPatternGenerator implements RelationalPatternGenerator {
+    private AnnotationsComparator annotationsComparator;
 
-public class LexicalRelationalPatternGenerator  implements RelationalPatternGenerator{
-	private AnnotationsComparator annotationsComparator;
+    public LexicalRelationalPatternGenerator() {
+        this.annotationsComparator = new AnnotationsComparator();
+    }
 
-	public LexicalRelationalPatternGenerator() {
-		this.annotationsComparator = new AnnotationsComparator();
-	}
+    public List<RelationalPattern> generate(
+            RelationalSentence relationalSentence) {
 
-	public List<RelationalPattern> generate(
-			RelationalSentence relationalSentence) {
-		// LexicalRelationalPattern pattern = new LexicalRelationalPattern();
-		// return pattern;
 
-		// System.out.println("---> "+relationalSentence+"["+relationalSentence.getSource+"+]--->["+target+"]");
-		List<RelationalPattern> generatedPatterns = new ArrayList<>();
+        String serializedAnnotatedSentente = relationalSentence
+                .getAnnotatedSentence();
 
-		String serializedAnnotatedSentente = relationalSentence
-				.getAnnotatedSentence();
+        OffsetRangeSelector source = relationalSentence.getSource();
 
-		OffsetRangeSelector source = relationalSentence.getSource();
+        OffsetRangeSelector target = relationalSentence.getTarget();
 
-		OffsetRangeSelector target = relationalSentence.getTarget();
+        Document annotatedSentence = GateUtils
+                .deserializeGATEDocument(serializedAnnotatedSentente);
 
-		Document annotatedSentence = GateUtils
-				.deserializeGATEDocument(serializedAnnotatedSentente);
+        List<RelationalPattern> generatedPatterns = getRelationalPatterns(source, target, annotatedSentence);
+        return generatedPatterns;
+    }
 
-		LexicalRelationalPattern lexicalRelationalPattern = new LexicalRelationalPattern();
+    public List<RelationalPattern> generate(
+            DeserializedRelationalSentence relationalSentence) {
 
-		List<Annotation> orderedAnnotations = new ArrayList<>();
 
-		for (Annotation annotation : annotatedSentence.getAnnotations().get(
-				NLPAnnotationsConstants.TOKEN)) {
-			orderedAnnotations.add(annotation);
+        OffsetRangeSelector source = relationalSentence.getSource();
 
-		}
-		Collections.sort(orderedAnnotations, this.annotationsComparator);
+        OffsetRangeSelector target = relationalSentence.getTarget();
 
-		boolean insideWindow = false;
+        Document annotatedSentence = relationalSentence.getAnnotatedSentence();
 
-		int position = 0;
+        List<RelationalPattern> generatedPatterns = getRelationalPatterns(source, target, annotatedSentence);
+        return generatedPatterns;
+    }
 
-		for (Annotation annotation : orderedAnnotations) {
 
-			LexicalRelationalPatternNode node = new LexicalRelationalPatternNode();
+    private List<RelationalPattern> getRelationalPatterns(OffsetRangeSelector source, OffsetRangeSelector target, Document annotatedSentence) {
 
-			if (annotation.getStartNode().getOffset().equals(source.getStart())
-					&& annotation.getEndNode().getOffset()
-							.equals(source.getEnd())) {
+       // System.out.println("generatePattern=========================================================================== ");
 
-				insideWindow = !insideWindow;
-				node.setOriginialToken(annotation.getFeatures().get("string")
-						.toString());
-				node.setGeneratedToken("<SOURCE>");
-				lexicalRelationalPattern.getNodes().add(node);
+       // System.out.println("Sentence " + annotatedSentence.getContent().toString());
 
-			} else if (annotation.getStartNode().getOffset()
-					.equals(target.getStart())
-					&& annotation.getEndNode().getOffset()
-							.equals(target.getEnd())) {
-				// System.out.println("IT WAS TARGET! " +
-				// annotation.getFeatures().get("string"));
-				node.setOriginialToken(annotation.getFeatures().get("string")
-						.toString());
-				node.setGeneratedToken("<TARGET>");
-				insideWindow = !insideWindow;
-				//System.out.println("TARGET");
-				lexicalRelationalPattern.getNodes().add(node);
-			} else if (insideWindow) {
-				node.setOriginialToken(annotation.getFeatures().get("string")
-						.toString());
-				if (_isAVerb((String) annotation.getFeatures().get("category"))) {
-					node.setGeneratedToken(annotation.getFeatures()
-							.get("string").toString());
-				} else {
-					node.setGeneratedToken(annotation.getFeatures()
-							.get("category").toString());
-				}
+        Annotation sourceAnnotation = null;
+        Annotation targetAnnotation = null;
+        String sourceSF;
 
-				lexicalRelationalPattern.getNodes().add(node);
-			}
-			position++;
-		}
+       // try {
+          //  sourceSF = annotatedSentence.getContent().getContent(source.getStart(), source.getEnd()).toString();
 
-		generatedPatterns.add(lexicalRelationalPattern);
-		return generatedPatterns;
-	}
+            sourceAnnotation = (Annotation) annotatedSentence.getAnnotations().get(NLPAnnotationsConstants.TERM_CANDIDATE).get(source.getStart(), source.getEnd()).toArray()[0];
+       /*
+        } catch (InvalidOffsetException e) {
+            sourceSF = "SOURCE_NOT_FOUND";
+        }
+*/
+        String targetSF;
 
-	// --------------------------------------------------------------------------------------------------------
+       // try {
+          //  targetSF = annotatedSentence.getContent().getContent(target.getStart(), target.getEnd()).toString();
+            targetAnnotation = (Annotation) annotatedSentence.getAnnotations().get(NLPAnnotationsConstants.TERM_CANDIDATE).get(target.getStart(),target.getEnd()).toArray()[0];
+    /*
+    } catch (InvalidOffsetException e) {
+            (())   targetSF = "TARGET_NOT_FOUND";
+        }
+*/
+       // System.out.println("[source]> " + sourceSF);
+        //System.out.println("[target]> " + targetSF);
 
-	private boolean _isAVerb(String tag) {
-		return (tag.equals("VBZ") || tag.equals("VBG") || tag.equals("VBN")
-				|| tag.equals("VBP") || tag.equals("VB") || tag.equals("VBD") || tag
-					.equals("MD"));
-	}
 
-	// --------------------------------------------------------------------------------------------------------
+      return generate(sourceAnnotation,targetAnnotation, annotatedSentence);
+    }
 
-	public List<LexicalRelationalPattern> generate(Annotation source,
-			Annotation target, Document document) {
+    private Integer _generatePatternWhileInExtreme(int position, List<Annotation> tokenAnnotations, Annotation extreme, String extremeLabel, LexicalRelationalPattern lexicalRelationalPattern, Document annotatedSentence) {
+        while (position < tokenAnnotations.size() && extreme.overlaps(tokenAnnotations.get(position))) {
+            position++;
+        }
+        LexicalRelationalPatternNode node = new LexicalRelationalPatternNode();
+        String extremeSurfaceForm;
+        try {
+            extremeSurfaceForm = annotatedSentence.getContent().getContent(extreme.getStartNode().getOffset(), extreme.getEndNode().getOffset()).toString();
 
-		// LexicalRelationalPattern pattern = new LexicalRelationalPattern();
-		// return pattern;
-		List<LexicalRelationalPattern> generatedPatterns = new ArrayList<>();
+        } catch (InvalidOffsetException e) {
+            extremeSurfaceForm = extremeLabel + " NOT_FOUND";
+        }
+        node.setGeneratedToken(extremeLabel);
+        node.setOriginialToken(extremeSurfaceForm);
+        lexicalRelationalPattern.getNodes().add(node);
+        return position;
+    }
 
-		Long sourceStartOffset = source.getStartNode().getOffset();
-		Long targetStartOffset = target.getStartNode().getOffset();
+    private void _generatePatternTillExtreme(int position, List<Annotation> tokenAnnotations, Annotation extreme, String extremeLabel, LexicalRelationalPattern lexicalRelationalPattern, Document annotatedSentence) {
+        while (!(extreme.overlaps(tokenAnnotations.get(position)))) {
 
-		Long sourceEndOffset = source.getEndNode().getOffset();
-		Long targetEndOffset = target.getEndNode().getOffset();
+            LexicalRelationalPatternNode node = new LexicalRelationalPatternNode();
+            node.setOriginialToken(tokenAnnotations.get(position).getFeatures()
+                    .get("string").toString());
 
-		Long windowStartOffset;
-		Long windowEndOffset;
-		if (sourceEndOffset < targetStartOffset) {
-			windowStartOffset = sourceStartOffset;
-			windowEndOffset = targetEndOffset;
-		} else {
-			windowStartOffset = targetStartOffset;
-			windowEndOffset = sourceEndOffset;
-		}
+            if (_isAVerb((String) tokenAnnotations.get(position).getFeatures().get("category"))) {
+                node.setGeneratedToken(tokenAnnotations.get(position).getFeatures()
+                        .get("string").toString());
+            } else {
+                node.setGeneratedToken(tokenAnnotations.get(position).getFeatures()
+                        .get("category").toString());
+            }
 
-		LexicalRelationalPattern lexicalRelationalPattern = new LexicalRelationalPattern();
+            lexicalRelationalPattern.getNodes().add(node);
 
-		List<Annotation> orderedAnnotations = new ArrayList<>();
 
-		for (Annotation annotation : document.getAnnotations()
-				.get(NLPAnnotationsConstants.TOKEN)
-				.get(windowStartOffset, windowEndOffset)) {
-			orderedAnnotations.add(annotation);
+            position++;
+        }
 
-		}
-		Collections.sort(orderedAnnotations, this.annotationsComparator);
-		/*
-		 * System.out .println(
-		 * "------------------------------------------------------------------------------------------------"
-		 * ); System.out.println("source> " + source + " and target " + target);
-		 */
-		// System.out.println("orderedAnnotations> "+orderedAnnotations);
+        _generatePatternWhileInExtreme(position, tokenAnnotations, extreme, extremeLabel,lexicalRelationalPattern, annotatedSentence);
+    }
 
-		String sourceString = source.getFeatures().get("string").toString();
 
-		String targetString = target.getFeatures().get("string").toString();
-		boolean sourceFound = false;
-		boolean targetFound = false;
-		
-		//Evaluate pattern generation #76
-		for (Annotation annotation : orderedAnnotations) {
+    // --------------------------------------------------------------------------------------------------------
 
-			LexicalRelationalPatternNode node = new LexicalRelationalPatternNode();
+    private boolean _isAVerb(String tag) {
+        return (tag.equals("VBZ") || tag.equals("VBG") || tag.equals("VBN")
+                || tag.equals("VBP") || tag.equals("VB") || tag.equals("VBD") || tag
+                .equals("MD"));
+    }
 
-			if ((sourceString.equals(annotation.getFeatures().get("string")
-					.toString()))
-					&& (annotation.getStartNode().getOffset()
-							.equals(source.getStartNode().getOffset()) || annotation
-							.getEndNode().getOffset()
-							.equals(source.getEndNode().getOffset()))) {
-				if (!sourceFound) {
-					// System.out.println("IT WAS SOURCE! " +
-					// annotation.getFeatures().get("string"));
+    // --------------------------------------------------------------------------------------------------------
 
-					node.setOriginialToken(sourceString);
-					node.setGeneratedToken("<SOURCE>");
-					//System.out.println("SOURCE");
-					lexicalRelationalPattern.getNodes().add(node);
-					sourceFound = true;
-				}
+    public List<RelationalPattern> generate(Annotation sourceAnnotation,
+                                                   Annotation targetAnnotation, Document annotatedSentence) {
 
-			} else if ((targetString.equals(annotation.getFeatures()
-					.get("string").toString()))
-					&& (annotation.getStartNode().getOffset()
-							.equals(target.getStartNode().getOffset()) || annotation
-							.getEndNode().getOffset()
-							.equals(target.getEndNode().getOffset()))) {
-				// System.out.println("IT WAS TARGET! "+
-				// annotation.getFeatures().get("string"));
-				if (!targetFound) {
-					node.setOriginialToken(targetString);
-					node.setGeneratedToken("<TARGET>");
-					//System.out.println("TARGET");
-					targetFound = true;
 
-					lexicalRelationalPattern.getNodes().add(node);
-				}
-			} else {
-				if (!(targetFound && sourceFound)
-						&& (targetFound || sourceFound)) {
-					node.setOriginialToken(annotation.getFeatures()
-							.get("string").toString());
-					if (_isAVerb((String) annotation.getFeatures().get(
-							"category"))) {
-						node.setGeneratedToken(annotation.getFeatures()
-								.get("string").toString());
-					} else {
-						node.setGeneratedToken(annotation.getFeatures()
-								.get("category").toString());
-					}
+        LexicalRelationalPattern lexicalRelationalPattern = new LexicalRelationalPattern();
 
-					lexicalRelationalPattern.getNodes().add(node);
-				}
-			}
-		}
-		generatedPatterns.add(lexicalRelationalPattern);
-		return generatedPatterns;
-	}
+        List<RelationalPattern> generatedPatterns = new ArrayList<>();
 
-	// --------------------------------------------------------------------------------------------------------
 
-	
+        Integer position = 0;
+
+        List<Annotation> tokenAnnotations = annotatedSentence.getAnnotations().get(
+                NLPAnnotationsConstants.TOKEN).inDocumentOrder();
+
+        while (!(sourceAnnotation.overlaps(tokenAnnotations.get(position)) || targetAnnotation.overlaps(tokenAnnotations.get(position)))) {
+            position++;
+        }
+
+
+        //Add relation extreme
+        if (sourceAnnotation.overlaps(tokenAnnotations.get(position))) {
+
+            position= _generatePatternWhileInExtreme(position, tokenAnnotations, sourceAnnotation, "<SOURCE>", lexicalRelationalPattern, annotatedSentence);
+
+
+            _generatePatternTillExtreme(position, tokenAnnotations, targetAnnotation, "<TARGET>", lexicalRelationalPattern, annotatedSentence);
+        } else {
+            position= _generatePatternWhileInExtreme(position, tokenAnnotations, targetAnnotation, "<TARGET>", lexicalRelationalPattern, annotatedSentence);
+            _generatePatternTillExtreme(position, tokenAnnotations, sourceAnnotation, "<SOURCE>", lexicalRelationalPattern, annotatedSentence);
+        }
+       // System.out.println("---------------> "+lexicalRelationalPattern );
+        generatedPatterns.add(lexicalRelationalPattern);
+
+        return generatedPatterns;
+
+
+    }
+
+    // --------------------------------------------------------------------------------------------------------
+
 
 }
