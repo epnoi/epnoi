@@ -38,4 +38,25 @@ public class RelationalSentenceCandidate {
 		this.target = target;
 	}
 
+	@Override
+	public String toString() {
+		String sourceSurfaceForm;
+		try {
+			sourceSurfaceForm= sentence.getContent().getContent(source.getStartNode().getOffset()-sentence.getAnnotation().getStartNode().getOffset(), source.getEndNode().getOffset()-sentence.getAnnotation().getStartNode().getOffset()).toString();
+		}catch (Exception e){
+			e.printStackTrace();
+			sourceSurfaceForm=source.toString();
+		}
+
+		String targetSurfaceForm;
+		try {
+			targetSurfaceForm= sentence.getContent().getContent(target.getStartNode().getOffset()-sentence.getAnnotation().getStartNode().getOffset(), target.getEndNode().getOffset()-sentence.getAnnotation().getStartNode().getOffset()).toString();
+		}catch (Exception e){
+			e.printStackTrace();
+			targetSurfaceForm=source.toString();
+		}
+
+
+		return "S["+sourceSurfaceForm+"] T ["+targetSurfaceForm+ "Sentence "+sentence.getContent();
+	}
 }

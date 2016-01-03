@@ -23,7 +23,7 @@ public class LearningParameters extends Parameters<Serializable> implements Seri
 	// Expansion phase
 	// parameters-----------------------------------------------------------------------------------
 
-	public static final String MAX_RELATIONAL_SENTENCE_LENGTH = "MAX_RELATIONAL_SENTENCE_LENGTH";
+	public static final String MAX_SOURCE_TARGET_DISTANCE = "MAX_SOURCE_TARGET_DISTANCE";
 
 	public static final String NUMBER_INITIAL_TERMS = "NUMBER_INITIAL_TERMS";
 	// number of initial terms in the ontology

@@ -7,15 +7,13 @@ import gate.DocumentContent;
 import gate.util.InvalidOffsetException;
 import org.epnoi.learner.DomainsTable;
 import org.epnoi.learner.LearningParameters;
+import org.epnoi.learner.relations.patterns.RelationalPattern;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
-import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPattern;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermCandidateBuilder;
 import org.epnoi.learner.terms.TermsTable;
 import org.epnoi.model.*;
 import org.epnoi.model.commons.Parameters;
-import org.epnoi.model.exceptions.EpnoiInitializationException;
-import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.nlp.gate.NLPAnnotationsConstants;
@@ -213,9 +211,9 @@ public class RelationsExtractor {
                     1.0);
         } else {
 
-            List<LexicalRelationalPattern> generatedPatterns = this.patternsGenerator
+            List<RelationalPattern> generatedPatterns = this.patternsGenerator
                     .generate(source, target, annotatedResource);
-            for (LexicalRelationalPattern pattern : generatedPatterns) {
+            for (RelationalPattern pattern : generatedPatterns) {
                 double relationProbability = this.softPatternModel
                         .calculatePatternProbability(pattern);
 

@@ -126,8 +126,9 @@ public class OntologyLearningTask {
 
                 if(parallelRelationsExtraction){
                     this.relationsTable= this.parallelRelationsExtractor.extract(this.domainsTable);
+                }else {
+                    this.relationsTable = this.relationsTableExtractor.extract(this.termsTable);
                 }
-                this.relationsTable = this.relationsTableExtractor.extract(this.termsTable);
             } else {
 
                 this.relationsTable = this.relationsTableRetriever.retrieve(targetDomain);

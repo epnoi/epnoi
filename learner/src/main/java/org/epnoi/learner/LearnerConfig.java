@@ -201,9 +201,11 @@ public class LearnerConfig {
             @Value("${learner.task.relations.extract}") Boolean extractRelations,
             @Value("${learner.task.relations.store}") Boolean storeRelations,
             @Value("${learner.task.relations.parallel}") Boolean parallelRelations,
+            @Value("${learner.task.relations.maxdistance}") Integer maxSourceTargetDistance,
             @Value("${learner.task.relations.hypernyms.lexical.path}") String hypernymsLexicalModelPath,
             @Value("${learner.task.relations.hypernyms.threshold.expansion}") Double hyperymExpansionMinimumThreshold,
-            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold
+            @Value("${learner.task.relations.hypernyms.threshold.extraction}") Double hypernymExtractionMinimumThresohold,
+            @Value("${learner.task.relations.thrift.port}") Integer thriftPort
             ) {
         LearningParameters learningParameters = new LearningParameters();
         //    System.out.println("=======================================================================================> bean");
@@ -246,6 +248,9 @@ public class LearnerConfig {
                 LearningParameters.HYPERNYM_MODEL_PATH,
                 hypernymsLexicalModelPath);
 
+
+        learningParameters.setParameter(LearningParameters.MAX_SOURCE_TARGET_DISTANCE, maxSourceTargetDistance);
+
         try {
 
 
@@ -258,7 +263,7 @@ public class LearnerConfig {
         }
 
         learningParameters.setParameter(LearningParameters.CONSIDER_KNOWLEDGE_BASE, false);
-
+        learningParameters.setParameter(RelationalSentencesCorpusCreationParameters.THRIFT_PORT, thriftPort);
         return learningParameters;
     }
 

@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
-@TestPropertySource(properties = {"learner.task.terms.extract = false", "learner.task.terms.store = false"})
+@TestPropertySource(properties = {"learner.task.terms.extract = false", "learner.task.terms.store = false", "learner.task.relations.parallel = true"})
 
 
 public class LearnerTest {

@@ -30,7 +30,7 @@ public class RelationalSentenceToRelationMapper {
     //------------------------------------------------------------------------------------------------------------------
 
 
-    public Iterable<Relation> call(RelationalSentence relationalSentence) throws Exception {
+    public Iterable<Relation> call(DeserializedRelationalSentence relationalSentence) throws Exception {
         List<Relation> foundRelations = new ArrayList<>();
         LexicalRelationalPatternGenerator patternsGenerator = new LexicalRelationalPatternGenerator();
 
@@ -44,6 +44,7 @@ public class RelationalSentenceToRelationMapper {
                     .calculatePatternProbability(generatedPatternsIt.next()));
         }
         if (relationhood > THRESHOLD) {
+            System.out.println("AQUI HAY UNA!!!!!!!!!!!!!!!!!!!!!!("+relationhood+")  "+relationalSentence.getSentence());
             Relation relation = _createRelation(relationalSentence, relationhood);
             foundRelations.add(relation);
         }
@@ -53,10 +54,10 @@ public class RelationalSentenceToRelationMapper {
 
     //------------------------------------------------------------------------------------------------------------------
 
-    private Relation _createRelation(RelationalSentence relationalSentence,
+    private Relation _createRelation(DeserializedRelationalSentence relationalSentence,
                                      double relationhood) {
 
-        Document relationalSentenceDocument = GateUtils.deserializeGATEDocument(relationalSentence.getAnnotatedSentence());
+        Document relationalSentenceDocument = relationalSentence.getAnnotatedSentence();
         TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(relationalSentenceDocument);
 
         Relation relation = new Relation();

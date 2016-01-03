@@ -17,10 +17,7 @@ import org.epnoi.learner.relations.patterns.RelationalPatternsModel;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelSerializer;
 import org.epnoi.learner.relations.patterns.lexical.LexicalRelationalPatternGenerator;
 import org.epnoi.learner.terms.TermsTable;
-import org.epnoi.model.KnowledgeBase;
-import org.epnoi.model.Relation;
-import org.epnoi.model.RelationalSentence;
-import org.epnoi.model.RelationsTable;
+import org.epnoi.model.*;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
@@ -84,6 +81,8 @@ public class ParallelRelationsExtractor {
     public RelationsTable extract(DomainsTable domainsTable) {
         logger.info("Extracting the Relations Table");
         RelationsTable relationsTable = new RelationsTable();
+        String relationsTableUri = domainsTable.getTargetDomain().getUri()+"/relations";
+        relationsTable.setUri(relationsTableUri);
 
         // The relations finding task is only performed in the target domain,
         // these are the resources that we should consider
@@ -118,13 +117,14 @@ public class ParallelRelationsExtractor {
             return mapper.call(relationalSentenceCandidate);
         });
 
-        JavaRDD<RelationalSentence> relationalSentences = relationsCandidates.flatMap(new RelationalSentenceCandidateToRelationalSentenceFlatMapper());
+        JavaRDD<DeserializedRelationalSentence> relationalSentences = relationsCandidates.flatMap(new RelationalSentenceCandidateToRelationalSentenceFlatMapper());
 
         JavaRDD<Relation> probableRelations = relationalSentences.flatMap(relationalSentence -> {
             RelationalSentenceToRelationMapper mapper = new RelationalSentenceToRelationMapper(parametersBroadcast.getValue());
             return mapper.call(relationalSentence);
         });
-
+        probableRelations.collect();
+/*
 
         //Now we aggregate those relations that are repeated in to a single relation that aggregates them
 
@@ -138,6 +138,7 @@ public class ParallelRelationsExtractor {
         for (Tuple2<String, Relation> tuple : aggregatedProbableRelationsByUri.collect()) {
             relationsTable.addRelation(tuple._2());
         }
+        */
 
         return relationsTable;
     }

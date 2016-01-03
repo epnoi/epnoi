@@ -65,7 +65,7 @@ public class RelationalSentence implements Serializable {
 		return "RelationalSentence [source=" + source + ", target=" + target
 				+ ", sentence=" + sentence
 				+ ", annotatedSentence="
-				+ annotatedSentence.length() + "]";
+				+ annotatedSentence+ "]";
 
 	}
 
