@@ -9,9 +9,9 @@ create table if not exists research.sources(uri text, creationTime text, name te
 
 create table if not exists research.domains(uri text, creationTime text, name text, description text, primary key (uri));
 
-create table if not exists research.documents(uri text, creationTime text, format text, language text, title text, subject text, description text, rights text, content text, tokens text, primary key (uri));
+create table if not exists research.documents(uri text, creationTime text, publishedOn text, publishedBy text, authoredOn text, authoredBy text, contributedBy text, retrievedBy text, retrievedFrom text, retrievedOn text, format text, language text, title text, subject text, description text, rights text, type text, content text, tokens text, primary key (uri));
 
-create table if not exists research.items(uri text, creationTime text, format text, language text, title text, subject text, description text, url text, content text, tokens text, primary key (uri));
+create table if not exists research.items(uri text, creationTime text, authoredOn text, authoredBy text, contributedBy text, format text, language text, title text, subject text, description text, url text, type text, content text, tokens text, primary key (uri));
 
 create table if not exists research.parts(uri text, creationTime text, sense text, content text, tokens text, primary key (uri));
 
