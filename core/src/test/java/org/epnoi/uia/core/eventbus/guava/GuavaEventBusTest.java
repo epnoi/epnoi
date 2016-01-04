@@ -42,7 +42,7 @@ public class GuavaEventBusTest {
 
         final AtomicInteger counter = new AtomicInteger(0);
 
-        eventBus.post(Event.from("nobody should be listening"), RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW));
+        eventBus.post(Event.from("nobody should be listening"), RoutingKey.of(Resource.Type.ITEM, Resource.State.CREATED));
 
         eventBus.subscribe(new EventBusSubscriber() {
 
@@ -51,9 +51,9 @@ public class GuavaEventBusTest {
                 LOG.info("Reacting to the event ! " + event.to(String.class));
                 counter.incrementAndGet();
             }
-        }, BindingKey.of(RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW),"test"));
+        }, BindingKey.of(RoutingKey.of(Resource.Type.ITEM, Resource.State.CREATED),"test"));
 
-        eventBus.post(Event.from((new Date()).toString()), RoutingKey.of(Resource.Type.ITEM, Resource.State.NEW));
+        eventBus.post(Event.from((new Date()).toString()), RoutingKey.of(Resource.Type.ITEM, Resource.State.CREATED));
 
         Thread.sleep(100);
 
