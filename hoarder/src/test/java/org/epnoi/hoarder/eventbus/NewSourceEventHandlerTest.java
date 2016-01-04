@@ -28,7 +28,7 @@ import java.util.List;
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebContextConfiguration.class)
-@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = target/storage" })
+@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage" })
 public class NewSourceEventHandlerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(NewSourceEventHandlerTest.class);
@@ -46,12 +46,12 @@ public class NewSourceEventHandlerTest {
 
         Source source = new Source();
         source.setUri("/sources/sample1");
-        source.setUrl("oaipmh://oa.upm.es/perl/oai2");
+        source.setUrl("oaipmh://eprints.ucm.es/cgi/oai2");
 
         logger.info("trying to send a 'new.source' event: " + source);
-        this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.NEW));
+        this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
         logger.info("event sent. Now going to sleep...");
-        Thread.currentThread().sleep(20000);
+        Thread.currentThread().sleep(5000);
         logger.info("Wake Up. Now going to sleep...");
 
         List<Route> modifiedRoutes = camelContext.getRoutes();

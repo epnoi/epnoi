@@ -22,7 +22,7 @@ public class NewSourceEventHandler extends HoarderEventHandler {
     SourceService sourceService;
 
     public NewSourceEventHandler() {
-        super(RoutingKey.of(Resource.Type.SOURCE, Resource.State.NEW));
+        super(RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
     }
 
     @Override

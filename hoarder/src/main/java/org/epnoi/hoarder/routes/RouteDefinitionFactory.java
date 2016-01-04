@@ -40,7 +40,7 @@ public class RouteDefinitionFactory {
             LOG.warn("More than one builder for handling '" + protocol + "' sources: " + handlers);
         }
 
-        return handlers.get(0).build(source.getUrl());
+        return handlers.get(0).build(source);
     }
 
 }

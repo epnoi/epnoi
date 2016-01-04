@@ -3,6 +3,7 @@ package org.epnoi.hoarder.routes.oaipmh;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.epnoi.hoarder.routes.RouteMaker;
+import org.epnoi.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,14 @@ public class OAIPMHRouteMaker implements RouteMaker {
     }
 
     @Override
-    public RouteDefinition build(String url) {
+    public RouteDefinition build(Source source) {
 
-        String separator = (url.contains("?"))? "&" : "?";
+        String separator = (source.getUrl().contains("?"))? "&" : "?";
 
-        String uri = new StringBuilder(url).append(separator).append("initialDelay=1000&delay=60000").toString();
+        String uri = new StringBuilder(source.getUrl()).append(separator).append("initialDelay=1000&delay=60000").toString();
 
-        String sourceName   = StringUtils.substringBetween(url,"//","/"); //upm
-        String sourceUrl    = StringUtils.substringBefore(url, "?"); //"http://oa.upm.es/perl/oai2"
+        String sourceName   = source.name();
+        String sourceUrl    = source.server(); //"http://oa.upm.es/perl/oai2"
 
         // TODO Create a valid xPath according to the domain: OAIPMHPubByIdRoute, OAIPMHPubByRelRoute, OAIPMHPubByViewRoute
         return new OAIPMHRoute(uri,sourceName,sourceUrl,routeBuilder.getNs()).definition();

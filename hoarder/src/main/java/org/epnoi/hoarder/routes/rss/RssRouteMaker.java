@@ -3,6 +3,7 @@ package org.epnoi.hoarder.routes.rss;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.epnoi.hoarder.routes.RouteMaker;
+import org.epnoi.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class RssRouteMaker implements RouteMaker {
     }
 
     @Override
-    public RouteDefinition build(String url) {
+    public RouteDefinition build(Source source) {
 
         throw new RuntimeException("Method does not implemented yet!");
     }
