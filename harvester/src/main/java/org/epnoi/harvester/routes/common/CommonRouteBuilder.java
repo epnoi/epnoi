@@ -3,7 +3,7 @@ package org.epnoi.harvester.routes.common;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.epnoi.harvester.routes.processor.ErrorHandler;
-import org.epnoi.harvester.routes.processor.ROBuilder;
+import org.epnoi.harvester.routes.processor.ResourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class CommonRouteBuilder extends RouteBuilder {
     ErrorHandler errorHandler;
 
     @Autowired
-    ROBuilder roBuilder;
+    ResourceBuilder resourceBuilder;
 
 
     @Value("${epnoi.hoarder.storage.path}")
@@ -45,10 +45,9 @@ public class CommonRouteBuilder extends RouteBuilder {
                 .process(errorHandler).stop();
 
         from(URI_RO_BUILD).
-                process(roBuilder).
+                process(resourceBuilder).
                 log(LoggingLevel.INFO,LOG,"File Read: '${header.CamelFileName}'").
                 to("file:"+outdir+"?fileName=${header.FileName}");
-                // TODO Store it in db
 
     }
 }

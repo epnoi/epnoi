@@ -4,10 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.lang.StringUtils;
+import org.epnoi.harvester.mining.TextMiner;
 import org.epnoi.model.Record;
 import org.epnoi.model.ResearchObject;
+import org.epnoi.storage.TimeGenerator;
+import org.epnoi.storage.UDM;
+import org.epnoi.storage.URIGenerator;
+import org.epnoi.storage.model.Document;
+import org.epnoi.storage.model.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +31,18 @@ public class ResourceBuilder implements Processor {
     @Value("${epnoi.hoarder.storage.path}")
     protected String basedir;
 
+    @Autowired
+    UDM udm;
+
+    @Autowired
+    URIGenerator uriGenerator;
+
+    @Autowired
+    TimeGenerator timeGenerator;
+
+    @Autowired
+    TextMiner textMiner;
+
     public ResourceBuilder(){
         this.mapper = new ObjectMapper();
     }
@@ -32,93 +51,100 @@ public class ResourceBuilder implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
 
-        ResearchObject researchObject = new ResearchObject();
+        // Meta-Information
+        String pubURI           = exchange.getProperty(Record.PUBLICATION_URI, String.class);
+        String pubFormat        = exchange.getProperty(Record.PUBLICATION_METADATA_FORMAT,String.class);
+        String sourceName       = exchange.getProperty(Record.SOURCE_NAME, String.class);
+        String sourceUrl        = exchange.getProperty(Record.SOURCE_URL, String.class);
+
+        // Source URI
+        String sourceUri        = exchange.getProperty(Record.SOURCE_URI,String.class);
+        String sourceProtocol   = exchange.getProperty(Record.SOURCE_PROTOCOL, String.class);
+        String title            = exchange.getProperty(Record.PUBLICATION_TITLE, String.class);
+        String published        = exchange.getProperty(Record.PUBLICATION_PUBLISHED, String.class);
+        String authored         = exchange.getProperty(Record.PUBLICATION_AUTHORED, String.class);
+        String format           = exchange.getProperty(Record.PUBLICATION_FORMAT, String.class);
+        String type             = exchange.getProperty(Record.PUBLICATION_TYPE, String.class);
+        String subject          = exchange.getProperty(Record.PUBLICATION_SUBJECT, String.class);
+        String language         = exchange.getProperty(Record.PUBLICATION_LANGUAGE, String.class);
+        String rights           = exchange.getProperty(Record.PUBLICATION_RIGHTS, String.class);
+        String description      = exchange.getProperty(Record.PUBLICATION_DESCRIPTION, String.class);
+        String creators         = exchange.getProperty(Record.PUBLICATION_CREATORS, String.class);
+        String contributors     = exchange.getProperty(Record.PUBLICATION_CONTRIBUTORS, String.class);
+
+        // Text Mining
+        String path             = exchange.getProperty(Record.PUBLICATION_URL_LOCAL,String.class).replace("."+pubFormat, "."+format);
+        textMiner.parse(path);
+        // TODO load metainfo from parser if empty
+
+        // Current Time ISO-8601
+        String currentTime      = timeGenerator.getNowAsISO();
+
+        // Document
+        Document document = new Document();
+        document.setUri(uriGenerator.newDocument()); // Maybe better using PUBLICATION_URI
+        document.setCreationTime(currentTime);
+        document.setPublishedOn(published);
+        document.setPublishedBy(sourceUri);
+        document.setAuthoredOn(authored);
+        document.setAuthoredBy(creators);
+        document.setContributedBy(contributors);
+        document.setRetrievedFrom(sourceUrl);
+        document.setRetrievedOn(currentTime);
+        document.setFormat(pubFormat);
+        document.setLanguage(language);
+        document.setTitle(title);
+        document.setSubject(subject);
+        document.setDescription(description);
+        document.setRights(rights);
+        document.setType(type);
 
 
-        //TODO Build a valid Research Object from the meta-information
+        document.setContent("content");
+        document.setTokens("tokens");
 
-        // URI
-        researchObject.setUri(exchange.getProperty(Record.PUBLICATION_URI, String.class));
+        LOG.info("Document created: " + document);
 
-        // URL
-        String refFormat    = exchange.getProperty(Record.PUBLICATION_METADATA_FORMAT,String.class);
-        String pubFormat    = exchange.getProperty(Record.PUBLICATION_FORMAT, String.class);
-        String path         = exchange.getProperty(Record.PUBLICATION_URL_LOCAL,String.class).replace("."+refFormat, "."+pubFormat);
-        String url          = "file://"+path;
-//        researchObject.setUrl(url);
+        // Save document
+        udm.saveDocument(document);
 
+        // Relate Document To Source
+        udm.relateDocumentToSource(document.getUri(), sourceUri, document.getCreationTime());
 
-//        // Source
-//        ResearchSource source = new ResearchSource();
-        String sourceName   = exchange.getProperty(Record.SOURCE_NAME, String.class);
-//        source.setName(sourceName);
-        String sourceUrl    = exchange.getProperty(Record.SOURCE_URL, String.class);
-//        source.setUrl(sourceUrl);
-        String sourceUri    = exchange.getProperty(Record.SOURCE_URI,String.class)+StringUtils.substringAfter(sourceUrl,"//");
-//        source.setUri(sourceUri);
-        String sourceProtocol  = exchange.getProperty(Record.SOURCE_PROTOCOL, String.class);
-//        source.setProtocol(sourceProtocol);
-//        researchObject.setSource(source);
-//
-//        // Meta Information
-//        MetaInformation metaInformation = new MetaInformation();
-        String title        = exchange.getProperty(Record.PUBLICATION_TITLE, String.class);
-//        metaInformation.setTitle(title);
-        String published    = exchange.getProperty(Record.PUBLICATION_PUBLISHED, String.class);
-//        metaInformation.setPublished();
-        String format       = exchange.getProperty(Record.PUBLICATION_FORMAT, String.class);
-//        metaInformation.setFormat(format);
-        String language     = exchange.getProperty(Record.PUBLICATION_LANGUAGE, String.class);
-//        metaInformation.setLanguage(language);
-        String rights       = exchange.getProperty(Record.PUBLICATION_RIGHTS, String.class);
-//        metaInformation.setRights(rights);
-        String description  = exchange.getProperty(Record.PUBLICATION_DESCRIPTION, String.class);
-//        metaInformation.setDescription(description);
-//
-//
-//        // ->   Authors
-//        Iterable<String> iterator = Splitter.on(';').trimResults().omitEmptyStrings().split(exchange.getProperty(Record.PUBLICATION_CREATORS, String.class));
-//        ArrayList<String> authors = Lists.newArrayList(iterator);
-//        List<Creator> creators = new ArrayList<Creator>();
-//
-//        for(String author: authors){
-//
-//            String[] tokens = author.split(",");
-//
-//            Creator creator = new Creator();
-//            creator.setName(tokens[1].trim());
-//            creator.setSurname(tokens[0].trim());
-//            String authorUri = "http://resources.ressist.es/author/" + creator.getSurname().trim() + "-" + creator.getName().trim();
-//            creator.setUri(UrlEscapers.urlFragmentEscaper().escape(authorUri));
-//
-//            creators.add(creator);
-//        }
-//
-//        metaInformation.setCreators(creators);
-//
-//        // add metainformation to research object
-//        researchObject.setMetainformation(metaInformation);
-//
-//        // BagOfWords: Lucene Stemming from PDF
-//        List<LuceneClassifier.Keyword> values = LuceneClassifier.guessFromString(PDFExtractor.from(path));
-//
-//        List<String> words = new ArrayList<String>();
-//
-//        for(LuceneClassifier.Keyword keyword: values){
-//            if (WordValidator.isValid(keyword.getStem())) words.add(keyword.getStem());
-//        }
-//        researchObject.setBagOfWords(words);
+        // Item
+        Item item = new Item();
+        item.setUri(uriGenerator.newItem());
+        item.setCreationTime(currentTime);
+        item.setAuthoredOn(authored);
+        item.setAuthoredBy(creators);
+        item.setContributedBy(contributors);
+        item.setFormat(format);
+        item.setLanguage(language);
+        item.setTitle(title);
+        item.setSubject(subject);
+        item.setDescription(description);
+        item.setUrl(pubURI);
+        item.setType(type);
 
+        item.setContent("content");
+        item.setTokens("tokens");
+
+        // Save Item
+        udm.saveItem(item);
+
+        LOG.info("Item created: " + item);
+
+        // Relate Item to Document
+        udm.relateItemToDocument(item.getUri(),document.getUri());
+
+        // TODO Create parts from Text Mining
 
         // Convert to json
-        String json = mapper.writeValueAsString(researchObject);
+        String json = mapper.writeValueAsString(document);
 
         // Put in camel flow
-        exchange.getIn().setHeader("FileName", StringUtils.replace(StringUtils.substringAfterLast(url, basedir), format, "json"));
+        exchange.getIn().setHeader("FileName", StringUtils.replace(StringUtils.substringAfterLast("file://"+path, basedir), format, "json"));
         exchange.getIn().setBody(json, String.class);
-
-
-        LOG.info("ResearchObject as RegularResource: {}", researchObject);
 
     }
 }

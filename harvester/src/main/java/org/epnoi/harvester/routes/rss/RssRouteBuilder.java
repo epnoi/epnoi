@@ -23,7 +23,6 @@ public class RssRouteBuilder extends RouteBuilder {
 
         from(URI_RETRIEVE_METAINFORMATION).
                 setProperty(Record.SOURCE_PROTOCOL, constant("rss")).
-                setProperty(Record.SOURCE_URI, simple("http://www.epnoi.org/rss/${property." + Record.SOURCE_NAME + "}")).
                 setProperty(Record.SOURCE_NAME, xpath("//rss:channel/rss:title/text()", String.class).namespaces(ns)).
                 setProperty(Record.SOURCE_URL, xpath("//rss:channel/rss:link/text()", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_TITLE, xpath("//rss:item/rss:title/text()", String.class).namespaces(ns)).

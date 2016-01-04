@@ -1,4 +1,4 @@
-package org.epnoi.harvester.routes.oaipmh;
+package org.epnoi.harvester.routes.rss;
 
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.language.ConstantExpression;
@@ -15,19 +15,19 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Paths;
 
 /**
- * Created by cbadenes on 01/12/15.
+ * Created by cbadenes on 04/01/16.
  */
 @Component
-public class OAIPMHRouteMaker implements RouteMaker{
+public class RssRouteMaker implements RouteMaker {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OAIPMHRouteMaker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RssRouteMaker.class);
 
     @Value("${epnoi.hoarder.storage.path}")
     protected String basedir;
 
     @Override
     public boolean accept(String protocol) {
-        return protocol.equalsIgnoreCase("oaipmh");
+        return protocol.equalsIgnoreCase("rss");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
         String uri = new StringBuilder().
                 append("file:").
                 append(Paths.get(basedir).toFile().getAbsolutePath()).
-                append("/oaipmh/").
+                append("/rss/").
                 append(source.name()).
                 append("?recursive=true&include=.*.xml&doneFileName=${file:name}.done").
                 toString();
@@ -46,7 +46,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
         return new RouteDefinition().
                 from(uri).
                 setProperty(Record.SOURCE_URI,  new ConstantExpression(source.getUri())).
-                to(OAIPMHRouteBuilder.URI_RETRIEVE_METAINFORMATION).
+                to(RssRouteBuilder.URI_RETRIEVE_METAINFORMATION).
                 to(CommonRouteBuilder.URI_RO_BUILD);
     }
 }

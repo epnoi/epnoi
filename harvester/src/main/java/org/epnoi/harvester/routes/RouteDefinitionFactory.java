@@ -30,7 +30,7 @@ public class RouteDefinitionFactory {
 
     public RouteDefinition newRoute(Source source){
 
-        String protocol = StringUtils.substringBefore(source.getUrl(), ":").toLowerCase();
+        String protocol = source.protocol().toLowerCase();
 
         List<RouteMaker> handlers = routeMakers.stream().filter(routeMaker -> routeMaker.accept(protocol)).collect(Collectors.toList());
 
@@ -40,7 +40,7 @@ public class RouteDefinitionFactory {
             LOG.warn("More than one builder for handling '" + protocol + "' sources: " + handlers);
         }
 
-        return handlers.get(0).build(source.getUrl());
+        return handlers.get(0).build(source);
     }
 
 }
