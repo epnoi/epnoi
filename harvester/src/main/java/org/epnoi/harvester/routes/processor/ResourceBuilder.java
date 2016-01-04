@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.lang.StringUtils;
-import org.epnoi.model.DublinCoreMetadataElementsSet;
 import org.epnoi.model.Record;
 import org.epnoi.model.ResearchObject;
 import org.slf4j.Logger;
@@ -16,16 +15,16 @@ import org.springframework.stereotype.Component;
  * Created by cbadenes on 01/12/15.
  */
 @Component
-public class ROBuilder implements Processor {
+public class ResourceBuilder implements Processor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ROBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceBuilder.class);
 
     private final ObjectMapper mapper;
 
     @Value("${epnoi.hoarder.storage.path}")
     protected String basedir;
 
-    public ROBuilder(){
+    public ResourceBuilder(){
         this.mapper = new ObjectMapper();
     }
 

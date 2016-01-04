@@ -3,9 +3,11 @@ package org.epnoi.storage.graph;
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.storage.graph.domain.DocumentNode;
 import org.epnoi.storage.graph.domain.ItemNode;
+import org.epnoi.storage.graph.domain.SourceNode;
 import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
 import org.epnoi.storage.graph.repository.DocumentGraphRepository;
 import org.epnoi.storage.graph.repository.ItemGraphRepository;
+import org.epnoi.storage.graph.repository.SourceGraphRepository;
 import org.epnoi.storage.graph.repository.TopicGraphRepository;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,6 +35,9 @@ public class RelationTest {
 
     @Autowired
     TopicGraphRepository tRepository;
+
+    @Autowired
+    SourceGraphRepository sRepository;
 
     @Autowired
     Session session;
@@ -82,6 +87,15 @@ public class RelationTest {
         iRepository.deleteAll();
         dRepository.deleteAll();
         tRepository.deleteAll();
+        sRepository.deleteAll();
     }
+
+    @Test
+    public void createSource(){
+        SourceNode sourceNode = new SourceNode();
+        sourceNode.setUri("http://epnoi.org/sources/7aa484ca-d968-43b2-b336-2a5af501d1e1");
+        sRepository.save(sourceNode);
+    }
+
 
 }

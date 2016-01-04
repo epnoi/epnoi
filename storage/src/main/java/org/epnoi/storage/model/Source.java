@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class Source extends Resource {
 
-    private String url;
-
     private String name;
 
     private String description;
+
+    private String url;
 
     private String protocol;
 

@@ -8,6 +8,12 @@ import lombok.Data;
 @Data
 public class Item extends Resource{
 
+    private String authoredOn;
+
+    private String authoredBy;
+
+    private String contributedBy;
+
     private String format;
 
     private String language;
@@ -19,6 +25,8 @@ public class Item extends Resource{
     private String description;
 
     private String url;
+
+    private String type;
 
     private String content;
 

@@ -1,4 +1,4 @@
-package org.epnoi.harvester.routes;
+package org.epnoi.harvester.routes.file;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.apache.camel.EndpointInject;

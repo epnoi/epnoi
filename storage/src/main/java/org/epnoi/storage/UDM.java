@@ -5,8 +5,11 @@ import org.epnoi.storage.column.repository.*;
 import org.epnoi.storage.document.domain.*;
 import org.epnoi.storage.document.repository.*;
 import org.epnoi.storage.graph.domain.*;
+import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.graph.repository.*;
 import org.epnoi.storage.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Component;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UDM {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UDM.class);
 
     @Autowired
     SourceColumnRepository sourceColumnRepository;
@@ -81,80 +86,138 @@ public class UDM {
      ******************************************************************************/
 
     public void saveSource(Source source){
+        LOG.debug("trying to save :" + source);
         // column
         sourceColumnRepository.save(ResourceUtils.map(source, SourceColumn.class));
         // document
         sourceDocumentRepository.save(ResourceUtils.map(source, SourceDocument.class));
         // graph : TODO Set unique Long id for node
         sourceGraphRepository.save(ResourceUtils.map(source, SourceNode.class));
+        LOG.info("resource saved :" + source);
     }
 
     public void saveDomain(Domain domain){
+        LOG.debug("trying to save :" + domain);
         // column
         domainColumnRepository.save(ResourceUtils.map(domain, DomainColumn.class));
         // document
         domainDocumentRepository.save(ResourceUtils.map(domain, DomainDocument.class));
         // graph : TODO Set unique Long id for node
         domainGraphRepository.save(ResourceUtils.map(domain, DomainNode.class));
+        LOG.info("resource saved :" + domain);
     }
 
     public void saveDocument(Document document){
+        LOG.debug("trying to save :" + document);
         // column
         documentColumnRepository.save(ResourceUtils.map(document, DocumentColumn.class));
         // document
         documentDocumentRepository.save(ResourceUtils.map(document, DocumentDocument.class));
         // graph : TODO Set unique Long id for node
         documentGraphRepository.save(ResourceUtils.map(document, DocumentNode.class));
+        LOG.info("resource saved :" + document);
     }
 
     public void saveItem(Item item){
+        LOG.debug("trying to save :" + item);
         // column
         itemColumnRepository.save(ResourceUtils.map(item, ItemColumn.class));
         // document
         itemDocumentRepository.save(ResourceUtils.map(item, ItemDocument.class));
         // graph : TODO Set unique Long id for node
         itemGraphRepository.save(ResourceUtils.map(item, ItemNode.class));
+        LOG.info("resource saved :" + item);
     }
 
     public void savePart(Part part){
+        LOG.debug("trying to save :" + part);
         // column
         partColumnRepository.save(ResourceUtils.map(part, PartColumn.class));
         // document
         partDocumentRepository.save(ResourceUtils.map(part, PartDocument.class));
         // graph : TODO Set unique Long id for node
         partGraphRepository.save(ResourceUtils.map(part, PartNode.class));
+        LOG.info("resource saved :" + part);
     }
 
     public void saveWord(Word word){
+        LOG.debug("trying to save :" + word);
         // column
         wordColumnRepository.save(ResourceUtils.map(word, WordColumn.class));
         // document
         wordDocumentRepository.save(ResourceUtils.map(word, WordDocument.class));
         // graph : TODO Set unique Long id for node
         wordGraphRepository.save(ResourceUtils.map(word, WordNode.class));
+        LOG.info("resource saved :" + word);
     }
 
     public void saveRelation(Relation relation){
+        LOG.debug("trying to save :" + relation);
         // column
         relationColumnRepository.save(ResourceUtils.map(relation, RelationColumn.class));
         // document
         relationDocumentRepository.save(ResourceUtils.map(relation, RelationDocument.class));
+        LOG.info("resource saved :" + relation);
     }
 
     public void saveTopic(Topic topic){
+        LOG.debug("trying to save :" + topic);
         // column
         topicColumnRepository.save(ResourceUtils.map(topic, TopicColumn.class));
         // document
         topicDocumentRepository.save(ResourceUtils.map(topic, TopicDocument.class));
         // graph : TODO Set unique Long id for node
         topicGraphRepository.save(ResourceUtils.map(topic, TopicNode.class));
+        LOG.info("resource saved :" + topic);
     }
 
     public void saveAnalysis(Analysis analysis){
+        LOG.debug("trying to save :" + analysis);
         // column
         analysisColumnRepository.save(ResourceUtils.map(analysis, AnalysisColumn.class));
         // document
         analysisDocumentRepository.save(ResourceUtils.map(analysis, AnalysisDocument.class));
+        LOG.info("resource saved :" + analysis);
+    }
+
+    /******************************************************************************
+     * Exist
+     ******************************************************************************/
+
+    public boolean existSource(String uri){
+        return sourceColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existDomain(String uri){
+        return domainColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existDocument(String uri){
+        return documentColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existItem(String uri){
+        return itemColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existPart(String uri){
+        return partColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existWord(String uri){
+        return wordColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existAnalysis(String uri){
+        return analysisColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existRelation(String uri){
+        return relationColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
+    }
+
+    public boolean existTopic(String uri){
+        return topicColumnRepository.exists(BasicMapId.id(ResourceUtils.URI,uri));
     }
 
     /******************************************************************************
@@ -196,6 +259,202 @@ public class UDM {
     public Analysis readAnalysis(String uri){
         return analysisColumnRepository.findOne(BasicMapId.id(ResourceUtils.URI,uri));
     }
+
+    /******************************************************************************
+     * Relate
+     ******************************************************************************/
+    // TODO review relations:: relation.ID to avoid duplicates
+
+    public void relateDocumentToSource(String documentURI, String sourceURI, String date){
+        // Document
+        DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
+        // Source
+        SourceNode sourceNode = sourceGraphRepository.findOneByUri(sourceURI);
+
+        ProvidesSourceDocument relation = new ProvidesSourceDocument();
+        relation.setDate(date);
+        relation.setSource(sourceNode);
+        relation.setDocument(documentNode);
+
+        sourceNode.addProvideRelation(relation);
+        sourceGraphRepository.save(sourceNode);
+    }
+
+    public void relateDocumentToDocument(String documentURI1, String documentURI2, Double weight, String domainURI){
+        // Document
+        DocumentNode documentNode1 = documentGraphRepository.findOneByUri(documentURI1);
+        // Document
+        DocumentNode documentNode2 = documentGraphRepository.findOneByUri(documentURI2);
+
+
+        SimilarDocument relation = new SimilarDocument();
+        relation.setX(documentNode1);
+        relation.setY(documentNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+
+        documentNode1.addSimilarRelation(relation);
+        documentGraphRepository.save(documentNode1);
+        documentNode2.addSimilarRelation(relation);
+        documentGraphRepository.save(documentNode2);
+    }
+
+    public void relateItemToDocument(String itemURI, String documentURI){
+        // Item
+        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
+        // Document
+        DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
+
+        BundleDocumentItem relation = new BundleDocumentItem();
+        relation.setDocument(documentNode);
+        relation.setItem(itemNode);
+
+        documentNode.addBundleRelation(relation);
+        documentGraphRepository.save(documentNode);
+    }
+
+    public void relateItemToItem(String itemURI1, String itemURI2, Double weight, String domainURI){
+        // Item
+        ItemNode itemNode1 = itemGraphRepository.findOneByUri(itemURI1);
+        // Item
+        ItemNode itemNode2 = itemGraphRepository.findOneByUri(itemURI2);
+
+
+        SimilarItem relation = new SimilarItem();
+        relation.setX(itemNode1);
+        relation.setY(itemNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+
+        itemNode1.addSimilarRelation(relation);
+        itemGraphRepository.save(itemNode1);
+        itemNode2.addSimilarRelation(relation);
+        itemGraphRepository.save(itemNode2);
+    }
+
+    public void relateItemToPart(String itemURI, String partURI){
+        // Part
+        PartNode partNode = partGraphRepository.findOneByUri(partURI);
+        // Item
+        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
+
+        DescribesPartItem relation = new DescribesPartItem();
+        relation.setItem(itemNode);
+        relation.setItem(itemNode);
+
+        partNode.addDescribeRelation(relation);
+        partGraphRepository.save(partNode);
+    }
+
+    public void relateWordToItem(String wordURI, String itemURI, Long times){
+        // Word
+        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
+        // Item
+        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
+
+        MentionsItemWord relation = new MentionsItemWord();
+        relation.setItem(itemNode);
+        relation.setWord(wordNode);
+        relation.setTimes(times);
+
+        itemNode.addMentionRelation(relation);
+        itemGraphRepository.save(itemNode);
+    }
+
+    public void relateWordToPart(String wordURI, String partURI, Long times){
+        // Word
+        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
+        // Part
+        PartNode partNode = partGraphRepository.findOneByUri(partURI);
+
+        MentionsPartWord relation = new MentionsPartWord();
+        relation.setPart(partNode);
+        relation.setWord(wordNode);
+        relation.setTimes(times);
+
+        partNode.addMentionRelation(relation);
+        partGraphRepository.save(partNode);
+    }
+
+    public void relateTopicToDocument(String topicURI, String documentURI, Double weight){
+        // Topic
+        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
+        // Document
+        DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
+
+        DealsDocumentTopic relation = new DealsDocumentTopic();
+        relation.setDocument(documentNode);
+        relation.setTopic(topicNode);
+        relation.setWeight(weight);
+
+        documentNode.addDealRelation(relation);
+        documentGraphRepository.save(documentNode);
+    }
+
+    public void relateTopicToItem(String topicURI, String itemURI, Double weight){
+        // Topic
+        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
+        // Item
+        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
+
+        DealsItemTopic relation = new DealsItemTopic();
+        relation.setItem(itemNode);
+        relation.setTopic(topicNode);
+        relation.setWeight(weight);
+
+        itemNode.addDealRelation(relation);
+        itemGraphRepository.save(itemNode);
+    }
+
+    public void relateTopicToPart(String topicURI, String partURI, Double weight){
+        // Topic
+        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
+        // Part
+        PartNode partNode = partGraphRepository.findOneByUri(partURI);
+
+
+        DealsPartTopic relation = new DealsPartTopic();
+        relation.setPart(partNode);
+        relation.setTopic(topicNode);
+        relation.setWeight(weight);
+
+        partNode.addDealRelation(relation);
+        partGraphRepository.save(partNode);
+    }
+
+    public void relateWordToTopic(String wordURI, String topicURI, Double weight){
+        // Word
+        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
+        // Topic
+        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
+
+        MentionsTopicWord relation = new MentionsTopicWord();
+        relation.setTopic(topicNode);
+        relation.setWord(wordNode);
+        relation.setWeight(weight);
+
+        topicNode.addMentionRelation(relation);
+        topicGraphRepository.save(topicNode);
+    }
+
+    public void relateDomainToTopic(String domainURI, String topicURI, String date, String analysisURI){
+        // Domain
+        DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
+        // Topic
+        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
+
+        EmergesInTopicDomain relation = new EmergesInTopicDomain();
+        relation.setTopic(topicNode);
+        relation.setDomain(domainNode);
+        relation.setDate(date);
+        relation.setAnalysis(analysisURI);
+
+        topicNode.addEmergeRelation(relation);
+        topicGraphRepository.save(topicNode);
+    }
+
+
+
     /******************************************************************************
      * Delete
      ******************************************************************************/
@@ -205,9 +464,9 @@ public class UDM {
         sourceColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         sourceDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        sourceGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        SourceNode source = sourceGraphRepository.findOneByUri(uri);
+        sourceGraphRepository.delete(source);
     }
 
     public void deleteDomain(String uri){
@@ -215,9 +474,9 @@ public class UDM {
         domainColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         domainDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        domainGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        DomainNode domain = domainGraphRepository.findOneByUri(uri);
+        domainGraphRepository.delete(domain);
     }
 
     public void deleteDocument(String uri){
@@ -225,9 +484,9 @@ public class UDM {
         documentColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         documentDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        documentGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        DocumentNode document = documentGraphRepository.findOneByUri(uri);
+        documentGraphRepository.delete(document);
     }
 
     public void deleteItem(String uri){
@@ -235,9 +494,9 @@ public class UDM {
         itemColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         itemDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        itemGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        ItemNode item = itemGraphRepository.findOneByUri(uri);
+        itemGraphRepository.delete(item);
     }
 
     public void deletePart(String uri){
@@ -245,9 +504,9 @@ public class UDM {
         partColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         partDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        partGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        PartNode part = partGraphRepository.findOneByUri(uri);
+        partGraphRepository.delete(part);
     }
 
     public void deleteWord(String uri){
@@ -255,9 +514,9 @@ public class UDM {
         wordColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         wordDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        wordGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        WordNode word = wordGraphRepository.findOneByUri(uri);
+        wordGraphRepository.delete(word);
     }
 
     public void deleteTopic(String uri){
@@ -265,9 +524,9 @@ public class UDM {
         topicColumnRepository.delete(BasicMapId.id(ResourceUtils.URI,uri));
         // document
         topicDocumentRepository.delete(uri);
-        // graph : TODO Set unique Long id for node
-        Long nodeId = 0L;// calculate from URI
-        topicGraphRepository.delete(nodeId);
+        // graph : TODO Get id directly from URI
+        TopicNode topic = topicGraphRepository.findOneByUri(uri);
+        topicGraphRepository.delete(topic);
     }
 
     public void deleteRelation(String uri){

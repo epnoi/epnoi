@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:provenance="http://www.openarchives.org/OAI/2.0/provenance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <responseDate>2016-01-04T13:00:04Z</responseDate>
+    <request verb="ListRecords" resumptionToken="metadataPrefix%3Doai_dc%26offset%3D1604">http://eprints.ucm.es/cgi/oai2</request>
+    <ListRecords>
+        <record>
+            <header>
+                <identifier>oai:www.ucm.es:1631</identifier>
+                <datestamp>2009-07-28T10:18:50Z</datestamp>
+                <setSpec>7374617475733D707562</setSpec>
+                <setSpec>7375626A656374733D41:415F3133:415F31335F333135</setSpec>
+                <setSpec>7375626A656374733D41:415F3131:415F31315F323933</setSpec>
+                <setSpec>7375626A656374733D41:415F3133:415F31335F333231</setSpec>
+                <setSpec>74797065733D646561</setSpec>
+            </header>
+            <metadata>
+                <dc>
+                    <dc:relation>http://eprints.ucm.es/1631/</dc:relation>
+                    <dc:title>Terremotos inducidos por transferencia cosísmica de esfuerzos: metodología y casuística</dc:title>
+                    <dc:creator>Álvarez Gómez, José Antonio</dc:creator>
+                    <dc:contributor>Martínez Díaz, José Jesús</dc:contributor>
+                    <dc:subject>Geodinámica</dc:subject>
+                    <dc:subject>Geofísica</dc:subject>
+                    <dc:subject>Sismología</dc:subject>
+                    <dc:date>2004</dc:date>
+                    <dc:type>info:eu-repo/semantics/bachelorThesis</dc:type>
+                    <dc:type>PeerReviewed</dc:type>
+                    <dc:identifier>http://eprints.ucm.es/1631/1/Alvarez-Gomez_Terremotos_inducidos_por_transferencia_cosismica_de_esfuerzos.pdf</dc:identifier>
+                    <dc:format>application/pdf</dc:format>
+                    <dc:language>es</dc:language>
+                    <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+                </dc>
+            </metadata>
+        </record>
+    </ListRecords>
+</OAI-PMH>

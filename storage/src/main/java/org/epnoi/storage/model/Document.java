@@ -8,6 +8,20 @@ import lombok.Data;
 @Data
 public class Document extends Resource {
 
+    private String publishedOn;
+
+    private String publishedBy;
+
+    private String authoredOn;
+
+    private String authoredBy;
+
+    private String contributedBy;
+
+    private String retrievedFrom;
+
+    private String retrievedOn;
+
     private String format;
 
     private String language;
@@ -19,6 +33,8 @@ public class Document extends Resource {
     private String description;
 
     private String rights;
+
+    private String type;
 
     private String content;
 

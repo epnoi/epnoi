@@ -11,5 +11,4 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface BaseGraphRepository<T extends Resource> extends GraphRepository<T>{
 
     T findOneByUri(String uri);
-
 }
