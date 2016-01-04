@@ -19,6 +19,7 @@ public interface Resource extends Serializable {
 		MODEL("model"),
 		RELATION("relation"),
 		WORD("word"),
+		ANALYSIS("analysis"),
 		ANY("*");
 
 		String keyValue;
@@ -30,11 +31,8 @@ public interface Resource extends Serializable {
 	}
 
 	enum State {
-		NEW("new"),
-		OPENED("opened"),
-		CLOSED("closed"),
-		MARKED("marked"),
-		ANALYZED("analyzed"),
+		CREATED("created"),
+		UPDATED("updated"),
 		DELETED("deleted"),
 		ANY("*");
 

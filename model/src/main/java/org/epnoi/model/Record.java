@@ -32,10 +32,14 @@ public class Record {
     public static final String PUBLICATION_PUBLISHED            = joiner.join(PUBLICATION,"published");
     public static final String PUBLICATION_PUBLISHED_DATE       = joiner.join(PUBLICATION_PUBLISHED,"date");
     public static final String PUBLICATION_PUBLISHED_MILLIS     = joiner.join(PUBLICATION_PUBLISHED,"millis");
+    public static final String PUBLICATION_AUTHORED             = joiner.join(PUBLICATION,"authored");
     public static final String PUBLICATION_URI                  = joiner.join(PUBLICATION,"uri");
     public static final String PUBLICATION_LANGUAGE             = joiner.join(PUBLICATION,"lang");
     public static final String PUBLICATION_RIGHTS               = joiner.join(PUBLICATION,"rights");
     public static final String PUBLICATION_FORMAT               = joiner.join(PUBLICATION,"format");
+    public static final String PUBLICATION_TYPE               = joiner.join(PUBLICATION,"type");
+    public static final String PUBLICATION_SUBJECT               = joiner.join(PUBLICATION,"subject");
+
     //  -> urls
     public static final String PUBLICATION_URL                  = joiner.join(PUBLICATION,"url");
     public static final String PUBLICATION_URL_LOCAL            = joiner.join(PUBLICATION_URL,"local");
@@ -46,4 +50,5 @@ public class Record {
     public static final String PUBLICATION_REFERENCE_URL        = joiner.join(PUBLICATION_REFERENCE,"url");
     //  -> creators
     public static final String PUBLICATION_CREATORS             = joiner.join(PUBLICATION,"creators"); //CSV
+    public static final String PUBLICATION_CONTRIBUTORS         = joiner.join(PUBLICATION,"contributors"); //CSV
 }
