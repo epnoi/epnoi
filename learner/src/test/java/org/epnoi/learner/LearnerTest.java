@@ -1,10 +1,12 @@
 package org.epnoi.learner;
 
+import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.relations.extractor.parallel.ParallelRelationsExtractor;
 import org.epnoi.model.Relation;
 import org.epnoi.model.Term;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Created by rgonzalez on 3/12/15.
  */
-
+@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
