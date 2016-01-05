@@ -33,9 +33,8 @@ public class OAIPMHRouteMaker implements RouteMaker {
         String uri = new StringBuilder(source.getUrl()).append(separator).append("initialDelay=1000&delay=60000").toString();
 
         String sourceName   = source.name();
-        String sourceUrl    = source.server(); //"http://oa.upm.es/perl/oai2"
+        String sourceUrl    = source.server(); //"oa.upm.es/perl/oai2"
 
-        // TODO Create a valid xPath according to the domain: OAIPMHPubByIdRoute, OAIPMHPubByRelRoute, OAIPMHPubByViewRoute
         return new OAIPMHRoute(uri,sourceName,sourceUrl,routeBuilder.getNs()).definition();
     }
 }

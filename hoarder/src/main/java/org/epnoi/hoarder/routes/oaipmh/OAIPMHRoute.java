@@ -27,12 +27,12 @@ public class OAIPMHRoute implements SourceRoute {
         //TODO External Configuration to define this policy
         // setting the expression to download the related pdf file
         switch (url.toLowerCase()){
-            case "http://eprints.ucm.es/cgi/oai2":
+            case "oaipmh://eprints.ucm.es/cgi/oai2":
                 pubExpression = Expressions.xpath("//oai:metadata/oai:dc/dc:identifier/text()", ns);
                 break;
-            case "http://www.sciencepubco.com/index.php/IJAA/oai":
-            case "http://innovareacademics.in/journals/index.php/ijags/oai":
-            case "http://innovareacademics.in/journals/index.php/ijas/oai":
+            case "oaipmh://www.sciencepubco.com/index.php/IJAA/oai":
+            case "oaipmh://innovareacademics.in/journals/index.php/ijags/oai":
+            case "oaipmh://innovareacademics.in/journals/index.php/ijas/oai":
                 pubExpression = Expressions.xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\\\";\\\"),\\\";\\\"),\\\";\\\"),\\\"view\\\",\\\"download\\\")", ns);
                 break;
             default:

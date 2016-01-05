@@ -40,15 +40,15 @@ public class NewSourceEventHandlerTest {
     CamelContext camelContext;
 
     @Test
-    public void newSource() throws Exception {
+    public void oaipmh() throws Exception {
 
         List<Route> initialRoutes = camelContext.getRoutes();
 
         Source source = new Source();
-        source.setUri("/sources/sample1");
+        source.setUri("/sources/oaipmh");
         source.setUrl("oaipmh://eprints.ucm.es/cgi/oai2");
 
-        logger.info("trying to send a 'new.source' event: " + source);
+        logger.info("trying to send a 'source.created' event: " + source);
         this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
         logger.info("event sent. Now going to sleep...");
         Thread.currentThread().sleep(5000);
@@ -60,6 +60,35 @@ public class NewSourceEventHandlerTest {
 
 
         long newroute = modifiedRoutes.stream().filter(route -> route.getConsumer().getEndpoint().getEndpointUri().contains(source.getUrl())).count();
+
+        Assert.assertEquals("New Route",1L,newroute);
+
+        camelContext.stop();
+
+
+    }
+
+    @Test
+    public void rss() throws Exception {
+
+        List<Route> initialRoutes = camelContext.getRoutes();
+
+        Source source = new Source();
+        source.setUri("/sources/rss");
+        source.setUrl("rss://rss.slashdot.org/Slashdot/slashdot");
+
+        logger.info("trying to send a 'source.created' event: " + source);
+        this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
+        logger.info("event sent. Now going to sleep...");
+        Thread.currentThread().sleep(5000);
+        logger.info("Wake Up. Now going to sleep...");
+
+        List<Route> modifiedRoutes = camelContext.getRoutes();
+
+        Assert.assertEquals("Number of routes", initialRoutes.size() + 1, modifiedRoutes.size());
+
+
+        long newroute = modifiedRoutes.stream().filter(route -> route.getConsumer().getEndpoint().getEndpointUri().contains(source.name())).count();
 
         Assert.assertEquals("New Route",1L,newroute);
 
