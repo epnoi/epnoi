@@ -16,7 +16,8 @@ public class RssRouteBuilder extends RouteBuilder {
 
     @Getter
     protected Namespaces ns = new Namespaces("provenance", "http://www.openarchives.org/OAI/2.0/provenance")
-            .add("rss", "http://purl.org/rss/1.0/");
+            .add("rss", "http://purl.org/rss/1.0/")
+            .add("dc", "http://purl.org/dc/elements/1.1/");
 
     @Override
     public void configure() throws Exception {
@@ -31,9 +32,11 @@ public class RssRouteBuilder extends RouteBuilder {
                 setProperty(Record.PUBLICATION_URI, xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_URL, xpath("//rss:item/rss:link/text()", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_URL_LOCAL, simple("${header.CamelFileAbsolutePath}")).
+                setProperty(Record.PUBLICATION_SUBJECT, xpath("string-join(//rss:item/dc:subject/text(),\";\")", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_AUTHORED, xpath("//rss:item/dc:date/text()", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_LANGUAGE, xpath("//rss:channel/dc:language/text()", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_RIGHTS, xpath("//rss:channel/dc:rights/text()", String.class).namespaces(ns)).
-                setProperty(Record.PUBLICATION_CREATORS, xpath("string-join(//rss:channel/dc:creator/text(),\";\")", String.class).namespaces(ns)).
+                setProperty(Record.PUBLICATION_CREATORS, xpath("string-join(//rss:item/dc:creator/text(),\";\")", String.class).namespaces(ns)).
                 setProperty(Record.PUBLICATION_FORMAT, constant("htm")).
                 setProperty(Record.PUBLICATION_METADATA_FORMAT, constant("xml")).
                 setProperty(Record.PUBLICATION_REFERENCE_URL, simple("${header.CamelFileParent}/.camel/${header.CamelFileNameOnly}"));

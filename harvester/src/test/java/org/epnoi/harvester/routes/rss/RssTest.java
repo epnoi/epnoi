@@ -1,4 +1,4 @@
-package org.epnoi.harvester.routes.oaipmh;
+package org.epnoi.harvester.routes.rss;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.harvester.WebContextConfiguration;
@@ -7,6 +7,8 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.RoutingKey;
+import org.epnoi.storage.UDM;
+import org.epnoi.storage.model.ResourceUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -24,19 +26,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebContextConfiguration.class)
 @TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage" })
-public class OAIPMHTest {
+public class RssTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OAIPMHTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RssTest.class);
 
     @Autowired
     EventBus eventBus;
+
+    @Autowired
+    UDM udm;
 
     @Test
     public void readFolder() throws Exception {
 
         Source source = new Source();
-        source.setUri("http://epnoi.org/sources/7aa484ca-d968-43b2-b336-2a5af501d1e1");
-        source.setUrl("oaipmh://eprints.ucm.es/cgi/oai2");
+        source.setUri("/sources/rss");
+        source.setUrl("rss://rss.slashdot.org/Slashdot/slashdot");
+
+        if (!udm.existSource(source.getUri())){
+            udm.saveSource(ResourceUtils.map(source, org.epnoi.storage.model.Source.class));
+        }
+
 
         LOG.info("trying to send a 'source.created' event: " + source);
         this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
