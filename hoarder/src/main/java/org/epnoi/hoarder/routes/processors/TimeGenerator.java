@@ -25,6 +25,8 @@ public class TimeGenerator implements Processor{
 
     DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTimeNoMillis().withZone(timezone);
 
+    DateTimeFormatter dateFormatter = ISODateTimeFormat.date();
+
     DecimalFormat decimalFormat = new DecimalFormat("00");
 
     @Override
@@ -44,7 +46,12 @@ public class TimeGenerator implements Processor{
         }
 
         // Parse time (ISO-8601)
-        DateTime dateTime = dateTimeFormatter.parseDateTime(time);
+        DateTime dateTime;
+        try{
+             dateTime = dateTimeFormatter.parseDateTime(time);
+        }catch (IllegalArgumentException e){
+            dateTime = dateFormatter.parseDateTime(time);
+        }
 
         // Add date in format: yyyy-mm-dd
         addProperty(exchange, Record.PUBLICATION_PUBLISHED_DATE, Joiner.on("-").join(dateTime.getYear(),decimalFormat.format(dateTime.getMonthOfYear()),decimalFormat.format(dateTime.getDayOfMonth())));

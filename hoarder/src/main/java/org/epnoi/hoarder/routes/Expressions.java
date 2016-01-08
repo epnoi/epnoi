@@ -18,12 +18,14 @@ public class Expressions {
     public static XPathExpression xpath(String expression, Map<String,String> namespaces){
         XPathExpression xPathExpression = new XPathExpression(expression);
         xPathExpression.setNamespaces(namespaces);
+        xPathExpression.setResultType(String.class);
         return xPathExpression;
     }
 
     public static XPathExpression xpath(String expression, Namespaces namespaces){
         XPathExpression xPathExpression = new XPathExpression(expression);
         xPathExpression.setNamespaces(namespaces.getNamespaces());
+        xPathExpression.setResultType(String.class);
         return xPathExpression;
     }
 

@@ -44,14 +44,26 @@ public class NewSourceEventHandlerTest {
 
         List<Route> initialRoutes = camelContext.getRoutes();
 
+        // List of OAI-PMH Repositories: http://www.opendoar.org/new1interfacelist.php?block=oai-pmh
+
         Source source = new Source();
         source.setUri("/sources/oaipmh");
-        source.setUrl("oaipmh://eprints.ucm.es/cgi/oai2");
+        // UCM
+        // source.setUrl("oaipmh://eprints.ucm.es/cgi/oai2");
+
+        // Nasa Technical Reports Server (NTRS)
+//        source.setUrl("oaipmh://ntrs.nasa.gov/oai");
+
+        // MIT
+//        source.setUrl("oaipmh://dspace.mit.edu/oai/request");
+
+        // Bournemouth University
+        source.setUrl("oaipmh://eprints.bournemouth.ac.uk/cgi/oai2?from=2015-01-01T00:00:00Z");
 
         logger.info("trying to send a 'source.created' event: " + source);
         this.eventBus.post(Event.from(source), RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
         logger.info("event sent. Now going to sleep...");
-        Thread.currentThread().sleep(5000);
+        Thread.currentThread().sleep(25000);
         logger.info("Wake Up. Now going to sleep...");
 
         List<Route> modifiedRoutes = camelContext.getRoutes();
