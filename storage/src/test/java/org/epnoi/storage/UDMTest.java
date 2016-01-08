@@ -1,6 +1,12 @@
 package org.epnoi.storage;
 
 import es.cbadenes.lab.test.IntegrationTest;
+import org.epnoi.model.Event;
+import org.epnoi.model.Resource;
+import org.epnoi.model.modules.BindingKey;
+import org.epnoi.model.modules.EventBus;
+import org.epnoi.model.modules.EventBusSubscriber;
+import org.epnoi.model.modules.RoutingKey;
 import org.epnoi.storage.model.Source;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by cbadenes on 01/01/16.
@@ -26,7 +34,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "epnoi.elasticsearch.contactpoints = zavijava.dia.fi.upm.es",
         "epnoi.elasticsearch.port = 5021",
         "epnoi.neo4j.contactpoints = zavijava.dia.fi.upm.es",
-        "epnoi.neo4j.port = 5030"})
+        "epnoi.neo4j.port = 5030",
+        "epnoi.eventbus.uri = amqp://epnoi:drinventor@zavijava.dia.fi.upm.es:5040/drinventor"})
+
 public class UDMTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(UDMTest.class);
@@ -34,9 +44,23 @@ public class UDMTest {
     @Autowired
     UDM udm;
 
+    @Autowired
+    EventBus eventBus;
 
     @Test
     public void saveSource(){
+
+
+        AtomicInteger counter = new AtomicInteger(0);
+
+        eventBus.subscribe(new EventBusSubscriber() {
+            @Override
+            public void handle(Event event) {
+                LOG.info("Handle Event: " + event);
+                counter.incrementAndGet();
+            }
+        }, BindingKey.of(RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED),"test"));
+
 
         Source source = new Source();
         source.setUri("http://epnoi.org/sources/0b3e80ae-d598-4dd4-8c54-38e2229f0bf8");
@@ -60,6 +84,8 @@ public class UDMTest {
 
         Source source3 = udm.readSource(source.getUri());
         Assert.assertNotEquals(source,source2);
+
+        Assert.assertEquals(1, counter.get());
 
     }
 

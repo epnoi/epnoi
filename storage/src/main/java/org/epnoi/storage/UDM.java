@@ -1,5 +1,8 @@
 package org.epnoi.storage;
 
+import org.epnoi.model.*;
+import org.epnoi.model.modules.EventBus;
+import org.epnoi.model.modules.RoutingKey;
 import org.epnoi.storage.column.domain.*;
 import org.epnoi.storage.column.repository.*;
 import org.epnoi.storage.document.domain.*;
@@ -8,6 +11,11 @@ import org.epnoi.storage.graph.domain.*;
 import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.graph.repository.*;
 import org.epnoi.storage.model.*;
+import org.epnoi.storage.model.Domain;
+import org.epnoi.storage.model.Item;
+import org.epnoi.storage.model.Relation;
+import org.epnoi.storage.model.Resource;
+import org.epnoi.storage.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +29,9 @@ import org.springframework.stereotype.Component;
 public class UDM {
 
     private static final Logger LOG = LoggerFactory.getLogger(UDM.class);
+
+    @Autowired
+    EventBus eventBus;
 
     @Autowired
     SourceColumnRepository sourceColumnRepository;
@@ -94,6 +105,8 @@ public class UDM {
         // graph : TODO Set unique Long id for node
         sourceGraphRepository.save(ResourceUtils.map(source, SourceNode.class));
         LOG.info("resource saved :" + source);
+        //Publish the event
+        eventBus.post(Event.from(source), RoutingKey.of(org.epnoi.model.Resource.Type.SOURCE, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveDomain(Domain domain){
@@ -105,6 +118,8 @@ public class UDM {
         // graph : TODO Set unique Long id for node
         domainGraphRepository.save(ResourceUtils.map(domain, DomainNode.class));
         LOG.info("resource saved :" + domain);
+        //Publish the event
+        eventBus.post(Event.from(domain), RoutingKey.of(org.epnoi.model.Resource.Type.DOMAIN, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveDocument(Document document){
@@ -120,6 +135,8 @@ public class UDM {
         documentNode.setTokens(null);
         documentGraphRepository.save(documentNode);
         LOG.info("resource saved :" + document);
+        //Publish the event
+        eventBus.post(Event.from(document), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveItem(Item item){
@@ -135,6 +152,8 @@ public class UDM {
         itemNode.setTokens(null);
         itemGraphRepository.save(itemNode);
         LOG.info("resource saved :" + item);
+        //Publish the event
+        eventBus.post(Event.from(item), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void savePart(Part part){
@@ -150,6 +169,8 @@ public class UDM {
         partNode.setTokens(null);
         partGraphRepository.save(partNode);
         LOG.info("resource saved :" + part);
+        //Publish the event
+        eventBus.post(Event.from(part), RoutingKey.of(org.epnoi.model.Resource.Type.PART, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveWord(Word word){
@@ -161,6 +182,8 @@ public class UDM {
         // graph : TODO Set unique Long id for node
         wordGraphRepository.save(ResourceUtils.map(word, WordNode.class));
         LOG.info("resource saved :" + word);
+        //Publish the event
+        eventBus.post(Event.from(word), RoutingKey.of(org.epnoi.model.Resource.Type.WORD, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveRelation(Relation relation){
@@ -170,6 +193,8 @@ public class UDM {
         // document
         relationDocumentRepository.save(ResourceUtils.map(relation, RelationDocument.class));
         LOG.info("resource saved :" + relation);
+        //Publish the event
+        eventBus.post(Event.from(relation), RoutingKey.of(org.epnoi.model.Resource.Type.RELATION, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveTopic(Topic topic){
@@ -181,6 +206,8 @@ public class UDM {
         // graph : TODO Set unique Long id for node
         topicGraphRepository.save(ResourceUtils.map(topic, TopicNode.class));
         LOG.info("resource saved :" + topic);
+        //Publish the event
+        eventBus.post(Event.from(topic), RoutingKey.of(org.epnoi.model.Resource.Type.TOPIC, org.epnoi.model.Resource.State.CREATED));
     }
 
     public void saveAnalysis(Analysis analysis){
@@ -190,6 +217,8 @@ public class UDM {
         // document
         analysisDocumentRepository.save(ResourceUtils.map(analysis, AnalysisDocument.class));
         LOG.info("resource saved :" + analysis);
+        //Publish the event
+        eventBus.post(Event.from(analysis), RoutingKey.of(org.epnoi.model.Resource.Type.ANALYSIS, org.epnoi.model.Resource.State.CREATED));
     }
 
     /******************************************************************************
@@ -292,6 +321,9 @@ public class UDM {
         sourceNode.addProvideRelation(relation);
         sourceGraphRepository.save(sourceNode);
         LOG.info("Document: " + documentURI + " related to source: " + sourceURI + " in: " + date);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(sourceNode,Source.class)), RoutingKey.of(org.epnoi.model.Resource.Type.SOURCE, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateDocumentToDomain(String documentURI, String domainURI, String date){
@@ -309,6 +341,9 @@ public class UDM {
         domainNode.addContainRelation(relation);
         domainGraphRepository.save(domainNode);
         LOG.info("Document: " + documentURI + " related to domain: " + domainURI + " in: " + date);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(domainNode,Domain.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOMAIN, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateDocumentToDocument(String documentURI1, String documentURI2, Double weight, String domainURI){
@@ -330,6 +365,10 @@ public class UDM {
         documentNode2.addSimilarRelation(relation);
         documentGraphRepository.save(documentNode2);
         LOG.info("Document: " + documentURI1 + " related to document: " + documentURI2);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(documentNode1,Document.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(documentNode2,Document.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateItemToDocument(String itemURI, String documentURI){
@@ -346,6 +385,9 @@ public class UDM {
         documentNode.addBundleRelation(relation);
         documentGraphRepository.save(documentNode);
         LOG.info("Item: " + itemURI + " related to document: " + documentURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(documentNode,Document.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateItemToItem(String itemURI1, String itemURI2, Double weight, String domainURI){
@@ -367,6 +409,10 @@ public class UDM {
         itemNode2.addSimilarRelation(relation);
         itemGraphRepository.save(itemNode2);
         LOG.info("Item: " + itemURI1 + " related to item: " + itemURI2);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(itemNode1,Item.class)), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(itemNode2,Item.class)), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateItemToPart(String itemURI, String partURI){
@@ -383,6 +429,9 @@ public class UDM {
         partNode.addDescribeRelation(relation);
         partGraphRepository.save(partNode);
         LOG.info("Item: " + itemURI + " related to part: " + partURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(org.epnoi.model.Resource.Type.PART, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateWordToItem(String wordURI, String itemURI, Long times){
@@ -400,6 +449,9 @@ public class UDM {
         itemNode.addMentionRelation(relation);
         itemGraphRepository.save(itemNode);
         LOG.info("Word: " + wordURI + " related to item: " + itemURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(itemNode,Item.class)), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateWordToPart(String wordURI, String partURI, Long times){
@@ -417,6 +469,9 @@ public class UDM {
         partNode.addMentionRelation(relation);
         partGraphRepository.save(partNode);
         LOG.info("Word: " + wordURI + " related to part: " + partURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(org.epnoi.model.Resource.Type.PART, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateTopicToDocument(String topicURI, String documentURI, Double weight){
@@ -434,6 +489,9 @@ public class UDM {
         documentNode.addDealRelation(relation);
         documentGraphRepository.save(documentNode);
         LOG.info("Topic: " + topicURI + " related to document: " + documentURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(documentNode,Document.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateTopicToItem(String topicURI, String itemURI, Double weight){
@@ -451,6 +509,9 @@ public class UDM {
         itemNode.addDealRelation(relation);
         itemGraphRepository.save(itemNode);
         LOG.info("Topic: " + topicURI + " related to item: " + itemURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(itemNode,Item.class)), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateTopicToPart(String topicURI, String partURI, Double weight){
@@ -469,6 +530,9 @@ public class UDM {
         partNode.addDealRelation(relation);
         partGraphRepository.save(partNode);
         LOG.info("Topic: " + topicURI + " related to part: " + partURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(org.epnoi.model.Resource.Type.PART, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateWordToTopic(String wordURI, String topicURI, Double weight){
@@ -486,6 +550,9 @@ public class UDM {
         topicNode.addMentionRelation(relation);
         topicGraphRepository.save(topicNode);
         LOG.info("Word: " + wordURI + " related to topic: " + topicURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(org.epnoi.model.Resource.Type.TOPIC, org.epnoi.model.Resource.State.UPDATED));
     }
 
     public void relateDomainToTopic(String domainURI, String topicURI, String date, String analysisURI){
@@ -504,6 +571,9 @@ public class UDM {
         topicNode.addEmergeRelation(relation);
         topicGraphRepository.save(topicNode);
         LOG.info("Domain: " + domainURI + " related to topic: " + topicURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(org.epnoi.model.Resource.Type.TOPIC, org.epnoi.model.Resource.State.UPDATED));
     }
 
 
@@ -520,6 +590,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         SourceNode source = sourceGraphRepository.findOneByUri(uri);
         sourceGraphRepository.delete(source);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(source,Source.class)), RoutingKey.of(org.epnoi.model.Resource.Type.SOURCE, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteDomain(String uri){
@@ -530,6 +603,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         DomainNode domain = domainGraphRepository.findOneByUri(uri);
         domainGraphRepository.delete(domain);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(domain,Domain.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOMAIN, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteDocument(String uri){
@@ -540,6 +616,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         DocumentNode document = documentGraphRepository.findOneByUri(uri);
         documentGraphRepository.delete(document);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(document,Document.class)), RoutingKey.of(org.epnoi.model.Resource.Type.DOCUMENT, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteItem(String uri){
@@ -550,6 +629,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         ItemNode item = itemGraphRepository.findOneByUri(uri);
         itemGraphRepository.delete(item);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(item,Item.class)), RoutingKey.of(org.epnoi.model.Resource.Type.ITEM, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deletePart(String uri){
@@ -560,6 +642,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         PartNode part = partGraphRepository.findOneByUri(uri);
         partGraphRepository.delete(part);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(part,Part.class)), RoutingKey.of(org.epnoi.model.Resource.Type.PART, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteWord(String uri){
@@ -570,6 +655,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         WordNode word = wordGraphRepository.findOneByUri(uri);
         wordGraphRepository.delete(word);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(word,Word.class)), RoutingKey.of(org.epnoi.model.Resource.Type.WORD, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteTopic(String uri){
@@ -580,6 +668,9 @@ public class UDM {
         // graph : TODO Get id directly from URI
         TopicNode topic = topicGraphRepository.findOneByUri(uri);
         topicGraphRepository.delete(topic);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(topic,Topic.class)), RoutingKey.of(org.epnoi.model.Resource.Type.TOPIC, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteRelation(String uri){
@@ -588,6 +679,11 @@ public class UDM {
         // document
         relationDocumentRepository.delete(uri);
         // graph : TODO remove relationships between WORD nodes
+
+        //Publish the event
+        Relation relation = new Relation();
+        relation.setUri(uri);
+        eventBus.post(Event.from(relation), RoutingKey.of(org.epnoi.model.Resource.Type.RELATION, org.epnoi.model.Resource.State.DELETED));
     }
 
     public void deleteAnalysis(String uri){
@@ -596,6 +692,11 @@ public class UDM {
         // document
         analysisDocumentRepository.delete(uri);
         // graph : TODO remove TOPIC and/or RELATIONS of that analysis
+
+        //Publish the event
+        Analysis analysis = new Analysis();
+        analysis.setUri(uri);
+        eventBus.post(Event.from(analysis), RoutingKey.of(org.epnoi.model.Resource.Type.ANALYSIS, org.epnoi.model.Resource.State.DELETED));
     }
 
 }
