@@ -16,10 +16,10 @@ public interface Resource extends Serializable {
 		DOCUMENT("document"),
 		ITEM("item"),
 		PART("part"),
-		MODEL("model"),
-		RELATION("relation"),
 		WORD("word"),
+		RELATION("relation"),
 		ANALYSIS("analysis"),
+		TOPIC("topic"),
 		ANY("*");
 
 		String keyValue;
