@@ -144,6 +144,7 @@
         <module>app</module>
         <module>vms</module>
         <module>watcher</module>
+        <module>eventbus</module>
     </modules>
 
     <dependencyManagement>
