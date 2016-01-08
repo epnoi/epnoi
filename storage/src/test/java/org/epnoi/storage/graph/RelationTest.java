@@ -5,10 +5,7 @@ import org.epnoi.storage.graph.domain.DocumentNode;
 import org.epnoi.storage.graph.domain.ItemNode;
 import org.epnoi.storage.graph.domain.SourceNode;
 import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
-import org.epnoi.storage.graph.repository.DocumentGraphRepository;
-import org.epnoi.storage.graph.repository.ItemGraphRepository;
-import org.epnoi.storage.graph.repository.SourceGraphRepository;
-import org.epnoi.storage.graph.repository.TopicGraphRepository;
+import org.epnoi.storage.graph.repository.*;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -28,16 +25,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RelationTest {
 
     @Autowired
-    DocumentGraphRepository dRepository;
+    DocumentGraphRepository documentGraphRepository;
 
     @Autowired
-    ItemGraphRepository iRepository;
+    ItemGraphRepository itemGraphRepository;
 
     @Autowired
-    TopicGraphRepository tRepository;
+    TopicGraphRepository topicGraphRepository;
 
     @Autowired
-    SourceGraphRepository sRepository;
+    SourceGraphRepository sourceGraphRepository;
+
+    @Autowired
+    DomainGraphRepository domainGraphRepository;
+
+    @Autowired
+    PartGraphRepository partGraphRepository;
 
     @Autowired
     Session session;
@@ -47,7 +50,7 @@ public class RelationTest {
 
         // Document
         String dUri = "documents/1212-1212-1212-1212";
-        DocumentNode dNode = dRepository.findOneByUri(dUri);
+        DocumentNode dNode = documentGraphRepository.findOneByUri(dUri);
         if (dNode == null){
             dNode = new DocumentNode();
             dNode.setUri(dUri);
@@ -55,7 +58,7 @@ public class RelationTest {
 
         // Item
         String iUri = "items/1212-1212-1212-1212";
-        ItemNode iNode = iRepository.findOneByUri(iUri);
+        ItemNode iNode = itemGraphRepository.findOneByUri(iUri);
         if (iNode == null){
             iNode = new ItemNode();
             iNode.setUri(iUri);
@@ -68,14 +71,14 @@ public class RelationTest {
         dNode.addBundleRelation(bundle);
 
         // save
-        dRepository.save(dNode);
+        documentGraphRepository.save(dNode);
 
     }
 
     @Test
     public void readItemFromDocument(){
 
-        DocumentNode result = dRepository.findOneByUri("documents/1212-1212-1212-1212");
+        DocumentNode result = documentGraphRepository.findOneByUri("documents/1212-1212-1212-1212");
         System.out.println(result);
 
         System.out.println(result.getBundles());
@@ -84,17 +87,19 @@ public class RelationTest {
 
     @Test
     public void clean(){
-        iRepository.deleteAll();
-        dRepository.deleteAll();
-        tRepository.deleteAll();
-        sRepository.deleteAll();
+        itemGraphRepository.deleteAll();
+        documentGraphRepository.deleteAll();
+        topicGraphRepository.deleteAll();
+        sourceGraphRepository.deleteAll();
+        domainGraphRepository.deleteAll();
+        partGraphRepository.deleteAll();
     }
 
     @Test
     public void createSource(){
         SourceNode sourceNode = new SourceNode();
         sourceNode.setUri("http://epnoi.org/sources/7aa484ca-d968-43b2-b336-2a5af501d1e1");
-        sRepository.save(sourceNode);
+        sourceGraphRepository.save(sourceNode);
     }
 
 

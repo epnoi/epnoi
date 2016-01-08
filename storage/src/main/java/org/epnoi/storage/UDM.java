@@ -114,7 +114,11 @@ public class UDM {
         // document
         documentDocumentRepository.save(ResourceUtils.map(document, DocumentDocument.class));
         // graph : TODO Set unique Long id for node
-        documentGraphRepository.save(ResourceUtils.map(document, DocumentNode.class));
+        // graph : TODO Avoid content and tokens to save
+        DocumentNode documentNode = ResourceUtils.map(document, DocumentNode.class);
+        documentNode.setContent(null);
+        documentNode.setTokens(null);
+        documentGraphRepository.save(documentNode);
         LOG.info("resource saved :" + document);
     }
 
@@ -125,7 +129,11 @@ public class UDM {
         // document
         itemDocumentRepository.save(ResourceUtils.map(item, ItemDocument.class));
         // graph : TODO Set unique Long id for node
-        itemGraphRepository.save(ResourceUtils.map(item, ItemNode.class));
+        // graph : TODO Avoid content and tokens to save
+        ItemNode itemNode = ResourceUtils.map(item, ItemNode.class);
+        itemNode.setContent(null);
+        itemNode.setTokens(null);
+        itemGraphRepository.save(itemNode);
         LOG.info("resource saved :" + item);
     }
 
@@ -136,7 +144,11 @@ public class UDM {
         // document
         partDocumentRepository.save(ResourceUtils.map(part, PartDocument.class));
         // graph : TODO Set unique Long id for node
-        partGraphRepository.save(ResourceUtils.map(part, PartNode.class));
+        // graph : TODO Avoid content and tokens to save
+        PartNode partNode = ResourceUtils.map(part, PartNode.class);
+        partNode.setContent(null);
+        partNode.setTokens(null);
+        partGraphRepository.save(partNode);
         LOG.info("resource saved :" + part);
     }
 
@@ -266,6 +278,7 @@ public class UDM {
     // TODO review relations:: relation.ID to avoid duplicates
 
     public void relateDocumentToSource(String documentURI, String sourceURI, String date){
+        LOG.debug("Trying to relate document: " + documentURI + " to source: " + sourceURI + " in: " + date);
         // Document
         DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
         // Source
@@ -278,9 +291,28 @@ public class UDM {
 
         sourceNode.addProvideRelation(relation);
         sourceGraphRepository.save(sourceNode);
+        LOG.info("Document: " + documentURI + " related to source: " + sourceURI + " in: " + date);
+    }
+
+    public void relateDocumentToDomain(String documentURI, String domainURI, String date){
+        LOG.debug("Trying to relate document: " + documentURI + " to domain: " + domainURI + " in: " + date);
+        // Document
+        DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
+        // Domain
+        DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
+
+        ContainsDomainDocument relation = new ContainsDomainDocument();
+        relation.setDocument(documentNode);
+        relation.setDomain(domainNode);
+        relation.setDate(date);
+
+        domainNode.addContainRelation(relation);
+        domainGraphRepository.save(domainNode);
+        LOG.info("Document: " + documentURI + " related to domain: " + domainURI + " in: " + date);
     }
 
     public void relateDocumentToDocument(String documentURI1, String documentURI2, Double weight, String domainURI){
+        LOG.debug("Trying to relate document: " + documentURI1 + " to document: " + documentURI2 + " with weight: " + weight + " and domain: " + domainURI);
         // Document
         DocumentNode documentNode1 = documentGraphRepository.findOneByUri(documentURI1);
         // Document
@@ -297,9 +329,11 @@ public class UDM {
         documentGraphRepository.save(documentNode1);
         documentNode2.addSimilarRelation(relation);
         documentGraphRepository.save(documentNode2);
+        LOG.info("Document: " + documentURI1 + " related to document: " + documentURI2);
     }
 
     public void relateItemToDocument(String itemURI, String documentURI){
+        LOG.debug("Trying to relate item: " + itemURI + " to document: " + documentURI);
         // Item
         ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
         // Document
@@ -311,9 +345,11 @@ public class UDM {
 
         documentNode.addBundleRelation(relation);
         documentGraphRepository.save(documentNode);
+        LOG.info("Item: " + itemURI + " related to document: " + documentURI);
     }
 
     public void relateItemToItem(String itemURI1, String itemURI2, Double weight, String domainURI){
+        LOG.debug("Trying to relate item: " + itemURI1 + " to item: " + itemURI2+ " with weight: " + weight + " in domain: " + domainURI);
         // Item
         ItemNode itemNode1 = itemGraphRepository.findOneByUri(itemURI1);
         // Item
@@ -330,9 +366,11 @@ public class UDM {
         itemGraphRepository.save(itemNode1);
         itemNode2.addSimilarRelation(relation);
         itemGraphRepository.save(itemNode2);
+        LOG.info("Item: " + itemURI1 + " related to item: " + itemURI2);
     }
 
     public void relateItemToPart(String itemURI, String partURI){
+        LOG.debug("Trying to relate item: " + itemURI + " to part: " + partURI);
         // Part
         PartNode partNode = partGraphRepository.findOneByUri(partURI);
         // Item
@@ -340,13 +378,15 @@ public class UDM {
 
         DescribesPartItem relation = new DescribesPartItem();
         relation.setItem(itemNode);
-        relation.setItem(itemNode);
+        relation.setPart(partNode);
 
         partNode.addDescribeRelation(relation);
         partGraphRepository.save(partNode);
+        LOG.info("Item: " + itemURI + " related to part: " + partURI);
     }
 
     public void relateWordToItem(String wordURI, String itemURI, Long times){
+        LOG.debug("Trying to relate word: " + wordURI + " to item: " + itemURI+ " with times: " + times);
         // Word
         WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
         // Item
@@ -359,9 +399,11 @@ public class UDM {
 
         itemNode.addMentionRelation(relation);
         itemGraphRepository.save(itemNode);
+        LOG.info("Word: " + wordURI + " related to item: " + itemURI);
     }
 
     public void relateWordToPart(String wordURI, String partURI, Long times){
+        LOG.debug("Trying to relate word: " + wordURI + " to part: " + partURI+ " with times: " + times );
         // Word
         WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
         // Part
@@ -374,9 +416,11 @@ public class UDM {
 
         partNode.addMentionRelation(relation);
         partGraphRepository.save(partNode);
+        LOG.info("Word: " + wordURI + " related to part: " + partURI);
     }
 
     public void relateTopicToDocument(String topicURI, String documentURI, Double weight){
+        LOG.debug("Trying to relate topic: " + topicURI + " to document: " + documentURI+ " with weight: " + weight);
         // Topic
         TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
         // Document
@@ -389,9 +433,11 @@ public class UDM {
 
         documentNode.addDealRelation(relation);
         documentGraphRepository.save(documentNode);
+        LOG.info("Topic: " + topicURI + " related to document: " + documentURI);
     }
 
     public void relateTopicToItem(String topicURI, String itemURI, Double weight){
+        LOG.debug("Trying to relate topic: " + topicURI + " to item: " + itemURI+ " with weight: " + weight );
         // Topic
         TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
         // Item
@@ -404,9 +450,11 @@ public class UDM {
 
         itemNode.addDealRelation(relation);
         itemGraphRepository.save(itemNode);
+        LOG.info("Topic: " + topicURI + " related to item: " + itemURI);
     }
 
     public void relateTopicToPart(String topicURI, String partURI, Double weight){
+        LOG.debug("Trying to relate topic: " + topicURI + " to part: " + partURI + " with weight: " + weight );
         // Topic
         TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
         // Part
@@ -420,9 +468,11 @@ public class UDM {
 
         partNode.addDealRelation(relation);
         partGraphRepository.save(partNode);
+        LOG.info("Topic: " + topicURI + " related to part: " + partURI);
     }
 
     public void relateWordToTopic(String wordURI, String topicURI, Double weight){
+        LOG.debug("Trying to relate word: " + wordURI + " to topic: " + topicURI+ " with weight: " + weight);
         // Word
         WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
         // Topic
@@ -435,9 +485,11 @@ public class UDM {
 
         topicNode.addMentionRelation(relation);
         topicGraphRepository.save(topicNode);
+        LOG.info("Word: " + wordURI + " related to topic: " + topicURI);
     }
 
     public void relateDomainToTopic(String domainURI, String topicURI, String date, String analysisURI){
+        LOG.debug("Trying to relate domain: " + domainURI + " to topic: " + topicURI+ " in date: " + date + " by analysis: " + analysisURI);
         // Domain
         DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
         // Topic
@@ -451,6 +503,7 @@ public class UDM {
 
         topicNode.addEmergeRelation(relation);
         topicGraphRepository.save(topicNode);
+        LOG.info("Domain: " + domainURI + " related to topic: " + topicURI);
     }
 
 
