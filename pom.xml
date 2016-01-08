@@ -64,6 +64,7 @@
         <camel.oaipmh.version>1.0.5</camel.oaipmh.version>
         <camel.version>2.15.2</camel.version>
         <cloning.version>1.9.1</cloning.version>
+        <coreNlpExtensions.version>1.0</coreNlpExtensions.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.pool.version>2.4.1</commons.pool.version>
         <flexjson.version>2.0</flexjson.version>
@@ -109,6 +110,7 @@
         <spring.data.elasticsearch.version>1.3.2.RELEASE</spring.data.elasticsearch.version>
         <spring.data.neo4j.version>4.0.0.RELEASE</spring.data.neo4j.version>
         <spring.version>4.1.9.RELEASE</spring.version>
+        <stanford.version>3.5.2</stanford.version>
         <stanford.parser.version>1.0</stanford.parser.version>
         <surefire.junit.version>2.12</surefire.junit.version>
         <swagger.jersey.version>1.5.0</swagger.jersey.version>
@@ -119,6 +121,7 @@
         <thrift.version>0.9.2</thrift.version>
         <tika.version>1.7</tika.version>
         <tudarmstadt.wikipedia.version>1.0.0</tudarmstadt.wikipedia.version>
+        <upf.version>1.0.8.3</upf.version>
         <virtuoso.jena.version>1.0</virtuoso.jena.version>
         <virtuoso.jdbc.version>1.0</virtuoso.jdbc.version>
         <wdtk.version>0.4.0</wdtk.version>
@@ -233,6 +236,11 @@
                 <artifactId>jgrapht-core</artifactId>
                 <version>${jgrapht.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-neo4j</artifactId>
+                <version>${spring.data.neo4j.version}</version>
+            </dependency>
 
             <!-- In-Memory DB Libraries -->
             <dependency>
@@ -309,6 +317,11 @@
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-highlighter</artifactId>
                 <version>${lucene.version}</version>
             </dependency>
 
@@ -409,14 +422,6 @@
                 <version>${commons.pool.version}</version>
             </dependency>
 
-            <!-- Neo4j Libraries -->
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-neo4j</artifactId>
-                <version>${spring.data.neo4j.version}</version>
-            </dependency>
-
             <!-- Networking Libraries -->
 
             <dependency>
@@ -468,6 +473,11 @@
 
             <!-- NLP Libraries -->
             <dependency>
+                <groupId>edu.upf.taln.dri</groupId>
+                <artifactId>lib</artifactId>
+                <version>${upf.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>gate-stanford</groupId>
                 <artifactId>gate-stanford</artifactId>
                 <version>${gate.stanford.version}</version>
@@ -509,6 +519,28 @@
                 <artifactId>apache-jena-libs</artifactId>
                 <type>pom</type>
                 <version>${jena.version}</version>
+            </dependency>
+            <!-- Stanford Libraries -->
+            <dependency>
+                <groupId>edu.stanford.nlp</groupId>
+                <artifactId>stanford-corenlp</artifactId>
+                <version>${stanford.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.stanford.nlp</groupId>
+                <artifactId>stanford-parser</artifactId>
+                <version>${stanford.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.stanford.nlp</groupId>
+                <artifactId>stanford-corenlp</artifactId>
+                <version>${stanford.version}</version>
+                <classifier>models</classifier>
+            </dependency>
+            <dependency>
+                <groupId>intoxicant.analytics</groupId>
+                <artifactId>coreNlpExtensions</artifactId>
+                <version>${coreNlpExtensions.version}</version>
             </dependency>
 
             <!-- PDF Libraries -->
@@ -881,6 +913,13 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+
+        <!-- UPF Repository -->
+        <repository>
+            <id>backingdata-repo</id>
+            <name>Backingdata repository</name>
+            <url>http://backingdata.org/dri/library/mavenRepo/</url>
         </repository>
     </repositories>
 
