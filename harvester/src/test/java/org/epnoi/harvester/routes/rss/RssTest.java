@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebContextConfiguration.class)
-@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage" })
+@TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage", "epnoi.upf.miner.config = harvester/src/test/resources/DRIconfig.properties" })
 public class RssTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(RssTest.class);

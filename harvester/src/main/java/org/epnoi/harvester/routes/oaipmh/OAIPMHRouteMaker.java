@@ -2,11 +2,11 @@ package org.epnoi.harvester.routes.oaipmh;
 
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.language.ConstantExpression;
-import org.apache.commons.lang3.StringUtils;
 import org.epnoi.harvester.routes.RouteMaker;
 import org.epnoi.harvester.routes.common.CommonRouteBuilder;
 import org.epnoi.model.Record;
 import org.epnoi.model.Source;
+import org.epnoi.storage.model.Domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
     }
 
     @Override
-    public RouteDefinition build(Source source) {
+    public RouteDefinition build(Source source, Domain domain) {
 
         String uri = new StringBuilder().
                 append("file:").
@@ -46,6 +46,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
         return new RouteDefinition().
                 from(uri).
                 setProperty(Record.SOURCE_URI,  new ConstantExpression(source.getUri())).
+                setProperty(Record.DOMAIN_URI,  new ConstantExpression(domain.getUri())).
                 to(OAIPMHRouteBuilder.URI_RETRIEVE_METAINFORMATION).
                 to(CommonRouteBuilder.URI_RO_BUILD);
     }

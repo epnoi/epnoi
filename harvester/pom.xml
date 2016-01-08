@@ -63,6 +63,24 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- configure the plugin here -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -228,6 +246,58 @@
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
+        </dependency>
+
+        <!-- UPF Text Mining -->
+        <dependency>
+            <groupId>edu.upf.taln.dri</groupId>
+            <artifactId>lib</artifactId>
+            <version>${upf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>grph</groupId>
+                    <artifactId>grph</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>mate.anna.extra</groupId>
+                    <artifactId>seg</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jtidy</groupId>
+                    <artifactId>jtidy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.collections</groupId>
+                    <artifactId>google-collections</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Stanford Libraries -->
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-parser</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <classifier>models</classifier>
+        </dependency>
+        <dependency>
+            <groupId>intoxicant.analytics</groupId>
+            <artifactId>coreNlpExtensions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
         </dependency>
 
         <!-- TEST: Camel  -->

@@ -21,7 +21,7 @@ public class CommonRouteBuilder extends RouteBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonRouteBuilder.class);
 
-    public static final String URI_RO_BUILD        = "seda:common.ro.build";
+    public static final String URI_RO_BUILD        = "direct:common.ro.build";
 
     @Autowired
     ErrorHandler errorHandler;
