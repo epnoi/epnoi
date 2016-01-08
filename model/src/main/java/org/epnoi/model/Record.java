@@ -17,6 +17,10 @@ public class Record {
     public static final String ARGUMENT_NAME                    = joiner.join(ARGUMENT,"name");
     public static final String ARGUMENT_PATH                    = joiner.join(ARGUMENT,"path");
 
+    // Domain
+    private static final String DOMAIN                          = joiner.join(EPNOI,"domain");
+    public static final String DOMAIN_URI                       = joiner.join(DOMAIN, "uri");
+
     // Source
     private static final String SOURCE                          = joiner.join(EPNOI,"source");
     public static final String SOURCE_NAME                      = joiner.join(SOURCE,"name");
