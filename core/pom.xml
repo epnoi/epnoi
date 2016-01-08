@@ -32,6 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.epnoi</groupId>
+			<artifactId>epnoi-eventbus</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.epnoi</groupId>
 			<artifactId>epnoi-sources</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -151,10 +156,6 @@
 			<artifactId>mahout-core</artifactId>
 		</dependency>
 		-->
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-		</dependency>
 	</dependencies>
 </project>
 
