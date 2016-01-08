@@ -1,4 +1,4 @@
-package org.epnoi.uia.core.eventbus.rabbitmq;
+package org.epnoi.eventbus.rabbitmq;
 
 import com.rabbitmq.client.*;
 import org.epnoi.model.Event;

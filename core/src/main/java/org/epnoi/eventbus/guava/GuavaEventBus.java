@@ -1,4 +1,4 @@
-package org.epnoi.uia.core.eventbus.guava;
+package org.epnoi.eventbus.guava;
 
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.AsyncEventBus;

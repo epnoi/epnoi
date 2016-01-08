@@ -1,4 +1,4 @@
-package org.epnoi.uia.core.eventbus.guava;
+package org.epnoi.eventbus.guava;
 
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
