@@ -1,2 +1,2 @@
 # https://hub.docker.com/_/cassandra/
-docker run -d --restart=always --name column-db -p 5010:9160 -p 5011:9042 -v /opt/docker/cassandra/storage:/var/lib/cassandra cassandra:2.2.4
+docker run -d --restart=always --name column-db -p 5010:9160 -p 5011:9042 -p 5000:8080 -v /opt/docker/cassandra/storage:/var/lib/cassandra cbadenes/cassandra:1.0

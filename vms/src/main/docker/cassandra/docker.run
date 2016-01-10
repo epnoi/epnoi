@@ -1,0 +1,2 @@
+#docker run -t -i cbadenes/cassandra:1.0
+#docker run -it --rm --name column-db -p 8080:8080 -p 9042:9042 cbadenes/cassandra:1.0

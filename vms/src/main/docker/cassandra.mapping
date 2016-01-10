@@ -3,7 +3,7 @@
 # 2) Run CQL
 # $ cqlsh localhost
 
-create keyspace if not exists research with replication = {'class' : 'SimpleStrategy', 'replication_factor' : 3};
+create keyspace if not exists research with replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
 
 create table if not exists research.sources(uri text, creationTime text, name text, description text, protocol text, url text, domain text, primary key (uri));
 
