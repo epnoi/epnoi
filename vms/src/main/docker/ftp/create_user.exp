@@ -1,0 +1,6 @@
+spawn pure-pw useradd epnoi -u ftpuser -d /home/ftpusers/epnoi
+expect "Password: "
+send "drinventor\r"
+expect "Enter it again: "
+send "drinventor\r"
+expect eof

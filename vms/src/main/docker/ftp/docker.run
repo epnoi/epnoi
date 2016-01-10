@@ -1,0 +1,2 @@
+# active-mode
+docker run -it --rm --name ftp-server -p 5051:21 -v /Users/cbadenes/Downloads/ftp:/home/ftpusers/epnoi cbadenes/ftp:1.0

@@ -1,0 +1,3 @@
+# https://hub.docker.com/r/stilliard/pure-ftpd/
+# active-mode
+docker run -it --rm --name ftp-server -p 5051:21 -v /opt/docker/ftp/storage:/home/ftpusers/epnoi cbadenes/ftp:1.0

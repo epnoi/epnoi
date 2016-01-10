@@ -1,0 +1,1 @@
+docker build -t cbadenes/ftp:1.0 .
