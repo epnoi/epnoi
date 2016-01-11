@@ -9,7 +9,6 @@ import org.epnoi.harvester.mining.TextMiner;
 import org.epnoi.harvester.mining.annotation.AnnotatedDocument;
 import org.epnoi.harvester.model.MetaInformation;
 import org.epnoi.model.Record;
-import org.epnoi.model.ResearchObject;
 import org.epnoi.storage.TimeGenerator;
 import org.epnoi.storage.UDM;
 import org.epnoi.storage.URIGenerator;
@@ -161,9 +160,7 @@ public class ResourceBuilder implements Processor {
         String tokens   = textMiner.parse(rawContent).stream().filter(token -> token.isValid()).map(token -> token.getLemma()).collect(Collectors.joining(" "));
         document.setTokens(tokens);
 
-        udm.saveDocument(document);
-        // Relate Document To Source
-        udm.relateDocumentToSource(document.getUri(), sourceUri, document.getCreationTime());
+        udm.saveDocument(document,sourceUri);
         // Relate Document to Domain
         udm.relateDocumentToDomain(document.getUri(), domainUri, document.getCreationTime());
 
@@ -189,9 +186,7 @@ public class ResourceBuilder implements Processor {
         String tokens   = textMiner.parse(rawContent).stream().filter(token -> token.isValid()).map(token -> token.getLemma()).collect(Collectors.joining(" "));
         item.setTokens(tokens);
 
-        udm.saveItem(item);
-        // Relate Item to Document
-        udm.relateItemToDocument(item.getUri(),documentUri);
+        udm.saveItem(item,documentUri);
 
         return item;
     }
@@ -206,9 +201,7 @@ public class ResourceBuilder implements Processor {
         String tokens   = textMiner.parse(rawContent).stream().filter(token -> token.isValid()).map(token -> token.getLemma()).collect(Collectors.joining(" "));
         part.setTokens(tokens);
 
-        udm.savePart(part);
-        // Relate Part to Item
-        udm.relateItemToPart(itemUri,part.getUri());
+        udm.savePart(part,itemUri);
 
         return part;
     }

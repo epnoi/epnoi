@@ -96,24 +96,35 @@ public class UDMTest {
 
     @Test
     public void getDocumentsByDomain(){
+        // Source
+        Source source = new Source();
+        source.setUri(uriGenerator.newSource());
+        udm.saveSource(source);
 
+        // Domain
         Domain domain = new Domain();
         domain.setUri(uriGenerator.newDomain());
         udm.saveDomain(domain);
 
+        // Document 1
         Document doc1 = new Document();
         doc1.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc1);
+        udm.saveDocument(doc1,source.getUri());
+        // -> in domain
+        udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
 
+        // Document 2
         Document doc2 = new Document();
         doc2.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc2);
-
-        udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        udm.saveDocument(doc2,source.getUri());
+        // -> in domain
         udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
 
+        // Getting Documents
         List<String> documents = udm.getDocumentsByDomain(domain.getUri());
 
+        // Delete
+        udm.deleteSource(source.getUri());
         udm.deleteDomain(domain.getUri());
         udm.deleteDocument(doc1.getUri());
         udm.deleteDocument(doc2.getUri());
@@ -124,45 +135,56 @@ public class UDMTest {
 
     @Test
     public void getItemsByDomain(){
+        // Source
+        Source source = new Source();
+        source.setUri(uriGenerator.newSource());
+        udm.saveSource(source);
 
+        // Domain
         Domain domain = new Domain();
         domain.setUri(uriGenerator.newDomain());
         udm.saveDomain(domain);
 
+        // Document 1
         Document doc1 = new Document();
         doc1.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc1);
+        udm.saveDocument(doc1,source.getUri());
+        // -> in domain
         udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        // -> Item 1
         Item item11 = new Item();
         item11.setUri(uriGenerator.newItem());
-        udm.saveItem(item11);
-        udm.relateItemToDocument(item11.getUri(),doc1.getUri());
+        udm.saveItem(item11,doc1.getUri());
+        // -> Item 2
         Item item12 = new Item();
         item12.setUri(uriGenerator.newItem());
-        udm.saveItem(item12);
-        udm.relateItemToDocument(item12.getUri(),doc1.getUri());
+        udm.saveItem(item12,doc1.getUri());
 
-
+        // Document 2
         Document doc2 = new Document();
         doc2.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc2);
+        udm.saveDocument(doc2,source.getUri());
+        // -> in domain
         udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        // -> Item 1
         Item item21 = new Item();
         item21.setUri(uriGenerator.newItem());
-        udm.saveItem(item21);
-        udm.relateItemToDocument(item21.getUri(),doc2.getUri());
+        udm.saveItem(item21,doc2.getUri());
+        // -> Item 2
         Item item22 = new Item();
         item22.setUri(uriGenerator.newItem());
-        udm.saveItem(item22);
-        udm.relateItemToDocument(item22.getUri(),doc2.getUri());
+        udm.saveItem(item22,doc2.getUri());
+        // -> Item 3
         Item item23 = new Item();
         item23.setUri(uriGenerator.newItem());
-        udm.saveItem(item23);
-        udm.relateItemToDocument(item23.getUri(),doc2.getUri());
+        udm.saveItem(item23,doc2.getUri());
 
 
+        // Getting items in domain
         List<String> items = udm.getItemsByDomain(domain.getUri());
 
+        // Delete
+        udm.deleteSource(source.getUri());
         udm.deleteDomain(domain.getUri());
         udm.deleteDocument(doc1.getUri());
         udm.deleteDocument(doc2.getUri());
@@ -179,66 +201,75 @@ public class UDMTest {
     @Test
     public void getPartsByDomain(){
 
+        // Source
+        Source source = new Source();
+        source.setUri(uriGenerator.newSource());
+        udm.saveSource(source);
+
+        // Domain
         Domain domain = new Domain();
         domain.setUri(uriGenerator.newDomain());
         udm.saveDomain(domain);
 
+        // Document 1
         Document doc1 = new Document();
         doc1.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc1);
+        udm.saveDocument(doc1,source.getUri());
+        // -> in domain
         udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        // -> Item 1
         Item item11 = new Item();
         item11.setUri(uriGenerator.newItem());
-        udm.saveItem(item11);
-        udm.relateItemToDocument(item11.getUri(),doc1.getUri());
+        udm.saveItem(item11,doc1.getUri());
+        // -> -> Part 1
         Part part111 = new Part();
         part111.setUri(uriGenerator.newPart());
-        udm.savePart(part111);
-        udm.relateItemToPart(item11.getUri(),part111.getUri());
+        udm.savePart(part111,item11.getUri());
+        // -> -> Part 2
         Part part112 = new Part();
         part112.setUri(uriGenerator.newPart());
-        udm.savePart(part112);
-        udm.relateItemToPart(item11.getUri(),part112.getUri());
-
+        udm.savePart(part112,item11.getUri());
+        // -> Item2
         Item item12 = new Item();
         item12.setUri(uriGenerator.newItem());
-        udm.saveItem(item12);
-        udm.relateItemToDocument(item12.getUri(),doc1.getUri());
+        udm.saveItem(item12,doc1.getUri());
+        // -> -> Part 1
         Part part121 = new Part();
         part121.setUri(uriGenerator.newPart());
-        udm.savePart(part121);
-        udm.relateItemToPart(item12.getUri(),part121.getUri());
+        udm.savePart(part121,item12.getUri());
 
-
+        // Document 2
         Document doc2 = new Document();
         doc2.setUri(uriGenerator.newDocument());
-        udm.saveDocument(doc2);
+        udm.saveDocument(doc2,source.getUri());
+        // -> in domain
         udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        // -> Item 1
         Item item21 = new Item();
         item21.setUri(uriGenerator.newItem());
-        udm.saveItem(item21);
-        udm.relateItemToDocument(item21.getUri(),doc2.getUri());
+        udm.saveItem(item21,doc2.getUri());
+        // -> -> Part 1
         Part part211 = new Part();
         part211.setUri(uriGenerator.newPart());
-        udm.savePart(part211);
-        udm.relateItemToPart(item21.getUri(),part211.getUri());
+        udm.savePart(part211,item21.getUri());
+        // -> -> Part 2
         Part part212 = new Part();
         part212.setUri(uriGenerator.newPart());
-        udm.savePart(part212);
-        udm.relateItemToPart(item21.getUri(),part212.getUri());
-
+        udm.savePart(part212,item21.getUri());
+        // -> Item 2
         Item item22 = new Item();
         item22.setUri(uriGenerator.newItem());
-        udm.saveItem(item22);
-        udm.relateItemToDocument(item22.getUri(),doc2.getUri());
+        udm.saveItem(item22,doc2.getUri());
+        // -> Item 3
         Item item23 = new Item();
         item23.setUri(uriGenerator.newItem());
-        udm.saveItem(item23);
-        udm.relateItemToDocument(item23.getUri(),doc2.getUri());
+        udm.saveItem(item23,doc2.getUri());
 
-
+        // Getting parts in a domain
         List<String> parts = udm.getPartsByDomain(domain.getUri());
 
+        // Delete
+        udm.deleteSource(source.getUri());
         udm.deleteDomain(domain.getUri());
         udm.deleteDocument(doc1.getUri());
         udm.deleteDocument(doc2.getUri());
