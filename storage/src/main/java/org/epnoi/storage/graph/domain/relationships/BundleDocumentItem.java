@@ -9,7 +9,7 @@ import org.neo4j.ogm.annotation.*;
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="BUNDLE")
+@RelationshipEntity(type="BUNDLES")
 @Data
 @EqualsAndHashCode(exclude={"id"})
 public class BundleDocumentItem {

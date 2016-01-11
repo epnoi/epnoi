@@ -14,7 +14,6 @@ import org.epnoi.storage.model.*;
 import org.epnoi.storage.model.Domain;
 import org.epnoi.storage.model.Item;
 import org.epnoi.storage.model.Relation;
-import org.epnoi.storage.model.Resource;
 import org.epnoi.storage.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -588,7 +587,7 @@ public class UDM {
     public List<String> getDocumentsByDomainURI(String domainURI){
         LOG.debug("Getting documents in domain: " + domainURI);
         List<String> documents = new ArrayList<>();
-        Iterable<DocumentNode> nodes = documentGraphRepository.getByDomain(domainURI);
+        Iterable<DocumentNode> nodes = documentGraphRepository.findByDomain(domainURI);
         if (nodes != null){
             Iterator<DocumentNode> iterator = nodes.iterator();
             while(iterator.hasNext()){
@@ -599,6 +598,19 @@ public class UDM {
         return documents;
     }
 
+    public List<String> getItemsByDomainURI(String domainURI){
+        LOG.debug("Getting items in domain: " + domainURI);
+        List<String> items = new ArrayList<>();
+        Iterable<ItemNode> nodes = itemGraphRepository.findByDomain(domainURI);
+        if (nodes != null){
+            Iterator<ItemNode> iterator = nodes.iterator();
+            while(iterator.hasNext()){
+                items.add(iterator.next().getUri());
+            }
+        }
+        LOG.info("Items: " + items);
+        return items;
+    }
 
 
     /******************************************************************************

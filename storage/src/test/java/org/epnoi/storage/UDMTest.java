@@ -11,6 +11,7 @@ import org.epnoi.storage.graph.domain.DocumentNode;
 import org.epnoi.storage.graph.domain.DomainNode;
 import org.epnoi.storage.model.Document;
 import org.epnoi.storage.model.Domain;
+import org.epnoi.storage.model.Item;
 import org.epnoi.storage.model.Source;
 import org.junit.Assert;
 import org.junit.Test;
@@ -126,6 +127,60 @@ public class UDMTest {
 
         Assert.assertTrue(documents != null);
         Assert.assertEquals(2,documents.size());
+    }
+
+    @Test
+    public void getItemsByDomain(){
+
+        Domain domain = new Domain();
+        domain.setUri(uriGenerator.newDomain());
+        udm.saveDomain(domain);
+
+        Document doc1 = new Document();
+        doc1.setUri(uriGenerator.newDocument());
+        udm.saveDocument(doc1);
+        udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        Item item11 = new Item();
+        item11.setUri(uriGenerator.newItem());
+        udm.saveItem(item11);
+        udm.relateItemToDocument(item11.getUri(),doc1.getUri());
+        Item item12 = new Item();
+        item12.setUri(uriGenerator.newItem());
+        udm.saveItem(item12);
+        udm.relateItemToDocument(item12.getUri(),doc1.getUri());
+
+
+        Document doc2 = new Document();
+        doc2.setUri(uriGenerator.newDocument());
+        udm.saveDocument(doc2);
+        udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        Item item21 = new Item();
+        item21.setUri(uriGenerator.newItem());
+        udm.saveItem(item21);
+        udm.relateItemToDocument(item21.getUri(),doc2.getUri());
+        Item item22 = new Item();
+        item22.setUri(uriGenerator.newItem());
+        udm.saveItem(item22);
+        udm.relateItemToDocument(item22.getUri(),doc2.getUri());
+        Item item23 = new Item();
+        item23.setUri(uriGenerator.newItem());
+        udm.saveItem(item23);
+        udm.relateItemToDocument(item23.getUri(),doc2.getUri());
+
+
+        List<String> items = udm.getItemsByDomainURI(domain.getUri());
+
+        udm.deleteDomain(domain.getUri());
+        udm.deleteDocument(doc1.getUri());
+        udm.deleteDocument(doc2.getUri());
+        udm.deleteItem(item11.getUri());
+        udm.deleteItem(item12.getUri());
+        udm.deleteItem(item21.getUri());
+        udm.deleteItem(item22.getUri());
+        udm.deleteItem(item23.getUri());
+
+        Assert.assertTrue(items != null);
+        Assert.assertEquals(5,items.size());
     }
 
 }
