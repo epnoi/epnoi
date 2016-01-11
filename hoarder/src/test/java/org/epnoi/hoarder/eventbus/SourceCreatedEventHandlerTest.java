@@ -3,7 +3,7 @@ package org.epnoi.hoarder.eventbus;
 import es.cbadenes.lab.test.IntegrationTest;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
-import org.epnoi.hoarder.WebContextConfiguration;
+import org.epnoi.hoarder.Config;
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebContextConfiguration.class)
+@ContextConfiguration(classes = Config.class)
 @TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage" })
 public class SourceCreatedEventHandlerTest {
 

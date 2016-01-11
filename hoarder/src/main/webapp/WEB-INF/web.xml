@@ -33,7 +33,7 @@
     <!-- location of Spring Configuration Class-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>org.epnoi.hoarder.WebContextConfiguration</param-value>
+        <param-value>org.epnoi.hoarder.Config</param-value>
     </context-param>
 
     <!-- the listener that kick-starts Spring -->

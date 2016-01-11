@@ -3,7 +3,7 @@ package org.epnoi.hoarder.eventbus;
 import org.epnoi.hoarder.services.SourceService;
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
-import org.epnoi.model.Source;
+import org.epnoi.storage.model.Source;
 import org.epnoi.model.modules.RoutingKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +27,12 @@ public class SourceCreatedEventHandler extends AbstractEventHandler {
 
     @Override
     public void handle(Event event) {
-        LOG.info("New Source event received: " + event);
-        Source source = event.to(Source.class);
+        LOG.info("Source created event received: " + event);
         try{
-            sourceService.create(source);
+            sourceService.create(event.to(Source.class));
         } catch (Exception e){
             // TODO Notify to event-bus source not added
-            LOG.error("Error adding new source: ", e);
+            LOG.error("Error adding new source: " + event, e);
         }
     }
 }

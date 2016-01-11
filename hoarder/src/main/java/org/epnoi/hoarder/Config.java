@@ -13,8 +13,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import java.util.List;
 
 @Configuration
-@ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.hoarder"})
-//@ComponentScan( basePackages = "org.epnoi" )
+@ComponentScan({"org.epnoi.hoarder","org.epnoi.eventbus"})
 @PropertySource("classpath:epnoi.properties")
 public class Config {
 

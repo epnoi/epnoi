@@ -1,18 +1,14 @@
 package org.epnoi.hoarder.routes.rss;
 
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.model.RouteDefinition;
-import org.apache.camel.spring.SpringCamelContext;
 import org.apache.commons.lang.StringUtils;
 import org.epnoi.hoarder.routes.Expressions;
 import org.epnoi.hoarder.routes.RouteMaker;
 import org.epnoi.hoarder.routes.common.CommonRouteBuilder;
-import org.epnoi.hoarder.routes.oaipmh.OAIPMHRouteBuilder;
 import org.epnoi.model.Record;
-import org.epnoi.model.Source;
+import org.epnoi.storage.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,7 +41,7 @@ public class RssRouteMaker implements RouteMaker {
         return new RouteDefinition().
                 from(uri).
                 marshal().rss().
-                setProperty(Record.SOURCE_NAME, Expressions.constant(source.name())).
+                setProperty(Record.SOURCE_NAME, Expressions.constant(source.getName())).
                 setProperty(Record.SOURCE_URL, Expressions.constant(url)).
                 to(RssRouteBuilder.URI_RETRIEVE_METAINFORMATION).
                 to(CommonRouteBuilder.URI_HTTP_DOWNLOAD_TO_FILE);
