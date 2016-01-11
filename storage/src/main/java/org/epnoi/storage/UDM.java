@@ -584,10 +584,10 @@ public class UDM {
      * Get
      ******************************************************************************/
 
-    public List<String> getDocumentsByDomainURI(String domainURI){
-        LOG.debug("Getting documents in domain: " + domainURI);
+    public List<String> getDocumentsByDomain(String uri){
+        LOG.debug("Getting documents in domain: " + uri);
         List<String> documents = new ArrayList<>();
-        Iterable<DocumentNode> nodes = documentGraphRepository.findByDomain(domainURI);
+        Iterable<DocumentNode> nodes = documentGraphRepository.findByDomain(uri);
         if (nodes != null){
             Iterator<DocumentNode> iterator = nodes.iterator();
             while(iterator.hasNext()){
@@ -598,10 +598,10 @@ public class UDM {
         return documents;
     }
 
-    public List<String> getItemsByDomainURI(String domainURI){
-        LOG.debug("Getting items in domain: " + domainURI);
+    public List<String> getItemsByDomain(String uri){
+        LOG.debug("Getting items in domain: " + uri);
         List<String> items = new ArrayList<>();
-        Iterable<ItemNode> nodes = itemGraphRepository.findByDomain(domainURI);
+        Iterable<ItemNode> nodes = itemGraphRepository.findByDomain(uri);
         if (nodes != null){
             Iterator<ItemNode> iterator = nodes.iterator();
             while(iterator.hasNext()){
@@ -610,6 +610,20 @@ public class UDM {
         }
         LOG.info("Items: " + items);
         return items;
+    }
+
+    public List<String> getPartsByDomain(String uri){
+        LOG.debug("Getting parts in domain: " + uri);
+        List<String> parts = new ArrayList<>();
+        Iterable<PartNode> nodes = partGraphRepository.findByDomain(uri);
+        if (nodes != null){
+            Iterator<PartNode> iterator = nodes.iterator();
+            while(iterator.hasNext()){
+                parts.add(iterator.next().getUri());
+            }
+        }
+        LOG.info("Parts: " + parts);
+        return parts;
     }
 
 
