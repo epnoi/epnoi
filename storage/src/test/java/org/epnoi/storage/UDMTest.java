@@ -7,6 +7,10 @@ import org.epnoi.model.modules.BindingKey;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.EventBusSubscriber;
 import org.epnoi.model.modules.RoutingKey;
+import org.epnoi.storage.graph.domain.DocumentNode;
+import org.epnoi.storage.graph.domain.DomainNode;
+import org.epnoi.storage.model.Document;
+import org.epnoi.storage.model.Domain;
 import org.epnoi.storage.model.Source;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +23,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -47,10 +54,14 @@ public class UDMTest {
     @Autowired
     EventBus eventBus;
 
+    @Autowired
+    URIGenerator uriGenerator;
+
+    @Autowired
+    TimeGenerator timeGenerator;
+
     @Test
     public void saveSource(){
-
-
         AtomicInteger counter = new AtomicInteger(0);
 
         eventBus.subscribe(new EventBusSubscriber() {
@@ -87,6 +98,34 @@ public class UDMTest {
 
         Assert.assertEquals(1, counter.get());
 
+    }
+
+    @Test
+    public void getDocumentsByDomain(){
+
+        Domain domain = new Domain();
+        domain.setUri(uriGenerator.newDomain());
+        udm.saveDomain(domain);
+
+        Document doc1 = new Document();
+        doc1.setUri(uriGenerator.newDocument());
+        udm.saveDocument(doc1);
+
+        Document doc2 = new Document();
+        doc2.setUri(uriGenerator.newDocument());
+        udm.saveDocument(doc2);
+
+        udm.relateDocumentToDomain(doc1.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+        udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
+
+        List<String> documents = udm.getDocumentsByDomainURI(domain.getUri());
+
+        udm.deleteDomain(domain.getUri());
+        udm.deleteDocument(doc1.getUri());
+        udm.deleteDocument(doc2.getUri());
+
+        Assert.assertTrue(documents != null);
+        Assert.assertEquals(2,documents.size());
     }
 
 }

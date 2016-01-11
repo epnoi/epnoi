@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by cbadenes on 23/12/15.
  */
@@ -574,6 +578,25 @@ public class UDM {
 
         //Publish the event
         eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(org.epnoi.model.Resource.Type.TOPIC, org.epnoi.model.Resource.State.UPDATED));
+    }
+
+
+    /******************************************************************************
+     * Get
+     ******************************************************************************/
+
+    public List<String> getDocumentsByDomainURI(String domainURI){
+        LOG.debug("Getting documents in domain: " + domainURI);
+        List<String> documents = new ArrayList<>();
+        Iterable<DocumentNode> nodes = documentGraphRepository.getByDomain(domainURI);
+        if (nodes != null){
+            Iterator<DocumentNode> iterator = nodes.iterator();
+            while(iterator.hasNext()){
+                documents.add(iterator.next().getUri());
+            }
+        }
+        LOG.info("Documents: " + documents);
+        return documents;
     }
 
 

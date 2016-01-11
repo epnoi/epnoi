@@ -1,9 +1,21 @@
 package org.epnoi.storage.graph;
 
+import org.epnoi.storage.TimeGenerator;
+import org.epnoi.storage.UDM;
+import org.epnoi.storage.URIGenerator;
 import org.epnoi.storage.graph.domain.DocumentNode;
+import org.epnoi.storage.graph.domain.DomainNode;
 import org.epnoi.storage.graph.repository.BaseGraphRepository;
 import org.epnoi.storage.graph.repository.DocumentGraphRepository;
+import org.epnoi.storage.graph.repository.DomainGraphRepository;
+import org.epnoi.storage.model.Domain;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by cbadenes on 22/12/15.
@@ -12,6 +24,18 @@ public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<Documen
 
     @Autowired
     DocumentGraphRepository repository;
+
+    @Autowired
+    DomainGraphRepository domainRepository;
+
+    @Autowired
+    UDM udm;
+
+    @Autowired
+    URIGenerator uriGenerator;
+
+    @Autowired
+    TimeGenerator timeGenerator;
 
     @Override
     public BaseGraphRepository<DocumentNode> getRepository() {
@@ -33,4 +57,7 @@ public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<Documen
         node.setTokens("Miniopterus aelleni be a bat in the genus Miniopterus find in the Comoro Islands and Madagascar . It be a small , brown bat , with a forearm length of 35 to 41 mm ( 1.4 to 1.6 in ) . The long tragus ( a projection in the outer ear ) have a broad base and a blunt or round tip . The uropatagium ( tail membrane ) be sparsely haired . The palate be flat and there be distinct diastema ( gap ) between the upper canine and premolar . Populations of this specie be previously include in Miniopterus manavi , but recent molecular study reveal that M ");
         return node;
     }
+
+
+
 }
