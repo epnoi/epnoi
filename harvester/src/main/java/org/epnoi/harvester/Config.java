@@ -16,8 +16,7 @@ import java.util.List;
  * Created by cbadenes on 01/12/15.
  */
 @Configuration
-@ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.harvester", "org.epnoi.storage"})
-//@ComponentScan( basePackages = "org.epnoi" )
+@ComponentScan({"org.epnoi.harvester","org.epnoi.eventbus","org.epnoi.storage"})
 @PropertySource("classpath:epnoi.properties")
 public class Config {
 

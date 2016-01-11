@@ -1,7 +1,7 @@
 package org.epnoi.harvester.routes.rss;
 
 import es.cbadenes.lab.test.IntegrationTest;
-import org.epnoi.harvester.WebContextConfiguration;
+import org.epnoi.harvester.Config;
 import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
 import org.epnoi.model.Source;
@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebContextConfiguration.class)
+@ContextConfiguration(classes = Config.class)
 @TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage", "epnoi.upf.miner.config = harvester/src/test/resources/DRIconfig.properties" })
 public class RssTest {
 

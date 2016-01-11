@@ -5,7 +5,7 @@ import org.apache.camel.model.language.ConstantExpression;
 import org.epnoi.harvester.routes.RouteMaker;
 import org.epnoi.harvester.routes.common.CommonRouteBuilder;
 import org.epnoi.model.Record;
-import org.epnoi.model.Source;
+import org.epnoi.storage.model.Source;
 import org.epnoi.storage.model.Domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
                 append("file:").
                 append(Paths.get(basedir).toFile().getAbsolutePath()).
                 append("/oaipmh/").
-                append(source.name()).
+                append(source.getName()).
                 append("?recursive=true&include=.*.xml&doneFileName=${file:name}.done").
                 toString();
 

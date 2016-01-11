@@ -1,9 +1,8 @@
 package org.epnoi.harvester.routes;
 
 import org.apache.camel.model.RouteDefinition;
-import org.apache.commons.lang.StringUtils;
-import org.epnoi.model.Source;
 import org.epnoi.storage.model.Domain;
+import org.epnoi.storage.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class RouteDefinitionFactory {
 
     public RouteDefinition newRoute(Source source,Domain domain){
 
-        String protocol = source.protocol().toLowerCase();
+        String protocol = source.getProtocol().toLowerCase();
 
         List<RouteMaker> handlers = routeMakers.stream().filter(routeMaker -> routeMaker.accept(protocol)).collect(Collectors.toList());
 

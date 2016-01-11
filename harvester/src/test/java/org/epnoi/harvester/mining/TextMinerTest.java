@@ -2,10 +2,9 @@ package org.epnoi.harvester.mining;
 
 import edu.upf.taln.dri.lib.exception.DRIexception;
 import es.cbadenes.lab.test.IntegrationTest;
-import org.epnoi.harvester.WebContextConfiguration;
+import org.epnoi.harvester.Config;
 import org.epnoi.harvester.mining.annotation.AnnotatedDocument;
 import org.epnoi.harvester.mining.parser.Token;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebContextConfiguration.class)
+@ContextConfiguration(classes = Config.class)
 @TestPropertySource(properties = { "epnoi.upf.miner.config = harvester/src/test/resources/DRIconfig.properties"})
 public class TextMinerTest {
 

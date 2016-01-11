@@ -3,7 +3,7 @@ package org.epnoi.harvester.services;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.epnoi.harvester.routes.RouteDefinitionFactory;
-import org.epnoi.model.Source;
+import org.epnoi.storage.model.Source;
 import org.epnoi.storage.UDM;
 import org.epnoi.storage.URIGenerator;
 import org.epnoi.storage.model.Domain;
@@ -45,7 +45,7 @@ public class SourceService {
         LOG.info("creating a new domain associated to source: " + source);
         Domain domain = new Domain();
         domain.setUri(uriGenerator.newDomain());
-        domain.setName(source.name());
+        domain.setName(source.getName());
         domain.setDescription("attached to source: " + source.getUri());
         udm.saveDomain(domain);
         LOG.info("Domain: " + domain + " created attached to source: " + source);
