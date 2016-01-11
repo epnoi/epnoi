@@ -1,3 +1,3 @@
-# Management Plugin: http://zavijava.dia.fi.upm.es:5041
+# Management Plugin: http://zavijava.dia.fi.upm.es:5040
 # default user and password: epnoi / drinventor
-docker run -it --rm --hostname eventbus1 --name eventbus -p 5041:15672 -p 5040:5672 -e RABBITMQ_DEFAULT_USER=epnoi -e RABBITMQ_DEFAULT_PASS=drinventor -e RABBITMQ_DEFAULT_VHOST=drinventor -v /opt/docker/rabbitmq/storage:/var/lib/rabbitmq rabbitmq:3-management
+docker run -it --rm --hostname eventbus1 --name eventbus -p 5040:15672 -p 5041:5672 -e RABBITMQ_DEFAULT_USER=epnoi -e RABBITMQ_DEFAULT_PASS=drinventor -e RABBITMQ_DEFAULT_VHOST=drinventor -v /opt/docker/rabbitmq/storage:/var/lib/rabbitmq rabbitmq:3-management

@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
         "epnoi.elasticsearch.port = 5021",
         "epnoi.neo4j.contactpoints = zavijava.dia.fi.upm.es",
         "epnoi.neo4j.port = 5030",
-        "epnoi.eventbus.uri = amqp://epnoi:drinventor@zavijava.dia.fi.upm.es:5040/drinventor"})
+        "epnoi.eventbus.uri = amqp://epnoi:drinventor@zavijava.dia.fi.upm.es:5041/drinventor"})
 
 public class UDMTest {
 
