@@ -1,4 +1,4 @@
-package org.epnoi.hoarder;
+package org.epnoi.harvester;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spring.SpringCamelContext;
@@ -12,11 +12,14 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.List;
 
+/**
+ * Created by cbadenes on 01/12/15.
+ */
 @Configuration
-@ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.hoarder"})
+@ComponentScan({"org.epnoi.uia.core.eventbus","org.epnoi.harvester", "org.epnoi.storage"})
 //@ComponentScan( basePackages = "org.epnoi" )
 @PropertySource("classpath:epnoi.properties")
-public class WebContextConfiguration {
+public class Config {
 
 
     @Autowired

@@ -1,4 +1,4 @@
-package org.epnoi.harvester.eventbus;
+package org.epnoi.modeler.eventbus;
 
 import org.epnoi.model.modules.BindingKey;
 import org.epnoi.model.modules.EventBus;
@@ -11,25 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 
 /**
- * Created by cbadenes on 01/12/15.
+ * Created by cbadenes on 11/01/16.
  */
-public abstract class HarvesterEventHandler implements EventBusSubscriber {
+public abstract class AbstractEventHandler implements EventBusSubscriber {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HarvesterEventHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractEventHandler.class);
 
     protected final RoutingKey routingKey;
 
     @Autowired
     protected EventBus eventBus;
 
-    public HarvesterEventHandler(RoutingKey routingKey){
+    public AbstractEventHandler(RoutingKey routingKey){
         this.routingKey = routingKey;
     }
 
     @PostConstruct
     public void init(){
         LOG.info("Trying to register as subscriber of '" + routingKey + "' events ..");
-        eventBus.subscribe(this, BindingKey.of(routingKey, "harvester"));
+        eventBus.subscribe(this, BindingKey.of(routingKey, "modeler"));
         LOG.info("registered successfully");
     }
 

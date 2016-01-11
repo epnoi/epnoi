@@ -13,16 +13,16 @@ import javax.annotation.PostConstruct;
 /**
  * Created by cbadenes on 27/11/15.
  */
-public abstract class HoarderEventHandler implements EventBusSubscriber {
+public abstract class AbstractEventHandler implements EventBusSubscriber {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HoarderEventHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractEventHandler.class);
 
     protected final RoutingKey routingKey;
 
     @Autowired
     protected EventBus eventBus;
 
-    public HoarderEventHandler(RoutingKey routingKey){
+    public AbstractEventHandler(RoutingKey routingKey){
         this.routingKey = routingKey;
     }
 

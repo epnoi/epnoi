@@ -29,9 +29,9 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebContextConfiguration.class)
 @TestPropertySource(properties = { "epnoi.eventbus.uri = localhost", "epnoi.hoarder.storage.path = hoarder/target/storage" })
-public class NewSourceEventHandlerTest {
+public class SourceCreatedEventHandlerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(NewSourceEventHandlerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SourceCreatedEventHandlerTest.class);
 
     @Autowired
     EventBus eventBus;

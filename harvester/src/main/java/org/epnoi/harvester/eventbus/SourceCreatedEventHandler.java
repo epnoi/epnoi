@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
  * Created by cbadenes on 01/12/15.
  */
 @Component
-public class NewSourceEventHandler extends HarvesterEventHandler {
+public class SourceCreatedEventHandler extends AbstractEventHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NewSourceEventHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SourceCreatedEventHandler.class);
 
     @Autowired
     SourceService sourceService;
 
-    public NewSourceEventHandler() {
+    public SourceCreatedEventHandler() {
         super(RoutingKey.of(Resource.Type.SOURCE, Resource.State.CREATED));
     }
 
