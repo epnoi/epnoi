@@ -107,6 +107,9 @@ public class ResourceBuilder implements Processor {
             // Part:: Summary by Title Similarity
             Part summTitle = createAndSavePart("summaryTitle", annotatedDocument.getSummaryByTitleSimContent(25), item.getUri());
 
+            // Relate Document to Domain
+            udm.relateDocumentToDomain(document.getUri(), domainUri, document.getCreationTime());
+
             // Convert to json
             String json = mapper.writeValueAsString(document);
 
@@ -161,8 +164,6 @@ public class ResourceBuilder implements Processor {
         document.setTokens(tokens);
 
         udm.saveDocument(document,sourceUri);
-        // Relate Document to Domain
-        udm.relateDocumentToDomain(document.getUri(), domainUri, document.getCreationTime());
 
         return document;
     }
