@@ -1,25 +1,33 @@
 package org.epnoi.modeler.executor;
 
+import org.epnoi.modeler.helper.ModelingHelper;
+import org.epnoi.storage.model.Analysis;
 import org.epnoi.storage.model.Domain;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Created by cbadenes on 11/01/16.
+ * Created by cbadenes on 13/01/16.
  */
-public class ModelingTask implements Runnable {
+public abstract class ModelingTask implements Runnable{
 
-    private static final Logger LOG = LoggerFactory.getLogger(ModelingTask.class);
+    protected final Domain domain;
+    protected final ModelingHelper helper;
 
-    private final Domain domain;
-
-    public ModelingTask(Domain domain){
+    public ModelingTask(Domain domain, ModelingHelper modelingHelper){
         this.domain = domain;
+        this.helper = modelingHelper;
     }
 
+    protected Analysis newAnalysis(String type, String configuration, String description){
 
-    @Override
-    public void run() {
-        LOG.info("Building a topic model for domain: " + domain);
+        Analysis analysis = new Analysis();
+        analysis.setUri(helper.getUriGenerator().newAnalysis());
+        analysis.setCreationTime(helper.getTimeGenerator().getNowAsISO());
+        analysis.setDomain(domain.getUri());
+        analysis.setType(type);
+        analysis.setDescription(description);
+        analysis.setConfiguration(configuration);
+        helper.getUdm().saveAnalysis(analysis);
+        return analysis;
     }
+
 }

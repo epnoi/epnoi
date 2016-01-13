@@ -21,4 +21,4 @@ create table if not exists research.topics(uri text, creationTime text, content 
 
 create table if not exists research.relations(uri text, creationTime text, type text, describes text, content text, analysis text, primary key (uri));
 
-create table if not exists research.analyses(uri text, creationTime text, type text, description text, configuration text, domain text, report blob, primary key (uri));
+create table if not exists research.analyses(uri text, creationTime text, type text, description text, configuration text, domain text, primary key (uri));

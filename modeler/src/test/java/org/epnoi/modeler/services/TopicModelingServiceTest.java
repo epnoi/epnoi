@@ -3,7 +3,6 @@ package org.epnoi.modeler.services;
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.modeler.Config;
 import org.epnoi.storage.model.Domain;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -37,13 +36,13 @@ public class TopicModelingServiceTest {
         Domain domain2 = new Domain();
         domain2.setUri("http://epnoi.org/domains/ad8ceb56-e5e4-488b-91be-96ce1a7f4444");
 
-        service.scheduleModeling(domain1);
+        service.buildModel(domain1);
         Thread.sleep(1000);
-        service.scheduleModeling(domain2);
-        service.scheduleModeling(domain1);
+        service.buildModel(domain2);
+        service.buildModel(domain1);
         Thread.sleep(1000);
-        service.scheduleModeling(domain1);
-        service.scheduleModeling(domain2);
+        service.buildModel(domain1);
+        service.buildModel(domain2);
         Thread.sleep(1000);
 
         LOG.info("waiting for execution....");

@@ -1,8 +1,8 @@
 package org.epnoi.modeler.services;
 
 import org.epnoi.modeler.executor.TopicModelingExecutor;
+import org.epnoi.modeler.executor.WordEmbeddingExecutor;
 import org.epnoi.modeler.helper.ModelingHelper;
-import org.epnoi.storage.UDM;
 import org.epnoi.storage.model.Analysis;
 import org.epnoi.storage.model.Domain;
 import org.slf4j.Logger;
@@ -19,11 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by cbadenes on 11/01/16.
  */
 @Component
-public class TopicModelingService {
+public class WordEmbeddingService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TopicModelingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WordEmbeddingService.class);
 
-    private ConcurrentHashMap<String,TopicModelingExecutor> executors;
+    private ConcurrentHashMap<String,WordEmbeddingExecutor> executors;
 
     @Value("${epnoi.modeler.delay}")
     protected Long delay;
@@ -39,7 +39,7 @@ public class TopicModelingService {
 
     public void buildModel(Domain domain){
         LOG.info("Plan a new build task to create topic models for domain: " + domain);
-        this.executors.merge(domain.getUri(), new TopicModelingExecutor(domain,helper,delay), (modelingExecutor, modelingExecutor2) -> modelingExecutor.buildModel());
+        this.executors.merge(domain.getUri(), new WordEmbeddingExecutor(domain,helper,delay), (modelingExecutor, modelingExecutor2) -> modelingExecutor.buildModel());
 
     }
 

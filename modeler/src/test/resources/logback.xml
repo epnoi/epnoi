@@ -8,6 +8,7 @@
     </appender>
 
     <logger name="org.epnoi" level="DEBUG"/>
+    <logger name="org.apache.spark" level="WARN"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />
