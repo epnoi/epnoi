@@ -121,7 +121,7 @@ public class UDMTest {
         udm.relateDocumentToDomain(doc2.getUri(),domain.getUri(),timeGenerator.getNowAsISO());
 
         // Getting Documents
-        List<String> documents = udm.getDocumentsByDomain(domain.getUri());
+        List<String> documents = udm.findDocumentsByDomain(domain.getUri());
 
         // Delete
         udm.deleteSource(source.getUri());
@@ -181,7 +181,7 @@ public class UDMTest {
 
 
         // Getting items in domain
-        List<String> items = udm.getItemsByDomain(domain.getUri());
+        List<String> items = udm.findItemsByDomain(domain.getUri());
 
         // Delete
         udm.deleteSource(source.getUri());
@@ -266,7 +266,7 @@ public class UDMTest {
         udm.saveItem(item23,doc2.getUri());
 
         // Getting parts in a domain
-        List<String> parts = udm.getPartsByDomain(domain.getUri());
+        List<String> parts = udm.findPartsByDomain(domain.getUri());
 
         // Delete
         udm.deleteSource(source.getUri());

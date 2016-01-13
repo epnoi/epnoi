@@ -17,4 +17,12 @@ public interface ItemGraphRepository extends BaseGraphRepository<ItemNode> {
     @Query("match (item)<-[:BUNDLES]-(document)<-[:CONTAINS]-(domain{uri:{0}}) return item")
     Iterable<ItemNode> findByDomain(String uri);
 
+    @Query("match (item)<-[:BUNDLES]-(document{uri:{0}}) return item")
+    Iterable<ItemNode> findByDocument(String uri);
+
+    @Query("match (part{uri:{0}})-[:DESCRIBES]->(item) return item")
+    Iterable<ItemNode> findByPart(String uri);
+
+
+
 }

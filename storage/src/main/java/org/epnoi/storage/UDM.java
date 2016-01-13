@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by cbadenes on 23/12/15.
@@ -225,17 +226,25 @@ public class UDM {
         eventBus.post(Event.from(relation), RoutingKey.of(Resource.Type.RELATION, Resource.State.CREATED));
     }
 
-    public void saveTopic(Topic topic){
+    public void saveTopic(Topic topic, String domainURI, String analysisURI){
         LOG.debug("trying to save :" + topic);
+
         // column
         topicColumnRepository.save(ResourceUtils.map(topic, TopicColumn.class));
+
         // document
         topicDocumentRepository.save(ResourceUtils.map(topic, TopicDocument.class));
+
         // graph : TODO Set unique Long id for node
         topicGraphRepository.save(ResourceUtils.map(topic, TopicNode.class));
+
         LOG.info("resource saved :" + topic);
+
         //Publish the event
         eventBus.post(Event.from(topic), RoutingKey.of(Resource.Type.TOPIC, Resource.State.CREATED));
+
+        // Relate topic to domain
+        relateDomainToTopic(domainURI, topic.getUri(), topic.getCreationTime(), analysisURI);
     }
 
     public void saveAnalysis(Analysis analysis){
@@ -502,6 +511,31 @@ public class UDM {
         eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
     }
 
+    public void relateWordToWord(String wordURI1, String wordURI2, Double weight, String domainURI){
+        LOG.debug("Trying to relate word: " + wordURI1 + " to word: " + wordURI2 + " with weight: " + weight + " and domain: " + domainURI);
+        // Word
+        WordNode wordNode1 = wordGraphRepository.findOneByUri(wordURI1);
+        // Word
+        WordNode wordNode2 = wordGraphRepository.findOneByUri(wordURI2);
+
+
+        SimilarWord relation = new SimilarWord();
+        relation.setX(wordNode1);
+        relation.setY(wordNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+
+        wordNode1.addSimilarRelation(relation);
+        wordGraphRepository.save(wordNode1);
+        wordNode2.addSimilarRelation(relation);
+        wordGraphRepository.save(wordNode2);
+        LOG.info("Word: " + wordURI1 + " related to word: " + wordURI2);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(wordNode1,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(wordNode2,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
+    }
+
     public void relateTopicToDocument(String topicURI, String documentURI, Double weight){
         LOG.debug("Trying to relate topic: " + topicURI + " to document: " + documentURI+ " with weight: " + weight);
         // Topic
@@ -583,6 +617,26 @@ public class UDM {
         eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.UPDATED));
     }
 
+    public void relateWordToDomain(String wordURI, String domainURI, String vector){
+        LOG.debug("Trying to relate word: " + wordURI + " to domain: " + domainURI+ " with vector: " + vector);
+        // Word
+        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
+        // Topic
+        DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
+
+        EmbeddedWordInDomain relation = new EmbeddedWordInDomain();
+        relation.setDomain(domainNode);
+        relation.setWord(wordNode);
+        relation.setVector(vector);
+
+        wordNode.addEmbeddedRelation(relation);
+        wordGraphRepository.save(wordNode);
+        LOG.info("Word: " + wordURI + " related to domain: " + domainURI);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(wordNode,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
+    }
+
     public void relateDomainToTopic(String domainURI, String topicURI, String date, String analysisURI){
         LOG.debug("Trying to relate domain: " + domainURI + " to topic: " + topicURI+ " in date: " + date + " by analysis: " + analysisURI);
         // Domain
@@ -606,51 +660,82 @@ public class UDM {
 
 
     /******************************************************************************
-     * Get
+     * Find
      ******************************************************************************/
 
-    public List<String> getDocumentsByDomain(String uri){
-        LOG.debug("Getting documents in domain: " + uri);
-        List<String> documents = new ArrayList<>();
-        Iterable<DocumentNode> nodes = documentGraphRepository.findByDomain(uri);
-        if (nodes != null){
-            Iterator<DocumentNode> iterator = nodes.iterator();
-            while(iterator.hasNext()){
-                documents.add(iterator.next().getUri());
-            }
-        }
-        LOG.info("Documents: " + documents);
-        return documents;
+    public List<String> findDocumentsByDomain(String uri){
+        LOG.debug("Finding documents in domain: " + uri);
+        List<String> uris = new ArrayList<>();
+        documentGraphRepository.findByDomain(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Documents: " + uris);
+        return uris;
     }
 
-    public List<String> getItemsByDomain(String uri){
-        LOG.debug("Getting items in domain: " + uri);
-        List<String> items = new ArrayList<>();
-        Iterable<ItemNode> nodes = itemGraphRepository.findByDomain(uri);
-        if (nodes != null){
-            Iterator<ItemNode> iterator = nodes.iterator();
-            while(iterator.hasNext()){
-                items.add(iterator.next().getUri());
-            }
-        }
-        LOG.info("Items: " + items);
-        return items;
+    public List<String> findItemsByDomain(String uri){
+        LOG.debug("Finding items in domain: " + uri);
+        List<String> uris = new ArrayList<>();
+        itemGraphRepository.findByDomain(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Items: " + uris);
+        return uris;
     }
 
-    public List<String> getPartsByDomain(String uri){
-        LOG.debug("Getting parts in domain: " + uri);
-        List<String> parts = new ArrayList<>();
-        Iterable<PartNode> nodes = partGraphRepository.findByDomain(uri);
-        if (nodes != null){
-            Iterator<PartNode> iterator = nodes.iterator();
-            while(iterator.hasNext()){
-                parts.add(iterator.next().getUri());
-            }
-        }
-        LOG.info("Parts: " + parts);
-        return parts;
+    public List<String> findItemsByDocument(String uri){
+        LOG.debug("Finding items in document: " + uri);
+        List<String> uris = new ArrayList<>();
+        itemGraphRepository.findByDocument(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Items: " + uris);
+        return uris;
     }
 
+    public Optional<String> findItemByPart(String uri){
+        LOG.debug("Finding item in part: " + uri);
+        List<String> uris = new ArrayList<>();
+        itemGraphRepository.findByPart(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Items: " + uris);
+        if ((uris != null) && (!uris.isEmpty())) return Optional.of(uris.get(0));
+        return Optional.empty();
+    }
+
+    public List<String> findPartsByDomain(String uri){
+        LOG.debug("Finding parts in domain: " + uri);
+        List<String> uris = new ArrayList<>();
+        partGraphRepository.findByDomain(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Parts: " + uris);
+        return uris;
+    }
+
+    public List<String> findPartsByItem(String uri){
+        LOG.debug("Finding parts in item: " + uri);
+        List<String> uris = new ArrayList<>();
+        partGraphRepository.findByItem(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Parts: " + uris);
+        return uris;
+    }
+
+    public Optional<String> findWordByContent(String content){
+        return emptyOrFirst(wordColumnRepository.findByContent(content));
+    }
+
+    public Optional<String> findWordByLemma(String lemma){
+        return emptyOrFirst(wordColumnRepository.findByLemma(lemma));
+    }
+
+    public Optional<String> findWordByPos(String pos){
+        return emptyOrFirst(wordColumnRepository.findByPos(pos));
+    }
+
+    public Optional<String> findWordByStem(String stem){
+        return emptyOrFirst(wordColumnRepository.findByStem(stem));
+    }
+
+    public Optional<String> findWordByType(String type){
+        return emptyOrFirst(wordColumnRepository.findByType(type));
+    }
+
+    private Optional<String> emptyOrFirst(Iterable<? extends org.epnoi.storage.model.Resource> resources){
+        if (resources == null || !resources.iterator().hasNext()) return Optional.empty();
+        return Optional.of(resources.iterator().next().getUri());
+    }
 
     /******************************************************************************
      * Delete
@@ -771,6 +856,42 @@ public class UDM {
         Analysis analysis = new Analysis();
         analysis.setUri(uri);
         eventBus.post(Event.from(analysis), RoutingKey.of(Resource.Type.ANALYSIS, Resource.State.DELETED));
+    }
+
+    public void deleteAll(){
+        analysisColumnRepository.deleteAll();
+        analysisDocumentRepository.deleteAll();
+
+        documentColumnRepository.deleteAll();
+        documentDocumentRepository.deleteAll();
+        documentGraphRepository.deleteAll();
+
+        domainColumnRepository.deleteAll();
+        domainDocumentRepository.deleteAll();
+        domainGraphRepository.deleteAll();
+
+        itemColumnRepository.deleteAll();
+        itemDocumentRepository.deleteAll();
+        itemGraphRepository.deleteAll();
+
+        partColumnRepository.deleteAll();
+        partDocumentRepository.deleteAll();
+        partGraphRepository.deleteAll();
+
+        relationColumnRepository.deleteAll();
+        relationDocumentRepository.deleteAll();
+
+        sourceColumnRepository.deleteAll();
+        sourceDocumentRepository.deleteAll();
+        sourceGraphRepository.deleteAll();
+
+        topicColumnRepository.deleteAll();
+        topicDocumentRepository.deleteAll();
+        topicGraphRepository.deleteAll();
+
+        wordColumnRepository.deleteAll();
+        wordDocumentRepository.deleteAll();
+        wordGraphRepository.deleteAll();
     }
 
 }

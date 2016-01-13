@@ -15,7 +15,6 @@ public class ResourceUtilsTest {
         analysis.setConfiguration("conf1");
         analysis.setDescription("descr1");
         analysis.setDomain("domain1");
-        analysis.setReport(new Integer(1));
         analysis.setType("type1");
         analysis.setCreationTime("time1");
         analysis.setUri("uri1");

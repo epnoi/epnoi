@@ -18,4 +18,7 @@ public interface PartGraphRepository extends BaseGraphRepository<PartNode> {
     @Query("match (part)-[:DESCRIBES]->(item)<-[:BUNDLES]-(document)<-[:CONTAINS]-(domain{uri:{0}}) return part")
     Iterable<PartNode> findByDomain(String uri);
 
+    @Query("match (part)-[:DESCRIBES]->(item{uri:{0}}) return part")
+    Iterable<PartNode> findByItem(String uri);
+
 }

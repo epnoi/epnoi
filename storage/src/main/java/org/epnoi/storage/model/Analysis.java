@@ -16,7 +16,5 @@ public class Analysis extends Resource {
 
     private String configuration;
 
-    private Object report;
-
     private String domain;
 }
