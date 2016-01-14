@@ -34,7 +34,9 @@ public class TopicModelingTask extends ModelingTask {
             buildModelfor(Resource.Type.DOCUMENT);
             buildModelfor(Resource.Type.ITEM);
             buildModelfor(Resource.Type.PART);
-        }catch (Exception e){
+        } catch (RuntimeException e){
+            LOG.warn(e.getMessage());
+        } catch (Exception e){
             LOG.warn(e.getMessage(),e);
         }
     }

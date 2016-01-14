@@ -32,9 +32,9 @@ public class ComparisonTest {
     public void simulation() throws InterruptedException {
 
         Analysis analysis = new Analysis();
-        analysis.setUri("http://epnoi.org/analyses/815b215f-c7e6-439c-ba8f-cf5815252857");
+        analysis.setUri("http://epnoi.org/analyses/69d44f50-fd6c-4978-b484-41b8d26e5a54");
         analysis.setType("Topic-Model");
-        analysis.setDomain("http://epnoi.org/domains/b300f62f-a1ad-4013-9888-c383fdaae682");
+        analysis.setDomain("http://epnoi.org/domains/90e8b648-1b37-4756-9892-292560725a85");
 
         eventBus.post(Event.from(analysis), RoutingKey.of(Resource.Type.ANALYSIS, Resource.State.CREATED));
 

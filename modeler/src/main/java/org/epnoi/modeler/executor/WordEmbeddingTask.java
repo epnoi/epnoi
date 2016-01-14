@@ -27,29 +27,34 @@ public class WordEmbeddingTask extends ModelingTask {
 
     @Override
     public void run() {
+        try{
+            //TODO Optimize using Spark.parallel
+            List<RegularResource> regularResources = helper.getUdm().findDocumentsByDomain(domain.getUri()).stream().
+                    map(uri -> helper.getUdm().readDocument(uri)).
+                    map(document -> helper.getRegularResourceBuilder().from(document.getUri(), document.getTitle(), document.getAuthoredOn(), helper.getAuthorBuilder().composeFromMetadata(document.getAuthoredBy()), document.getTokens())).
+                    collect(Collectors.toList());
 
-        //TODO Optimize using Spark.parallel
-        List<RegularResource> regularResources = helper.getUdm().findDocumentsByDomain(domain.getUri()).stream().
-                map(uri -> helper.getUdm().readDocument(uri)).
-                map(document -> helper.getRegularResourceBuilder().from(document.getUri(), document.getTitle(), document.getAuthoredOn(), helper.getAuthorBuilder().composeFromMetadata(document.getAuthoredBy()), document.getTokens())).
-                collect(Collectors.toList());
+            if ((regularResources == null) || (regularResources.isEmpty()))
+                throw new RuntimeException("No documents found in domain: " + domain.getUri());
 
-        if ((regularResources == null) || (regularResources.isEmpty()))
-            throw new RuntimeException("No documents found in domain: " + domain.getUri());
+            // Create the analysis
+            Analysis analysis = newAnalysis("Word-Embedding","W2V",Resource.Type.DOCUMENT.name());
 
-        // Create the analysis
-        Analysis analysis = newAnalysis("Word-Embedding","W2V",Resource.Type.DOCUMENT.name());
+            // Build W2V Model
+            W2VModel model = helper.getWordEmbeddingBuilder().build(analysis.getUri(), regularResources);
 
-        // Build W2V Model
-        W2VModel model = helper.getWordEmbeddingBuilder().build(analysis.getUri(), regularResources);
+            // Make relations
+            //TODO Optimize using Spark.parallel
+            model.getVocabulary().stream().forEach(word -> relateWord(word,model));
 
-        // Make relations
-        //TODO Optimize using Spark.parallel
-        model.getVocabulary().stream().forEach(word -> relateWord(word,model));
+            // Save the analysis
+            helper.getUdm().saveAnalysis(analysis);
 
-        // Save the analysis
-        helper.getUdm().saveAnalysis(analysis);
-
+        }catch (RuntimeException e){
+            LOG.warn(e.getMessage());
+        } catch (Exception e) {
+            LOG.warn(e.getMessage(), e);
+        }
     }
 
     private void relateWord(String word, W2VModel model){
