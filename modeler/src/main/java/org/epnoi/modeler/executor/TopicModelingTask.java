@@ -34,8 +34,8 @@ public class TopicModelingTask extends ModelingTask {
             buildModelfor(Resource.Type.DOCUMENT);
             buildModelfor(Resource.Type.ITEM);
             buildModelfor(Resource.Type.PART);
-        }catch (RuntimeException e){
-            LOG.warn(e.getMessage());
+        }catch (Exception e){
+            LOG.warn(e.getMessage(),e);
         }
     }
 
@@ -79,6 +79,10 @@ public class TopicModelingTask extends ModelingTask {
         // Persist Topic and Relations
         TopicModel model = helper.getTopicModelBuilder().build(analysis.getUri(), regularResources);
         persistModel(analysis,model,resourceType);
+
+        // Save the analysis
+//        analysis.setConfiguration(model.getConfiguration().toString());
+        helper.getUdm().saveAnalysis(analysis);
     }
 
 
@@ -94,7 +98,7 @@ public class TopicModelingTask extends ModelingTask {
             topic.setUri(helper.getUriGenerator().newTopic());
             topic.setAnalysis(analysis.getUri());
             topic.setCreationTime(creationTime);
-            topic.setContent("content");//TODO should be a summary of relevant words
+            topic.setContent(String.join(",",topicData.getWords().stream().map(wd -> wd.getWord()).collect(Collectors.toList())));
             helper.getUdm().saveTopic(topic, domain.getUri(), analysis.getUri()); // Implicit relation to Domain (and Analysis)
 
             topicTable.put(topicData.getId(),topic.getUri());

@@ -47,6 +47,9 @@ public class WordEmbeddingTask extends ModelingTask {
         //TODO Optimize using Spark.parallel
         model.getVocabulary().stream().forEach(word -> relateWord(word,model));
 
+        // Save the analysis
+        helper.getUdm().saveAnalysis(analysis);
+
     }
 
     private void relateWord(String word, W2VModel model){

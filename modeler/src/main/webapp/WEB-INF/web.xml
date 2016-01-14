@@ -71,11 +71,11 @@
         </init-param>
         <init-param>
             <param-name>api.title</param-name>
-            <param-value>hoarder</param-value>
+            <param-value>modeler</param-value>
         </init-param>
         <init-param>
             <param-name>api.description</param-name>
-            <param-value>harvester service</param-value>
+            <param-value>modeler service</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>

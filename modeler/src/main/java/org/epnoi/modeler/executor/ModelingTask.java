@@ -26,7 +26,6 @@ public abstract class ModelingTask implements Runnable{
         analysis.setType(type);
         analysis.setDescription(description);
         analysis.setConfiguration(configuration);
-        helper.getUdm().saveAnalysis(analysis);
         return analysis;
     }
 

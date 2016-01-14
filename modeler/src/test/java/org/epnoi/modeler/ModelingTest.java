@@ -7,6 +7,7 @@ import org.epnoi.storage.URIGenerator;
 import org.epnoi.storage.model.Document;
 import org.epnoi.storage.model.Domain;
 import org.epnoi.storage.model.Source;
+import org.epnoi.storage.model.Topic;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class ModelingTest {
     TimeGenerator timeGenerator;
 
     @Test
-    public void buildModel() throws InterruptedException {
+    public void simulate() throws InterruptedException {
 
         udm.deleteAll();
 
@@ -93,8 +94,28 @@ public class ModelingTest {
 
 
         LOG.info("Sleep");
-        Thread.sleep(60000);
+        Thread.sleep(120000);
         LOG.info("wake up");
+
+    }
+
+
+    @Test
+    public void saveTopic(){
+
+        String domainURI    = "http://epnoi.org/domains/9d3cda8b-06ed-4ca8-bb10-9f1775a6077b";
+        String analysisURI  = "http://epnoi.org/analyses/55269e40-e839-43b9-a535-43f94faec08d";
+
+        Topic topic = new Topic();
+        topic.setUri("http://epnoi.org/topics/2217f111-50c7-40da-8a0f-64a1a9db14af");
+        topic.setContent("content");
+        topic.setCreationTime("2016-01-14T09:37+0100");
+        topic.setAnalysis(analysisURI);
+
+
+        udm.saveTopic(topic,domainURI, analysisURI);
+
+
 
     }
 }

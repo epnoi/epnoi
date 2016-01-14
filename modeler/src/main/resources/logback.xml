@@ -23,6 +23,8 @@
         </encoder>
     </appender>
 
+    <logger name="org.apache.spark" level="WARN"/>
+
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />

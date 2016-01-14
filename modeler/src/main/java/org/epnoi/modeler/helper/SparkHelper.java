@@ -32,7 +32,7 @@ public class SparkHelper {
         // Initialize Spark Context
         this.conf = new SparkConf().
                 setMaster("local["+threads+"]").
-                setAppName("DrInventor").
+                setAppName("DrInventor-Modeler").
                 set("spark.executor.memory", memory).
                 set("spark.driver.maxResultSize","0");
         sc = new JavaSparkContext(conf);
