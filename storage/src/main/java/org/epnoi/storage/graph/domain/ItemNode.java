@@ -27,18 +27,18 @@ public class ItemNode extends Item {
     private String uri;
 
     // Undirected
-    private Set<SimilarItem> similars = new HashSet<>();
+    private Set<SimilarItem> similar = new HashSet<>();
 
     // Outgoing
     private Set<DealsItemTopic> deals =  new HashSet<>();
     private Set<MentionsItemWord> mentions = new HashSet<>();
 
     public void addSimilarRelation(SimilarItem rel){
-        similars.add(rel);
+        similar.add(rel);
     }
 
     public void removeSimilarRelation(SimilarItem rel){
-        similars.remove(rel);
+        similar.remove(rel);
     }
 
     public void addDealRelation(DealsItemTopic rel){

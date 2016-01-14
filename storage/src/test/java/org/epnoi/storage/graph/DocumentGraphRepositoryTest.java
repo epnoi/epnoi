@@ -1,41 +1,29 @@
 package org.epnoi.storage.graph;
 
-import org.epnoi.storage.TimeGenerator;
-import org.epnoi.storage.UDM;
-import org.epnoi.storage.URIGenerator;
 import org.epnoi.storage.graph.domain.DocumentNode;
-import org.epnoi.storage.graph.domain.DomainNode;
+import org.epnoi.storage.graph.domain.relationships.DealsDocumentTopic;
 import org.epnoi.storage.graph.repository.BaseGraphRepository;
 import org.epnoi.storage.graph.repository.DocumentGraphRepository;
 import org.epnoi.storage.graph.repository.DomainGraphRepository;
-import org.epnoi.storage.model.Domain;
-import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
 public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<DocumentNode> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentGraphRepositoryTest.class);
+
     @Autowired
     DocumentGraphRepository repository;
 
     @Autowired
     DomainGraphRepository domainRepository;
-
-    @Autowired
-    UDM udm;
-
-    @Autowired
-    URIGenerator uriGenerator;
-
-    @Autowired
-    TimeGenerator timeGenerator;
 
     @Override
     public BaseGraphRepository<DocumentNode> getRepository() {
@@ -58,6 +46,19 @@ public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<Documen
         return node;
     }
 
+
+    @Test
+    public void getDeals(){
+
+        Iterable<DealsDocumentTopic> deals = repository.dealsInAnalysis("http://epnoi.org/documents/fb58705e-65fe-41ad-8f92-b8802d3a43e2","http://epnoi.org/analyses/e8ac7764-f0ac-4e9b-841c-a4b07e076d5f");
+
+        Iterator<DealsDocumentTopic> it = deals.iterator();
+        while(it.hasNext()){
+            LOG.info("Deal: " + it.next());
+        }
+
+
+    }
 
 
 }

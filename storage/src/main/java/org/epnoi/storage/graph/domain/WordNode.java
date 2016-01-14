@@ -28,25 +28,25 @@ public class WordNode extends Word {
     private String uri;
 
     // Undirected
-    private Set<SimilarWord> similars = new HashSet<>();
+    private Set<SimilarWord> similar = new HashSet<>();
 
     // Outgoing
-    private Set<EmbeddedWordInDomain> embeddeds = new HashSet<>();
+    private Set<EmbeddedWordInDomain> embedded = new HashSet<>();
 
     public void addSimilarRelation(SimilarWord rel){
-        similars.add(rel);
+        similar.add(rel);
     }
 
     public void removeSimilarRelation(SimilarWord rel){
-        similars.remove(rel);
+        similar.remove(rel);
     }
 
     public void addEmbeddedRelation(EmbeddedWordInDomain rel){
-        embeddeds.add(rel);
+        embedded.add(rel);
     }
 
     public void removeEmergeRelation(EmbeddedWordInDomain rel){
-        embeddeds.remove(rel);
+        embedded.remove(rel);
     }
 
 }

@@ -23,7 +23,6 @@ import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -391,19 +390,24 @@ public class UDM {
         DocumentNode documentNode2 = documentGraphRepository.findOneByUri(documentURI2);
 
 
-        SimilarDocument relation = new SimilarDocument();
-        relation.setX(documentNode1);
-        relation.setY(documentNode2);
-        relation.setWeight(weight);
-        relation.setDomain(domainURI);
-
-        documentNode1.addSimilarRelation(relation);
+        SimilarDocument relation1 = new SimilarDocument();
+        relation1.setX(documentNode1);
+        relation1.setY(documentNode2);
+        relation1.setWeight(weight);
+        relation1.setDomain(domainURI);
+        documentNode1.addSimilarRelation(relation1);
         documentGraphRepository.save(documentNode1);
-        documentNode2.addSimilarRelation(relation);
+
+        SimilarDocument relation2 = new SimilarDocument();
+        relation2.setX(documentNode2);
+        relation2.setY(documentNode1);
+        relation2.setWeight(weight);
+        relation2.setDomain(domainURI);
+        documentNode2.addSimilarRelation(relation2);
         documentGraphRepository.save(documentNode2);
         LOG.info("Document: " + documentURI1 + " related to document: " + documentURI2);
 
-        //Publish the event
+        //Publish the events
         eventBus.post(Event.from(ResourceUtils.map(documentNode1,Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
         eventBus.post(Event.from(ResourceUtils.map(documentNode2,Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
     }
@@ -435,15 +439,20 @@ public class UDM {
         ItemNode itemNode2 = itemGraphRepository.findOneByUri(itemURI2);
 
 
-        SimilarItem relation = new SimilarItem();
-        relation.setX(itemNode1);
-        relation.setY(itemNode2);
-        relation.setWeight(weight);
-        relation.setDomain(domainURI);
-
-        itemNode1.addSimilarRelation(relation);
+        SimilarItem relation1 = new SimilarItem();
+        relation1.setX(itemNode1);
+        relation1.setY(itemNode2);
+        relation1.setWeight(weight);
+        relation1.setDomain(domainURI);
+        itemNode1.addSimilarRelation(relation1);
         itemGraphRepository.save(itemNode1);
-        itemNode2.addSimilarRelation(relation);
+
+        SimilarItem relation2 = new SimilarItem();
+        relation2.setX(itemNode2);
+        relation2.setY(itemNode1);
+        relation2.setWeight(weight);
+        relation2.setDomain(domainURI);
+        itemNode2.addSimilarRelation(relation2);
         itemGraphRepository.save(itemNode2);
         LOG.info("Item: " + itemURI1 + " related to item: " + itemURI2);
 
@@ -451,6 +460,39 @@ public class UDM {
         eventBus.post(Event.from(ResourceUtils.map(itemNode1,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
         eventBus.post(Event.from(ResourceUtils.map(itemNode2,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
     }
+
+
+    public void relatePartToPart(String partURI1, String partURI2, Double weight, String domainURI){
+        LOG.debug("Trying to relate part: " + partURI1 + " to part: " + partURI2 + " with weight: " + weight + " in domain: " + domainURI);
+        // Part
+        PartNode partNode1 = partGraphRepository.findOneByUri(partURI1);
+        // Part
+        PartNode partNode2 = partGraphRepository.findOneByUri(partURI2);
+
+
+        SimilarPart relation1 = new SimilarPart();
+        relation1.setX(partNode1);
+        relation1.setY(partNode2);
+        relation1.setWeight(weight);
+        relation1.setDomain(domainURI);
+        partNode1.addSimilarRelation(relation1);
+        partGraphRepository.save(partNode1);
+
+        SimilarPart relation2 = new SimilarPart();
+        relation2.setX(partNode2);
+        relation2.setY(partNode1);
+        relation2.setWeight(weight);
+        relation2.setDomain(domainURI);
+        partNode2.addSimilarRelation(relation2);
+        partGraphRepository.save(partNode2);
+        LOG.info("Part: " + partURI1 + " related to part: " + partURI2);
+
+        //Publish the event
+        eventBus.post(Event.from(ResourceUtils.map(partNode1,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(partNode2,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
+    }
+
+
 
     public void relateItemToPart(String itemURI, String partURI){
         LOG.debug("Trying to relate item: " + itemURI + " to part: " + partURI);
@@ -671,6 +713,15 @@ public class UDM {
         return uris;
     }
 
+    public List<Relationship> findDealsByDocumentAndAnalysis(String documentURI, String analysisURI){
+        LOG.debug("Finding deals for document: " + documentURI + " in analysis: " + analysisURI);
+        List<Relationship> relationships = new ArrayList<>();
+        documentGraphRepository.dealsInAnalysis(documentURI,analysisURI).forEach(x -> relationships.add(new Relationship(x.getTopic().getUri(),x.getWeight())));
+        LOG.info("Deals: " + relationships);
+        return relationships;
+    }
+
+
     public List<String> findItemsByDomain(String uri){
         LOG.debug("Finding items in domain: " + uri);
         List<String> uris = new ArrayList<>();
@@ -696,6 +747,15 @@ public class UDM {
         return Optional.empty();
     }
 
+    public List<Relationship> findDealsByItemAndAnalysis(String itemURI, String analysisURI){
+        LOG.debug("Finding deals for item: " + itemURI + " in analysis: " + analysisURI);
+        List<Relationship> relationships = new ArrayList<>();
+        itemGraphRepository.dealsInAnalysis(itemURI,analysisURI).forEach(x -> relationships.add(new Relationship(x.getTopic().getUri(),x.getWeight())));
+        LOG.info("Deals: " + relationships);
+        return relationships;
+    }
+
+
     public List<String> findPartsByDomain(String uri){
         LOG.debug("Finding parts in domain: " + uri);
         List<String> uris = new ArrayList<>();
@@ -710,6 +770,14 @@ public class UDM {
         partGraphRepository.findByItem(uri).forEach(x -> uris.add(x.getUri()));
         LOG.info("Parts: " + uris);
         return uris;
+    }
+
+    public List<Relationship> findDealsByPartAndAnalysis(String partURI, String analysisURI){
+        LOG.debug("Finding deals for part: " + partURI + " in analysis: " + analysisURI);
+        List<Relationship> relationships = new ArrayList<>();
+        partGraphRepository.dealsInAnalysis(partURI,analysisURI).forEach(x -> relationships.add(new Relationship(x.getTopic().getUri(),x.getWeight())));
+        LOG.info("Deals: " + relationships);
+        return relationships;
     }
 
     public Optional<String> findWordByContent(String content){

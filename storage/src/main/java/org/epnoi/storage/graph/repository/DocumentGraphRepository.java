@@ -1,9 +1,7 @@
 package org.epnoi.storage.graph.repository;
 
 import org.epnoi.storage.graph.domain.DocumentNode;
-import org.epnoi.storage.graph.domain.ItemNode;
-import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
-import org.epnoi.storage.graph.domain.relationships.ContainsDomainDocument;
+import org.epnoi.storage.graph.domain.relationships.DealsDocumentTopic;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +17,9 @@ public interface DocumentGraphRepository extends BaseGraphRepository<DocumentNod
 
     @Query("match (document)<-[:CONTAINS]-(domain{uri:{0}}) return document")
     Iterable<DocumentNode> findByDomain(String uri);
+
+    @Query("match (document{uri:{0}})-[d:DEALS]->(topic)-[e:EMERGES{analysis:{1}}]->(domain) return d")
+    Iterable<DealsDocumentTopic> dealsInAnalysis(String document, String analysis);
+
 
 }

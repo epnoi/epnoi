@@ -27,4 +27,5 @@ public class TopicGraphRepositoryTest extends BaseGraphRepositoryTest<TopicNode>
         node.setAnalysis("analysis/72ce5395-6268-439a-947e-802229e7f022");
         return node;
     }
+
 }

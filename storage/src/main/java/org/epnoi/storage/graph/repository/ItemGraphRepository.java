@@ -1,6 +1,7 @@
 package org.epnoi.storage.graph.repository;
 
 import org.epnoi.storage.graph.domain.ItemNode;
+import org.epnoi.storage.graph.domain.relationships.DealsItemTopic;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,8 @@ public interface ItemGraphRepository extends BaseGraphRepository<ItemNode> {
     @Query("match (part{uri:{0}})-[:DESCRIBES]->(item) return item")
     Iterable<ItemNode> findByPart(String uri);
 
+    @Query("match (item{uri:{0}})-[d:DEALS]->(topic)-[e:EMERGES{analysis:{1}}]->(domain) return d")
+    Iterable<DealsItemTopic> dealsInAnalysis(String item, String analysis);
 
 
 }

@@ -29,18 +29,18 @@ public class DomainNode extends Domain {
     private String uri;
 
     // Undirected
-    private Set<SimilarDomain> similars = new HashSet<>();
+    private Set<SimilarDomain> similar = new HashSet<>();
 
     // Outgoing
     private Set<ContainsDomainDocument> contains = new HashSet<>();
 
 
     public void addSimilarRelation(SimilarDomain rel){
-        similars.add(rel);
+        similar.add(rel);
     }
 
     public void removeSimilarRelation(SimilarDomain rel){
-        similars.remove(rel);
+        similar.remove(rel);
     }
 
     public void addContainRelation(ContainsDomainDocument rel){

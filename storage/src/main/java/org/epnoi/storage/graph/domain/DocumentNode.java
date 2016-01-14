@@ -3,7 +3,9 @@ package org.epnoi.storage.graph.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.epnoi.storage.graph.domain.relationships.*;
+import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
+import org.epnoi.storage.graph.domain.relationships.DealsDocumentTopic;
+import org.epnoi.storage.graph.domain.relationships.SimilarDocument;
 import org.epnoi.storage.model.Document;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
@@ -28,7 +30,7 @@ public class DocumentNode extends Document {
     private String uri;
 
     // -> Undirected
-    private Set<SimilarDocument> similars = new HashSet<>();
+    private Set<SimilarDocument> similar = new HashSet<>();
 
     // -> Outgoing
     private Set<DealsDocumentTopic> deals = new HashSet<>();
@@ -37,11 +39,11 @@ public class DocumentNode extends Document {
 
 
     public void addSimilarRelation(SimilarDocument rel){
-        similars.add(rel);
+        similar.add(rel);
     }
 
     public void removeSimilarRelation(SimilarDocument rel){
-        similars.remove(rel);
+        similar.remove(rel);
     }
 
     public void addDealRelation(DealsDocumentTopic rel){

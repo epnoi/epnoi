@@ -28,7 +28,7 @@ public class PartNode extends Part {
     private String uri;
 
     // Undirected
-    private Set<SimilarPart> similars = new HashSet<>();
+    private Set<SimilarPart> similar = new HashSet<>();
 
     // Outgoing
     private Set<DealsPartTopic> deals = new HashSet<>();
@@ -37,11 +37,11 @@ public class PartNode extends Part {
 
 
     public void addSimilarRelation(SimilarPart rel){
-        similars.add(rel);
+        similar.add(rel);
     }
 
     public void removeSimilarRelation(SimilarPart rel){
-        similars.remove(rel);
+        similar.remove(rel);
     }
 
     public void addDealRelation(DealsPartTopic rel){
