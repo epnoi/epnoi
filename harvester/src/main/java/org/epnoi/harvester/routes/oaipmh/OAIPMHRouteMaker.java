@@ -31,7 +31,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
     }
 
     @Override
-    public RouteDefinition build(Source source, Domain domain) {
+    public RouteDefinition build(Source source) {
 
         String uri = new StringBuilder().
                 append("file:").
@@ -46,7 +46,7 @@ public class OAIPMHRouteMaker implements RouteMaker{
         return new RouteDefinition().
                 from(uri).
                 setProperty(Record.SOURCE_URI,  new ConstantExpression(source.getUri())).
-                setProperty(Record.DOMAIN_URI,  new ConstantExpression(domain.getUri())).
+                setProperty(Record.DOMAIN_URI,  new ConstantExpression(source.getDomain())).
                 to(OAIPMHRouteBuilder.URI_RETRIEVE_METAINFORMATION).
                 to(CommonRouteBuilder.URI_RO_BUILD);
     }

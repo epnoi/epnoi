@@ -1,5 +1,6 @@
 package org.epnoi.harvester.services;
 
+import com.google.common.base.Strings;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.epnoi.harvester.routes.RouteDefinitionFactory;
@@ -40,24 +41,31 @@ public class SourceService {
 
     public Source create(Source source) throws Exception {
 
-        // TODO check if route exists in database, then return
+        try{
+            // TODO check if route exists in database, then return
 
-        LOG.info("creating a new domain associated to source: " + source);
-        Domain domain = new Domain();
-        domain.setUri(uriGenerator.newDomain());
-        domain.setName(source.getName());
-        domain.setDescription("attached to source: " + source.getUri());
-        udm.saveDomain(domain);
-        LOG.info("Domain: " + domain + " created attached to source: " + source);
+            LOG.info("creating a new domain associated to source: " + source);
+            if (Strings.isNullOrEmpty(source.getDomain())){
+                Domain domain = new Domain();
+                domain.setUri(uriGenerator.newDomain());
+                domain.setName(source.getName());
+                domain.setDescription("attached to source: " + source.getUri());
+                udm.saveDomain(domain);
+                LOG.info("Domain: " + domain + " created attached to source: " + source);
+                source.setDomain(domain.getUri());
+                // TODO update Source in DDBB
+            }
 
+            // Create a new route for harvesting this source
+            RouteDefinition route = routeDefinitionFactory.newRoute(source);
+            // TODO Save route in ddbb
+            // Add route to camel-context
+            LOG.info("adding route to harvest: " + route);
+            camelContext.addRouteDefinition(route);
 
-        // Create a new route for harvesting this source
-        RouteDefinition route = routeDefinitionFactory.newRoute(source,domain);
-        // TODO Save route in ddbb
-        // Add route to camel-context
-        LOG.info("adding route to harvest: " + route);
-        camelContext.addRouteDefinition(route);
-
+        } catch (RuntimeException e){
+            LOG.warn(e.getMessage());
+        }
         return source;
     }
 

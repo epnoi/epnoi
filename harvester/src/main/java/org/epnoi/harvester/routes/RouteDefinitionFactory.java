@@ -28,19 +28,19 @@ public class RouteDefinitionFactory {
         routeMakers.stream().forEach(routeMaker -> LOG.info("Route Maker registered: " + routeMaker));
     }
 
-    public RouteDefinition newRoute(Source source,Domain domain){
+    public RouteDefinition newRoute(Source source){
 
         String protocol = source.getProtocol().toLowerCase();
 
         List<RouteMaker> handlers = routeMakers.stream().filter(routeMaker -> routeMaker.accept(protocol)).collect(Collectors.toList());
 
         if (handlers == null || handlers.isEmpty()){
-            throw new RuntimeException("Route Builder not found for protocol: '" + protocol+"'");
+            throw new RuntimeException("Protocol: '" + protocol+"' not handled");
         }else if (handlers.size() > 1){
             LOG.warn("More than one builder for handling '" + protocol + "' sources: " + handlers);
         }
 
-        return handlers.get(0).build(source,domain);
+        return handlers.get(0).build(source);
     }
 
 }
