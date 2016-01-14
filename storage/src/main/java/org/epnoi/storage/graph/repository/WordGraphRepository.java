@@ -1,6 +1,7 @@
 package org.epnoi.storage.graph.repository;
 
 import org.epnoi.storage.graph.domain.WordNode;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,8 +10,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WordGraphRepository extends BaseGraphRepository<WordNode> {
 
-    // To avoid a class type exception
     @Override
     WordNode findOneByUri(String uri);
+
+    @Query("match (in:Word)-[s{domain:{0}}]->(out:Word) delete s")
+    void deleteSimilarRelationsInDomain(String uri);
+
+    @Query("match (in:Word)-[e:EMBEDDED]->(domain{uri:{0}}) delete e")
+    void deleteEmbeddedRelationsInDomain(String uri);
 
 }

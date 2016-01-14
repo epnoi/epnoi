@@ -1,6 +1,7 @@
-package org.epnoi.modeler.model;
+package org.epnoi.modeler.models.word;
 
 import org.apache.spark.mllib.feature.Word2VecModel;
+import org.epnoi.modeler.models.WordDistribution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Option;
@@ -9,7 +10,6 @@ import scala.collection.JavaConversions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by cbadenes on 13/01/16.

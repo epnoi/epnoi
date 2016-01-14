@@ -3,6 +3,7 @@ package org.epnoi.storage.graph;
 import org.epnoi.storage.graph.domain.WordNode;
 import org.epnoi.storage.graph.repository.BaseGraphRepository;
 import org.epnoi.storage.graph.repository.WordGraphRepository;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -29,5 +30,10 @@ public class WordGraphRepositoryTest extends BaseGraphRepositoryTest<WordNode> {
         node.setPos("NN");
         node.setType("term");
         return node;
+    }
+
+    @Test
+    public void deleteEmbeddedRelations(){
+        repository.deleteEmbeddedRelationsInDomain("asdasdads");
     }
 }

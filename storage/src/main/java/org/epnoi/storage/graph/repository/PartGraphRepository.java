@@ -24,4 +24,7 @@ public interface PartGraphRepository extends BaseGraphRepository<PartNode> {
     @Query("match (part{uri:{0}})-[d:DEALS]->(topic)-[e:EMERGES{analysis:{1}}]->(domain) return d")
     Iterable<DealsPartTopic> dealsInAnalysis(String part, String analysis);
 
+    @Query("match (in:Part)-[s{domain:{0}}]->(out:Part) delete s")
+    void deleteSimilarRelationsInDomain(String uri);
+
 }

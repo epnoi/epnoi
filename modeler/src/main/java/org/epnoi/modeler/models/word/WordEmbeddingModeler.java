@@ -1,9 +1,9 @@
-package org.epnoi.modeler.executor;
+package org.epnoi.modeler.models.word;
 
 import es.upm.oeg.epnoi.matching.metrics.domain.entity.RegularResource;
 import org.epnoi.model.Resource;
+import org.epnoi.modeler.executor.ModelingTask;
 import org.epnoi.modeler.helper.ModelingHelper;
-import org.epnoi.modeler.model.*;
 import org.epnoi.storage.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,19 +14,22 @@ import java.util.stream.Collectors;
 /**
  * Created by cbadenes on 11/01/16.
  */
-public class WordEmbeddingTask extends ModelingTask {
+public class WordEmbeddingModeler extends ModelingTask {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WordEmbeddingTask.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WordEmbeddingModeler.class);
 
     private static final String ANALYSIS_TYPE       = "topic-model";
 
-    public WordEmbeddingTask(Domain domain, ModelingHelper modelingHelper) {
+    public WordEmbeddingModeler(Domain domain, ModelingHelper modelingHelper) {
         super(domain, modelingHelper);
     }
 
 
     @Override
     public void run() {
+
+        // TODO use a factory to avoid this explicit flow
+
         try{
             //TODO Optimize using Spark.parallel
             List<RegularResource> regularResources = helper.getUdm().findDocumentsByDomain(domain.getUri()).stream().
@@ -36,6 +39,12 @@ public class WordEmbeddingTask extends ModelingTask {
 
             if ((regularResources == null) || (regularResources.isEmpty()))
                 throw new RuntimeException("No documents found in domain: " + domain.getUri());
+
+            // Clean Similar relations
+            helper.getUdm().deleteSimilarsBetweenWordsInDomain(domain.getUri());
+
+            // Clean Embedded relations
+            helper.getUdm().deleteEmbeddingWordsInDomain(domain.getUri());
 
             // Create the analysis
             Analysis analysis = newAnalysis("Word-Embedding","W2V",Resource.Type.DOCUMENT.name());
@@ -51,7 +60,7 @@ public class WordEmbeddingTask extends ModelingTask {
             helper.getUdm().saveAnalysis(analysis);
 
         }catch (RuntimeException e){
-            LOG.warn(e.getMessage());
+            LOG.warn(e.getMessage(),e);
         } catch (Exception e) {
             LOG.warn(e.getMessage(), e);
         }

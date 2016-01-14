@@ -1,4 +1,4 @@
-package org.epnoi.modeler.model;
+package org.epnoi.modeler.models.topic;
 
 import lombok.Data;
 

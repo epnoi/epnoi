@@ -1,6 +1,6 @@
 package org.epnoi.storage;
 
-import org.epnoi.model.*;
+import org.epnoi.model.Event;
 import org.epnoi.model.Resource;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.RoutingKey;
@@ -12,10 +12,6 @@ import org.epnoi.storage.graph.domain.*;
 import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.graph.repository.*;
 import org.epnoi.storage.model.*;
-import org.epnoi.storage.model.Domain;
-import org.epnoi.storage.model.Item;
-import org.epnoi.storage.model.Relation;
-import org.epnoi.storage.model.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -772,6 +768,14 @@ public class UDM {
         return uris;
     }
 
+    public List<String> findTopicsByDomain(String uri){
+        LOG.debug("Finding topics in domain: " + uri);
+        List<String> uris = new ArrayList<>();
+        topicGraphRepository.findByDomain(uri).forEach(x -> uris.add(x.getUri()));
+        LOG.info("Topics: " + uris);
+        return uris;
+    }
+
     public List<Relationship> findDealsByPartAndAnalysis(String partURI, String analysisURI){
         LOG.debug("Finding deals for part: " + partURI + " in analysis: " + analysisURI);
         List<Relationship> relationships = new ArrayList<>();
@@ -894,7 +898,7 @@ public class UDM {
         topicDocumentRepository.delete(uri);
         // graph : TODO Get id directly from URI
         TopicNode topic = topicGraphRepository.findOneByUri(uri);
-        topicGraphRepository.delete(topic);
+        topicGraphRepository.deleteAndDetach(uri);
 
         //Publish the event
         eventBus.post(Event.from(ResourceUtils.map(topic,Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.DELETED));
@@ -924,6 +928,42 @@ public class UDM {
         Analysis analysis = new Analysis();
         analysis.setUri(uri);
         eventBus.post(Event.from(analysis), RoutingKey.of(Resource.Type.ANALYSIS, Resource.State.DELETED));
+    }
+
+    public void deleteSimilarsInDomain(String uri){
+        LOG.debug("trying to delete SIMILAR relationships in domain: " + uri);
+        domainGraphRepository.deleteSimilarRelations(uri);
+        LOG.info("Deleted SIMILAR relationships of Item: " + uri);
+    }
+
+    public void deleteSimilarsBetweenDocumentsInDomain(String uri){
+        LOG.debug("trying to delete SIMILAR relationships between Documents in Domain: " + uri);
+        documentGraphRepository.deleteSimilarRelationsInDomain(uri);
+        LOG.info("Deleted SIMILAR relationships between Documents in Domain: " + uri);
+    }
+
+    public void deleteSimilarsBetweenItemsInDomain(String uri){
+        LOG.debug("trying to delete SIMILAR relationships between Items in Domain: " + uri);
+        itemGraphRepository.deleteSimilarRelationsInDomain(uri);
+        LOG.info("Deleted SIMILAR relationships between Items in Domain: " + uri);
+    }
+
+    public void deleteSimilarsBetweenPartsInDomain(String uri){
+        LOG.debug("trying to delete SIMILAR relationships between Parts in Domain: " + uri);
+        partGraphRepository.deleteSimilarRelationsInDomain(uri);
+        LOG.info("Deleted SIMILAR relationships between Parts in Domain: " + uri);
+    }
+
+    public void deleteSimilarsBetweenWordsInDomain(String uri){
+        LOG.debug("trying to delete SIMILAR relationships between Words in Domain: " + uri);
+        wordGraphRepository.deleteSimilarRelationsInDomain(uri);
+        LOG.info("Deleted SIMILAR relationships between Words in Domain: " + uri);
+    }
+
+    public void deleteEmbeddingWordsInDomain(String uri){
+        LOG.debug("trying to delete EMBEDDED relationships from Words to Domain: " + uri);
+        wordGraphRepository.deleteEmbeddedRelationsInDomain(uri);
+        LOG.info("Deleted EMBEDDED relationships from Words to Domain: " + uri);
     }
 
     public void deleteAll(){

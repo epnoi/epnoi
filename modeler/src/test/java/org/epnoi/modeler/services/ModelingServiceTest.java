@@ -20,12 +20,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Config.class)
 @TestPropertySource(properties = {"epnoi.modeler.delay = 5000"})
-public class TopicModelingServiceTest {
+public class ModelingServiceTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TopicModelingServiceTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModelingServiceTest.class);
 
     @Autowired
-    TopicModelingService service;
+    ModelingService service;
 
     @Test
     public void scheduleModelingTasks() throws InterruptedException {
@@ -36,13 +36,13 @@ public class TopicModelingServiceTest {
         Domain domain2 = new Domain();
         domain2.setUri("http://epnoi.org/domains/ad8ceb56-e5e4-488b-91be-96ce1a7f4444");
 
-        service.buildModel(domain1);
+        service.buildModels(domain1);
         Thread.sleep(1000);
-        service.buildModel(domain2);
-        service.buildModel(domain1);
+        service.buildModels(domain2);
+        service.buildModels(domain1);
         Thread.sleep(1000);
-        service.buildModel(domain1);
-        service.buildModel(domain2);
+        service.buildModels(domain1);
+        service.buildModels(domain2);
         Thread.sleep(1000);
 
         LOG.info("waiting for execution....");

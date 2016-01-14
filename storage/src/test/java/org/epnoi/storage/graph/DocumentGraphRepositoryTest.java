@@ -49,16 +49,18 @@ public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<Documen
 
     @Test
     public void getDeals(){
-
         Iterable<DealsDocumentTopic> deals = repository.dealsInAnalysis("http://epnoi.org/documents/fb58705e-65fe-41ad-8f92-b8802d3a43e2","http://epnoi.org/analyses/e8ac7764-f0ac-4e9b-841c-a4b07e076d5f");
 
         Iterator<DealsDocumentTopic> it = deals.iterator();
-        while(it.hasNext()){
+        while(it.hasNext()) {
             LOG.info("Deal: " + it.next());
         }
-
-
     }
 
+
+    @Test
+    public void similar(){
+        repository.deleteSimilarRelationsInDomain("http://epnoi.org/domains/1f02ae0b-7d96-42c6-a944-25a3050bf1e2");
+    }
 
 }

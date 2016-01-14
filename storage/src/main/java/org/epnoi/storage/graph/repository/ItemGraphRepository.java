@@ -27,5 +27,7 @@ public interface ItemGraphRepository extends BaseGraphRepository<ItemNode> {
     @Query("match (item{uri:{0}})-[d:DEALS]->(topic)-[e:EMERGES{analysis:{1}}]->(domain) return d")
     Iterable<DealsItemTopic> dealsInAnalysis(String item, String analysis);
 
+    @Query("match (in:Item)-[s{domain:{0}}]->(out:Item) delete s")
+    void deleteSimilarRelationsInDomain(String uri);
 
 }

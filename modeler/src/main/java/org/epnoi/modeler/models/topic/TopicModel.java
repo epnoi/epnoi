@@ -1,4 +1,4 @@
-package org.epnoi.modeler.model;
+package org.epnoi.modeler.models.topic;
 
 import es.upm.oeg.epnoi.matching.metrics.domain.entity.ConceptualResource;
 import lombok.Getter;

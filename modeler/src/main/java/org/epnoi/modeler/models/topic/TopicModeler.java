@@ -1,12 +1,10 @@
-package org.epnoi.modeler.executor;
+package org.epnoi.modeler.models.topic;
 
 import es.upm.oeg.epnoi.matching.metrics.domain.entity.RegularResource;
 import org.epnoi.model.Resource;
+import org.epnoi.modeler.executor.ModelingTask;
 import org.epnoi.modeler.helper.ModelingHelper;
-import org.epnoi.modeler.model.TopicData;
-import org.epnoi.modeler.model.TopicDistribution;
-import org.epnoi.modeler.model.TopicModel;
-import org.epnoi.modeler.model.WordDistribution;
+import org.epnoi.modeler.models.WordDistribution;
 import org.epnoi.storage.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +15,13 @@ import java.util.stream.Collectors;
 /**
  * Created by cbadenes on 11/01/16.
  */
-public class TopicModelingTask extends ModelingTask {
+public class TopicModeler extends ModelingTask {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TopicModelingTask.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TopicModeler.class);
 
     private static final String ANALYSIS_TYPE       = "topic-model";
 
-    public TopicModelingTask(Domain domain, ModelingHelper modelingHelper) {
+    public TopicModeler(Domain domain, ModelingHelper modelingHelper) {
         super(domain, modelingHelper);
     }
 
@@ -31,11 +29,25 @@ public class TopicModelingTask extends ModelingTask {
     @Override
     public void run() {
         try{
+            //TODO Use of factory to avoid this explicit flow!
+            LOG.info("ready to create a new topic model for domain: " + domain);
+
+            // Delete previous Topics
+            helper.getUdm().findTopicsByDomain(domain.getUri()).stream().forEach(topic -> helper.getUdm().deleteTopic(topic));
+
+            // Documents
+            helper.getUdm().deleteSimilarsBetweenDocumentsInDomain(domain.getUri());
             buildModelfor(Resource.Type.DOCUMENT);
+
+            // Items
+            helper.getUdm().deleteSimilarsBetweenItemsInDomain(domain.getUri());
             buildModelfor(Resource.Type.ITEM);
+
+            // Parts
+            helper.getUdm().deleteSimilarsBetweenPartsInDomain(domain.getUri());
             buildModelfor(Resource.Type.PART);
         } catch (RuntimeException e){
-            LOG.warn(e.getMessage());
+            LOG.warn(e.getMessage(),e);
         } catch (Exception e){
             LOG.warn(e.getMessage(),e);
         }
@@ -44,6 +56,7 @@ public class TopicModelingTask extends ModelingTask {
 
     private void buildModelfor(Resource.Type resourceType){
         LOG.info("Building a topic model for " + resourceType.name() + " of domain: " + domain);
+
         List<RegularResource> regularResources = new ArrayList<>();
 
         switch(resourceType){
@@ -83,14 +96,12 @@ public class TopicModelingTask extends ModelingTask {
         persistModel(analysis,model,resourceType);
 
         // Save the analysis
-//        analysis.setConfiguration(model.getConfiguration().toString());
+        analysis.setConfiguration(model.getConfiguration().toString());
         helper.getUdm().saveAnalysis(analysis);
     }
 
-
-
-
     private void persistModel(Analysis analysis, TopicModel model, Resource.Type resourceType){
+
         String creationTime = helper.getTimeGenerator().getNowAsISO();
         Map<String,String> topicTable = new HashMap<>();
         for (TopicData topicData : model.getTopics()){

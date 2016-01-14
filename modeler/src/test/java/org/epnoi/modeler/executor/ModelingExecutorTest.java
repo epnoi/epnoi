@@ -3,7 +3,6 @@ package org.epnoi.modeler.executor;
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.modeler.Config;
 import org.epnoi.modeler.helper.ModelingHelper;
-import org.epnoi.storage.UDM;
 import org.epnoi.storage.model.Domain;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -20,9 +19,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Config.class)
-public class TopicModelingExecutorTest {
+public class ModelingExecutorTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TopicModelingExecutor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModelingExecutorTest.class);
 
     @Autowired
     ModelingHelper helper;
@@ -32,13 +31,13 @@ public class TopicModelingExecutorTest {
 
         Domain domain = new Domain();
 
-        TopicModelingExecutor topicModelingExecutor = new TopicModelingExecutor(domain,helper,5000);
+        ModelingExecutor modelingExecutor = new ModelingExecutor(domain,helper,5000);
 
-        topicModelingExecutor.buildModel();
+        modelingExecutor.buildModel();
         Thread.sleep(1000);
-        topicModelingExecutor.buildModel();
+        modelingExecutor.buildModel();
         Thread.sleep(1000);
-        topicModelingExecutor.buildModel();
+        modelingExecutor.buildModel();
         Thread.sleep(1000);
 
         LOG.info("Waiting for delayed executions...");

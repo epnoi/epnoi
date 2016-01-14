@@ -12,15 +12,15 @@ import org.apache.commons.lang.StringUtils;
 @ToString(callSuper = true)
 public class Source extends Resource {
 
-    private String name;
+    private String name = "";
 
-    private String description;
+    private String description = "";
 
-    private String url;
+    private String url = "";
 
-    private String protocol;
+    private String protocol = "";
 
-    private String domain;
+    private String domain = "";
 
     public String getProtocol(){
         if (Strings.isNullOrEmpty(protocol)){

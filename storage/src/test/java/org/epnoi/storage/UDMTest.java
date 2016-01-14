@@ -288,4 +288,25 @@ public class UDMTest {
         Assert.assertEquals(5,parts.size());
     }
 
+    @Test
+    public void updateRelationships(){
+        Word word = new Word();
+        word.setUri(uriGenerator.newWord());
+        udm.saveWord(word);
+
+        Domain domain = new Domain();
+        domain.setUri(uriGenerator.newDomain());
+        udm.saveDomain(domain);
+
+        udm.relateWordToDomain(word.getUri(),domain.getUri(),"vector1");
+
+        udm.deleteEmbeddingWordsInDomain(domain.getUri());
+
+        udm.relateWordToDomain(word.getUri(),domain.getUri(),"vector2");
+
+        LOG.info("sample");
+
+
+    }
+
 }

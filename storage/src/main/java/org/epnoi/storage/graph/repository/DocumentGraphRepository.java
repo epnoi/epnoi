@@ -21,5 +21,7 @@ public interface DocumentGraphRepository extends BaseGraphRepository<DocumentNod
     @Query("match (document{uri:{0}})-[d:DEALS]->(topic)-[e:EMERGES{analysis:{1}}]->(domain) return d")
     Iterable<DealsDocumentTopic> dealsInAnalysis(String document, String analysis);
 
+    @Query("match (in:Document)-[s{domain:{0}}]->(out:Document) delete s")
+    void deleteSimilarRelationsInDomain(String uri);
 
 }
