@@ -1,0 +1,25 @@
+# scale out the number of available Cassandra nodes in the infrastructure in this manner:
+#  docker-compose scale cassandra_slave=3
+
+opscenter:
+  image: 47deg/opscenter
+  ports:
+  - "8888:8888"
+  container_name: opscenter
+cassandra_seed:
+  image: 47deg/cassandra
+  ports:
+  - "9042:9042"
+  links:
+    - opscenter
+  container_name: cassandra_seed
+  environment:
+    - OPS_IP=opscenter
+cassandra_slave:
+  image: 47deg/cassandra
+  links:
+    - opscenter
+    - cassandra_seed
+  environment:
+    - OPS_IP=opscenter
+    - SEED=cassandra_seed

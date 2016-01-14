@@ -1,0 +1,2 @@
+#https://github.com/abh1nav/docker-opscenter
+docker run -it --rm --name opscenter -p 8888:8888 abh1nav/opscenter:latest
