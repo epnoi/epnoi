@@ -82,6 +82,18 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-neo4j</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.neo4j</groupId>
+					<artifactId>neo4j-ogm</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://github.com/neo4j/neo4j-ogm -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm</artifactId>
+			<version>1.1.5-BETA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
