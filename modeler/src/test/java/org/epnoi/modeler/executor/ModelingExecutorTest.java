@@ -31,7 +31,7 @@ public class ModelingExecutorTest {
 
         Domain domain = new Domain();
 
-        ModelingExecutor modelingExecutor = new ModelingExecutor(domain,helper,5000);
+        ModelingPoolExecutor modelingExecutor = new ModelingPoolExecutor(domain,helper,5000);
 
         modelingExecutor.buildModel();
         Thread.sleep(1000);

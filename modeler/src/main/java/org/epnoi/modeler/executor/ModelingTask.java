@@ -1,13 +1,15 @@
 package org.epnoi.modeler.executor;
 
 import org.epnoi.modeler.helper.ModelingHelper;
+import org.epnoi.modeler.models.topic.TopicModeler;
+import org.epnoi.modeler.models.word.WordEmbeddingModeler;
 import org.epnoi.storage.model.Analysis;
 import org.epnoi.storage.model.Domain;
 
 /**
  * Created by cbadenes on 13/01/16.
  */
-public abstract class ModelingTask implements Runnable{
+public class ModelingTask implements Runnable{
 
     protected final Domain domain;
     protected final ModelingHelper helper;
@@ -29,4 +31,10 @@ public abstract class ModelingTask implements Runnable{
         return analysis;
     }
 
+    @Override
+    public void run() {
+        // TODO Parallelize by beans. Take into account transactions in UDM
+        new WordEmbeddingModeler(domain,helper).run();
+        new TopicModeler(domain,helper).run();
+    }
 }
