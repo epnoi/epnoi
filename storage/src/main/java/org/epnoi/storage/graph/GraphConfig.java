@@ -1,8 +1,10 @@
 package org.epnoi.storage.graph;
 
+import org.neo4j.ogm.session.Neo4jSession;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableNeo4jRepositories(basePackages = {"org.epnoi.storage.graph.repository"})
-@EnableTransactionManagement
+//@EnableTransactionManagement
 public class GraphConfig extends Neo4jConfiguration{
 
     @Autowired
@@ -29,8 +31,7 @@ public class GraphConfig extends Neo4jConfiguration{
     @Override
     @Bean
     public Neo4jServer neo4jServer() {
-        // Credentials
-        // return new RemoteServer("http://localhost:7474",username,password);
+        // Credentials : return new RemoteServer("http://localhost:7474",username,password);
         return new RemoteServer("http://"+env.getProperty("epnoi.neo4j.contactpoints")+":"+env.getProperty("epnoi.neo4j.port"));
     }
 
@@ -47,4 +48,11 @@ public class GraphConfig extends Neo4jConfiguration{
 //    public Session getSession() throws Exception {
 //        return super.getSession();
 //    }
+
+    @Override
+    @Bean
+    @Scope(value = BeanDefinition.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public Session getSession() throws Exception {
+        return super.getSession();
+    }
 }

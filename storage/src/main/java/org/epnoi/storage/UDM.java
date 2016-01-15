@@ -12,12 +12,18 @@ import org.epnoi.storage.graph.domain.*;
 import org.epnoi.storage.graph.domain.relationships.*;
 import org.epnoi.storage.graph.repository.*;
 import org.epnoi.storage.model.*;
+import org.neo4j.ogm.session.Neo4jSession;
+import org.neo4j.ogm.session.SessionFactory;
+import org.neo4j.ogm.session.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +38,11 @@ public class UDM {
 
     @Autowired
     EventBus eventBus;
+
+    @Autowired
+    SessionFactory sessionFactory;
+
+    Neo4jSession session;
 
     @Autowired
     SourceColumnRepository sourceColumnRepository;
@@ -91,6 +102,17 @@ public class UDM {
     AnalysisColumnRepository analysisColumnRepository;
     @Autowired
     AnalysisDocumentRepository analysisDocumentRepository;
+
+    @Value("${epnoi.neo4j.contactpoints}")
+    String neo4jHost;
+
+    @Value("${epnoi.neo4j.port}")
+    String neo4jPort;
+
+    @PostConstruct
+    public void setup(){
+        this.session = (Neo4jSession) sessionFactory.openSession("http://"+neo4jHost+":"+neo4jPort);
+    }
 
     /******************************************************************************
      * Save
@@ -229,6 +251,10 @@ public class UDM {
 
         // document
         topicDocumentRepository.save(ResourceUtils.map(topic, TopicDocument.class));
+
+//        Transaction transaction = session.beginTransaction();
+//        session.save(ResourceUtils.map(topic, TopicNode.class));
+//        transaction.commit();
 
         // graph : TODO Set unique Long id for node
         topicGraphRepository.save(ResourceUtils.map(topic, TopicNode.class));

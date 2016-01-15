@@ -305,8 +305,13 @@ public class UDMTest {
         udm.relateWordToDomain(word.getUri(),domain.getUri(),"vector2");
 
         LOG.info("sample");
+    }
 
-
+    @Test
+    public void saveWord(){
+        Word word = new Word();
+        word.setUri(uriGenerator.newWord());
+        udm.saveWord(word);
     }
 
 }
