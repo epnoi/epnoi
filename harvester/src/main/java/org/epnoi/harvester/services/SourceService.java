@@ -41,31 +41,26 @@ public class SourceService {
 
     public Source create(Source source) throws Exception {
 
-        try{
-            // TODO check if route exists in database, then return
-
+        // TODO check if route exists in database, then return
+        if (Strings.isNullOrEmpty(source.getDomain())){
             LOG.info("creating a new domain associated to source: " + source);
-            if (Strings.isNullOrEmpty(source.getDomain())){
-                Domain domain = new Domain();
-                domain.setUri(uriGenerator.newDomain());
-                domain.setName(source.getName());
-                domain.setDescription("attached to source: " + source.getUri());
-                udm.saveDomain(domain);
-                LOG.info("Domain: " + domain + " created attached to source: " + source);
-                source.setDomain(domain.getUri());
-                // TODO update Source in DDBB
-            }
-
-            // Create a new route for harvesting this source
-            RouteDefinition route = routeDefinitionFactory.newRoute(source);
-            // TODO Save route in ddbb
-            // Add route to camel-context
-            LOG.info("adding route to harvest: " + route);
-            camelContext.addRouteDefinition(route);
-
-        } catch (RuntimeException e){
-            LOG.warn(e.getMessage());
+            Domain domain = new Domain();
+            domain.setUri(uriGenerator.newDomain());
+            domain.setName(source.getName());
+            domain.setDescription("attached to source: " + source.getUri());
+            udm.saveDomain(domain);
+            LOG.info("Domain: " + domain + " created attached to source: " + source);
+            source.setDomain(domain.getUri());
+            // TODO update Source in DDBB
         }
+
+        // Create a new route for harvesting this source
+        RouteDefinition route = routeDefinitionFactory.newRoute(source);
+        // TODO Save route in ddbb
+        // Add route to camel-context
+        LOG.info("adding route to harvest: " + route);
+        camelContext.addRouteDefinition(route);
+
         return source;
     }
 

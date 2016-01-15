@@ -30,7 +30,10 @@ public class SourceCreatedEventHandler extends AbstractEventHandler {
         LOG.info("New Source event received: " + event);
         try{
             sourceService.create(event.to(Source.class));
-        } catch (Exception e){
+        } catch (RuntimeException e){
+            // TODO Notify to event-bus when source has not been added
+            LOG.warn(e.getMessage());
+        }catch (Exception e){
             // TODO Notify to event-bus when source has not been added
             LOG.error("Error adding new source: " + event, e);
         }

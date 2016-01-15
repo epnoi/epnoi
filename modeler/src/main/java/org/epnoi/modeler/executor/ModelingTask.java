@@ -5,11 +5,15 @@ import org.epnoi.modeler.models.topic.TopicModeler;
 import org.epnoi.modeler.models.word.WordEmbeddingModeler;
 import org.epnoi.storage.model.Analysis;
 import org.epnoi.storage.model.Domain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by cbadenes on 13/01/16.
  */
 public class ModelingTask implements Runnable{
+
+    private static final Logger LOG = LoggerFactory.getLogger("ModelingTask");
 
     protected final Domain domain;
     protected final ModelingHelper helper;
@@ -33,6 +37,7 @@ public class ModelingTask implements Runnable{
 
     @Override
     public void run() {
+        LOG.info("New modeling task running...");
         // TODO Parallelize by beans. Take into account transactions in UDM
         new WordEmbeddingModeler(domain,helper).run();
         new TopicModeler(domain,helper).run();

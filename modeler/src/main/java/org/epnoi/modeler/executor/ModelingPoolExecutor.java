@@ -35,7 +35,7 @@ public class ModelingPoolExecutor {
         this.threadpool.setPoolSize(1);
         this.threadpool.initialize();
 
-        LOG.info("created a new topic modeling executor delayed by: " + delayInMsecs + "msecs for domain: " + domain);
+        LOG.info("created a new modeling executor delayed by: " + delayInMsecs + "msecs for domain: " + domain);
     }
 
     public ModelingPoolExecutor buildModel(){

@@ -37,9 +37,12 @@ public class ModelingService {
 
 
     public void buildModels(Domain domain){
-        LOG.info("Plan a new build task to create topic models for domain: " + domain);
-        this.executors.merge(domain.getUri(), new ModelingPoolExecutor(domain,helper,delay).buildModel(), (modelingExecutor, modelingExecutor2) -> modelingExecutor.buildModel());
-
+        LOG.info("Plan a new task to build models for domain: " + domain);
+        ModelingPoolExecutor executor = executors.get(domain.getUri());
+        if (executor == null){
+            executor = new ModelingPoolExecutor(domain,helper,delay);
+        }
+        executors.put(domain.getUri(),executor.buildModel());
     }
 
     public String create(Domain domain){

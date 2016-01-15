@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>epnoi-comparator</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>epnoi comparator</name>
 	<description>epnoi comparator</description>
 

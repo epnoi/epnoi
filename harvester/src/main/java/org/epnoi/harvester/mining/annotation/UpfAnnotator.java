@@ -25,6 +25,8 @@ public class UpfAnnotator {
     @PostConstruct
     public void setup() throws DRIexception {
 
+        LOG.info("Configured path: " + driConfigPath);
+
         // Set property file path
         Factory.setDRIPropertyFilePath(driConfigPath);
 
