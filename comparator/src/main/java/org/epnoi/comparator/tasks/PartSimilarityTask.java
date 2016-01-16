@@ -52,7 +52,8 @@ public class PartSimilarityTask implements Runnable {
         Double similarity = RelationalSimilarity.between(getDistributionOf(uri1), getDistributionOf(uri2));
         if (similarity > helper.getThreshold()){
             // Save relation in ddbb
-            helper.getUdm().relateItemToItem(uri1,uri2,similarity,analysis.getDomain());
+            helper.getUdm().relatePartToPart(uri1,uri2,similarity,analysis.getDomain());
+            helper.getUdm().relatePartToPart(uri2,uri1,similarity,analysis.getDomain());
         }
 
 

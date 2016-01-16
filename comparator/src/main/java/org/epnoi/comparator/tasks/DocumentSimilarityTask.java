@@ -53,6 +53,7 @@ public class DocumentSimilarityTask implements Runnable {
         if (similarity > helper.getThreshold()){
             // Save relation in ddbb
             helper.getUdm().relateDocumentToDocument(uri1,uri2,similarity,analysis.getDomain());
+            helper.getUdm().relateDocumentToDocument(uri2,uri1,similarity,analysis.getDomain());
         }
 
 

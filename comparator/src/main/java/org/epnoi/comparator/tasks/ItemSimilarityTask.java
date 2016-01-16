@@ -53,6 +53,7 @@ public class ItemSimilarityTask implements Runnable {
         if (similarity > helper.getThreshold()){
             // Save relation in ddbb
             helper.getUdm().relateItemToItem(uri1,uri2,similarity,analysis.getDomain());
+            helper.getUdm().relateItemToItem(uri2,uri1,similarity,analysis.getDomain());
         }
 
 
