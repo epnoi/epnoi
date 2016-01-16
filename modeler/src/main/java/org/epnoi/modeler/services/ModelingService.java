@@ -1,6 +1,6 @@
 package org.epnoi.modeler.services;
 
-import org.epnoi.modeler.executor.ModelingPoolExecutor;
+import org.epnoi.modeler.scheduler.ModelingPoolExecutor;
 import org.epnoi.modeler.helper.ModelingHelper;
 import org.epnoi.storage.model.Analysis;
 import org.epnoi.storage.model.Domain;

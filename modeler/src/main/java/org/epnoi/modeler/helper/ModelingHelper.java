@@ -1,14 +1,12 @@
 package org.epnoi.modeler.helper;
 
 import lombok.Data;
-import org.epnoi.modeler.builder.AuthorBuilder;
-import org.epnoi.modeler.builder.RegularResourceBuilder;
-import org.epnoi.modeler.builder.TopicModelBuilder;
-import org.epnoi.modeler.builder.WordEmbeddingBuilder;
+import org.epnoi.modeler.builder.*;
 import org.epnoi.storage.TimeGenerator;
 import org.epnoi.storage.UDM;
 import org.epnoi.storage.URIGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +29,9 @@ public class ModelingHelper {
     TimeGenerator timeGenerator;
 
     @Autowired
+    ModelBuilder modelBuilder;
+
+    @Autowired
     TopicModelBuilder topicModelBuilder;
 
     @Autowired
@@ -41,4 +42,7 @@ public class ModelingHelper {
 
     @Autowired
     UDM udm;
+
+    @Value("${epnoi.comparator.threshold}")
+    Double similarityThreshold;
 }

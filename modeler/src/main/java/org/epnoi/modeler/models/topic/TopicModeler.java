@@ -2,7 +2,7 @@ package org.epnoi.modeler.models.topic;
 
 import es.upm.oeg.epnoi.matching.metrics.domain.entity.RegularResource;
 import org.epnoi.model.Resource;
-import org.epnoi.modeler.executor.ModelingTask;
+import org.epnoi.modeler.scheduler.ModelingTask;
 import org.epnoi.modeler.helper.ModelingHelper;
 import org.epnoi.modeler.models.WordDistribution;
 import org.epnoi.storage.model.*;

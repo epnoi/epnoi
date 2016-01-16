@@ -2,8 +2,9 @@ package org.epnoi.modeler.models.word;
 
 import es.upm.oeg.epnoi.matching.metrics.domain.entity.RegularResource;
 import org.epnoi.model.Resource;
-import org.epnoi.modeler.executor.ModelingTask;
+import org.epnoi.modeler.scheduler.ModelingTask;
 import org.epnoi.modeler.helper.ModelingHelper;
+import org.epnoi.modeler.models.WordDistribution;
 import org.epnoi.storage.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class WordEmbeddingModeler extends ModelingTask {
             W2VModel model = helper.getWordEmbeddingBuilder().build(analysis.getUri(), regularResources);
 
             // Make relations
-            //TODO Optimize using Spark.parallel
+            //TODO Improve using Spark.parallel
             model.getVocabulary().stream().forEach(word -> relateWord(word,model));
 
             // Save the analysis
@@ -75,9 +76,10 @@ public class WordEmbeddingModeler extends ModelingTask {
 
         // SIMILAR relations
         // TODO this relation should be done in the COMPARATOR module
-        model.find(word).stream().filter(sim -> sim.getWeight() > 0.5).
-                forEach(sim ->
-                        helper.getUdm().relateWordToWord(wordURI,findOrCreateWord(sim.getWord()),sim.getWeight(),domain.getUri()));
+        List<WordDistribution> words = model.find(word).stream().filter(sim -> sim.getWeight() > helper.getSimilarityThreshold()).collect(Collectors.toList());
+        for (WordDistribution wordDistribution : words){
+            helper.getUdm().relateWordToWord(wordURI,findOrCreateWord(wordDistribution.getWord()),wordDistribution.getWeight(),domain.getUri());
+        }
 
     }
 
