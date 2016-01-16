@@ -14,7 +14,7 @@ public interface TopicGraphRepository extends BaseGraphRepository<TopicNode> {
     @Override
     TopicNode findOneByUri(String uri);
 
-    @Query("match (topic)-[:EMERGES]->(domain{uri:{0}}) return topic")
+    @Query("match (topic)-[:EMERGES_IN]->(domain{uri:{0}}) return topic")
     Iterable<TopicNode> findByDomain(String uri);
 
     @Query("match (topic{uri:{0}}) detach delete topic")

@@ -14,9 +14,9 @@ public interface WordGraphRepository extends BaseGraphRepository<WordNode> {
     WordNode findOneByUri(String uri);
 
     @Query("match (in:Word)-[s{domain:{0}}]->(out:Word) delete s")
-    void deleteSimilarRelationsInDomain(String uri);
+    void deletePairingInDomain(String uri);
 
-    @Query("match (in:Word)-[e:EMBEDDED]->(domain{uri:{0}}) delete e")
-    void deleteEmbeddedRelationsInDomain(String uri);
+    @Query("match (in:Word)-[e:EMBEDDED_IN]->(domain{uri:{0}}) delete e")
+    void deleteEmbeddingInDomain(String uri);
 
 }

@@ -14,6 +14,6 @@ public interface DomainGraphRepository extends BaseGraphRepository<DomainNode> {
     @Override
     DomainNode findOneByUri(String uri);
 
-    @Query("match (in)-[s{domain:{0}}:SIMILAR]->(out) delete s")
+    @Query("match (in)-[s{domain:{0}}:SIMILAR_TO]->(out) delete s")
     void deleteSimilarRelations(String uri);
 }

@@ -14,14 +14,12 @@ import org.epnoi.storage.graph.repository.*;
 import org.epnoi.storage.model.*;
 import org.neo4j.ogm.session.Neo4jSession;
 import org.neo4j.ogm.session.SessionFactory;
-import org.neo4j.ogm.session.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -371,12 +369,12 @@ public class UDM {
         // Source
         SourceNode sourceNode = sourceGraphRepository.findOneByUri(sourceURI);
 
-        ProvidesSourceDocument relation = new ProvidesSourceDocument();
+        DocumentProvidedBySource relation = new DocumentProvidedBySource();
         relation.setDate(date);
         relation.setSource(sourceNode);
         relation.setDocument(documentNode);
-
-        sourceNode.addProvideRelation(relation);
+        sourceNode.addDocumentProvidedBySource(relation);
+        LOG.debug("Saving relation: " + relation);
         sourceGraphRepository.save(sourceNode);
         LOG.info("Document: " + documentURI + " related to source: " + sourceURI + " in: " + date);
 
@@ -391,12 +389,12 @@ public class UDM {
         // Domain
         DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
 
-        ContainsDomainDocument relation = new ContainsDomainDocument();
+        ContainedDocument relation = new ContainedDocument();
         relation.setDocument(documentNode);
         relation.setDomain(domainNode);
         relation.setDate(date);
-
-        domainNode.addContainRelation(relation);
+        domainNode.addContainedDocument(relation);
+        LOG.debug("Saving relation: " + relation);
         domainGraphRepository.save(domainNode);
         LOG.info("Document: " + documentURI + " related to domain: " + domainURI + " in: " + date);
 
@@ -412,26 +410,19 @@ public class UDM {
         DocumentNode documentNode2 = documentGraphRepository.findOneByUri(documentURI2);
 
 
-        SimilarDocument relation1 = new SimilarDocument();
-        relation1.setX(documentNode1);
-        relation1.setY(documentNode2);
-        relation1.setWeight(weight);
-        relation1.setDomain(domainURI);
-        documentNode1.addSimilarRelation(relation1);
+        SimilarDocument relation = new SimilarDocument();
+        relation.setX(documentNode1);
+        relation.setY(documentNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+        documentNode1.addSimilarDocument(relation);
+        LOG.debug("Saving relation: " + relation);
         documentGraphRepository.save(documentNode1);
 
-        SimilarDocument relation2 = new SimilarDocument();
-        relation2.setX(documentNode2);
-        relation2.setY(documentNode1);
-        relation2.setWeight(weight);
-        relation2.setDomain(domainURI);
-        documentNode2.addSimilarRelation(relation2);
-        documentGraphRepository.save(documentNode2);
         LOG.info("Document: " + documentURI1 + " related to document: " + documentURI2);
 
         //Publish the events
         eventBus.post(Event.from(ResourceUtils.map(documentNode1,Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
-        eventBus.post(Event.from(ResourceUtils.map(documentNode2,Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
     }
 
     public void relateItemToDocument(String itemURI, String documentURI){
@@ -441,11 +432,12 @@ public class UDM {
         // Document
         DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
 
-        BundleDocumentItem relation = new BundleDocumentItem();
+        ItemBundledByDocument relation = new ItemBundledByDocument();
         relation.setDocument(documentNode);
         relation.setItem(itemNode);
 
-        documentNode.addBundleRelation(relation);
+        documentNode.addItemBundledByDocument(relation);
+        LOG.debug("Saving relation: " + relation);
         documentGraphRepository.save(documentNode);
         LOG.info("Item: " + itemURI + " related to document: " + documentURI);
 
@@ -460,27 +452,18 @@ public class UDM {
         // Item
         ItemNode itemNode2 = itemGraphRepository.findOneByUri(itemURI2);
 
-
-        SimilarItem relation1 = new SimilarItem();
-        relation1.setX(itemNode1);
-        relation1.setY(itemNode2);
-        relation1.setWeight(weight);
-        relation1.setDomain(domainURI);
-        itemNode1.addSimilarRelation(relation1);
+        SimilarItem relation = new SimilarItem();
+        relation.setX(itemNode1);
+        relation.setY(itemNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+        itemNode1.addSimilarItem(relation);
+        LOG.debug("Saving relation: " + relation);
         itemGraphRepository.save(itemNode1);
-
-        SimilarItem relation2 = new SimilarItem();
-        relation2.setX(itemNode2);
-        relation2.setY(itemNode1);
-        relation2.setWeight(weight);
-        relation2.setDomain(domainURI);
-        itemNode2.addSimilarRelation(relation2);
-        itemGraphRepository.save(itemNode2);
         LOG.info("Item: " + itemURI1 + " related to item: " + itemURI2);
 
         //Publish the event
         eventBus.post(Event.from(ResourceUtils.map(itemNode1,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
-        eventBus.post(Event.from(ResourceUtils.map(itemNode2,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
     }
 
 
@@ -492,26 +475,19 @@ public class UDM {
         PartNode partNode2 = partGraphRepository.findOneByUri(partURI2);
 
 
-        SimilarPart relation1 = new SimilarPart();
-        relation1.setX(partNode1);
-        relation1.setY(partNode2);
-        relation1.setWeight(weight);
-        relation1.setDomain(domainURI);
-        partNode1.addSimilarRelation(relation1);
+        SimilarPart relation = new SimilarPart();
+        relation.setX(partNode1);
+        relation.setY(partNode2);
+        relation.setWeight(weight);
+        relation.setDomain(domainURI);
+        partNode1.addSimilarPart(relation);
+        LOG.debug("Saving relation: " + relation);
         partGraphRepository.save(partNode1);
 
-        SimilarPart relation2 = new SimilarPart();
-        relation2.setX(partNode2);
-        relation2.setY(partNode1);
-        relation2.setWeight(weight);
-        relation2.setDomain(domainURI);
-        partNode2.addSimilarRelation(relation2);
-        partGraphRepository.save(partNode2);
         LOG.info("Part: " + partURI1 + " related to part: " + partURI2);
 
         //Publish the event
         eventBus.post(Event.from(ResourceUtils.map(partNode1,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
-        eventBus.post(Event.from(ResourceUtils.map(partNode2,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
     }
 
 
@@ -523,11 +499,11 @@ public class UDM {
         // Item
         ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
 
-        DescribesPartItem relation = new DescribesPartItem();
+        ItemDescribedByPart relation = new ItemDescribedByPart();
         relation.setItem(itemNode);
         relation.setPart(partNode);
-
-        partNode.addDescribeRelation(relation);
+        partNode.addItemDescribedByPart(relation);
+        LOG.debug("Saving relation: " + relation);
         partGraphRepository.save(partNode);
         LOG.info("Item: " + itemURI + " related to part: " + partURI);
 
@@ -537,189 +513,139 @@ public class UDM {
 
     public void relateWordToItem(String wordURI, String itemURI, Long times){
         LOG.debug("Trying to relate word: " + wordURI + " to item: " + itemURI+ " with times: " + times);
-        // Word
-        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
-        // Item
-        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
-
-        MentionsItemWord relation = new MentionsItemWord();
-        relation.setItem(itemNode);
-        relation.setWord(wordNode);
+        WordMentionedByItem relation = new WordMentionedByItem();
+        relation.setItem(itemGraphRepository.findOneByUri(itemURI));
+        relation.setWord(wordGraphRepository.findOneByUri(wordURI));
         relation.setTimes(times);
-
-        itemNode.addMentionRelation(relation);
-        itemGraphRepository.save(itemNode);
+        relation.getItem().addWordMentionedByItem(relation);
+        LOG.debug("Saving relation: " + relation);
+        itemGraphRepository.save(relation.getItem());
         LOG.info("Word: " + wordURI + " related to item: " + itemURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(itemNode,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getItem(),Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
     }
 
     public void relateWordToPart(String wordURI, String partURI, Long times){
         LOG.debug("Trying to relate word: " + wordURI + " to part: " + partURI+ " with times: " + times );
-        // Word
-        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
-        // Part
-        PartNode partNode = partGraphRepository.findOneByUri(partURI);
-
-        MentionsPartWord relation = new MentionsPartWord();
-        relation.setPart(partNode);
-        relation.setWord(wordNode);
+        WordMentionedByPart relation = new WordMentionedByPart();
+        relation.setPart(partGraphRepository.findOneByUri(partURI));
+        relation.setWord(wordGraphRepository.findOneByUri(wordURI));
         relation.setTimes(times);
-
-        partNode.addMentionRelation(relation);
-        partGraphRepository.save(partNode);
+        relation.getPart().addWordMentionedByPart(relation);
+        LOG.debug("Saving relation: " + relation);
+        partGraphRepository.save(relation.getPart());
         LOG.info("Word: " + wordURI + " related to part: " + partURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getPart(),Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
     }
 
     public void relateWordToWord(String wordURI1, String wordURI2, Double weight, String domainURI){
         LOG.debug("Trying to relate word: " + wordURI1 + " to word: " + wordURI2 + " with weight: " + weight + " and domain: " + domainURI);
-        // Word
-        WordNode wordNode1 = wordGraphRepository.findOneByUri(wordURI1);
-        // Word
-        WordNode wordNode2 = wordGraphRepository.findOneByUri(wordURI2);
-
-
-        SimilarWord relation = new SimilarWord();
-        relation.setX(wordNode1);
-        relation.setY(wordNode2);
+        PairedWord relation = new PairedWord();
+        relation.setX(wordGraphRepository.findOneByUri(wordURI1));
+        relation.setY(wordGraphRepository.findOneByUri(wordURI2));
         relation.setWeight(weight);
         relation.setDomain(domainURI);
-
-        wordNode1.addSimilarRelation(relation);
-        wordGraphRepository.save(wordNode1);
-        wordNode2.addSimilarRelation(relation);
-        wordGraphRepository.save(wordNode2);
+        relation.getX().addPairedWord(relation);
+        LOG.debug("Saving relation: " + relation);
+        wordGraphRepository.save(relation.getX());
         LOG.info("Word: " + wordURI1 + " related to word: " + wordURI2);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(wordNode1,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
-        eventBus.post(Event.from(ResourceUtils.map(wordNode2,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getX(),Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
     }
 
     public void relateTopicToDocument(String topicURI, String documentURI, Double weight){
         LOG.debug("Trying to relate topic: " + topicURI + " to document: " + documentURI+ " with weight: " + weight);
-        // Topic
-        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
-        // Document
-        DocumentNode documentNode = documentGraphRepository.findOneByUri(documentURI);
-
-        DealsDocumentTopic relation = new DealsDocumentTopic();
-        relation.setDocument(documentNode);
-        relation.setTopic(topicNode);
+        TopicDealtByDocument relation = new TopicDealtByDocument();
+        relation.setDocument(documentGraphRepository.findOneByUri(documentURI));
+        relation.setTopic(topicGraphRepository.findOneByUri(topicURI));
         relation.setWeight(weight);
-
-        documentNode.addDealRelation(relation);
-        documentGraphRepository.save(documentNode);
+        relation.getDocument().addTopicDealtByDocument(relation);
+        LOG.debug("Saving relation: " + relation);
+        documentGraphRepository.save(relation.getDocument());
         LOG.info("Topic: " + topicURI + " related to document: " + documentURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(documentNode,Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getDocument(),Document.class)), RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.UPDATED));
     }
 
     public void relateTopicToItem(String topicURI, String itemURI, Double weight){
         LOG.debug("Trying to relate topic: " + topicURI + " to item: " + itemURI+ " with weight: " + weight );
-        // Topic
-        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
-        // Item
-        ItemNode itemNode = itemGraphRepository.findOneByUri(itemURI);
-
-        DealsItemTopic relation = new DealsItemTopic();
-        relation.setItem(itemNode);
-        relation.setTopic(topicNode);
+        TopicDealtByItem relation = new TopicDealtByItem();
+        relation.setItem(itemGraphRepository.findOneByUri(itemURI));
+        relation.setTopic(topicGraphRepository.findOneByUri(topicURI));
         relation.setWeight(weight);
-
-        itemNode.addDealRelation(relation);
-        itemGraphRepository.save(itemNode);
+        relation.getItem().addTopicDealtByItem(relation);
+        LOG.debug("Saving relation: " + relation);
+        itemGraphRepository.save(relation.getItem());
         LOG.info("Topic: " + topicURI + " related to item: " + itemURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(itemNode,Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getItem(),Item.class)), RoutingKey.of(Resource.Type.ITEM, Resource.State.UPDATED));
     }
 
     public void relateTopicToPart(String topicURI, String partURI, Double weight){
         LOG.debug("Trying to relate topic: " + topicURI + " to part: " + partURI + " with weight: " + weight );
-        // Topic
-        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
-        // Part
-        PartNode partNode = partGraphRepository.findOneByUri(partURI);
-
-
-        DealsPartTopic relation = new DealsPartTopic();
-        relation.setPart(partNode);
-        relation.setTopic(topicNode);
+        TopicDealtByPart relation = new TopicDealtByPart();
+        relation.setPart(partGraphRepository.findOneByUri(partURI));
+        relation.setTopic(topicGraphRepository.findOneByUri(topicURI));
         relation.setWeight(weight);
-
-        partNode.addDealRelation(relation);
-        partGraphRepository.save(partNode);
+        relation.getPart().addTopicDealtByPart(relation);
+        LOG.debug("Saving relation: " + relation);
+        partGraphRepository.save(relation.getPart());
         LOG.info("Topic: " + topicURI + " related to part: " + partURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getPart(),Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));
     }
 
     public void relateWordToTopic(String wordURI, String topicURI, Double weight){
         LOG.debug("Trying to relate word: " + wordURI + " to topic: " + topicURI+ " with weight: " + weight);
-        // Word
-        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
-        // Topic
-        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
-
-        MentionsTopicWord relation = new MentionsTopicWord();
-        relation.setTopic(topicNode);
-        relation.setWord(wordNode);
+        WordMentionedByTopic relation = new WordMentionedByTopic();
+        relation.setTopic(topicGraphRepository.findOneByUri(topicURI));
+        relation.setWord(wordGraphRepository.findOneByUri(wordURI));
         relation.setWeight(weight);
-
-        topicNode.addMentionRelation(relation);
-        topicGraphRepository.save(topicNode);
+        relation.getTopic().addWordMentionedByTopic(relation);
+        LOG.debug("Saving relation: " + relation);
+        topicGraphRepository.save(relation.getTopic());
         LOG.info("Word: " + wordURI + " related to topic: " + topicURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getTopic(),Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.UPDATED));
     }
 
     public void relateWordToDomain(String wordURI, String domainURI, String vector){
         LOG.debug("Trying to relate word: " + wordURI + " to domain: " + domainURI+ " with vector: " + vector);
-        // Word
-        WordNode wordNode = wordGraphRepository.findOneByUri(wordURI);
-        // Topic
-        DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
-
-        EmbeddedWordInDomain relation = new EmbeddedWordInDomain();
-        relation.setDomain(domainNode);
-        relation.setWord(wordNode);
+        DomainInWord relation = new DomainInWord();
+        relation.setDomain(domainGraphRepository.findOneByUri(domainURI));
+        relation.setWord(wordGraphRepository.findOneByUri(wordURI));
         relation.setVector(vector);
-
-        wordNode.addEmbeddedRelation(relation);
-        wordGraphRepository.save(wordNode);
+        relation.getWord().addDomainInWord(relation);
+        LOG.debug("Saving relation: " + relation);
+        wordGraphRepository.save(relation.getWord());
         LOG.info("Word: " + wordURI + " related to domain: " + domainURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(wordNode,Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getWord(),Word.class)), RoutingKey.of(Resource.Type.WORD, Resource.State.UPDATED));
     }
 
     public void relateDomainToTopic(String domainURI, String topicURI, String date, String analysisURI){
         LOG.debug("Trying to relate domain: " + domainURI + " to topic: " + topicURI+ " in date: " + date + " by analysis: " + analysisURI);
-        // Domain
-        DomainNode domainNode = domainGraphRepository.findOneByUri(domainURI);
-        // Topic
-        TopicNode topicNode = topicGraphRepository.findOneByUri(topicURI);
-
-        EmergesInTopicDomain relation = new EmergesInTopicDomain();
-        relation.setTopic(topicNode);
-        relation.setDomain(domainNode);
+        DomainInTopic relation = new DomainInTopic();
+        relation.setTopic(topicGraphRepository.findOneByUri(topicURI));
+        relation.setDomain(domainGraphRepository.findOneByUri(domainURI));
         relation.setDate(date);
         relation.setAnalysis(analysisURI);
-
-        topicNode.addEmergeRelation(relation);
-        topicGraphRepository.save(topicNode);
+        relation.getTopic().addDomainInTopic(relation);
+        LOG.debug("Saving relation: " + relation);
+        topicGraphRepository.save(relation.getTopic());
         LOG.info("Domain: " + domainURI + " related to topic: " + topicURI);
 
         //Publish the event
-        eventBus.post(Event.from(ResourceUtils.map(topicNode,Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.UPDATED));
+        eventBus.post(Event.from(ResourceUtils.map(relation.getTopic(),Topic.class)), RoutingKey.of(Resource.Type.TOPIC, Resource.State.UPDATED));
     }
 
 
@@ -982,13 +908,13 @@ public class UDM {
 
     public void deleteSimilarsBetweenWordsInDomain(String uri){
         LOG.debug("trying to delete SIMILAR relationships between Words in Domain: " + uri);
-        wordGraphRepository.deleteSimilarRelationsInDomain(uri);
+        wordGraphRepository.deletePairingInDomain(uri);
         LOG.info("Deleted SIMILAR relationships between Words in Domain: " + uri);
     }
 
     public void deleteEmbeddingWordsInDomain(String uri){
         LOG.debug("trying to delete EMBEDDED relationships from Words to Domain: " + uri);
-        wordGraphRepository.deleteEmbeddedRelationsInDomain(uri);
+        wordGraphRepository.deleteEmbeddingInDomain(uri);
         LOG.info("Deleted EMBEDDED relationships from Words to Domain: " + uri);
     }
 

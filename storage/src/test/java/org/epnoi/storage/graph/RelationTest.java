@@ -4,7 +4,7 @@ import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.storage.graph.domain.DocumentNode;
 import org.epnoi.storage.graph.domain.ItemNode;
 import org.epnoi.storage.graph.domain.SourceNode;
-import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
+import org.epnoi.storage.graph.domain.relationships.ItemBundledByDocument;
 import org.epnoi.storage.graph.repository.*;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -65,10 +65,10 @@ public class RelationTest {
         }
 
         // Relation
-        BundleDocumentItem bundle = new BundleDocumentItem();
+        ItemBundledByDocument bundle = new ItemBundledByDocument();
         bundle.setDocument(dNode);
         bundle.setItem(iNode);
-        dNode.addBundleRelation(bundle);
+        dNode.addItemBundledByDocument(bundle);
 
         // save
         documentGraphRepository.save(dNode);
@@ -81,7 +81,7 @@ public class RelationTest {
         DocumentNode result = documentGraphRepository.findOneByUri("documents/1212-1212-1212-1212");
         System.out.println(result);
 
-        System.out.println(result.getBundles());
+        System.out.println(result.getItems());
     }
 
 

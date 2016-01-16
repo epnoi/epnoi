@@ -3,25 +3,28 @@ package org.epnoi.storage.graph.domain.relationships;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.epnoi.storage.graph.domain.PartNode;
-import org.epnoi.storage.graph.domain.TopicNode;
+import org.epnoi.storage.graph.domain.WordNode;
 import org.neo4j.ogm.annotation.*;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="DEALS")
+@RelationshipEntity(type="PAIRS_WITH")
 @Data
 @EqualsAndHashCode(exclude={"id"})
-public class DealsPartTopic {
+public class PairedWord {
     @GraphId
     private Long id;
 
     @StartNode
-    private PartNode part;
+    private WordNode x;
 
     @EndNode
-    private TopicNode topic;
+    private WordNode y;
 
     @Property
     private Double weight;
+
+    @Property
+    private String domain;
 }

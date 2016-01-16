@@ -1,4 +1,4 @@
-package org.epnoi.modeler.executor;
+package org.epnoi.modeler.scheduler;
 
 import org.epnoi.modeler.helper.ModelingHelper;
 import org.epnoi.modeler.models.topic.TopicModeler;
@@ -37,9 +37,7 @@ public class ModelingTask implements Runnable{
 
     @Override
     public void run() {
-        LOG.info("New modeling task running...");
-        // TODO Parallelize by beans. Take into account transactions in UDM
-        new WordEmbeddingModeler(domain,helper).run();
-        new TopicModeler(domain,helper).run();
+        helper.getModelBuilder().execute(new WordEmbeddingModeler(domain,helper));
+        helper.getModelBuilder().execute(new TopicModeler(domain,helper));
     }
 }

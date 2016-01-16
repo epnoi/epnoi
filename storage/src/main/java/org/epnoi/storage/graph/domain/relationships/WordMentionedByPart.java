@@ -9,22 +9,19 @@ import org.neo4j.ogm.annotation.*;
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="SIMILAR")
+@RelationshipEntity(type="MENTIONS")
 @Data
 @EqualsAndHashCode(exclude={"id"})
-public class SimilarWord {
+public class WordMentionedByPart {
     @GraphId
     private Long id;
 
     @StartNode
-    private WordNode x;
+    private PartNode part;
 
     @EndNode
-    private WordNode y;
+    private WordNode word;
 
     @Property
-    private Double weight;
-
-    @Property
-    private String domain;
+    private Long times;
 }

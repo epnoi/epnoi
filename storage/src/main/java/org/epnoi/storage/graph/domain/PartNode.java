@@ -8,6 +8,7 @@ import org.epnoi.storage.model.Part;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,45 +28,33 @@ public class PartNode extends Part {
     @Index(unique = true)
     private String uri;
 
-    // Undirected
-    private Set<SimilarPart> similar = new HashSet<>();
+    @Relationship(type = "SIMILAR_TO", direction="UNDIRECTED")
+    private Set<SimilarPart> parts = new HashSet<>();
 
-    // Outgoing
-    private Set<DealsPartTopic> deals = new HashSet<>();
-    private Set<MentionsPartWord> mentions = new HashSet<>();
-    private Set<DescribesPartItem> describes = new HashSet<>();
+    @Relationship(type = "DEALS_WITH", direction="OUTGOING")
+    private Set<TopicDealtByPart> topics = new HashSet<>();
+
+    @Relationship(type = "MENTIONS", direction="OUTGOING")
+    private Set<WordMentionedByPart> words = new HashSet<>();
+
+    @Relationship(type = "DESCRIBES", direction="OUTGOING")
+    private Set<ItemDescribedByPart> items = new HashSet<>();
 
 
-    public void addSimilarRelation(SimilarPart rel){
-        similar.add(rel);
+    public void addSimilarPart(SimilarPart similarPart){
+        parts.add(similarPart);
     }
 
-    public void removeSimilarRelation(SimilarPart rel){
-        similar.remove(rel);
+    public void addTopicDealtByPart(TopicDealtByPart topicDealtByPart){
+        topics.add(topicDealtByPart);
     }
 
-    public void addDealRelation(DealsPartTopic rel){
-        deals.add(rel);
+    public void addWordMentionedByPart(WordMentionedByPart wordMentionedByPart){
+        words.add(wordMentionedByPart);
     }
 
-    public void removeDealRelation(DealsPartTopic rel){
-        deals.remove(rel);
-    }
-
-    public void addMentionRelation(MentionsPartWord rel){
-        mentions.add(rel);
-    }
-
-    public void removeMentionRelation(MentionsPartWord rel){
-        mentions.remove(rel);
-    }
-
-    public void addDescribeRelation(DescribesPartItem rel){
-        describes.add(rel);
-    }
-
-    public void removeDescribeRelation(DescribesPartItem rel){
-        describes.remove(rel);
+    public void addItemDescribedByPart(ItemDescribedByPart itemDescribedByPart){
+        items.add(itemDescribedByPart);
     }
 
 }

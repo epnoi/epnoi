@@ -8,6 +8,7 @@ import org.epnoi.storage.model.Topic;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,25 +27,19 @@ public class TopicNode extends Topic {
 
     @Index(unique = true)
     private String uri;
-    
-    // Outgoing
-    private Set<EmergesInTopicDomain> emerges = new HashSet<>();
-    private Set<MentionsTopicWord> mentions = new HashSet<>();
 
-    public void addEmergeRelation(EmergesInTopicDomain rel){
-        emerges.add(rel);
+    @Relationship(type = "EMERGES_IN", direction="OUTGOING")
+    private Set<DomainInTopic> domains = new HashSet<>();
+
+    @Relationship(type = "MENTIONS", direction="OUTGOING")
+    private Set<WordMentionedByTopic> words = new HashSet<>();
+
+    public void addDomainInTopic(DomainInTopic domainInTopic){
+        domains.add(domainInTopic);
     }
 
-    public void removeEmergeRelation(EmergesInTopicDomain rel){
-        emerges.remove(rel);
-    }
-
-    public void addMentionRelation(MentionsTopicWord rel){
-        mentions.add(rel);
-    }
-
-    public void removeMentionRelation(MentionsTopicWord rel){
-        mentions.remove(rel);
+    public void addWordMentionedByTopic(WordMentionedByTopic wordMentionedByTopic){
+        words.add(wordMentionedByTopic);
     }
 
 }

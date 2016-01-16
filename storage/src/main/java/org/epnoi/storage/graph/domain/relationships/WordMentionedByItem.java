@@ -3,27 +3,25 @@ package org.epnoi.storage.graph.domain.relationships;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.epnoi.storage.graph.domain.ItemNode;
+import org.epnoi.storage.graph.domain.WordNode;
 import org.neo4j.ogm.annotation.*;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="SIMILAR_TO")
+@RelationshipEntity(type="MENTIONS")
 @Data
 @EqualsAndHashCode(exclude={"id"})
-public class SimilarItem {
+public class WordMentionedByItem {
     @GraphId
     private Long id;
 
     @StartNode
-    private ItemNode x;
+    private ItemNode item;
 
     @EndNode
-    private ItemNode y;
+    private WordNode word;
 
     @Property
-    private Double weight;
-
-    @Property
-    private String domain;
+    private Long times;
 }

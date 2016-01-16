@@ -1,7 +1,7 @@
 package org.epnoi.storage.graph;
 
 import org.epnoi.storage.graph.domain.DocumentNode;
-import org.epnoi.storage.graph.domain.relationships.DealsDocumentTopic;
+import org.epnoi.storage.graph.domain.relationships.TopicDealtByDocument;
 import org.epnoi.storage.graph.repository.BaseGraphRepository;
 import org.epnoi.storage.graph.repository.DocumentGraphRepository;
 import org.epnoi.storage.graph.repository.DomainGraphRepository;
@@ -49,9 +49,9 @@ public class DocumentGraphRepositoryTest extends BaseGraphRepositoryTest<Documen
 
     @Test
     public void getDeals(){
-        Iterable<DealsDocumentTopic> deals = repository.dealsInAnalysis("http://epnoi.org/documents/fb58705e-65fe-41ad-8f92-b8802d3a43e2","http://epnoi.org/analyses/e8ac7764-f0ac-4e9b-841c-a4b07e076d5f");
+        Iterable<TopicDealtByDocument> deals = repository.dealsInAnalysis("http://epnoi.org/documents/fb58705e-65fe-41ad-8f92-b8802d3a43e2","http://epnoi.org/analyses/e8ac7764-f0ac-4e9b-841c-a4b07e076d5f");
 
-        Iterator<DealsDocumentTopic> it = deals.iterator();
+        Iterator<TopicDealtByDocument> it = deals.iterator();
         while(it.hasNext()) {
             LOG.info("Deal: " + it.next());
         }

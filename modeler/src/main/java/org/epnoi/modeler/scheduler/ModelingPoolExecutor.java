@@ -1,7 +1,6 @@
-package org.epnoi.modeler.executor;
+package org.epnoi.modeler.scheduler;
 
 import org.epnoi.modeler.helper.ModelingHelper;
-import org.epnoi.modeler.models.topic.TopicModeler;
 import org.epnoi.storage.model.Domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

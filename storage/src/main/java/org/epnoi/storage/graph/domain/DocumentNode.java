@@ -3,8 +3,8 @@ package org.epnoi.storage.graph.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.epnoi.storage.graph.domain.relationships.BundleDocumentItem;
-import org.epnoi.storage.graph.domain.relationships.DealsDocumentTopic;
+import org.epnoi.storage.graph.domain.relationships.ItemBundledByDocument;
+import org.epnoi.storage.graph.domain.relationships.TopicDealtByDocument;
 import org.epnoi.storage.graph.domain.relationships.SimilarDocument;
 import org.epnoi.storage.model.Document;
 import org.neo4j.ogm.annotation.GraphId;
@@ -30,37 +30,25 @@ public class DocumentNode extends Document {
     @Index(unique = true)
     private String uri;
 
-    // -> Undirected
-    private Set<SimilarDocument> similar = new HashSet<>();
+    @Relationship(type = "SIMILAR_TO", direction="UNDIRECTED")
+    private Set<SimilarDocument> documents = new HashSet<>();
 
-    // -> Outgoing
-    private Set<DealsDocumentTopic> deals = new HashSet<>();
+    @Relationship(type = "DEALS_WITH", direction="OUTGOING")
+    private Set<TopicDealtByDocument> topics = new HashSet<>();
 
-    private Set<BundleDocumentItem> bundles = new HashSet<>();
+    @Relationship(type = "BUNDLES", direction="OUTGOING")
+    private Set<ItemBundledByDocument> items = new HashSet<>();
 
 
-    public void addSimilarRelation(SimilarDocument rel){
-        similar.add(rel);
+    public void addSimilarDocument(SimilarDocument similarDocument){
+        documents.add(similarDocument);
     }
 
-    public void removeSimilarRelation(SimilarDocument rel){
-        similar.remove(rel);
+    public void addTopicDealtByDocument(TopicDealtByDocument topicDealtByDocument){
+        topics.add(topicDealtByDocument);
     }
 
-    public void addDealRelation(DealsDocumentTopic rel){
-        deals.add(rel);
+    public void addItemBundledByDocument(ItemBundledByDocument itemBundledByDocument){
+        items.add(itemBundledByDocument);
     }
-
-    public void removeDealRelation(DealsDocumentTopic rel){
-        deals.remove(rel);
-    }
-
-    public void addBundleRelation(BundleDocumentItem rel){
-        bundles.add(rel);
-    }
-
-    public void removeBundleRelation(BundleDocumentItem rel){
-        bundles.remove(rel);
-    }
-
 }

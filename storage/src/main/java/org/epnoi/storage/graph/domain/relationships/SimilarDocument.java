@@ -8,7 +8,7 @@ import org.neo4j.ogm.annotation.*;
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="SIMILAR")
+@RelationshipEntity(type="SIMILAR_TO")
 @Data
 @EqualsAndHashCode(exclude={"id"})
 public class SimilarDocument {

@@ -34,6 +34,6 @@ public class WordGraphRepositoryTest extends BaseGraphRepositoryTest<WordNode> {
 
     @Test
     public void deleteEmbeddedRelations(){
-        repository.deleteEmbeddedRelationsInDomain("asdasdads");
+        repository.deleteEmbeddingInDomain("asdasdads");
     }
 }

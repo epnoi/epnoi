@@ -8,6 +8,7 @@ import org.epnoi.storage.model.Word;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,26 +28,17 @@ public class WordNode extends Word {
     @Index(unique = true)
     private String uri;
 
-    // Undirected
-    private Set<SimilarWord> similar = new HashSet<>();
+    @Relationship(type = "PAIRS_WITH", direction="UNDIRECTED")
+    private Set<PairedWord> words = new HashSet<>();
 
-    // Outgoing
-    private Set<EmbeddedWordInDomain> embedded = new HashSet<>();
+    @Relationship(type = "EMBEDDED_IN", direction="OUTGOING")
+    private Set<DomainInWord> domains = new HashSet<>();
 
-    public void addSimilarRelation(SimilarWord rel){
-        similar.add(rel);
+    public void addPairedWord(PairedWord pairedWord){
+        words.add(pairedWord);
     }
 
-    public void removeSimilarRelation(SimilarWord rel){
-        similar.remove(rel);
+    public void addDomainInWord(DomainInWord domainInWord){
+        domains.add(domainInWord);
     }
-
-    public void addEmbeddedRelation(EmbeddedWordInDomain rel){
-        embedded.add(rel);
-    }
-
-    public void removeEmergeRelation(EmbeddedWordInDomain rel){
-        embedded.remove(rel);
-    }
-
 }

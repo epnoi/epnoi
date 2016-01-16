@@ -2,26 +2,26 @@ package org.epnoi.storage.graph.domain.relationships;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.epnoi.storage.graph.domain.PartNode;
-import org.epnoi.storage.graph.domain.WordNode;
+import org.epnoi.storage.graph.domain.DocumentNode;
+import org.epnoi.storage.graph.domain.DomainNode;
 import org.neo4j.ogm.annotation.*;
 
 /**
  * Created by cbadenes on 22/12/15.
  */
-@RelationshipEntity(type="MENTIONS")
+@RelationshipEntity(type="CONTAINS")
 @Data
 @EqualsAndHashCode(exclude={"id"})
-public class MentionsPartWord {
+public class ContainedDocument {
     @GraphId
     private Long id;
 
     @StartNode
-    private PartNode part;
+    private DomainNode domain;
 
     @EndNode
-    private WordNode word;
+    private DocumentNode document;
 
     @Property
-    private Long times;
+    private String date;
 }

@@ -1,4 +1,4 @@
-package org.epnoi.modeler.executor;
+package org.epnoi.modeler.scheduler;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.modeler.Config;

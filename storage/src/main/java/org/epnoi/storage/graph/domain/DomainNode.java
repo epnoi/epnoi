@@ -3,12 +3,13 @@ package org.epnoi.storage.graph.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.epnoi.storage.graph.domain.relationships.ContainsDomainDocument;
+import org.epnoi.storage.graph.domain.relationships.ContainedDocument;
 import org.epnoi.storage.graph.domain.relationships.SimilarDomain;
 import org.epnoi.storage.model.Domain;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,27 +29,19 @@ public class DomainNode extends Domain {
     @Index(unique = true)
     private String uri;
 
-    // Undirected
-    private Set<SimilarDomain> similar = new HashSet<>();
+    @Relationship(type = "SIMILAR_TO", direction="UNDIRECTED")
+    private Set<SimilarDomain> domains = new HashSet<>();
 
-    // Outgoing
-    private Set<ContainsDomainDocument> contains = new HashSet<>();
+    @Relationship(type = "CONTAINS", direction="OUTGOING")
+    private Set<ContainedDocument> documents = new HashSet<>();
 
 
-    public void addSimilarRelation(SimilarDomain rel){
-        similar.add(rel);
+    public void addSimilarDomain(SimilarDomain similarDomain){
+        domains.add(similarDomain);
     }
 
-    public void removeSimilarRelation(SimilarDomain rel){
-        similar.remove(rel);
-    }
-
-    public void addContainRelation(ContainsDomainDocument rel){
-        contains.add(rel);
-    }
-
-    public void removeContainRelation(ContainsDomainDocument rel){
-        contains.remove(rel);
+    public void addContainedDocument(ContainedDocument containedDocument){
+        documents.add(containedDocument);
     }
 
 }
