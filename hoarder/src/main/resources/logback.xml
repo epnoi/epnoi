@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="30 seconds">
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/hoarder.log</file>
+        <file>../logs/hoarder.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
             <fileNamePattern>hoarder-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
@@ -13,17 +13,17 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [HOARDER] [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [HOARDER] [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n</pattern>
         </encoder>
     </appender>
 
-    <logger name="org.epnoi" level="DEBUG"/>
+    <logger name="org.epnoi" level="INFO"/>
 
     <logger name="es.upm" level="INFO"/>
 

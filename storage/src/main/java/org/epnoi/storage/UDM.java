@@ -493,7 +493,7 @@ public class UDM {
 
 
     public void relateItemToPart(String itemURI, String partURI){
-        LOG.debug("Trying to relate item: " + itemURI + " to part: " + partURI);
+        LOG.debug("Trying to relate Part: " + partURI + " to Item: " + itemURI);
         // Part
         PartNode partNode = partGraphRepository.findOneByUri(partURI);
         // Item
@@ -505,7 +505,7 @@ public class UDM {
         partNode.addItemDescribedByPart(relation);
         LOG.debug("Saving relation: " + relation);
         partGraphRepository.save(partNode);
-        LOG.info("Item: " + itemURI + " related to part: " + partURI);
+        LOG.info("Part: " + partURI + " related to Item: " + itemURI);
 
         //Publish the event
         eventBus.post(Event.from(ResourceUtils.map(partNode,Part.class)), RoutingKey.of(Resource.Type.PART, Resource.State.UPDATED));

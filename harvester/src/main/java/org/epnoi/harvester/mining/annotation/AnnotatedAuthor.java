@@ -2,6 +2,8 @@ package org.epnoi.harvester.mining.annotation;
 
 import edu.upf.taln.dri.lib.model.ext.Author;
 
+import java.util.stream.Collectors;
+
 /**
  * Created by cbadenes on 07/01/16.
  */
@@ -22,14 +24,15 @@ public class AnnotatedAuthor {
     }
 
     public String getFullName(){
-        return this.getFullName();
+        return this.author.getFullName();
     }
 
     public String getAffiliation(){
-        return this.getAffiliation();
+        //TODO More detailed affiliation
+        return this.author.getAffiliations().stream().map(affiliation -> affiliation.toString()).collect(Collectors.joining(";"));
     }
 
     public String getPersonalPageURL(){
-        return this.getPersonalPageURL();
+        return this.author.getPersonalPageURL();
     }
 }

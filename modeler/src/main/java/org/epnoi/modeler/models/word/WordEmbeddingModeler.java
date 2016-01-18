@@ -55,7 +55,10 @@ public class WordEmbeddingModeler extends ModelingTask {
 
             // Make relations
             //TODO Improve using Spark.parallel
-            model.getVocabulary().stream().forEach(word -> relateWord(word,model));
+            // First Create
+            List<Word> words = model.getVocabulary().stream().map(word -> findOrCreateWord(word)).collect(Collectors.toList());
+            // Then relate
+            words.stream().forEach(word -> relateWord(word,model));
 
             // Save the analysis
             helper.getUdm().saveAnalysis(analysis);
@@ -67,38 +70,37 @@ public class WordEmbeddingModeler extends ModelingTask {
         }
     }
 
-    private void relateWord(String word, W2VModel model){
-        String wordURI = findOrCreateWord(word);
-
+    private void relateWord(Word word, W2VModel model){
         // EMBEDDED relation
-        float[] vector = model.getRepresentation(word);
-        helper.getUdm().relateWordToDomain(wordURI,domain.getUri(),Arrays.toString(vector));
+        float[] vector = model.getRepresentation(word.getLemma());
+        helper.getUdm().relateWordToDomain(word.getUri(),domain.getUri(),Arrays.toString(vector));
 
         // SIMILAR relations
         // TODO this relation should be done in the COMPARATOR module
-        List<WordDistribution> words = model.find(word).stream().filter(sim -> sim.getWeight() > helper.getSimilarityThreshold()).collect(Collectors.toList());
+        List<WordDistribution> words = model.find(word.getLemma()).stream().filter(sim -> sim.getWeight() > helper.getSimilarityThreshold()).collect(Collectors.toList());
         for (WordDistribution wordDistribution : words){
-            helper.getUdm().relateWordToWord(wordURI,findOrCreateWord(wordDistribution.getWord()),wordDistribution.getWeight(),domain.getUri());
+            Optional<String> wordUri = helper.getUdm().findWordByLemma(wordDistribution.getWord());
+            if (wordUri.isPresent()){
+                helper.getUdm().relateWordToWord(word.getUri(),wordUri.get(),wordDistribution.getWeight(),domain.getUri());
+            }
         }
 
     }
 
 
-    private String findOrCreateWord(String word){
+    private Word findOrCreateWord(String word){
+        Word wordData = new Word();
+        wordData.setLemma(word);
+
         Optional<String> result = helper.getUdm().findWordByLemma(word);
-        String wordURI;
         if (!result.isPresent()){
-            // Create Word
-            Word wordData = new Word();
             wordData.setUri(helper.getUriGenerator().newWord());
             wordData.setCreationTime(helper.getTimeGenerator().getNowAsISO());
-            wordData.setLemma(word);
             helper.getUdm().saveWord(wordData);
-            wordURI = wordData.getUri();
         }else{
-            wordURI = result.get();
+            wordData.setUri(result.get());
         }
-        return wordURI;
+        return wordData;
     }
 
 

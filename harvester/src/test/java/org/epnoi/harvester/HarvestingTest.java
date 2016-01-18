@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Config.class)
-@TestPropertySource(properties = { "epnoi.upf.miner.config = harvester/src/test/resources/DRIconfig.properties"})
+@TestPropertySource(properties = { "epnoi.upf.miner.config = harvester/src/test/resources/DRIconfig.properties", "epnoi.harvester.folder.input = harvester/src/test/resources/inbox"})
 public class HarvestingTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(HarvestingTest.class);
@@ -53,10 +53,33 @@ public class HarvestingTest {
         Source source = new Source();
         source.setUri(uriGenerator.newSource());
         source.setCreationTime(timeGenerator.getNowAsISO());
-        source.setUrl("file://Users/cbadenes/Temp");
-        source.setProtocol("file");
-        source.setName("Test Source");
-        source.setDescription("For testing purposes");
+//        source.setUrl("file://sample");
+        source.setUrl("file://sig2006");
+        source.setDomain(domain.getUri());
+        udm.saveSource(source);
+
+//        LOG.info("sleep..");
+//        Thread.sleep(300000);
+//        LOG.info("wake up!");
+    }
+
+    @Test
+    public void simulateDocuments() throws InterruptedException {
+
+        // Reset DDBDD
+        udm.deleteAll();
+
+        // Domain
+        Domain domain = new Domain();
+        domain.setUri("http://epnoi.org/domains/1f02ae0b-7d96-42c6-a944-25a3050bf1e2");
+        domain.setName("test-domain");
+        udm.saveDomain(domain);
+
+        // Source
+        Source source = new Source();
+        source.setUri(uriGenerator.newSource());
+        source.setCreationTime(timeGenerator.getNowAsISO());
+        source.setUrl("file://sample");
         source.setDomain(domain.getUri());
         udm.saveSource(source);
 

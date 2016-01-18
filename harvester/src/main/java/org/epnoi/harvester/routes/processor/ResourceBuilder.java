@@ -125,18 +125,19 @@ public class ResourceBuilder implements Processor {
         // -> Update Title from parser if empty
         if (Strings.isNullOrEmpty(metaInformation.getTitle())){
             metaInformation.setTitle(annotatedDocument.getTitle());
-            LOG.warn("Title load from annotated document: " + metaInformation.getTitle());
+            LOG.info("Title from annotated document: " + metaInformation.getTitle());
         }
         // -> Update Published from parser if empty
         if (Strings.isNullOrEmpty(metaInformation.getPublished())){
             metaInformation.setPublished(annotatedDocument.getYear());
-            LOG.warn("Published date load from annotated document: " + metaInformation.getPublished());
+            LOG.warn("Published date from annotated document: " + metaInformation.getPublished());
         }
         // -> Update Authors from parser if empty
         if (Strings.isNullOrEmpty(metaInformation.getCreators())){
             metaInformation.setCreators(annotatedDocument.getAuthors().stream().map(author -> author.getFullName()).collect(Collectors.joining(";")));
-            LOG.warn("Published date load from annotated document: " + metaInformation.getPublished());
+            LOG.warn("Authors from annotated document: " + metaInformation.getCreators());
         }
+
     }
 
     private Document createAndSaveDocument(MetaInformation metaInformation, String rawContent, String sourceUri, String domainUri){

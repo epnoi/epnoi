@@ -30,6 +30,7 @@ public class SourceService {
     }
 
     public Source create(Source source) throws Exception {
+
         LOG.info("adding source: " + source);
 
         // TODO if exist in database return

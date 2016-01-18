@@ -46,8 +46,8 @@ public class CommonRouteBuilder extends RouteBuilder {
 
         from(URI_RO_BUILD).
                 process(resourceBuilder).
-                log(LoggingLevel.INFO,LOG,"File Read: '${header.CamelFileName}'").
-                to("file:"+outdir+"?fileName=${header.FileName}");
+                log(LoggingLevel.INFO,LOG,"File Read: '${header.CamelFileName}'");
+//                to("file:"+outdir+"?fileName=${header.FileName}"); // TODO Create a file
 
     }
 }

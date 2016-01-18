@@ -7,11 +7,13 @@
         </encoder>
     </appender>
 
-    <logger name="org.epnoi" level="DEBUG"/>
-
     <logger name="edu.upf.taln.dri.lib" level="INFO"/>
 
-    <root level="info">
+    <logger name="org.epnoi" level="DEBUG"/>
+
+    <logger name="es.upm" level="INFO"/>
+
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

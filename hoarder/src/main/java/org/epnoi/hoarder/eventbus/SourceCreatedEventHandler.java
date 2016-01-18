@@ -28,8 +28,10 @@ public class SourceCreatedEventHandler extends AbstractEventHandler {
     @Override
     public void handle(Event event) {
         LOG.info("Source created event received: " + event);
-        try{
+        try {
             sourceService.create(event.to(Source.class));
+        } catch (RuntimeException e){
+            LOG.warn(e.getMessage());
         } catch (Exception e){
             // TODO Notify to event-bus source not added
             LOG.error("Error adding new source: " + event, e);

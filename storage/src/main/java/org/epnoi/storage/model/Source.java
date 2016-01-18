@@ -31,7 +31,7 @@ public class Source extends Resource {
 
     public String getName(){
         if (Strings.isNullOrEmpty(name)){
-            return StringUtils.substringBetween(url,"//","/");
+            return StringUtils.substringBetween(url+"/","//","/");
         }
         return name;
     }
